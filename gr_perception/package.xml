@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gr_perception</name>
+  <version>0.1.0</version>
+  <description>grassrobotics_navigation package</description>
+  <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>gr_ml</exec_depend>
+  <exec_depend>gr_mobilenet</exec_depend>
+  <exec_depend>gr_pointcloud_filter</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+
+</package>

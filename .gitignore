@@ -1,0 +1,6 @@
+measured_*
+results_*
+*.jpg
+*.jpeg
+*.caffemodel
+*.prototxt

@@ -1,0 +1,7 @@
+/usr/local/lib/libpcl_cuda_tools.so
+/usr/local/include/pcl_cuda_tools/filters/pcl_filter_passthrough.h
+/usr/local/include/pcl_cuda_tools/filters/filter_passthrough.h
+/usr/local/include/pcl_cuda_tools/cuda_filter_functions.cuh
+/usr/local/include/pcl_cuda_tools/pcl_cuda_filter_functions.cuh
+/usr/local/include/pcl_cuda_tools/cuda_functions.cuh
+/usr/local/include/pcl_cuda_tools/depth_registration.h
