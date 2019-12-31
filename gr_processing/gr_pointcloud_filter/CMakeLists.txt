@@ -10,12 +10,13 @@ find_package(catkin REQUIRED
     geometry_msgs
     sensor_msgs
     roscpp
-    pcl_ros
+    #pcl_ros
     pcl_conversions
     dynamic_reconfigure
 )
 
 find_package(cmake_modules REQUIRED)
+find_package(PCL REQUIRED)
 
 generate_dynamic_reconfigure_options(
   cfg/Filters.cfg
@@ -24,6 +25,7 @@ generate_dynamic_reconfigure_options(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
 
@@ -34,7 +36,7 @@ catkin_package(
   CATKIN_DEPENDS
     geometry_msgs
     roscpp
-    pcl_ros
+    #pcl_ros
     pcl_conversions
     dynamic_reconfigure
 )
@@ -52,7 +54,7 @@ add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS}
 )
 
 target_link_libraries( ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
+ ${catkin_LIBRARIES} ${PCL_LIBRARIES}
 )
 
 install(TARGETS ${PROJECT_NAME}

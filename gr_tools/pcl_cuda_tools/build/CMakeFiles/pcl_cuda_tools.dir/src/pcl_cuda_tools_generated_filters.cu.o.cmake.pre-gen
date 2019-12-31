@@ -58,9 +58,9 @@ endif()
 
 # Set these up as variables to make reading the generated file easier
 set(CMAKE_COMMAND "/usr/bin/cmake") # path
-set(source_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/src/pcl_filters.cu") # path
-set(NVCC_generated_dependency_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_pcl_filters.cu.o.NVCC-depend") # path
-set(cmake_dependency_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_pcl_filters.cu.o.depend") # path
+set(source_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/src/filters.cu") # path
+set(NVCC_generated_dependency_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_filters.cu.o.NVCC-depend") # path
+set(cmake_dependency_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_filters.cu.o.depend") # path
 set(CUDA_make2cmake "/usr/share/cmake-3.10/Modules/FindCUDA/make2cmake.cmake") # path
 set(CUDA_parse_cubin "/usr/share/cmake-3.10/Modules/FindCUDA/parse_cubin.cmake") # path
 set(build_cubin OFF) # bool
@@ -68,8 +68,8 @@ set(CUDA_HOST_COMPILER "/usr/bin/cc") # path
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
 set(generated_file_path "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/.") # path
-set(generated_file_internal "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_pcl_filters.cu.o") # path
-set(generated_cubin_file_internal "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_pcl_filters.cu.o.cubin.txt") # path
+set(generated_file_internal "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_filters.cu.o") # path
+set(generated_cubin_file_internal "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_filters.cu.o.cubin.txt") # path
 
 set(CUDA_NVCC_EXECUTABLE "/usr/local/cuda-10.0/bin/nvcc") # path
 set(CUDA_NVCC_FLAGS  ;; ) # list
@@ -79,8 +79,8 @@ set(CUDA_NVCC_FLAGS_MINSIZEREL  ; )
 set(CUDA_NVCC_FLAGS_RELEASE  ; )
 set(CUDA_NVCC_FLAGS_RELWITHDEBINFO  ; )
 set(nvcc_flags -m64;-Dpcl_cuda_tools_EXPORTS) # list
-set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda-10.0/include;/usr/include;/usr/include;/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/include;/usr/local/cuda-10.0/include;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include;/usr/include/opencv;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/include/ni;/usr/include/openni2;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv") # list (needs to be in quotes to handle spaces properly).
-set(CUDA_NVCC_COMPILE_DEFINITIONS [==[DISABLE_PCAP;DISABLE_PNG;DISABLE_LIBUSB_1_0]==]) # list (needs to be in lua quotes see #16510 ).
+set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda-10.0/include;$<TARGET_PROPERTY:pcl_cuda_tools,INCLUDE_DIRECTORIES>") # list (needs to be in quotes to handle spaces properly).
+set(CUDA_NVCC_COMPILE_DEFINITIONS [==[$<TARGET_PROPERTY:pcl_cuda_tools,COMPILE_DEFINITIONS>]==]) # list (needs to be in lua quotes see #16510 ).
 set(format_flag "-c") # string
 set(cuda_language_flag ) # list
 

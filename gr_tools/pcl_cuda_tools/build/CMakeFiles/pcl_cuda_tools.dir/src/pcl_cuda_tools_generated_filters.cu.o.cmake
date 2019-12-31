@@ -50,36 +50,53 @@
 # generated_cubin_file:STRING=<> File to generate.  This argument must be passed
 #                                                   in if build_cubin is true.
 
+cmake_policy(PUSH)
+cmake_policy(SET CMP0007 NEW)
 if(NOT generated_file)
   message(FATAL_ERROR "You must specify generated_file on the command line")
 endif()
 
 # Set these up as variables to make reading the generated file easier
 set(CMAKE_COMMAND "/usr/bin/cmake") # path
-set(source_file "/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/src/filters.cu") # path
-set(NVCC_generated_dependency_file "/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_filters.cu.o.NVCC-depend") # path
-set(cmake_dependency_file "/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_filters.cu.o.depend") # path
-set(CUDA_make2cmake "/usr/share/cmake-3.5/Modules/FindCUDA/make2cmake.cmake") # path
-set(CUDA_parse_cubin "/usr/share/cmake-3.5/Modules/FindCUDA/parse_cubin.cmake") # path
+set(source_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/src/filters.cu") # path
+set(NVCC_generated_dependency_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_filters.cu.o.NVCC-depend") # path
+set(cmake_dependency_file "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/pcl_cuda_tools_generated_filters.cu.o.depend") # path
+set(CUDA_make2cmake "/usr/share/cmake-3.10/Modules/FindCUDA/make2cmake.cmake") # path
+set(CUDA_parse_cubin "/usr/share/cmake-3.10/Modules/FindCUDA/parse_cubin.cmake") # path
 set(build_cubin OFF) # bool
 set(CUDA_HOST_COMPILER "/usr/bin/cc") # path
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
-set(generated_file_path "/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/.") # path
-set(generated_file_internal "/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_filters.cu.o") # path
-set(generated_cubin_file_internal "/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_filters.cu.o.cubin.txt") # path
+set(generated_file_path "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/.") # path
+set(generated_file_internal "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_filters.cu.o") # path
+set(generated_cubin_file_internal "/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/build/CMakeFiles/pcl_cuda_tools.dir/src/./pcl_cuda_tools_generated_filters.cu.o.cubin.txt") # path
 
-set(CUDA_NVCC_EXECUTABLE "/usr/local/cuda-8.0/bin/nvcc") # path
-set(CUDA_NVCC_FLAGS  -std=c++11 ;; ) # list
+set(CUDA_NVCC_EXECUTABLE "/usr/local/cuda-10.0/bin/nvcc") # path
+set(CUDA_NVCC_FLAGS  ;; ) # list
 # Build specific configuration flags
 set(CUDA_NVCC_FLAGS_DEBUG  ; )
 set(CUDA_NVCC_FLAGS_MINSIZEREL  ; )
 set(CUDA_NVCC_FLAGS_RELEASE  ; )
 set(CUDA_NVCC_FLAGS_RELWITHDEBINFO  ; )
 set(nvcc_flags -m64;-Dpcl_cuda_tools_EXPORTS) # list
-set(CUDA_NVCC_INCLUDE_ARGS "-I/usr/local/cuda-8.0/include;-I/usr/include/vtk-6.2;-I/usr/include/freetype2;-I/usr/include/x86_64-linux-gnu/freetype2;-I/usr/include;-I/usr/include/x86_64-linux-gnu;-I/usr/include/hdf5/openmpi;-I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent;-I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent/include;-I/usr/lib/openmpi/include;-I/usr/lib/openmpi/include/openmpi;-I/usr/include/jsoncpp;-I/usr/include/python2.7;-I/usr/include/libxml2;-I/usr/include/tcl;-I/home/jose/ros_ws/src/gr_navigation/gr_tools/pcl_cuda_tools/include;-I/usr/local/cuda-8.0/include;-I/usr/include/pcl-1.7;-I/usr/local/include/eigen3;-I/usr/include/ni;-I/usr/include/openni2;-I/opt/ros/kinetic/include/opencv-3.3.1-dev;-I/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv") # list (needs to be in quotes to handle spaces properly).
+set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda-10.0/include;/usr/include;/usr/include;/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/include;/usr/local/cuda-10.0/include;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include;/usr/include/opencv;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/include/ni;/usr/include/openni2;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv") # list (needs to be in quotes to handle spaces properly).
+set(CUDA_NVCC_COMPILE_DEFINITIONS [==[DISABLE_PCAP;DISABLE_PNG;DISABLE_LIBUSB_1_0]==]) # list (needs to be in lua quotes see #16510 ).
 set(format_flag "-c") # string
 set(cuda_language_flag ) # list
+
+# Clean up list of include directories and add -I flags
+list(REMOVE_DUPLICATES CUDA_NVCC_INCLUDE_DIRS)
+set(CUDA_NVCC_INCLUDE_ARGS)
+foreach(dir ${CUDA_NVCC_INCLUDE_DIRS})
+  # Extra quotes are added around each flag to help nvcc parse out flags with spaces.
+  list(APPEND CUDA_NVCC_INCLUDE_ARGS "-I${dir}")
+endforeach()
+
+# Clean up list of compile definitions, add -D flags, and append to nvcc_flags
+list(REMOVE_DUPLICATES CUDA_NVCC_COMPILE_DEFINITIONS)
+foreach(def ${CUDA_NVCC_COMPILE_DEFINITIONS})
+  list(APPEND nvcc_flags "-D${def}")
+endforeach()
 
 if(build_cubin AND NOT generated_cubin_file)
   message(FATAL_ERROR "You must specify generated_cubin_file on the command line")
@@ -87,7 +104,7 @@ endif()
 
 # This is the list of host compilation flags.  It C or CXX should already have
 # been chosen by FindCUDA.cmake.
-set(CMAKE_HOST_FLAGS   -fPIC)
+set(CMAKE_HOST_FLAGS  -fPIC)
 set(CMAKE_HOST_FLAGS_DEBUG -g)
 set(CMAKE_HOST_FLAGS_MINSIZEREL -Os -DNDEBUG)
 set(CMAKE_HOST_FLAGS_RELEASE -O3 -DNDEBUG)
@@ -103,7 +120,7 @@ string(TOUPPER "${build_configuration}" build_configuration)
 #message("CUDA_NVCC_HOST_COMPILER_FLAGS = ${CUDA_NVCC_HOST_COMPILER_FLAGS}")
 foreach(flag ${CMAKE_HOST_FLAGS} ${CMAKE_HOST_FLAGS_${build_configuration}})
   # Extra quotes are added around each flag to help nvcc parse out flags with spaces.
-  set(nvcc_host_compiler_flags "${nvcc_host_compiler_flags},\"${flag}\"")
+  string(APPEND nvcc_host_compiler_flags ",\"${flag}\"")
 endforeach()
 if (nvcc_host_compiler_flags)
   set(nvcc_host_compiler_flags "-Xcompiler" ${nvcc_host_compiler_flags})
@@ -170,15 +187,10 @@ cuda_execute_process(
 # For CUDA 2.3 and below, -G -M doesn't work, so remove the -G flag
 # for dependency generation and hope for the best.
 set(depends_CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS}")
-set(CUDA_VERSION 8.0)
+set(CUDA_VERSION 10.0)
 if(CUDA_VERSION VERSION_LESS "3.0")
-  cmake_policy(PUSH)
-  # CMake policy 0007 NEW states that empty list elements are not
-  # ignored.  I'm just setting it to avoid the warning that's printed.
-  cmake_policy(SET CMP0007 NEW)
   # Note that this will remove all occurances of -G.
   list(REMOVE_ITEM depends_CUDA_NVCC_FLAGS "-G")
-  cmake_policy(POP)
 endif()
 
 # nvcc doesn't define __CUDACC__ for some reason when generating dependency files.  This
@@ -215,6 +227,7 @@ cuda_execute_process(
   COMMAND "${CMAKE_COMMAND}"
   -D "input_file:FILEPATH=${NVCC_generated_dependency_file}"
   -D "output_file:FILEPATH=${cmake_dependency_file}.tmp"
+  -D "verbose=${verbose}"
   -P "${CUDA_make2cmake}"
   )
 
@@ -296,3 +309,5 @@ if( build_cubin )
     )
 
 endif()
+
+cmake_policy(POP)

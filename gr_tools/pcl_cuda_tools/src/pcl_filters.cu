@@ -1,5 +1,5 @@
 #include <cuda_runtime.h>
-#include <stdio.h>
+//#include <stdio.h>
 //#include <pcl/point_cloud.h>
 #include <pcl_cuda_tools/pcl_cuda_filter_functions.cuh>
 

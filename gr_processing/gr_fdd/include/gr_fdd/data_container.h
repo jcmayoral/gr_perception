@@ -8,6 +8,7 @@
 //#include <boost/thread/mutex.hpp>
 //boost::mutex mtx; 
 #include <ctime>
+#include <numeric>
  
 namespace gr_fdd{
     typedef struct{

@@ -10,21 +10,23 @@ find_package(catkin REQUIRED COMPONENTS
   topic_tools
   geometry_msgs
   sensor_msgs
-  yaml_cpp_0_3
   roslib
   safety_msgs
 )
+
+find_package(YAML-CPP 0.5 REQUIRED)
 
 catkin_python_setup()
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp std_msgs topic_tools sensor_msgs geometry_msgs yaml_cpp_0_3 roslib safety_msgs
+  CATKIN_DEPENDS roscpp std_msgs topic_tools sensor_msgs geometry_msgs roslib safety_msgs
 )
 
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${YAML_CPP_INCLUDE_DIR}
 )
 
 add_library(${PROJECT_NAME}
@@ -44,7 +46,7 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
    ${catkin_LIBRARIES}
  )
 
- target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} yaml-cpp
+ target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} ${YAML_CPP_LIBRARIES}
  )
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>gr_fdd</name>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <description>This fault detection adn diagnosis attempts to track several siganles on a robot that in case of failure, a fault can be isolated</description>
 
   <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>
@@ -13,7 +13,6 @@
   <build_depend>topic_tools</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>sensor_msgs</build_depend>
-  <build_depend>yaml_cpp_0_3</build_depend>
   <build_depend>roslib</build_depend>
   <build_depend>diagnostic_msgs</build_depend>
   <build_depend>safety_msgs</build_depend>
@@ -25,7 +24,6 @@
   <exec_depend>topic_tools</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>yaml_cpp_0_3</exec_depend>
   <exec_depend>roslib</exec_depend>
   <exec_depend>diagnostic_msgs</exec_depend>
   <exec_depend>safety_msgs</exec_depend>

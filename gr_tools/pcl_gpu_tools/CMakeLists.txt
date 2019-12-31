@@ -11,13 +11,12 @@ find_package(catkin REQUIRED
         pcl_conversions
         geometry_msgs
         jsk_recognition_msgs
-        pcl_ros
         tf2
         tf2_ros
         dynamic_reconfigure
 )
 
-find_package(PCL 1.9 REQUIRED)
+find_package(PCL REQUIRED)
 
 
 #SET(CUDA_NVCC_FLAGS "-arch=sm_61" CACHE STRING "nvcc flags" FORCE)
@@ -46,7 +45,10 @@ include_directories(include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
   #${CUDA_INCLUDE_DIRS}
+  /usr/local/include/pcl_cuda_tools/
 )
+
+link_directories(/usr/local/include/pcl_cuda_tools/)
 
 catkin_package(
   INCLUDE_DIRS include/${PROJECT_NAME}
@@ -54,7 +56,6 @@ catkin_package(
   CATKIN_DEPENDS
     roscpp
     pcl_conversions
-    pcl_ros
     geometry_msgs
     jsk_recognition_msgs
     tf2

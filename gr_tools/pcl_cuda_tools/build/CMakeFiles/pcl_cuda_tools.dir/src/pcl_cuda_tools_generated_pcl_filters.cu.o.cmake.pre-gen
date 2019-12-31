@@ -79,8 +79,8 @@ set(CUDA_NVCC_FLAGS_MINSIZEREL  ; )
 set(CUDA_NVCC_FLAGS_RELEASE  ; )
 set(CUDA_NVCC_FLAGS_RELWITHDEBINFO  ; )
 set(nvcc_flags -m64;-Dpcl_cuda_tools_EXPORTS) # list
-set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda-10.0/include;/usr/include;/usr/include;/home/thorvald/grass_ws/src/gr_perception/gr_tools/pcl_cuda_tools/include;/usr/local/cuda-10.0/include;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include;/usr/include/opencv;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/include/ni;/usr/include/openni2;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/local/include/eigen3;/usr/include;/usr/local/include/pcl-1.9;/usr/local/include/pcl-1.9;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv;/usr/include;/usr/include/opencv") # list (needs to be in quotes to handle spaces properly).
-set(CUDA_NVCC_COMPILE_DEFINITIONS [==[DISABLE_PCAP;DISABLE_PNG;DISABLE_LIBUSB_1_0]==]) # list (needs to be in lua quotes see #16510 ).
+set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda-10.0/include;$<TARGET_PROPERTY:pcl_cuda_tools,INCLUDE_DIRECTORIES>") # list (needs to be in quotes to handle spaces properly).
+set(CUDA_NVCC_COMPILE_DEFINITIONS [==[$<TARGET_PROPERTY:pcl_cuda_tools,COMPILE_DEFINITIONS>]==]) # list (needs to be in lua quotes see #16510 ).
 set(format_flag "-c") # string
 set(cuda_language_flag ) # list
 
