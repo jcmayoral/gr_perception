@@ -74,7 +74,7 @@ extern "C"
       int ngrid;      // The launch configurator returned block size
       int nblocks;    // The minimum grid size needed to achieve the maximum occupancy for a full device launch
 
-      ngrid = 1024;
+      ngrid = 256;
       dim3 grid (ngrid);
       nblocks = ceil((size+ngrid -1)/ngrid);
 
