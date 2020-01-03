@@ -14,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   safety_msgs
 )
 
-find_package(YAML-CPP 0.5 REQUIRED)
+find_package(YAML-CPP 0.3.0 REQUIRED)
 
 catkin_python_setup()
 
@@ -44,10 +44,12 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 
  target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
+   ${YAML_CPP_LIBRARIES}
+   yaml-cpp
  )
 
  target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} ${YAML_CPP_LIBRARIES}
- )
+ yaml-cpp  )
 
 
 ## Mark executables and/or libraries for installation
