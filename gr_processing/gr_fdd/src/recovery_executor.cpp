@@ -4,13 +4,11 @@ using namespace gr_fdd;
 
 RecoveryExecutor::RecoveryExecutor(YAML::Node node) {
     std::cout << "RE Constructor" << std::endl;
-    for (YAML::Iterator a= node.begin(); a != node.end(); ++a){
-        std::string name;
-        a->first() >> name;//.as<std::string>();
-        YAML::Node config;
-        a->second() >> config;
-        //strategy_selector_[name] = config["strategy"].as<std::string>();
-        config["strategy"]>> strategy_selector_[name];
+    for (YAML::const_iterator a= node.begin(); a != node.end(); ++a){
+        std::string name = a->first.as<std::string>();
+        YAML::Node config = a->second;
+        strategy_selector_[name] = config["strategy"].as<std::string>();
+        //config["strategy"]>> strategy_selector_[name];
     }
 }
 

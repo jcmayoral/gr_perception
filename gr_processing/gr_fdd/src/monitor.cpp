@@ -119,28 +119,32 @@ MainMonitor::MainMonitor(std::string config_file): cpu_monitor_(), fault_detecte
     //YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_file_).c_str());
     std::ifstream fin((path+"/"+config_file_).c_str());
     YAML::Parser parser(fin);
-    //YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_file_).c_str());
+    YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_file_).c_str());
     
-    //const YAML::Node& signals_ids = config_yaml["signals"];
+    const YAML::Node& signals_ids = config_yaml["signals"];
     int id = 0;
-    YAML::Node doc; 
+    //YAML::Node doc; 
  
     //for (int i=0; i< topic_names.size(); ++i){
-    while (parser.GetNextDocument(doc)){
-    for (YAML::Iterator a= doc.begin(); a != doc.end(); ++a){
+    //while (parser.GetNextDocument(doc)){
+    for (YAML::const_iterator a= signals_ids.begin(); a != signals_ids.end(); ++a){
     //for (YAML::Node::iterator it = topic_names.begin(); it != topic_names.end(); ++it){
         std::string name = a->first.as<std::string>();
         YAML::Node config = a->second;
-        double window_size;
-        config["window_size"] >> window_size;
-        double max_delay;
-        config["max_delay"] >> max_delay;
-        double max_diff;
-       	config["max_diff"] >> max_diff;
-        double min_diff;
-        config["min_diff"] >> min_diff;
-        int samples;
-        config["samples"] >> samples;
+        double window_size = config["window_size"].as<double>();
+        //config["window_size"] >> window_size;
+        double max_delay = config["max_delay"].as<double>();
+
+        //config["max_delay"] >> max_delay;
+        double max_diff = config["max_diff"].as<double>();
+
+       	//config["max_diff"] >> max_diff;
+        double min_diff = config["min_diff"].as<double>();
+
+        //config["min_diff"] >> min_diff;
+        int samples = config["samples"].as<int>();
+
+        //config["samples"] >> samples;
         ROS_INFO_STREAM("Signal to monitor "<< name);
         boost::function<void(const topic_tools::ShapeShifter::ConstPtr&) > callback;
         callback = boost::bind( &MainMonitor::in_cb, this, _1, id, name) ;
@@ -148,7 +152,7 @@ MainMonitor::MainMonitor(std::string config_file): cpu_monitor_(), fault_detecte
         main_subscriber_.push_back( ros::Subscriber(node.subscribe(name, 10, callback)));
         ++id;
         //statistics_flags = !statistics_flags;
-    }
+    //}
     }
     recovery_executor_ = new gr_fdd::RecoveryExecutor(config_yaml["recovery"]);
     ros::NodeHandle nh;
@@ -166,26 +170,19 @@ std::string MainMonitor::isolate_components(std::list<std::string> error_topics)
     std::string path = ros::package::getPath("gr_fdd");
     std::ifstream fin((path+"/"+config_file_).c_str());
     YAML::Parser parser(fin);
-    //const YAML::Node& faults = config_yaml["faults"];
+    YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_file_).c_str());
+    const YAML::Node& faults = config_yaml["faults"];
     int counter = 0;
-    YAML::Node doc; 
+    //YAML::Node doc; 
     std::string error_description = "";
     ROS_INFO_STREAM(error_topics.size() << " Errors reported");
  
-    while (parser.GetNextDocument(doc)){
-    for (YAML::Iterator fault= doc.begin(); fault != doc.end(); ++fault){
-        std::string fault_id;
-	fault->first() >> fault_id;
-        //std::string v = a->second.as<std::string>();
-        std::list<std::string> signals;
-       	fault->second() >> signals;
-        //std::cout << n << v <<std::endl;
-        /*
-        for (auto i = v.begin(); i!= v.end(); ++i){
-           std::cout << *i << std::endl;
-        }
-        */
-        
+    //while (parser.GetNextDocument(doc)){
+    for (YAML::const_iterator fault= faults.begin(); fault != faults.end(); ++fault){
+        std::string fault_id  = fault->first.as<std::string>();
+	//fault->first() >> fault_id;
+	//
+	std::list<std::string> signals = fault->second.as<std::list<std::string> >();
         signals.sort();
         counter = 0;
         for (auto i1 = signals.begin(); i1!= signals.end(); ++i1){
@@ -206,7 +203,7 @@ std::string MainMonitor::isolate_components(std::list<std::string> error_topics)
 
         }
    }
-   }
+   //}
     
     return error_description.empty() ? "Unknown error" : error_description;
 }
