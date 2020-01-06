@@ -15,7 +15,7 @@ find_package(catkin REQUIRED
     dynamic_reconfigure
 )
 
-find_package(cmake_modules REQUIRED)
+#find_package(cmake_modules REQUIRED)
 find_package(PCL REQUIRED)
 
 generate_dynamic_reconfigure_options(
