@@ -140,6 +140,8 @@ void GPUExample::pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg){
     //run_filter(*msg);
     //ROS_ERROR("pointcloud cb");
     sensor_frame_ = msg->header.frame_id;
+    time_of_arrival_ = msg->header.stamp;
+
     pcl::PointCloud<pcl::PointXYZI>::Ptr output (new pcl::PointCloud<pcl::PointXYZI>);
     pcl::fromROSMsg(*msg, *output);
     //ROS_INFO("PointCloud conversion succeded");
@@ -325,7 +327,7 @@ void GPUExample::cluster(){
     }
 
     clusters_msg.header.frame_id = "velodyne";
-    clusters_msg.header.stamp = ros::Time::now();
+    clusters_msg.header.stamp = time_of_arrival_;//ros::Time::now();
     cluster_pub_.publish(clusters_msg);
     publishBoundingBoxes(clusters_msg);
 

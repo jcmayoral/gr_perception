@@ -75,6 +75,7 @@ private:
   pcl::PointCloud<pcl::PointXYZI> main_cloud_;
   ros::Timer timer_;
   geometry_msgs::TransformStamped to_odom_transform;
+  ros::Time time_of_arrival_;
 
   //Testing
   //pcl_gpu::FilterPassThrough cuda_pass_;
@@ -100,6 +101,7 @@ private:
   tf2_ros::TransformListener tf2_listener_;
   std::string sensor_frame_;
   std::string global_frame_;
+  ros::Time last_processing_time_;
 
 public:
     GPUExample ();
