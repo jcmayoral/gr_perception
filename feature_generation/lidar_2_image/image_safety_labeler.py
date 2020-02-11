@@ -18,12 +18,19 @@ import numpy as np
 
 help_text="This script stores detection results"
 
-def create_folder(class_name,dataset="new"):
+def create_folder(class_name,dataset="new_dataset"):
     try:
-        os.makedir(os.path.join(dataset,class_name))
+        os.makedirs(os.path.join(dataset,class_name))
     except:
+        print ("error creating folder")
         pass
 
+def save_image(class_name, file_name, image, dataset="new_dataset"):
+    path = os.path.join(os.getcwd(),dataset,class_name, file_name+'.png')
+    try:
+        cv2.imwrite(path, image)
+    except:
+        print("error saving image %s"%path)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = help_text)
@@ -31,6 +38,14 @@ if __name__ == '__main__':
     parser.add_argument("--group", "-g", default="safety_labelsnibio_2019")
     parser.add_argument("--topic", "-t", default="/camera/color/image_raw")
     parser.add_argument("--debug", "-d", default=1)
+    parser.add_argument("--dataset", "-ds", default="new_dataset")
+
+
+    try:
+        os.makedirs("new_dataset")
+    except:
+        print('check if folder exists')
+
 
     args = parser.parse_args()
     debug_mode = bool(int(args.debug))
@@ -50,35 +65,34 @@ if __name__ == '__main__':
         image_stamp = msg.header.stamp
         #print(stamp)
         #print(image_stamp.to_sec(), stamp)
-        cv_image = bridge.imgmsg_to_cv2(msg)
-        cv2.imshow(str_state, cv_image)
-        cv2.waitKey(25)
-
+        cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+        #cv2.imshow(str_state, cv_image)
+        #cv2.waitKey(25)
+        print(stamp)
         if image_stamp.to_sec() > stamp:
-            print(stamp, image_stamp.to_sec())
+            #print(stamp, image_stamp.to_sec())
             r = open(os.path.join(args.group,str(stamp)),"r")
-            print(r)
-            if len(nstr) != 0:
-                r2 = r.readline()
+            r2 = r.readline()
+            if len(r2) != 0:
                 r2 = r2.split(',')
-                print(r2[1])
                 current_state = int(r2[1])
-                print("current state ", current_state)
-                if current_state > 2:
-                    current_state = -1
+                #TODO findout which is the limit of our data
+                #print("current state ", current_state)
+                #if current_state > 5:
+                #    current_state = -1
 
                 #print(msg.header.seq)
                 #TODO READ FILE
                 #TODO visualize
-                stamp = float(f.readline().rstrip('\n'))
-                str_state = classes_dict[current_state]
+                print(r2[0], r2[1])
+                new_stamp = f.readline().rstrip('\n')
+                if len(new_stamp)!=0:
+                    stamp = float(new_stamp)
+                print(stamp)
+                #str_state = classes_dict[current_state]
+                create_folder(str(current_state))
             r.close()
-
-
-
-
-
-
+            save_image(str(current_state), str(image_stamp)+ str(msg.header.seq), cv_image)
         #while not recoder.message_processed:
             #rospy.sleep(0.2)
         #    pass

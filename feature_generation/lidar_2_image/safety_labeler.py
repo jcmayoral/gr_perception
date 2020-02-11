@@ -23,8 +23,9 @@ class DetectionRecorder:
         self.publisher = rospy.Publisher("/velodyne_points", PointCloud2)
         self.message_processed = True
         self.current_zone = 0
+        self.y_distance = 1.0
         self.index = 1
-        self.distance = 1.0
+        self.distance = 0.7
         self.create_folder()
         time.sleep(2)
 
@@ -54,6 +55,7 @@ class DetectionRecorder:
 
         min_distance = 1000000000000000000
         safety_zone = -1
+        flag = False
 
         for p in msg.poses:
             transform = self.tf_buffer.lookup_transform(target_frame,
@@ -69,12 +71,14 @@ class DetectionRecorder:
                               np.power(pose_transformed.pose.position.y,2))
             #",".join([str(pose_transformed.pose.position.x), str(pose_transformed.pose.position.y)])
             #HACK
-            if -2 < pose_transformed.pose.position.x < 0.7 and pose_transformed.pose.position.y < 0:
+            if -self.y_distance < pose_transformed.pose.position.x < self.y_distance and pose_transformed.pose.position.y < 0:
                 if p_dists <= min_distance:
-
                     min_distance = p_dists
                     safety_zone = int(min_distance/self.distance)
 
+
+        if 1000.0>min_distance > 10:
+            safety_zone = 0
 
         if  safety_zone != self.current_zone:
             print (safety_zone)
