@@ -313,10 +313,10 @@ void GPUExample::cluster(){
         double var_z = calculateVariance<double>(z_vector);
         double var_i = calculateVariance<double>(z_vector);
 
-        cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
-
-        if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
+        cluster_std = var_x * var_y *var_z;// * calculateStd<double>(z_vector);
+        if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z - 0.20) < distance_to_floor_){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
+          std::cout << "STD " << cluster_std << std::endl;
           clusters_msg.poses.push_back(cluster_center);
           auto range_x = getAbsoluteRange<double>(x_vector);
           auto range_y = getAbsoluteRange<double>(y_vector);
