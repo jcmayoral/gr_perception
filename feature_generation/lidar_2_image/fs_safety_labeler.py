@@ -23,13 +23,13 @@ class DetectionRecorder:
         self.publisher = rospy.Publisher("/velodyne_points", PointCloud2)
         self.message_processed = True
         self.current_zone = -1
-        self.y_distance = 1.2
+        self.y_distance = 2.2
         self.index = 1
-        self.distance = 3.0
+        self.distance = 6.0
         #TODO
         self.n_classes = 4
         self.create_folder()
-        time.sleep(2)
+        rospy.spin()
 
     def create_folder(self):
         #path = os.getcwd()
@@ -42,7 +42,7 @@ class DetectionRecorder:
 
 
     def publish_gt(self, msg):
-        self.publisher.publish(msg)
+        #self.publisher.publish(msg)
         self.message_processed = False
 
     def pose_cb(self,msg):
@@ -74,9 +74,9 @@ class DetectionRecorder:
             #",".join([str(pose_transformed.pose.position.x), str(pose_transformed.pose.position.y)])
             #HACK
             #openfield
-            if -self.y_distance < pose_transformed.pose.position.x < self.y_distance and pose_transformed.pose.position.y < 0:
+            #if -self.y_distance < pose_transformed.pose.position.x < self.y_distance and pose_transformed.pose.position.y < 0:
             #fieldsafe
-            #if -self.y_distance < pose_transformed.pose.position.y < self.y_distance and pose_transformed.pose.position.x > 0:
+            if -2*self.y_distance < pose_transformed.pose.position.y < self.y_distance and pose_transformed.pose.position.x > 0:
 
                 if p_dists <= min_distance:
                     min_distance = p_dists
@@ -104,20 +104,10 @@ class DetectionRecorder:
 if __name__ == '__main__':
     if __name__ == '__main__':
         parser = argparse.ArgumentParser(description = help_text)
-        parser.add_argument("--bag", "-b", help="set input bagname")
         parser.add_argument("--group", "-g", default="nibio_2019")
         parser.add_argument("--topic", "-t", default="/velodyne_points")
         parser.add_argument("--debug", "-d", default=1)
 
         args = parser.parse_args()
         debug_mode = bool(int(args.debug))
-        bag = rosbag.Bag(args.bag, mode="r")
         recoder = DetectionRecorder(folder=args.group)
-
-        for topic, msg, t in bag.read_messages(topics=args.topic):
-            recoder.publish_gt(msg)
-            while not recoder.message_processed:
-                #rospy.sleep(0.2)
-                pass
-            rospy.sleep(0.3)
-        bag.close()

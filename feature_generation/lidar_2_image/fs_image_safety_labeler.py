@@ -29,8 +29,7 @@ def save_image(class_name, file_name, image, dataset="new_dataset"):
     path = os.path.join(os.getcwd(),dataset,class_name, file_name+'.png')
     print(path)
     try:
-        #do not flip if fieldsafe
-	#image = cv2.flip(image, 0)
+        image = cv2.flip(image, 0)
         cv2.imwrite(path, image)
     except:
         print("error saving image %s"%path)
