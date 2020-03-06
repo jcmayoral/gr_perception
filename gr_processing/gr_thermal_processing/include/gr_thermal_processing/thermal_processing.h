@@ -22,6 +22,7 @@
 
 #include <safety_msgs/FoundObjectsArray.h>
 
+
 namespace gr_thermal_processing
 {
   class ThermalProcessing
@@ -29,14 +30,15 @@ namespace gr_thermal_processing
     public:
       ThermalProcessing();
       void images_CB(const sensor_msgs::ImageConstPtr color_image);
-      boost::function<void(cv::Mat&)> filterImage;
+      boost::function<void(cv_bridge::CvImagePtr&)> filterImage;
 
     protected:
-      bool convertROSImage2Mat(cv::Mat& frame,  const sensor_msgs::ImageConstPtr& ros_image);
+      bool convertROSImage2Mat(cv_bridge::CvImagePtr& frame,  const sensor_msgs::ImageConstPtr& ros_image);
 
     private:
       boost::recursive_mutex mutex;
       ros::Subscriber image_sub_;
+      ros::Publisher image_pub_;
   };
 
 };

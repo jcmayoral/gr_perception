@@ -2,26 +2,32 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/video/background_segm.hpp>
+#include <cv_bridge/cv_bridge.h>
 
 #include <math.h>
 #include <random>
 
-void cv_filter(cv::Mat& frame){
+void cv_filter(cv_bridge::CvImagePtr& frame){
     try{
-        cv::GaussianBlur(frame, frame, cv::Size(5,5), 1, 0, cv::BORDER_DEFAULT);
+        //cv::GaussianBlur(frame->image, frame->image, cv::Size(3,3), 1, 0, cv::BORDER_CONSTANT);
         //im.at<uint16_t>(cell_x+cell_y*im.rows);
-        //cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY );
-        int erosion_size = 2.0;
-        cv::Mat element = cv::getStructuringElement( cv::MORPH_ELLIPSE,
-                                        cv::Size( 3*erosion_size + 1, 3*erosion_size+1 ),
-                                        cv::Point( erosion_size, erosion_size ) );
-        cv::erode(frame, frame, element);
-        cv::dilate(frame, frame, element);
-        //output_frame = detectPeople(input_frame);
-        cv::Laplacian(frame, frame, CV_16U);
-        //cv::Canny(frame, frame,120, 200 );
+        //cv::cvtColor(frame->image, frame->image, cv::COLOR_BGR2GRAY );
+        //int erosion_size = 2.0;
+        //cv::Mat element = cv::getStructuringElement( cv::MORPH_ELLIPSE,
+          //                              cv::Size( 3*erosion_size + 1, 3*erosion_size+1 ),
+            //                            cv::Point( erosion_size, erosion_size ) );
+        //cv::erode(frame->image, frame->image, element);
+        //cv::dilate(frame->image, frame->image, element);
+
+        //Original image comin on RGB no idea why
+       //   Laplacian( src_gray, dst, ddepth, kernel_size, scale, delta, BORDER_DEFAULT );
+       cv::Laplacian(frame->image, frame->image, CV_8UC1, 3, 1,0, cv::BORDER_CONSTANT);
+       //cv::cvtColor(frame->image, frame->image, cv::COLOR_BGR2GRAY );
+       cv::convertScaleAbs(frame->image, frame->image);
+
       }
       catch( cv::Exception& e ){
+        std::cout << "GOING WRONG" << std::endl;
         return;
       }
 }
