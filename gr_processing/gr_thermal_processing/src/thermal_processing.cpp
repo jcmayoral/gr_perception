@@ -6,7 +6,9 @@ namespace gr_thermal_processing
     //Local NodeHandle
     ros::NodeHandle local_nh("~");
     filterImage = &cv_filter;
+    image_sub_ = local_nh.subscribe("/rtsp_camera_relay/image", 1, &ThermalProcessing::images_CB, this);
     ROS_INFO("Thermal Processing initialized");
+    ros::spin();
   }
 
   bool ThermalProcessing::convertROSImage2Mat(cv::Mat& frame, const sensor_msgs::ImageConstPtr& ros_image){

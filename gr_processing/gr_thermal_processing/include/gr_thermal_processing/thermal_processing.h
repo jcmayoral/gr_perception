@@ -8,6 +8,7 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <sensor_msgs/Image.h>
 
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/function.hpp>
@@ -35,6 +36,7 @@ namespace gr_thermal_processing
 
     private:
       boost::recursive_mutex mutex;
+      ros::Subscriber image_sub_;
   };
 
 };
