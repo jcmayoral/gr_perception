@@ -84,7 +84,7 @@ add_executable(${PROJECT_NAME}_node src/gpu_example_node.cpp)
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
    ${PCL_LIBRARIES}
-   ${PROJECT_NAME}
+   #${PROJECT_NAME}
    pcl_cuda_tools
  )
 
