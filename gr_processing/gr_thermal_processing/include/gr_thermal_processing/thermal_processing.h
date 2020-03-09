@@ -9,6 +9,7 @@
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <sensor_msgs/Image.h>
+#include <geometry_msgs/Accel.h>
 
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/function.hpp>
@@ -30,7 +31,7 @@ namespace gr_thermal_processing
     public:
       ThermalProcessing();
       void images_CB(const sensor_msgs::ImageConstPtr color_image);
-      boost::function<void(cv_bridge::CvImagePtr&)> filterImage;
+      boost::function<void(cv_bridge::CvImagePtr&, geometry_msgs::Accel&)> filterImage;
 
     protected:
       bool convertROSImage2Mat(cv_bridge::CvImagePtr& frame,  const sensor_msgs::ImageConstPtr& ros_image);
@@ -39,6 +40,7 @@ namespace gr_thermal_processing
       boost::recursive_mutex mutex;
       ros::Subscriber image_sub_;
       ros::Publisher image_pub_;
+      ros::Publisher output_pub_;
   };
 
 };
