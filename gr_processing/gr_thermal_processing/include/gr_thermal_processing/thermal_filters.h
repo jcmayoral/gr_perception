@@ -10,7 +10,7 @@
 
 void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
     try{
-        //cv::GaussianBlur(frame->image, frame->image, cv::Size(3,3), 1, 0, cv::BORDER_DEFAULT);
+        cv::GaussianBlur(frame->image, frame->image, cv::Size(3,3), 1, 0, cv::BORDER_DEFAULT);
         //im.at<uint16_t>(cell_x+cell_y*im.rows);
         //cv::cvtColor(frame->image, frame->image, cv::COLOR_BGR2GRAY );
         int erosion_size = 1.0;
@@ -25,7 +25,7 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        cv::Mat kernel;
        cv::Point anchor( -1, -1 );
        double delta;
-       int ddepth;
+       int ddepth = CV_16U;
        int kernel_size;
        delta = 0;
        ddepth = 0;
@@ -41,17 +41,23 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        //cv::cvtColor(frame->image, frame->image, cv::COLOR_BGR2GRAY );
        //cv::convertScaleAbs(frame->image, frame->image);
 
-       
-       for (int i =0; i<6; i++){
-           erosion_size = i + 1;
-           element = cv::getStructuringElement( cv::MORPH_ELLIPSE,
-                                        cv::Size( erosion_size + 2, erosion_size+2 ),
-                                        cv::Point( erosion_size, erosion_size ) );
-           cv::erode(frame->image, frame->image, element);
-           kernel_size = 3+i;
-           kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )/ (float)(kernel_size*kernel_size);
+       cv::Mat myKernel((cv::Mat_< uchar >(5, 5) <<
+                                 .1, 0,  .2,  0, .1,
+                                  0, .2,  -.2,  .2, 0,
+                                 .2, -.2, 1.0, -.2, .2,
+                                  0, .2,  -.2,  .2, 0,
+                                 .1, 0,  .2,  0, .1));
+       for (int i =0; i<3; i++){
+           //erosion_size = 1.0;
+           //element = cv::getStructuringElement( cv::MORPH_ELLIPSE,
+                //                        cv::Size( erosion_size + 2, erosion_size+2 ),
+                  //                      cv::Point( erosion_size, erosion_size ) );
+           //cv::erode(frame->image, frame->image, element);
+           cv::GaussianBlur(frame->image, frame->image, cv::Size(7,7), 1, 0, cv::BORDER_DEFAULT);
+           kernel_size = 5 ;
+            kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )/ (float)(kernel_size*kernel_size);
            cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
-           cv::dilate(frame->image, frame->image, element);
+           //cv::dilate(frame->image, frame->image, element);
        }
        //cv::dilate(frame->image, frame->image, element);
        //cv::GaussianBlur(frame->image, frame->image, cv::Size(3,3), 1, 0, cv::BORDER_DEFAULT);
@@ -70,17 +76,20 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        //cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
        //cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
        //cv::Laplacian(frame->image, frame->image, CV_8UC1, 3, 3,0);
+      cv::convertScaleAbs(frame->image, frame->image);
+
       
-      
-       cv::Canny(frame->image, l1, 3000,10000, 7);
-       cv::Mat dst;
-       dst = cv::Scalar::all(0);
-       frame->image.copyTo(dst, l1);
-       frame->image = dst;
+       
        
        cv::Scalar mu, sigma;
        cv::meanStdDev(frame->image, mu, sigma);
-       std::cout << mu << " , " << sigma << std::endl;
+       //std::cout << mu << " , " << sigma << std::endl;
+
+      // cv::Canny(frame->image, l1, 0,10, 7);
+       //cv::Mat dst;
+       //dst = cv::Scalar::all(0);
+       //frame->image.copyTo(dst, l1);
+       //frame->image = dst;
 
        output.linear.x = mu[0];
        output.linear.y = mu[1];
