@@ -16,7 +16,7 @@ namespace gr_thermal_processing
 
   bool ThermalProcessing::convertROSImage2Mat(cv_bridge::CvImagePtr& frame, const sensor_msgs::ImageConstPtr& ros_image){
     try{
-      frame = cv_bridge::toCvCopy(ros_image, sensor_msgs::image_encodings::BGR8);
+      frame = cv_bridge::toCvCopy(ros_image, sensor_msgs::image_encodings::MONO16);
       return true;
     }
     catch (cv_bridge::Exception& e){
