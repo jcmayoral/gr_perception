@@ -98,11 +98,11 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        output.linear.y = exp(output.linear.x);
        output.angular.y = exp(output.angular.x);
 
-       output.angular.z = output.angular.y * output.linear.y;//output.angular.z/log(sigma[2]) + 0.1;
+       output.angular.z = exp(0.1/ output.angular.x);//output.angular.z/log(sigma[2]) + 0.1;
        //std::cout << output.linear.x * output.linear.y * output.linear.z * output.angular.x * output.angular.y * output.angular.z << std::endl;
        //std::cout << output.linear.x * output.linear.y * output.angular.x * output.angular.y * output.angular.z << std::endl;
        //output.linear.z =  log(output.angular.y * output.linear.y);///log(mu[2]) + 0.1;
-       output.linear.z = exp(output.linear.x / output.angular.x) ;
+       output.linear.z = exp(0.4 / output.linear.x) ;
       }
       catch( cv::Exception& e ){
         std::cout << "GOING WRONG" << std::endl;

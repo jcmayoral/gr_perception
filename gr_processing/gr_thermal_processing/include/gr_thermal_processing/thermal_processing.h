@@ -38,7 +38,7 @@ namespace gr_thermal_processing
 
     private:
       boost::recursive_mutex mutex;
-      ros::Subscriber image_sub_;
+      std::vector<ros::Subscriber> image_subs_;
       ros::Publisher image_pub_;
       ros::Publisher output_pub_;
       geometry_msgs::Accel last_results_;

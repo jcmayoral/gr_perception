@@ -6,7 +6,8 @@ namespace gr_thermal_processing
     //Local NodeHandle
     ros::NodeHandle local_nh("~");
     filterImage = &cv_filter;
-    image_sub_ = local_nh.subscribe("/rtsp_camera_relay/image", 1, &ThermalProcessing::images_CB, this);
+    image_subs_.emplace_back(local_nh.subscribe("/rtsp_camera_relay/image", 1, &ThermalProcessing::images_CB, this));
+    image_subs_.emplace_back(local_nh.subscribe("/FlirA65/image_raw", 1, &ThermalProcessing::images_CB, this));
     image_pub_ = local_nh.advertise<sensor_msgs::Image>("output", 1);
     output_pub_ = local_nh.advertise<geometry_msgs::Accel>("results", 1);
     ROS_INFO("Thermal Processing initialized");
