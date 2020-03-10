@@ -42,22 +42,22 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        //cv::convertScaleAbs(frame->image, frame->image);
 
        cv::Mat myKernel((cv::Mat_< uchar >(5, 5) <<
-                                 .1, 0,  .2,  0, .1,
-                                  0, .2,  -.2,  .2, 0,
-                                 .2, -.2, 1.0, -.2, .2,
-                                  0, .2,  -.2,  .2, 0,
-                                 .1, 0,  .2,  0, .1));
-       for (int i =0; i<3; i++){
-           //erosion_size = 1.0;
-           //element = cv::getStructuringElement( cv::MORPH_ELLIPSE,
-                //                        cv::Size( erosion_size + 2, erosion_size+2 ),
-                  //                      cv::Point( erosion_size, erosion_size ) );
-           //cv::erode(frame->image, frame->image, element);
-           cv::GaussianBlur(frame->image, frame->image, cv::Size(7,7), 1, 0, cv::BORDER_DEFAULT);
-           kernel_size = 5 ;
+                                 .1, 0,  -.1,  0, .1,
+                                  0, .1,  -.2,  .1, 0,
+                                 -.1, -.2, 1.8, -.2, -.1,
+                                  0, .1,  -.2,  .1, 0,
+                                 .1, 0,  -.1,  0, .1));
+       for (int i =0; i<7; i++){
+           erosion_size = 1.0*(i+1);
+           element = cv::getStructuringElement( cv::MORPH_ELLIPSE,
+                                        cv::Size( erosion_size + 3, erosion_size+3 ),
+                                        cv::Point( erosion_size, erosion_size ) );
+           cv::erode(frame->image, frame->image, element);
+           //cv::GaussianBlur(frame->image, frame->image, cv::Size(7,7), 1, 0, cv::BORDER_DEFAULT);
+           kernel_size = 7 - i ;
             kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )/ (float)(kernel_size*kernel_size);
            cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
-           //cv::dilate(frame->image, frame->image, element);
+           cv::dilate(frame->image, frame->image, element);
        }
        //cv::dilate(frame->image, frame->image, element);
        //cv::GaussianBlur(frame->image, frame->image, cv::Size(3,3), 1, 0, cv::BORDER_DEFAULT);
@@ -77,10 +77,6 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        //cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
        //cv::Laplacian(frame->image, frame->image, CV_8UC1, 3, 3,0);
       cv::convertScaleAbs(frame->image, frame->image);
-
-      
-       
-       
        cv::Scalar mu, sigma;
        cv::meanStdDev(frame->image, mu, sigma);
        //std::cout << mu << " , " << sigma << std::endl;
@@ -88,17 +84,25 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
       // cv::Canny(frame->image, l1, 0,10, 7);
        //cv::Mat dst;
        //dst = cv::Scalar::all(0);
-       //frame->image.copyTo(dst, l1);
+       //frame->image.copyTo(dstz, l1);
        //frame->image = dst;
 
+       //three channels mean is practically same somehow
+       //normalizing
+       mu[0] /= 255;
+       sigma[0]/=255;
+
        output.linear.x = mu[0];
-       output.linear.y = mu[1];
-       output.linear.z = mu[2];
-
        output.angular.x = sigma[0];
-       output.angular.y = sigma[1];
-       output.angular.z = sigma[2];
 
+       output.linear.y = exp(output.linear.x);
+       output.angular.y = exp(output.angular.x);
+
+       output.angular.z = output.angular.y * output.linear.y;//output.angular.z/log(sigma[2]) + 0.1;
+       //std::cout << output.linear.x * output.linear.y * output.linear.z * output.angular.x * output.angular.y * output.angular.z << std::endl;
+       //std::cout << output.linear.x * output.linear.y * output.angular.x * output.angular.y * output.angular.z << std::endl;
+       //output.linear.z =  log(output.angular.y * output.linear.y);///log(mu[2]) + 0.1;
+       output.linear.z = exp(output.linear.x / output.angular.x) ;
       }
       catch( cv::Exception& e ){
         std::cout << "GOING WRONG" << std::endl;

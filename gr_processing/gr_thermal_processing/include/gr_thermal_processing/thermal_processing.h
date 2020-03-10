@@ -41,6 +41,7 @@ namespace gr_thermal_processing
       ros::Subscriber image_sub_;
       ros::Publisher image_pub_;
       ros::Publisher output_pub_;
+      geometry_msgs::Accel last_results_;
   };
 
 };

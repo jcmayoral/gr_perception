@@ -2,7 +2,7 @@
 
 namespace gr_thermal_processing
 {
-  ThermalProcessing::ThermalProcessing(){
+  ThermalProcessing::ThermalProcessing(): last_results_(){
     //Local NodeHandle
     ros::NodeHandle local_nh("~");
     filterImage = &cv_filter;
@@ -34,8 +34,19 @@ namespace gr_thermal_processing
       return;
     }
 
-    geometry_msgs::Accel out;
+    //initialize last result
+    geometry_msgs::Accel out(last_results_);
     filterImage(process_frame, out);
+    last_results_.linear.x = out.linear.x;
+    last_results_.linear.y = out.linear.y;
+    //last_results_.linear.y = (out.linear.y > 10000) ? out.linear.y : 1.0;
+    last_results_.linear.z = out.linear.z;
+    //last_results_.linear.z = (out.linear.z < 10000) ? out.linear.z : 0.001;
+    last_results_.angular.x = out.angular.x;
+    last_results_.angular.y = out.angular.y;
+    last_results_.angular.z = out.angular.z;
+    //last_results_.angular.z = (out.angular.z < 10000) ? out.angular.z : 0.001;
+  
     output_pub_.publish(out);
     image_pub_.publish(process_frame->toImageMsg());
   }
