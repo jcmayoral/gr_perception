@@ -52,7 +52,7 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
                                   0, .1, .1,  0, 0,
                                   0, 0,  .1,  0, 0));
        for (int i =0; i<10; i++){
-           erosion_size = (i+1);
+           erosion_size = (i+0.8);
            element = cv::getStructuringElement( cv::MORPH_RECT,
                                           cv::Size(2+erosion_size, 2+erosion_size ),
                                     anchor);
@@ -66,7 +66,7 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
            
        }
 
-         erosion_size = 25;
+         erosion_size = 15;
            element = cv::getStructuringElement( cv::MORPH_RECT,
                                           cv::Size(2+erosion_size, 2+erosion_size ),
                                           anchor);
@@ -92,8 +92,9 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        //cv::cvtColor(frame->image,frame->image,CV_GRAY2RGB);
        
        cv::Mat aux;
-       frame->image.convertTo(aux, CV_8UC1, 1.0/255.0, 0);
-       cv::threshold(aux,aux, 10, 255,3);
+       frame->image.convertTo(aux, CV_8UC1, 1/255.0, 0);
+       cv::threshold(aux,aux, 180, 255,0);
+       //cv::adaptiveThreshold(aux,aux, 255.0,1,1,11,0.9);
        aux.convertTo(frame->image, CV_16UC1, 255.0, 0);
        //cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
        //cv::filter2D(frame->image, frame->image, ddepth , kernel, anchor, delta);//, BORDER_DEFAULT );
@@ -106,8 +107,6 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        cv::Scalar mu, sigma;
        cv::meanStdDev(frame->image, mu, sigma);
 
-      
-
       // cv::Canny(frame->image, l1, 0,10, 7);
        //cv::Mat dst;
        //dst = cv::Scalar::all(0);
@@ -119,20 +118,20 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output){
        //mu[0] /= 255;
        //sigma[0]/=255;
 
-       int norm_factor = 10;
+       float norm_factor = 0.5;
 
        output.linear.x = norm_factor/mu[0];
-       output.angular.x = norm_factor/sigma[0];
+       output.angular.x = norm_factor*sigma[0];
 
-       output.linear.y =norm_factor/exp(output.linear.x);
-       output.angular.y = norm_factor/exp(output.angular.x);
+       output.linear.y = log(mu[0]);
+       output.angular.y = norm_factor / exp(sigma[0]);
 
-       output.angular.z = norm_factor/exp(0.001/output.angular.x);//output.angular.z/log(sigma[2]) + 0.1;
+       output.angular.z = exp(0.001/sigma[0]);//output.angular.z/log(sigma[2]) + 0.1;
        //std::cout << output.linear.x * output.linear.y * output.linear.z * output.angular.x * output.angular.y * output.angular.z << std::endl;
        //std::cout << output.linear.x * output.linear.y * output.angular.x * output.angular.y * output.angular.z << std::endl;
        //output.linear.z =  log(output.angular.y * output.linear.y);///log(mu[2]) + 0.1;
-       output.linear.z = norm_factor/exp(0.1 / output.linear.x) ;
-       //std::cout << mu << sigma << std::endl;
+       output.linear.z = exp(0.1 / mu[0]) ;
+       std::cout << mu << sigma << std::endl;
       }
       catch( cv::Exception& e ){
         std::cout << "GOING WRONG" << std::endl;
