@@ -21,6 +21,9 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output, const
         //cv::GaussianBlur(frame->image, frame->image, cv::Size(3,3), 1, 0, cv::BORDER_DEFAULT);
         //im.at<uint16_t>(cell_x+cell_y*im.rows);
         //cv::cvtColor(frame->image, frame->image, cv::COLOR_BGR2GRAY );
+
+        cv::resize(frame->image, frame->image, cv::Size(), config->rescale_factor, config->rescale_factor);
+
         cv::Mat element; 
         //cv::erode(frame->image, frame->image, element);
         //cv::dilate(frame->image, frame->image, element);
@@ -119,19 +122,15 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output, const
        //mu[0] /= 255;
        //sigma[0]/=255;
 
-       float norm_factor = config->norm_factor;
 
-       output.linear.x = norm_factor/mu[0];
-       output.angular.x = norm_factor*sigma[0];
-
-       output.linear.y = log(mu[0]);
-       output.angular.y = norm_factor / exp(sigma[0]);
-
-       output.angular.z = exp(0.001/sigma[0]);//output.angular.z/log(sigma[2]) + 0.1;
-       //std::cout << output.linear.x * output.linear.y * output.linear.z * output.angular.x * output.angular.y * output.angular.z << std::endl;
+       output.linear.x = sqrt(mu[0]);
+       output.angular.x = sqrt(sigma[0]);
+       output.linear.z = sqrt(sigma[0])/sqrt(mu[0]);
+       output.angular.y = sqrt(pow(log(sigma[0]) + log(mu[0]),3));
+       output.angular.z =  log(mu[0]);//output.angular.z/log(sigma[2]) + 0.1;
+       output.linear.y = output.linear.x +output.linear.z+ output.angular.x + output.angular.y + output.angular.z;
        //std::cout << output.linear.x * output.linear.y * output.angular.x * output.angular.y * output.angular.z << std::endl;
        //output.linear.z =  log(output.angular.y * output.linear.y);///log(mu[2]) + 0.1;
-       output.linear.z = exp(0.1 / mu[0]) ;
       }
       catch( cv::Exception& e ){
         std::cout << "GOING WRONG" << std::endl;

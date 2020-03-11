@@ -13,7 +13,7 @@ namespace gr_thermal_processing{
         int threshold=127;
         int threshold_mode=3;
         bool apply_threshold=true;
-        float norm_factor=0.5;
+        float rescale_factor=0.5;
     };
 }
 

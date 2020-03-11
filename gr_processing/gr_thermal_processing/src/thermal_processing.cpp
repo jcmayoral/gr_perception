@@ -42,8 +42,7 @@ namespace gr_thermal_processing
     config_params_->filter_iterations = config.filter_iterations;
     config_params_->threshold = config.threshold;
     config_params_->apply_threshold = config.apply_threshold;
-    config_params_->norm_factor = config.norm_factor;
-    config_params_->threshold_mode = config.threshold_mode;
+    config_params_->rescale_factor = config.rescale_factor;
   }
 
   void ThermalProcessing::images_CB(const sensor_msgs::ImageConstPtr thermal_image){
@@ -59,16 +58,14 @@ namespace gr_thermal_processing
     //initialize last result
     geometry_msgs::Accel out(last_results_);
     filterImage(process_frame, out, config_params_);
+
     last_results_.linear.x = out.linear.x;
     last_results_.linear.y = out.linear.y;
-    //last_results_.linear.y = (out.linear.y > 10000) ? out.linear.y : 1.0;
     last_results_.linear.z = out.linear.z;
-    //last_results_.linear.z = (out.linear.z < 10000) ? out.linear.z : 0.001;
     last_results_.angular.x = out.angular.x;
     last_results_.angular.y = out.angular.y;
     last_results_.angular.z = out.angular.z;
-    //last_results_.angular.z = (out.angular.z < 10000) ? out.angular.z : 0.001;
-  
+
     output_pub_.publish(out);
     image_pub_.publish(process_frame->toImageMsg());
   }
