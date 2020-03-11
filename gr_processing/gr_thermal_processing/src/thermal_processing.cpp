@@ -4,8 +4,13 @@ namespace gr_thermal_processing
 {
   ThermalProcessing::ThermalProcessing(): last_results_(){
     //Local NodeHandle
+    config_params_ = new ThermalFilterConfig();
     ros::NodeHandle local_nh("~");
     filterImage = &cv_filter;
+
+   	dyn_server_cb_ = boost::bind(&ThermalProcessing::dyn_reconfigureCB, this, _1, _2);
+   	dyn_server_.setCallback(dyn_server_cb_);
+
     image_subs_.emplace_back(local_nh.subscribe("/rtsp_camera_relay/image", 1, &ThermalProcessing::images_CB, this));
     image_subs_.emplace_back(local_nh.subscribe("/FlirA65/image_raw", 1, &ThermalProcessing::images_CB, this));
     image_pub_ = local_nh.advertise<sensor_msgs::Image>("output", 1);
@@ -25,8 +30,23 @@ namespace gr_thermal_processing
     }
   }
 
+  void ThermalProcessing::dyn_reconfigureCB(ThermalConfig &config, uint32_t level){
+    boost::mutex::scoped_lock lock(mtx_);
+    //TODO mayne ThermalConfig can be copied and send it to the function instead
+    config_params_->dilate_factor = config.dilate_factor;
+    config_params_->erosion_factor = config.erosion_factor;
+    config_params_->anchor_point = config.anchor_point;
+    config_params_->ddepth = config.ddepth;
+    config_params_->delta = config.delta;
+    config_params_->kernel_size = config.kernel_size;
+    config_params_->filter_iterations = config.filter_iterations;
+    config_params_->threshold = config.threshold;
+    config_params_->apply_threshold = config.apply_threshold;
+    config_params_->norm_factor = config.norm_factor;
+  }
+
   void ThermalProcessing::images_CB(const sensor_msgs::ImageConstPtr thermal_image){
-    boost::recursive_mutex::scoped_lock scoped_lock(mutex);
+    //boost::mutex::scoped_lock lock(mtx_);
     cv_bridge::CvImagePtr process_frame;
 
     if (!convertROSImage2Mat(process_frame, thermal_image)){//DEPTH
@@ -37,7 +57,7 @@ namespace gr_thermal_processing
 
     //initialize last result
     geometry_msgs::Accel out(last_results_);
-    filterImage(process_frame, out);
+    filterImage(process_frame, out, config_params_);
     last_results_.linear.x = out.linear.x;
     last_results_.linear.y = out.linear.y;
     //last_results_.linear.y = (out.linear.y > 10000) ? out.linear.y : 1.0;

@@ -22,26 +22,37 @@
 #include <opencv2/video/background_segm.hpp>
 
 #include <safety_msgs/FoundObjectsArray.h>
+#include <gr_thermal_processing/thermal_config.hpp>
 
+#include <boost/thread/mutex.hpp>
+
+#include <dynamic_reconfigure/server.h>
+#include <gr_thermal_processing/ThermalConfig.h>
 
 namespace gr_thermal_processing
 {
+
   class ThermalProcessing
   {
     public:
       ThermalProcessing();
       void images_CB(const sensor_msgs::ImageConstPtr color_image);
-      boost::function<void(cv_bridge::CvImagePtr&, geometry_msgs::Accel&)> filterImage;
+      boost::function<void(cv_bridge::CvImagePtr&, geometry_msgs::Accel&, const ThermalFilterConfig*)> filterImage;
+      void dyn_reconfigureCB(ThermalConfig &config, uint32_t level);
 
     protected:
       bool convertROSImage2Mat(cv_bridge::CvImagePtr& frame,  const sensor_msgs::ImageConstPtr& ros_image);
 
     private:
-      boost::recursive_mutex mutex;
+      boost::mutex mtx_;
       std::vector<ros::Subscriber> image_subs_;
       ros::Publisher image_pub_;
       ros::Publisher output_pub_;
       geometry_msgs::Accel last_results_;
+      ThermalFilterConfig* config_params_;
+
+      dynamic_reconfigure::Server<ThermalConfig> dyn_server_;
+      dynamic_reconfigure::Server<ThermalConfig>::CallbackType dyn_server_cb_;
   };
 
 };

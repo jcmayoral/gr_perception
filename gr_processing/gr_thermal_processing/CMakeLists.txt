@@ -13,9 +13,14 @@ find_package(catkin REQUIRED
         geometry_msgs
         std_msgs
         cv_bridge
+        dynamic_reconfigure
 )
 
 find_package(OpenCV 3 REQUIRED)
+
+generate_dynamic_reconfigure_options(
+  cfg/Thermal.cfg
+)
 
 include_directories(
   include
@@ -25,7 +30,6 @@ include_directories(
 
 catkin_package(
     INCLUDE_DIRS include
-    LIBRARIES gr_safety_policies
     CATKIN_DEPENDS
         dynamic_reconfigure
         roscpp
@@ -34,13 +38,15 @@ catkin_package(
         geometry_msgs
         std_msgs
         cv_bridge
+        dynamic_reconfigure
 )
 
 
 file(GLOB SOURCES src/thermal*.cpp)
 add_library(${PROJECT_NAME}  ${SOURCES})
 add_executable(${PROJECT_NAME}_node src/node_thermal.cpp)
-add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME})
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}                  ${PROJECT_NAME}_gencfg
+)
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME})
