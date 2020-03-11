@@ -11,6 +11,7 @@ namespace gr_thermal_processing{
         int kernel_size=3;
         int filter_iterations=10;
         int threshold=127;
+        int threshold_mode=3;
         bool apply_threshold=true;
         float norm_factor=0.5;
     };

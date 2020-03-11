@@ -93,7 +93,7 @@ void cv_filter(cv_bridge::CvImagePtr& frame, geometry_msgs::Accel& output, const
        
        if (config->apply_threshold){
            frame->image.convertTo(aux, CV_8UC1, 1/255.0, 0);
-           cv::threshold(aux,aux, config->threshold, 255,0);
+           cv::threshold(aux,aux, config->threshold, 0.0,config->threshold_mode);
            aux.convertTo(frame->image, CV_16UC1, 255.0, 0);
        }
        //cv::adaptiveThreshold(aux,aux, 255.0,1,1,11,0.9);

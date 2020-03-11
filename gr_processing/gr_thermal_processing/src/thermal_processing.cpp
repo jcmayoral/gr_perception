@@ -43,6 +43,7 @@ namespace gr_thermal_processing
     config_params_->threshold = config.threshold;
     config_params_->apply_threshold = config.apply_threshold;
     config_params_->norm_factor = config.norm_factor;
+    config_params_->threshold_mode = config.threshold_mode;
   }
 
   void ThermalProcessing::images_CB(const sensor_msgs::ImageConstPtr thermal_image){
