@@ -214,7 +214,7 @@ int GPUExample::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXY
     return 1;
 }
 
-void GPUExample::addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i){
+void GPUExample::addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label){
   jsk_recognition_msgs::BoundingBox cluster_bb;
   //cluster_bb.header.stamp = ros::Time::now();
   geometry_msgs::Pose out;
@@ -231,7 +231,7 @@ void GPUExample::addBoundingBox(const geometry_msgs::Pose center, double v_x, do
   cluster_bb.dimensions.y = v_y;
   cluster_bb.dimensions.z = v_z;
 
-  cluster_bb.label = var_i*1000;
+  cluster_bb.label =label; //before var_i
   cluster_bb.value = var_i;
 
   bb.boxes.push_back(cluster_bb);
@@ -284,10 +284,23 @@ void GPUExample::cluster(){
     pcl::copyPointCloud(*pointcloud_xyz.get(),pointcloud_xyzi);
 
 
+
+    //Clean
+    for(std::map<int, Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
+      if(it->second.age < 3){
+        it = persons_array_.persons.erase(it);
+        ROS_WARN_STREAM("delete person and remaining "<< persons_array_.persons.size()) ;
+      }
+      else{
+        it->second.age--;
+        it++;
+      }
+    }
+
     double cluster_std;
 
     Person person;
-    std::string id = "OK";
+    int id= 0;
 
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
         //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
@@ -323,21 +336,29 @@ void GPUExample::cluster(){
           auto range_x = getAbsoluteRange<double>(x_vector);
           auto range_y = getAbsoluteRange<double>(y_vector);
           auto range_z = getAbsoluteRange<double>(z_vector);
+          
+          //var_i seems to be more stable that bb volume
+          id = var_i*100;//int(range_x * range_y *range_z *100);//two decimals
+          std::cout << id << std::endl;
 
+          if(persons_array_.persons.find(id) != persons_array_.persons.end()){
+            ROS_ERROR("person found");
+            persons_array_.persons[id].age = 10;
+          }
+          else{
+            
+          }
 
           //testing map array_person (memory)
-          person.pose = cluster_center;
-          person.size_x = range_x;
-          person.size_y = range_y;
+          person.age = 10;
           
-          persons_array_.persons.insert(std::pair<std::string, Person> (id, person));
+          persons_array_.persons.insert(std::pair<int,Person>(id, person));
           // bounding boxes... TODO merge with persons_array (if approved by memory then add)
-          addBoundingBox(cluster_center, range_x, range_y, range_z, var_i);
+          addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, id);
         }
     }
 
-    ROS_ERROR_STREAM(persons_array_.persons["OK"].pose);
-
+    
     clusters_msg.header.frame_id = "velodyne";
     clusters_msg.header.stamp = ros::Time::now();
     cluster_pub_.publish(clusters_msg);
@@ -347,5 +368,4 @@ void GPUExample::cluster(){
         publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(pointcloud_xyzi);
     }
     ROS_ERROR_STREAM ("Clustering Time: " << (double)(clock() - tStart)/CLOCKS_PER_SEC);
-
 };
