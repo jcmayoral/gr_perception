@@ -53,6 +53,8 @@
 //using pcl::cuda::PointCloudAOS;
 //using pcl::cuda::Device;
 
+#include <pcl_gpu_tools/utils.h>
+
 
 class GPUExample
 {
@@ -101,6 +103,9 @@ private:
   std::string sensor_frame_;
   std::string global_frame_;
 
+  //Testing
+  PersonArray persons_array_;
+
 public:
     GPUExample ();
     ~GPUExample(){};
@@ -109,7 +114,7 @@ public:
     template <class T> void publishPointCloud(T);
     void timer_cb(const ros::TimerEvent&);
     void cluster();
-    void publishBoundingBoxes(const geometry_msgs::PoseArray& cluster_array);
+    void publishBoundingBoxes();
     void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i);
     void dyn_reconfigureCB(pcl_gpu_tools::GPUFilterConfig &config, uint32_t level);
     void removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc);

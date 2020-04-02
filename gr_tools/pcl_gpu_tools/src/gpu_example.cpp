@@ -237,7 +237,7 @@ void GPUExample::addBoundingBox(const geometry_msgs::Pose center, double v_x, do
   bb.boxes.push_back(cluster_bb);
 }
 
-void GPUExample::publishBoundingBoxes(const geometry_msgs::PoseArray& cluster_array){
+void GPUExample::publishBoundingBoxes(){
   bb.header.stamp = ros::Time::now();
   bb.header.frame_id = global_frame_;//cluster_array.header.frame_id;
   bb_pub_.publish(bb);
@@ -286,6 +286,9 @@ void GPUExample::cluster(){
 
     double cluster_std;
 
+    Person person;
+    std::string id = "OK";
+
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
         //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
         x_vector.clear();
@@ -315,19 +318,30 @@ void GPUExample::cluster(){
 
         if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
+          //centroids for proximity policy
           clusters_msg.poses.push_back(cluster_center);
           auto range_x = getAbsoluteRange<double>(x_vector);
           auto range_y = getAbsoluteRange<double>(y_vector);
           auto range_z = getAbsoluteRange<double>(z_vector);
 
+
+          //testing map array_person (memory)
+          person.pose = cluster_center;
+          person.size_x = range_x;
+          person.size_y = range_y;
+          
+          persons_array_.persons.insert(std::pair<std::string, Person> (id, person));
+          // bounding boxes... TODO merge with persons_array (if approved by memory then add)
           addBoundingBox(cluster_center, range_x, range_y, range_z, var_i);
         }
     }
 
+    ROS_ERROR_STREAM(persons_array_.persons["OK"].pose);
+
     clusters_msg.header.frame_id = "velodyne";
     clusters_msg.header.stamp = ros::Time::now();
     cluster_pub_.publish(clusters_msg);
-    publishBoundingBoxes(clusters_msg);
+    publishBoundingBoxes();
 
     if (output_publish_){
         publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(pointcloud_xyzi);
