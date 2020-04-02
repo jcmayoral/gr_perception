@@ -3,4 +3,4 @@ import rospy
 
 class TerrainClassifier(Features2Image):
     def __init__(self):
-        Features2Image.__init__(self,ros=True, pix_per_meter=2, msg_selection=3,meters=10, memory=100)#meters=10,pix_per_meter=1, msg_selection=2)
+        Features2Image.__init__(self,ros=True, pix_per_meter=2, msg_selection=2,meters=10, memory=100)#meters=10,pix_per_meter=1, msg_selection=2)
