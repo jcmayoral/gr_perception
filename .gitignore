@@ -4,4 +4,5 @@ results_*
 *.jpeg
 *.caffemodel
 *.prototxt
+*.pyc
 build/
