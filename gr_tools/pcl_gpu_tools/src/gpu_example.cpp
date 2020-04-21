@@ -287,7 +287,7 @@ void GPUExample::cluster(){
 
     //Clean
     for(std::map<int, Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
-      if(it->second.age < 3){
+      if(it->second.age < 2){
         it = persons_array_.persons.erase(it);
         ROS_WARN_STREAM("delete person and remaining "<< persons_array_.persons.size()) ;
       }
@@ -343,7 +343,10 @@ void GPUExample::cluster(){
 
           if(persons_array_.persons.find(id) != persons_array_.persons.end()){
             ROS_ERROR("person found");
-            persons_array_.persons[id].age = 10;
+            persons_array_.persons[id].age = 5;
+            //just add if seen before
+            // bounding boxes... TODO merge with persons_array (if approved by memory then add)
+            addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, id);
           }
           else{
             
@@ -353,8 +356,7 @@ void GPUExample::cluster(){
           person.age = 10;
           
           persons_array_.persons.insert(std::pair<int,Person>(id, person));
-          // bounding boxes... TODO merge with persons_array (if approved by memory then add)
-          addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, id);
+   
         }
     }
 
