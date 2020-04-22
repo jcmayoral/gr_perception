@@ -15,14 +15,18 @@ class DataLoader():
         self.img_res = img_res
         self.rgb_dataset_folder=rgb_dataset_folder
         self.thermal_dataset_folder=thermal_dataset_folder
+        #TODO match images
         self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith("jpg")]
+        self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith("tiff")]
 
     def load_samples(self,num_imgs=32,thermal_ext=".tiff"):
         rgb_imgs,thermal_imgs=[],[]
         random_rgb_image_name_list=np.random.choice(self.rgb_images_list,size=num_imgs).tolist()
-        for rgb_img_name in random_rgb_image_name_list:
+        random_thermal_image_name_list=np.random.choice(self.thermal_images_list,size=num_imgs).tolist()
+
+        for rgb_img_name, thermal_img_name in zip(random_rgb_image_name_list, random_thermal_image_name_list):
             rgb_img_path= os.path.join(self.rgb_dataset_folder,rgb_img_name)
-            thermal_img_path=os.path.join(self.thermal_dataset_folder,rgb_img_name.split(".")[0]+thermal_ext)
+            thermal_img_path=os.path.join(self.thermal_dataset_folder,thermal_img_name.split(".")[0]+thermal_ext)
             rgb_img=self.imread(rgb_img_path)
             thermal_img=self.thermal_imread(thermal_img_path)
             rgb_img = cv2.resize(rgb_img, self.img_res)
