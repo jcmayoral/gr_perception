@@ -1,7 +1,7 @@
 import scipy
 import cv2
 from keras.datasets import mnist
-from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
+from instance_normalization import InstanceNormalization
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout, Concatenate
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
