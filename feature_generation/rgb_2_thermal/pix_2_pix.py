@@ -34,12 +34,16 @@ class Pix2Pix():
 
         # Configure data loader
         self.dataset_name = dataset_name
+
+    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder):
         self.data_loader = DataLoader(dataset_name=self.dataset_name,
-                                      img_res=(self.img_rows, self.img_cols),thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit")
+                                      img_res=(self.img_rows, self.img_cols),
+                                      rgb_dataset_folder=rgb_dataset_folder,
+                                      thermal_dataset_folder=thermal_dataset_folder)
 
 
         # Calculate output shape of D (PatchGAN)
-        patch = 64 #from the paper
+        patch = 32#64 #from the paper
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
@@ -193,19 +197,20 @@ class Pix2Pix():
 
                 # If at save interval => save generated image samples
                 if batch_i % sample_interval == 0:
-                    self.sample_images(epoch,batch_i,10)
+                    self.sample_images(epoch,batch_i,batch_size)
 
     def sample_images(self, epoch,batch_i, num_images=5):
-        target_folder='images_2020_04_13_2nd_Arch/{}/{}'.format(epoch,batch_i)
+        target_folder='current_results/{}/{}'.format(epoch,batch_i)
         if not os.path.exists(target_folder):
-            os.makedirs(target_folder, exist_ok=True)
+            os.makedirs(target_folder)#, exist_ok=True)
         r, c = num_images, 3
 
-        imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=".jpeg")
+        imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=".tiff")
         fake_thermal = self.generator.predict(imgs_rgb)
-        np.save(target_folder+"/rgb.npy",imgs_rgb)
-        np.save(target_folder+"/original_thermal.npy",imgs_thermal)
-        np.save(target_folder+"/fake_thermal.npy",fake_thermal)
+        print("Uncomment np.save on final approach")
+        #np.save(target_folder+"/rgb.npy",imgs_rgb)
+        #np.save(target_folder+"/original_thermal.npy",imgs_thermal)
+        #np.save(target_folder+"/fake_thermal.npy",fake_thermal)
         imgs_thermal=0.5*imgs_thermal+0.5
         imgs_rgb=0.5*imgs_rgb+0.5
         fake_thermal=0.5*fake_thermal+0.5
@@ -224,8 +229,12 @@ class Pix2Pix():
             for j in range(c):
                 axs[i, j].set_title(titles[j])
                 axs[i,j].axis('off')
-        fig.savefig("images_2020_04_13_2nd_Arch/{}/{}/image.png".format(epoch,batch_i))
+        fig.savefig("current_results/{}/{}/image.png".format(epoch,batch_i))
 
 
         plt.close()
-        self.generator.save_weights("saved_model_2020_04_13_2nd_Arch/{}_batch_{}.h5".format(epoch,batch_i))
+
+        if not os.path.exists("saved_models"):
+            os.makedirs("saved_models")#, exist_ok=True)
+        print("uncomment save_weights after time matching has been implemented")
+        #self.generator.save_weights("saved_models/{}_batch_{}.h5".format(epoch,batch_i))

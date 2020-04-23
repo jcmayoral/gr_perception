@@ -44,10 +44,12 @@ class DataLoader():
 
         for i in range(self.n_batches-1):
             batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
+            thermal_batch = self.thermal_images_list[i*batch_size:(i+1)*batch_size]
             rgb_imgs, thermal_imgs = [], []
-            for img_name in batch:
+            for img_name, thermal_name in zip(batch, thermal_batch):
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
-                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
+                #thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
+                thermal_img = self.imread(os.path.join(self.thermal_dataset_folder,thermal_name))
                 h, w, _ = rgb_img.shape
 
                 rgb_img = cv2.resize(rgb_img, self.img_res)
@@ -60,9 +62,9 @@ class DataLoader():
                 rgb_imgs.append(rgb_img)
                 thermal_imgs.append(thermal_img)
 
+            #standardize
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
-            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
-
+            thermal_imgs = np.array(thermal_imgs)/(127.5 *127.5 - 1.)
             yield rgb_imgs, thermal_imgs
 
 
