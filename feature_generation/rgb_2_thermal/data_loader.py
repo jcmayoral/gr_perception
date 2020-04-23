@@ -67,6 +67,12 @@ class DataLoader():
             thermal_imgs = np.array(thermal_imgs)/(127.5 *127.5 - 1.)
             yield rgb_imgs, thermal_imgs
 
+    def rotate_image(self, image):
+        (rows,cols) = image.shape
+        #M = cv2.getRotationMatrix2D((rows/2, cols/2), 180, 1)
+        #thermal_img = imutils.rotate(thermal_img, 180, dtype = np.float32)
+        return skimage.transform.rotate(image,180)#cv2.warpAffine(image, M, (rows, cols))
+
 
     def imread(self, path):
         try:
@@ -79,4 +85,5 @@ class DataLoader():
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
         thermal_img= skimage.io.imread(thermal_img_path)
+        thermal_img = self.rotate_image(thermal_img)
         return thermal_img
