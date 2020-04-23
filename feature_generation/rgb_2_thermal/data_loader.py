@@ -67,16 +67,22 @@ class DataLoader():
             thermal_imgs = np.array(thermal_imgs)/(127.5 *127.5 - 1.)
             yield rgb_imgs, thermal_imgs
 
+    #fieldsafe specific
     def rotate_image(self, image):
         (rows,cols) = image.shape
         #M = cv2.getRotationMatrix2D((rows/2, cols/2), 180, 1)
         #thermal_img = imutils.rotate(thermal_img, 180, dtype = np.float32)
         return skimage.transform.rotate(image,180)#cv2.warpAffine(image, M, (rows, cols))
 
+    #fieldsafe specific
+    def crop_image(self, image):
+        return image[:,300:,:]
+
 
     def imread(self, path):
         try:
             img= cv2.imread(path)
+            img = self.crop_image(img)
             img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             return img
         except:
