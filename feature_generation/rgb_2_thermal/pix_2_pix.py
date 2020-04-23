@@ -22,9 +22,11 @@ class Pix2Pix():
                 img_cols=256,
                 channels=3,
                  thermal_channels=1,
-                 dataset_name="flir_rgbdas"
+                 dataset_name="flir_rgbdas",
+                 max_batches = 20
                 ):
         # Input shape
+        self.max_batches = max_batches
         self.img_rows = img_rows
         self.img_cols = img_cols
         self.channels = channels
@@ -167,7 +169,9 @@ class Pix2Pix():
 
         for epoch in range(epochs):
             for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.load_batch(batch_size,thermal_ext=".jpeg")):
-
+                if batch_i == self.max_batches:
+                    print ("maximum number of batches per epoch is reached")
+                    break
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------

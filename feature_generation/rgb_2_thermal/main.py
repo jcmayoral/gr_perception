@@ -13,6 +13,7 @@ num_imgs = 5
 im_size = (128,128)
 dataset_name = "garbage"
 thermal_channels = 3
+max_batches = 10
 
 #TODO add as arg
 if False:
@@ -24,7 +25,8 @@ if False:
     #imshow a sample of images
     visualize(rgb_imgs, thermal_imgs)
 
-model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,  thermal_channels=thermal_channels)
+model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,
+                thermal_channels=thermal_channels, max_batches = max_batches)
 #For some reasons it is not parametrized the rgb and thermal
 model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
                         "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw")
