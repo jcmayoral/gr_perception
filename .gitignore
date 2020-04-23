@@ -8,3 +8,5 @@ results_*
 build/
 saved_models/
 current_results/
+results/
+files/

@@ -20,7 +20,7 @@ find_package(catkin REQUIRED
         darknet_ros_msgs
 )
 
-find_package(OpenCV 3.4 REQUIRED)
+find_package(OpenCV 3.4.9 EXACT REQUIRED)
 #.1 EXACT REQUIRED PATHS /usr/local/share/OpenCV NO_DEFAULT_PATH)
 
 include_directories(

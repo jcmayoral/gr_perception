@@ -9,8 +9,10 @@ class TimeStampedMatcher():
         self.rgb_images_list=[image_name for image_name in sorted(os.listdir(self.rgb_dataset_folder)) if image_name.endswith("jpg")]
         self.thermal_images_list=[image_name for image_name in sorted(os.listdir(self.thermal_dataset_folder)) if image_name.endswith("tiff")]
 
-    def execute(self, mode):
+    def execute(self):
         rootfilename = "_bag_"
+        os.makedirs("results")
+        os.chdir("results")
 
         for file in self.rgb_images_list:
             i = file.replace("image_filter_bag","")
