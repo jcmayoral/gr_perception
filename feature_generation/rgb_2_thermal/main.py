@@ -9,11 +9,11 @@ from pix_2_pix import Pix2Pix
 #NOTE Rotating and trim might be helpful
 #TODO Change to pytorch
 
-num_imgs = 5
+num_imgs = 10
 im_size = (128,128)
 dataset_name = "garbage"
 thermal_channels = 3
-max_batches = 10
+max_batches = 50
 
 #TODO add as arg
 if False:

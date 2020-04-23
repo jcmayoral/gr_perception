@@ -6,3 +6,5 @@ results_*
 *.prototxt
 *.pyc
 build/
+saved_models/
+current_results/
