@@ -59,7 +59,6 @@ class DataLoader():
                     needle_file = image_file
                     break;
             thermal_files.append(needle_file)
-        print (len(thermal_files), len(rgb_files))
         return np.asarray(thermal_files)
 
     def load_batch(self, batch_size=1, is_testing=False,thermal_ext=".tiff"):
