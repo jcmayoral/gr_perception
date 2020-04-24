@@ -75,7 +75,7 @@ class DataLoader():
                 rgb_img /= 255#self.rgb_min_max_scaler.fit_transform(rgb_img)
                 #thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
                 thermal_img = self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name))
-                thermal_img = self.rgb_min_max_scaler.fit_transform(thermal_img)
+                thermal_img = self.thermal_min_max_scaler.fit_transform(thermal_img)
                 h, w, _ = rgb_img.shape
                 rgb_img = cv2.resize(rgb_img, self.img_res)
                 thermal_img = cv2.resize(thermal_img, self.img_res)
@@ -92,10 +92,6 @@ class DataLoader():
             rgb_imgs = np.array(rgb_imgs)
             #feature scaling...
             thermal_imgs = np.array(thermal_imgs)
-            print (np.max(thermal_imgs[0]))
-            print (np.max(rgb_imgs[0]))
-
-            print thermal_imgs.dtype
             yield rgb_imgs, thermal_imgs
 
     #fieldsafe specific
