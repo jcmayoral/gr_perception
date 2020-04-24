@@ -70,6 +70,8 @@ class Pix2Pix():
         self.generator = self.build_generator()
 
         # Input images and their conditioning images
+        print self.thermal_img_shape
+        print self.img_shape
         img_thermal = Input(shape=self.thermal_img_shape)
         img_rgb = Input(shape=self.img_shape)
 
@@ -176,10 +178,8 @@ class Pix2Pix():
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
-
                 # Condition on B and generate a translated version
                 fake_thermal = self.generator.predict(imgs_rgb)
-
                 # Train the discriminators (original images = real / generated = Fake)
                 d_loss_real = self.discriminator.train_on_batch([imgs_rgb, imgs_thermal], valid)
                 d_loss_fake = self.discriminator.train_on_batch([imgs_rgb, fake_thermal], fake)

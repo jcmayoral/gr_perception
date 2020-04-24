@@ -14,6 +14,7 @@ class DataLoader():
                  path_timestamp_matching="~/"):
         self.dataset_name = dataset_name
         self.img_res = img_res
+        self.thermal_res = (img_res[0], img_res[1],1)
         self.rgb_dataset_folder=rgb_dataset_folder
         self.thermal_dataset_folder=thermal_dataset_folder
         self.path_timestamp_matching = path_timestamp_matching
@@ -71,11 +72,12 @@ class DataLoader():
             for img_name, thermal_name in zip(batch, thermal_batch):
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
                 #thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
-                thermal_img = self.imread(os.path.join(self.thermal_dataset_folder,thermal_name))
+                thermal_img = self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name))
                 h, w, _ = rgb_img.shape
 
                 rgb_img = cv2.resize(rgb_img, self.img_res)
                 thermal_img = cv2.resize(thermal_img, self.img_res)
+                thermal_img = thermal_img.reshape(self.thermal_res)
 
                 if not is_testing and np.random.random() > 0.5:
                         rgb_img = np.fliplr(rgb_img)
@@ -99,7 +101,6 @@ class DataLoader():
     #fieldsafe specific
     def crop_image(self, image):
         return image[:,300:,:]
-
 
     def imread(self, path):
         try:
