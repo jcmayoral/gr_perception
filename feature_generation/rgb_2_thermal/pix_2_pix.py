@@ -46,7 +46,7 @@ class Pix2Pix():
 
 
         # Calculate output shape of D (PatchGAN)
-        patch = 32#64 #from the paper
+        patch = 64 #from the paper
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
@@ -70,8 +70,6 @@ class Pix2Pix():
         self.generator = self.build_generator()
 
         # Input images and their conditioning images
-        print self.thermal_img_shape
-        print self.img_shape
         img_thermal = Input(shape=self.thermal_img_shape)
         img_rgb = Input(shape=self.img_shape)
 
