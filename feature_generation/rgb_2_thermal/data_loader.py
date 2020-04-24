@@ -6,6 +6,7 @@ import skimage
 import os
 import cv2
 import random
+from sklearn import preprocessing
 
 class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
@@ -19,6 +20,7 @@ class DataLoader():
         self.thermal_dataset_folder=thermal_dataset_folder
         self.path_timestamp_matching = path_timestamp_matching
         #TODO match images
+        self.thermal_min_max_scaler = preprocessing.MinMaxScaler()
         self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith("jpg")]
         self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith("tiff")]
 
@@ -70,10 +72,11 @@ class DataLoader():
             rgb_imgs, thermal_imgs = [], []
             for img_name, thermal_name in zip(batch, thermal_batch):
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
+                rgb_img /= 255#self.rgb_min_max_scaler.fit_transform(rgb_img)
                 #thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
                 thermal_img = self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name))
+                thermal_img = self.rgb_min_max_scaler.fit_transform(thermal_img)
                 h, w, _ = rgb_img.shape
-
                 rgb_img = cv2.resize(rgb_img, self.img_res)
                 thermal_img = cv2.resize(thermal_img, self.img_res)
                 thermal_img = thermal_img.reshape(self.thermal_res)
@@ -85,9 +88,14 @@ class DataLoader():
                 rgb_imgs.append(rgb_img)
                 thermal_imgs.append(thermal_img)
 
-            #standardize
-            rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
-            thermal_imgs = np.array(thermal_imgs)/(127.5 *127.5 - 1.)
+            #standardize?
+            rgb_imgs = np.array(rgb_imgs)
+            #feature scaling...
+            thermal_imgs = np.array(thermal_imgs)
+            print (np.max(thermal_imgs[0]))
+            print (np.max(rgb_imgs[0]))
+
+            print thermal_imgs.dtype
             yield rgb_imgs, thermal_imgs
 
     #fieldsafe specific
