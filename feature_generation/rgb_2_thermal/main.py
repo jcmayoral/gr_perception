@@ -9,8 +9,8 @@ from pix_2_pix import Pix2Pix
 #NOTE Rotating and trim might be helpful
 #TODO Change to pytorch
 
-num_imgs = 10
-im_size = (256,256)
+num_imgs = 20
+im_size = (128,128)
 dataset_name = "garbage"
 #todo check why thermanl chanels are three
 thermal_channels = 1

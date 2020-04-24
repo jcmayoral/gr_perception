@@ -50,8 +50,8 @@ class Pix2Pix():
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
-        self.gf = 64
-        self.df = 64
+        self.gf = 128#64
+        self.df = 128#64
 
         optimizer = Adam(0.0002,0.5,0.999)
 
@@ -150,13 +150,13 @@ class Pix2Pix():
         combined_imgs = Concatenate(axis=-1)([img_rgb, img_thermal])
 
         d1 = d_layer(combined_imgs, self.df, bn=False,strides=2) #128
-        d2 = d_layer(d1, self.df*2,strides=2) #64
-#         d3 = d_layer(d2, self.df*4,strides=1) #128
-#         d4 = d_layer(d3, self.df*8,strides=1) #128
-#         d5=  d_layer(d4, self.df*8)
+        #d2 = d_layer(d1, self.df*2,strides=2) #64
+        #d3 = d_layer(d2, self.df*4,strides=1) #128
+        #d4 = d_layer(d3, self.df*8,strides=1) #128
+        #d5=  d_layer(d4, self.df*32,f_size=8)
 
 
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d2)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d1)
 
         return Model([img_rgb, img_thermal], validity)
 
