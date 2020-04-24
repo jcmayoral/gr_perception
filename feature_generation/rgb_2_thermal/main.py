@@ -9,12 +9,13 @@ from pix_2_pix import Pix2Pix
 #NOTE Rotating and trim might be helpful
 #TODO Change to pytorch
 
-num_imgs = 10
+num_imgs = 5
 im_size = (256,256)
 dataset_name = "garbage"
 #todo check why thermanl chanels are three
 thermal_channels = 1
-max_batches = 450
+n_epochs = 10
+max_batches = -1
 
 
 print("Uncomment np.save on final approach to save batch")
@@ -37,4 +38,4 @@ model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_
 model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
                         "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
                         path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching")
-model.train(3, batch_size=4, sample_interval=1)
+model.train(n_epochs, batch_size=4, sample_interval=1)
