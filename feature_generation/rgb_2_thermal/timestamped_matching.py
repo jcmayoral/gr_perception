@@ -1,4 +1,6 @@
 import os
+import decimal
+import numpy as np
 
 class TimeStampedMatcher():
     def __init__(self, rgb_dataset_folder, thermal_dataset_folder):
@@ -11,8 +13,12 @@ class TimeStampedMatcher():
 
     def execute(self):
         rootfilename = "_bag_"
-        os.makedirs("results")
-        os.chdir("results")
+        os.makedirs("files")
+        os.chdir("files")
+
+        print "storing rgb images timestamps by bag"
+
+        rgb_list = list()
 
         for file in self.rgb_images_list:
             i = file.replace("image_filter_bag","")
@@ -20,9 +26,13 @@ class TimeStampedMatcher():
             bag_file = "rgb" + rootfilename+i[0]+".txt"
             #remove "_"
             i = i[2:]
-            print i, bag_file
             with open(bag_file, "a+") as f:
                 f.write(i+"\n")
+            rgb_list.append(i)
+
+        print "storing thermal images timestamps by bag"
+
+        thermal_list = list()
 
         for file in self.thermal_images_list:
             j = file.replace("image_filter_bag","")
@@ -30,9 +40,30 @@ class TimeStampedMatcher():
             bag_file = "thermal" + rootfilename+i[0]+".txt"
             #remove "_"
             i = i[2:]
-            print i, bag_file
             with open(bag_file, "a+") as f:
                 f.write(i+"\n")
+            thermal_list.append(i)
+
+        print "creating matching files"
+        os.chdir("..")
+        os.makedirs("matching")
+        os.chdir("matching")
+
+        rgb_array = np.asarray(rgb_list, dtype=np.int64)
+        thermal_array = np.asarray(thermal_list, dtype=np.int64)
+
+        for file in self.rgb_images_list:
+            i = file.replace("image_filter_bag","")
+            i = i.replace(".jpg","")
+            #remove "_"
+            i = i[2:]
+            filename = i+".txt"
+            timematching = thermal_array[np.abs(thermal_array - float(i)).argmin()]
+            with open(filename, "w+") as f:
+                f.write(str(timematching))
+
+
+
 
 
 if __name__ == '__main__':

@@ -37,11 +37,12 @@ class Pix2Pix():
         # Configure data loader
         self.dataset_name = dataset_name
 
-    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder):
+    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching):
         self.data_loader = DataLoader(dataset_name=self.dataset_name,
                                       img_res=(self.img_rows, self.img_cols),
                                       rgb_dataset_folder=rgb_dataset_folder,
-                                      thermal_dataset_folder=thermal_dataset_folder)
+                                      thermal_dataset_folder=thermal_dataset_folder,
+                                      path_timestamp_matching = path_timestamp_matching)
 
 
         # Calculate output shape of D (PatchGAN)

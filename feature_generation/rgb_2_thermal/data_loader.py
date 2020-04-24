@@ -10,11 +10,13 @@ import random
 class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
                  rgb_dataset_folder="/floyd/input/flir_adas/train/RGB",
-                 thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit"):
+                 thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit",
+                 path_timestamp_matching="~/"):
         self.dataset_name = dataset_name
         self.img_res = img_res
         self.rgb_dataset_folder=rgb_dataset_folder
         self.thermal_dataset_folder=thermal_dataset_folder
+        self.path_timestamp_matching = path_timestamp_matching
         #TODO match images
         self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith("jpg")]
         self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith("tiff")]
@@ -22,7 +24,8 @@ class DataLoader():
     def load_samples(self,num_imgs=32,thermal_ext=".tiff"):
         rgb_imgs,thermal_imgs=[],[]
         random_rgb_image_name_list=np.random.choice(self.rgb_images_list,size=num_imgs).tolist()
-        random_thermal_image_name_list=np.random.choice(self.thermal_images_list,size=num_imgs).tolist()
+        #random_thermal_image_name_list=np.random.choice(self.thermal_images_list,size=num_imgs).tolist()
+        random_thermal_image_name_list = self.find_thermal_correspondance(random_rgb_image_name_list)
 
         for rgb_img_name, thermal_img_name in zip(random_rgb_image_name_list, random_thermal_image_name_list):
             rgb_img_path= os.path.join(self.rgb_dataset_folder,rgb_img_name)
@@ -36,6 +39,29 @@ class DataLoader():
         rgb_imgs=np.array(rgb_imgs)/127.5-1
         thermal_imgs=np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5-1
         return rgb_imgs, thermal_imgs
+
+    def find_thermal_correspondance(self, rgb_files):
+        print rgb_files[0]
+        thermal_files = list()
+        for r in rgb_files:
+            r = r.replace("image_filter_bag","")
+            r = r.replace(".jpg","")
+            r = r[2:]
+            filename = os.path.join(self.path_timestamp_matching, r +".txt")
+            with open(filename) as f:
+                 thermal_index = f.read()
+            print filename, thermal_index
+            #TODO this is totally bruteforce
+            #if not found set a default
+            needle_file = self.thermal_images_list[-1]
+            for image_file in self.thermal_images_list:
+                if thermal_index in image_file:
+                    #print "found ", image_file, thermal_index
+                    needle_file = image_file
+                    break;
+            thermal_files.append(needle_file)
+        print (len(thermal_files), len(rgb_files))
+        return np.asarray(thermal_files)
 
     def load_batch(self, batch_size=1, is_testing=False,thermal_ext=".tiff"):
 
