@@ -12,6 +12,7 @@ from pix_2_pix import Pix2Pix
 num_imgs = 10
 im_size = (128,128)
 dataset_name = "garbage"
+#todo check why thermanl chanels are three
 thermal_channels = 3
 max_batches = 50
 

@@ -41,7 +41,6 @@ class DataLoader():
         return rgb_imgs, thermal_imgs
 
     def find_thermal_correspondance(self, rgb_files):
-        print rgb_files[0]
         thermal_files = list()
         for r in rgb_files:
             r = r.replace("image_filter_bag","")
@@ -50,7 +49,6 @@ class DataLoader():
             filename = os.path.join(self.path_timestamp_matching, r +".txt")
             with open(filename) as f:
                  thermal_index = f.read()
-            print filename, thermal_index
             #TODO this is totally bruteforce
             #if not found set a default
             needle_file = self.thermal_images_list[-1]
@@ -64,8 +62,6 @@ class DataLoader():
         return np.asarray(thermal_files)
 
     def load_batch(self, batch_size=1, is_testing=False,thermal_ext=".tiff"):
-
-
         self.n_batches = int(len(self.rgb_images_list) / batch_size)
 
         for i in range(self.n_batches-1):

@@ -62,10 +62,6 @@ class TimeStampedMatcher():
             with open(filename, "w+") as f:
                 f.write(str(timematching))
 
-
-
-
-
 if __name__ == '__main__':
     ts = TimeStampedMatcher("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
                             "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw")
