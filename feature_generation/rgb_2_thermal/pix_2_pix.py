@@ -50,8 +50,8 @@ class Pix2Pix():
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
-        self.gf = 32#64
-        self.df = 32#64
+        self.gf = 128#64
+        self.df = 128#64
 
         optimizer = Adam(0.0002,0.5,0.999)
 
