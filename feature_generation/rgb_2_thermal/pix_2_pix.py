@@ -212,14 +212,14 @@ class Pix2Pix():
 
         imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=".tiff")
         fake_thermal = self.generator.predict(imgs_rgb)
-        print("Uncomment np.save on final approach")
+
+        #TEST uncomment this if needed
         #np.save(target_folder+"/rgb.npy",imgs_rgb)
         #np.save(target_folder+"/original_thermal.npy",imgs_thermal)
         #np.save(target_folder+"/fake_thermal.npy",fake_thermal)
         imgs_thermal=0.5*imgs_thermal+0.5
         imgs_rgb=0.5*imgs_rgb+0.5
         fake_thermal=0.5*fake_thermal+0.5
-
 
 
         titles = ['Condition','Original', 'Generated']
@@ -241,5 +241,7 @@ class Pix2Pix():
 
         if not os.path.exists("saved_models"):
             os.makedirs("saved_models")#, exist_ok=True)
-        print("uncomment save_weights after time matching has been implemented")
+        #print("uncomment save_weights after time matching has been implemented")
         #self.generator.save_weights("saved_models/{}_batch_{}.h5".format(epoch,batch_i))
+        #instead store one
+        self.generator.save_weights("saved_models/last_model.h5")

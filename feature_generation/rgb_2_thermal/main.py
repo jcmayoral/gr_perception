@@ -10,11 +10,14 @@ from pix_2_pix import Pix2Pix
 #TODO Change to pytorch
 
 num_imgs = 10
-im_size = (128,128)
+im_size = (256,256)
 dataset_name = "garbage"
 #todo check why thermanl chanels are three
 thermal_channels = 1
-max_batches = 50
+max_batches = 200
+
+
+print("Uncomment np.save on final approach to save batch")
 
 #TODO add as arg
 if False:
