@@ -9,7 +9,7 @@ from pix_2_pix import Pix2Pix
 #NOTE Rotating and trim might be helpful
 #TODO Change to pytorch
 
-num_imgs = 2
+num_imgs = 1
 im_size = (256,256)
 dataset_name = "garbage"
 #todo check why thermanl chanels are three
