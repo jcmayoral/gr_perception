@@ -14,7 +14,7 @@ im_size = (128,128)
 dataset_name = "garbage"
 #todo check why thermanl chanels are three
 thermal_channels = 1
-n_epochs = 10
+n_epochs = 100
 max_batches = -1
 
 
@@ -45,7 +45,7 @@ model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_
 #FOR FLIR
 #Images already matched by name
 model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
-                        "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_16_bit",
+                        "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit",
                         path_timestamp_matching="",
                         match_by_timestamps = False)
 

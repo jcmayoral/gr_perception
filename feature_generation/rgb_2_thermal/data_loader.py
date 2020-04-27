@@ -30,6 +30,35 @@ class DataLoader():
         self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith("jpg")]
         self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith("tiff")]
 
+    def original_load_batch(self, batch_size=1, is_testing=False,thermal_ext=".jpeg"):
+
+
+        self.n_batches = int(len(self.rgb_images_list) / batch_size)
+
+        for i in range(self.n_batches-1):
+            batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
+            rgb_imgs, thermal_imgs = [], []
+            for img_name in batch:
+                rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
+                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
+                h, w, _ = rgb_img.shape
+
+                rgb_img = cv2.resize(rgb_img, self.img_res)
+                thermal_img = cv2.resize(thermal_img, self.img_res)
+
+                if not is_testing and np.random.random() > 0.5:
+                        rgb_img = np.fliplr(rgb_img)
+                        thermal_img = np.fliplr(thermal_img)
+
+                rgb_imgs.append(rgb_img)
+                thermal_imgs.append(thermal_img)
+
+            rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
+            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
+
+            yield rgb_imgs, thermal_imgs
+
+
     def load_samples(self,num_imgs=32,thermal_ext=".tiff"):
         rgb_imgs,thermal_imgs=[],[]
         random_rgb_image_name_list=np.random.choice(self.rgb_images_list,size=num_imgs).tolist()
@@ -46,7 +75,8 @@ class DataLoader():
             rgb_imgs.append(rgb_img)
             thermal_imgs.append(thermal_img)
         rgb_imgs=np.array(rgb_imgs)/127.5-1
-        thermal_imgs=np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5-1
+        thermal_imgs=np.array(thermal_imgs)
+        thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
         return rgb_imgs, thermal_imgs
 
     def match_by_name(self,rgb_files):
@@ -113,7 +143,9 @@ class DataLoader():
             #standardize?
             rgb_imgs = np.array(rgb_imgs)
             #feature scaling...
-            thermal_imgs = np.array(thermal_imgs)
+            rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
+            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
+            #thermal_imgs = np.array(thermal_imgs)
             yield rgb_imgs, thermal_imgs
 
     #fieldsafe specific
@@ -140,9 +172,6 @@ class DataLoader():
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
         thermal_img= skimage.io.imread(thermal_img_path)
-        if thermal_img.dtype != np.uint8:
-            thermal_img = self.convert(thermal_img, 0, 255, np.uint8)
-            #print np.unique(thermal_img, return_counts=True)
-            #ret,thermal_img = cv2.threshold(thermal_img,160,255,cv2.THRESH_BINARY)
-
+        #if thermal_img.dtype != np.uint8:
+        #    thermal_img = self.convert(thermal_img, 0, 255, np.uint8)
         return thermal_img

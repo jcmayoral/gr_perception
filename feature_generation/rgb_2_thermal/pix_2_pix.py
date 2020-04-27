@@ -21,7 +21,7 @@ class Pix2Pix():
     def __init__(self,img_rows=256,
                 img_cols=256,
                 channels=3,
-                 thermal_channels=1,
+                 thermal_channels=3,
                  dataset_name="flir_rgbdas",
                  max_batches = 20
                 ):
@@ -52,7 +52,7 @@ class Pix2Pix():
 
         # Number of filters in the first layer of G and D
         self.gf = 64
-        self.df = 32
+        self.df = 64
 
         optimizer = Adam(0.0002,0.5,0.999)
 
@@ -135,6 +135,7 @@ class Pix2Pix():
 
         return Model(d0, output_img)
 
+
     def build_discriminator(self):
 
         def d_layer(layer_input, filters, f_size=4, bn=True,strides=2):
@@ -153,14 +154,14 @@ class Pix2Pix():
 
         d1 = d_layer(combined_imgs, self.df, bn=False,strides=2) #128
         d2 = d_layer(d1, self.df*2,strides=1) #64
-        d3 = d_layer(d2, self.df*4,strides=1) #128
+        #d3 = d_layer(d2, self.df*4,strides=1) #128
         #d4 = d_layer(d3, self.df*8,strides=1) #128
-        #d5=  d_layer(d4, self.df*32,f_size=8)
+        #d5=  d_layer(d4, self.df*8,strides=1)
 
         #validity 0 allows image size 256
         #validity0 = MaxPooling2D(pool_size = (2, 2),name="pooling")(d3)
 
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d3)#(validity0)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d2)#(validity0)
 
         return Model([img_rgb, img_thermal], validity)
 
@@ -173,7 +174,7 @@ class Pix2Pix():
         fake = np.zeros((batch_size,) + self.disc_patch)
 
         for epoch in range(epochs):
-            for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.load_batch(batch_size,thermal_ext=".jpeg")):
+            for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.original_load_batch(batch_size,thermal_ext=".jpeg")):
                 if batch_i == self.max_batches:
                     print ("maximum number of batches per epoch is reached")
                     break
@@ -212,7 +213,7 @@ class Pix2Pix():
             os.makedirs(target_folder)#, exist_ok=True)
         r, c = num_images, 3
 
-        imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=".tiff")
+        imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=".jpeg")
         fake_thermal = self.generator.predict(imgs_rgb)
 
         #TEST uncomment this if needed
