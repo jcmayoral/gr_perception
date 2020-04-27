@@ -52,15 +52,12 @@ class Pix2Pix():
 
         # Number of filters in the first layer of G and D
         self.gf = 64
-        self.df = 64
+        self.df = 32
 
         optimizer = Adam(0.0002,0.5,0.999)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
-
-        # For the combined model we will only train the generator
-        self.discriminator.trainable = False
 
         self.discriminator.compile(loss='mse',
             optimizer=optimizer,
@@ -81,6 +78,8 @@ class Pix2Pix():
         # By conditioning on B generate a fake version of A
         fake_thermal = self.generator(img_rgb)
 
+        # For the combined model we will only train the generator
+        self.discriminator.trainable = False
 
         # Discriminators determines validity of translated images / condition pairs
         valid = self.discriminator([img_rgb,fake_thermal])
