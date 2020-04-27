@@ -2,7 +2,7 @@ import scipy
 import cv2
 from keras.datasets import mnist
 from instance_normalization import InstanceNormalization
-from keras.layers import Input, Dense, Reshape, Flatten, Dropout, Concatenate
+from keras.layers import Input, Dense, Reshape, Flatten, Dropout, Concatenate, MaxPooling2D
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
@@ -158,8 +158,10 @@ class Pix2Pix():
         #d4 = d_layer(d3, self.df*8,strides=1) #128
         #d5=  d_layer(d4, self.df*32,f_size=8)
 
+        #validity 0 allows image size 256
+        #validity0 = MaxPooling2D(pool_size = (2, 2),name="pooling")(d3)
 
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d3)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d3)#(validity0)
 
         return Model([img_rgb, img_thermal], validity)
 
@@ -218,6 +220,7 @@ class Pix2Pix():
         #np.save(target_folder+"/rgb.npy",imgs_rgb)
         #np.save(target_folder+"/original_thermal.npy",imgs_thermal)
         #np.save(target_folder+"/fake_thermal.npy",fake_thermal)
+
         imgs_thermal=0.5*imgs_thermal+0.5
         imgs_rgb=0.5*imgs_rgb+0.5
         fake_thermal=0.5*fake_thermal+0.5

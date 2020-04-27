@@ -52,6 +52,19 @@ class DataLoader():
     def match_by_name(self,rgb_files):
         return np.asarray(rgb_files)
 
+    #https://stackoverflow.com/questions/14464449/using-numpy-to-efficiently-convert-16-bit-image-data-to-8-bit-for-display-with
+    def convert(self,img, target_type_min, target_type_max, target_type):
+        imin = 0#img.min()
+        imax = img.max()
+        ###
+        #a = (target_type_max - target_type_min) / (imax - imin)
+        #b = target_type_max - a * ima
+        #new_img = (a * img + b).astype(target_type)
+        new_img = img.astype(np.float)/imax
+        #print np.unique(new_img , return_counts=True), " AKA "
+        new_img = (new_img * 255).astype(target_type)
+        return new_img
+
     def match_by_timestamp(self, rgb_files):
         thermal_files = list()
         for r in rgb_files:
@@ -84,7 +97,7 @@ class DataLoader():
                 rgb_img /= 255#self.rgb_min_max_scaler.fit_transform(rgb_img)
                 #thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
                 thermal_img = self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name))
-                thermal_img = self.thermal_min_max_scaler.fit_transform(thermal_img)
+                #thermal_img = self.thermal_min_max_scaler.fit_transform(thermal_img)
                 h, w, _ = rgb_img.shape
                 rgb_img = cv2.resize(rgb_img, self.img_res)
                 thermal_img = cv2.resize(thermal_img, self.img_res)
@@ -127,6 +140,6 @@ class DataLoader():
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
         thermal_img= skimage.io.imread(thermal_img_path)
-        #rotate just for FIELDSAFE
-        #thermal_img = self.rotate_image(thermal_img)
+        if thermal_img.dtype != np.uint8:
+            thermal_img = self.convert(thermal_img, 0, 255, np.uint8)
         return thermal_img
