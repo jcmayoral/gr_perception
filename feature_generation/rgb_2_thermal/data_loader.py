@@ -142,4 +142,7 @@ class DataLoader():
         thermal_img= skimage.io.imread(thermal_img_path)
         if thermal_img.dtype != np.uint8:
             thermal_img = self.convert(thermal_img, 0, 255, np.uint8)
+            #print np.unique(thermal_img, return_counts=True)
+            #ret,thermal_img = cv2.threshold(thermal_img,160,255,cv2.THRESH_BINARY)
+
         return thermal_img
