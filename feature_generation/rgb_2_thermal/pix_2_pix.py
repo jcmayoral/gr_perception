@@ -37,16 +37,17 @@ class Pix2Pix():
         # Configure data loader
         self.dataset_name = dataset_name
 
-    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching):
+    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps):
         self.data_loader = DataLoader(dataset_name=self.dataset_name,
                                       img_res=(self.img_rows, self.img_cols),
                                       rgb_dataset_folder=rgb_dataset_folder,
                                       thermal_dataset_folder=thermal_dataset_folder,
-                                      path_timestamp_matching = path_timestamp_matching)
+                                      path_timestamp_matching = path_timestamp_matching,
+                                      match_by_timestamps = match_by_timestamps)
 
 
         # Calculate output shape of D (PatchGAN)
-        patch = 64 #from the paper
+        patch =64 #from the paper
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
@@ -152,13 +153,13 @@ class Pix2Pix():
         combined_imgs = Concatenate(axis=-1)([img_rgb, img_thermal])
 
         d1 = d_layer(combined_imgs, self.df, bn=False,strides=2) #128
-        d2 = d_layer(d1, self.df*2,strides=2) #64
-        #d3 = d_layer(d2, self.df*4,strides=1) #128
+        d2 = d_layer(d1, self.df*2,strides=1) #64
+        d3 = d_layer(d2, self.df*4,strides=1) #128
         #d4 = d_layer(d3, self.df*8,strides=1) #128
         #d5=  d_layer(d4, self.df*32,f_size=8)
 
 
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d2)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d3)
 
         return Model([img_rgb, img_thermal], validity)
 

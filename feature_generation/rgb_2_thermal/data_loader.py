@@ -12,13 +12,19 @@ class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
                  rgb_dataset_folder="/floyd/input/flir_adas/train/RGB",
                  thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit",
-                 path_timestamp_matching="~/"):
+                 path_timestamp_matching="~/", match_by_timestamps=False):
         self.dataset_name = dataset_name
         self.img_res = img_res
         self.thermal_res = (img_res[0], img_res[1],1)
         self.rgb_dataset_folder=rgb_dataset_folder
         self.thermal_dataset_folder=thermal_dataset_folder
         self.path_timestamp_matching = path_timestamp_matching
+
+        if match_by_timestamps:
+            self.match_thermalfunction= self.match_by_timestamp
+        else:
+            self.match_thermalfunction = self.match_by_name
+
         #TODO match images
         self.thermal_min_max_scaler = preprocessing.MinMaxScaler()
         self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith("jpg")]
@@ -28,7 +34,7 @@ class DataLoader():
         rgb_imgs,thermal_imgs=[],[]
         random_rgb_image_name_list=np.random.choice(self.rgb_images_list,size=num_imgs).tolist()
         #random_thermal_image_name_list=np.random.choice(self.thermal_images_list,size=num_imgs).tolist()
-        random_thermal_image_name_list = self.find_thermal_correspondance(random_rgb_image_name_list)
+        random_thermal_image_name_list = self.match_thermalfunction(random_rgb_image_name_list)
 
         for rgb_img_name, thermal_img_name in zip(random_rgb_image_name_list, random_thermal_image_name_list):
             rgb_img_path= os.path.join(self.rgb_dataset_folder,rgb_img_name)
@@ -43,7 +49,10 @@ class DataLoader():
         thermal_imgs=np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5-1
         return rgb_imgs, thermal_imgs
 
-    def find_thermal_correspondance(self, rgb_files):
+    def match_by_name(self,rgb_files):
+        return np.asarray(rgb_files)
+
+    def match_by_timestamp(self, rgb_files):
         thermal_files = list()
         for r in rgb_files:
             r = r.replace("image_filter_bag","")
@@ -108,7 +117,8 @@ class DataLoader():
     def imread(self, path):
         try:
             img= cv2.imread(path)
-            img = self.crop_image(img)
+            #For FIELDSAFE
+            #img = self.crop_image(img)
             img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             return img
         except:
@@ -117,5 +127,6 @@ class DataLoader():
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
         thermal_img= skimage.io.imread(thermal_img_path)
-        thermal_img = self.rotate_image(thermal_img)
+        #rotate just for FIELDSAFE
+        #thermal_img = self.rotate_image(thermal_img)
         return thermal_img
