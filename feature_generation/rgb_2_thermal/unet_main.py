@@ -18,7 +18,7 @@ if not os.path.exists(dataset_name + network_name):
 os.chdir(dataset_name + network_name)
 
 
-model = unet(input_size=(im_size[0], im_size[1],  3))
+model = unet(input_size=(im_size[0], im_size[1],  3), neurons_number=2)
 model.summary()
 
 data_loader = DataLoader(dataset_name=dataset_name,
@@ -28,8 +28,9 @@ data_loader = DataLoader(dataset_name=dataset_name,
                          path_timestamp_matching = "",
                          match_by_timestamps = False)
 
-steps_per_epoch = 1#int(len(data_loader.rgb_images_list) / batch_size)
-history = model.fit_generator(data_loader.iterator(batch_size, ".jpeg"), steps_per_epoch= steps_per_epoch, epochs=n_epochs)
+steps_per_epoch = int(int(len(data_loader.rgb_images_list) / batch_size))
+print ("Steps per epoch {} Total batches {} Epochs{}".format(steps_per_epoch, int(len(data_loader.rgb_images_list) / batch_size), n_epochs))
+history = model.fit_generator(data_loader.generator(batch_size, ".jpeg"), steps_per_epoch= steps_per_epoch, epochs=n_epochs)
 pickle.dump(history, open(dataset_name + network_name + ".p", "wb" ))
 
 model.save_weights(dataset_name+network_name+".h5")

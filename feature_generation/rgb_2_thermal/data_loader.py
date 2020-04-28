@@ -147,11 +147,17 @@ class DataLoader():
             yield rgb_imgs, thermal_imgs
 
     #practicaly the same of original_load_batch only difference on return
-    def iterator(self, batch_size=2, thermal_ext=".tiff"):
+    def generator(self, batch_size=2, thermal_ext=".tiff"):
         self.n_batches = int(len(self.rgb_images_list) / batch_size)
 
-        for i in range(self.n_batches-1):
+        #for i in range(self.n_batches-1):
+        i = 0
+        while True:
             batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
+            i+=1
+            if i == self.n_batches:
+                print "RESTARTING GENERATOR"
+                i = 0
             rgb_imgs, thermal_imgs = [], []
             for img_name in batch:
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
