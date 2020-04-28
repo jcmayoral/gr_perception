@@ -9,12 +9,12 @@ from pix_2_pix import Pix2Pix
 #NOTE Rotating and trim might be helpful
 #TODO Change to pytorch
 
-num_imgs = 5
+num_imgs = 10
 im_size = (128,128)
 dataset_name = "garbage"
 #todo check why thermanl chanels are three
 thermal_channels = 1
-n_epochs = 100
+n_epochs = 5
 max_batches = -1
 
 
@@ -49,4 +49,4 @@ model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB"
                         path_timestamp_matching="",
                         match_by_timestamps = False)
 
-model.train(n_epochs, batch_size=num_imgs, sample_interval=10)
+model.train(n_epochs, batch_size=num_imgs, sample_interval=50)

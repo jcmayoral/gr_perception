@@ -47,12 +47,12 @@ class Pix2Pix():
 
 
         # Calculate output shape of D (PatchGAN)
-        patch =64 #from the paper
+        patch =16 #from the paper
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
-        self.gf = 64
-        self.df = 64
+        self.gf = 48
+        self.df = 48
 
         optimizer = Adam(0.0002,0.5,0.999)
 
@@ -88,6 +88,7 @@ class Pix2Pix():
         self.combined.compile(loss=["mse","mae"],
                               loss_weights=[1,100],
                               optimizer=optimizer)
+        self.combined.summary()
 
     def build_generator(self):
         """U-Net Generator"""
@@ -115,19 +116,19 @@ class Pix2Pix():
 
         # Downsampling
         d1 = conv2d(d0, self.gf, bn=False)
-        d2 = conv2d(d1, self.gf*2)
+        d2 = conv2d(d1, self.gf)
         d3 = conv2d(d2, self.gf*4)
-        d4 = conv2d(d3, self.gf*8)
+        d4 = conv2d(d3, self.gf*4)
         d5 = conv2d(d4, self.gf*8)
         d6 = conv2d(d5, self.gf*8)
-        d7 = conv2d(d6, self.gf*8)
+        d7 = conv2d(d6, self.gf*4)
 
         # Upsampling
-        u1 = deconv2d(d7, d6, self.gf*8)
+        u1 = deconv2d(d7, d6, self.gf*4)
         u2 = deconv2d(u1, d5, self.gf*8)
         u3 = deconv2d(u2, d4, self.gf*8)
         u4 = deconv2d(u3, d3, self.gf*4)
-        u5 = deconv2d(u4, d2, self.gf*2)
+        u5 = deconv2d(u4, d2, self.gf*4)
         u6 = deconv2d(u5, d1, self.gf)
 
         u7 = UpSampling2D(size=2)(u6)
@@ -153,15 +154,15 @@ class Pix2Pix():
         combined_imgs = Concatenate(axis=-1)([img_rgb, img_thermal])
 
         d1 = d_layer(combined_imgs, self.df, bn=False,strides=2) #128
-        d2 = d_layer(d1, self.df*2,strides=1) #64
-        #d3 = d_layer(d2, self.df*4,strides=1) #128
+        d2 = d_layer(d1, self.df*4,strides=1) #64
+        d3 = d_layer(d2, self.df*4,strides=1) #128
         #d4 = d_layer(d3, self.df*8,strides=1) #128
         #d5=  d_layer(d4, self.df*8,strides=1)
 
         #validity 0 allows image size 256
-        #validity0 = MaxPooling2D(pool_size = (2, 2),name="pooling")(d3)
+        validity0 = MaxPooling2D(pool_size = (4, 4),name="pooling")(d3)
 
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d2)#(validity0)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(validity0)
 
         return Model([img_rgb, img_thermal], validity)
 

@@ -31,8 +31,6 @@ class DataLoader():
         self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith("tiff")]
 
     def original_load_batch(self, batch_size=1, is_testing=False,thermal_ext=".jpeg"):
-
-
         self.n_batches = int(len(self.rgb_images_list) / batch_size)
 
         for i in range(self.n_batches-1):
@@ -146,6 +144,33 @@ class DataLoader():
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
             thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
             #thermal_imgs = np.array(thermal_imgs)
+            yield rgb_imgs, thermal_imgs
+
+    #practicaly the same of original_load_batch only difference on return
+    def iterator(self, batch_size=2, thermal_ext=".tiff"):
+        self.n_batches = int(len(self.rgb_images_list) / batch_size)
+
+        for i in range(self.n_batches-1):
+            batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
+            rgb_imgs, thermal_imgs = [], []
+            for img_name in batch:
+                rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
+                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
+                h, w, _ = rgb_img.shape
+
+                rgb_img = cv2.resize(rgb_img, self.img_res)
+                thermal_img = cv2.resize(thermal_img, self.img_res)
+
+                if np.random.random() > 0.5:
+                        rgb_img = np.fliplr(rgb_img)
+                        thermal_img = np.fliplr(thermal_img)
+
+                rgb_imgs.append(rgb_img)
+                thermal_imgs.append(thermal_img)
+
+            rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
+            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
+
             yield rgb_imgs, thermal_imgs
 
     #fieldsafe specific
