@@ -2,8 +2,9 @@ from data_loader import DataLoader
 import matplotlib.pyplot as plt
 from tools import visualize
 from data_loader import DataLoader
-from unet import unet
+from unet import unet, sample_images
 import pickle
+import os
 
 batch_size = 5
 im_size = (128,128)
@@ -11,6 +12,11 @@ dataset_name = "flir_8"
 network_name = "unet"
 n_epochs = 5
 steps_per_epoch = 8300
+
+if not os.path.exists(dataset_name + network_name):
+    os.makedirs(dataset_name + network_name)#, exist_ok=True)
+os.chdir(dataset_name + network_name)
+
 
 model = unet(input_size=(im_size[0], im_size[1],  3))
 model.summary()
@@ -22,6 +28,10 @@ data_loader = DataLoader(dataset_name=dataset_name,
                          path_timestamp_matching = "",
                          match_by_timestamps = False)
 
-steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)
+steps_per_epoch = 1#int(len(data_loader.rgb_images_list) / batch_size)
 history = model.fit_generator(data_loader.iterator(batch_size, ".jpeg"), steps_per_epoch= steps_per_epoch, epochs=n_epochs)
 pickle.dump(history, open(dataset_name + network_name + ".p", "wb" ))
+
+model.save_weights(dataset_name+network_name+".h5")
+
+sample_images(model, data_loader, dataset_name +"_"+ network_name, num_images=batch_size)
