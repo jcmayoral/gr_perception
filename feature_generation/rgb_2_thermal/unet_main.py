@@ -9,7 +9,7 @@ import os
 batch_size = 5
 im_size = (128,128)
 dataset_name = "flir_8"
-network_name = "unet_16"
+network_name = "unet_16_masked"
 n_epochs = 5
 steps_per_epoch = 8300
 
@@ -18,7 +18,7 @@ if not os.path.exists(dataset_name + network_name):
 os.chdir(dataset_name + network_name)
 
 
-model = unet(input_size=(im_size[0], im_size[1],  3), neurons_number=16)
+model = unet(input_size=(im_size[0], im_size[1],  3), neurons_number=16, loss = 'binary_crossentropy')
 model.summary()
 
 data_loader = DataLoader(dataset_name=dataset_name,

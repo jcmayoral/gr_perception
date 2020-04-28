@@ -92,8 +92,6 @@ def sample_images(model, data_loader, name, num_images=5):
     fig.savefig("sample_{}.png".format(name))
     plt.close()
 
-
-
 def sample_test_images(original_imgs_thermal, processed_imgs_thermal, num_images=5):
     r, c = num_images, 2
     print original_imgs_thermal.shape

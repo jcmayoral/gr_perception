@@ -7,6 +7,7 @@ import os
 import cv2
 import random
 from sklearn import preprocessing
+from testing_script import filter_thermal
 
 class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
@@ -143,6 +144,7 @@ class DataLoader():
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
             thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
+            thermal_imgs = filter_thermal(thermal_imgs)
 
             yield rgb_imgs, thermal_imgs
 
