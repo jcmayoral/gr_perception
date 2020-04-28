@@ -175,7 +175,7 @@ class Pix2Pix():
         fake = np.zeros((batch_size,) + self.disc_patch)
 
         for epoch in range(epochs):
-            for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.original_load_batch(batch_size,thermal_ext=".jpeg")):
+            for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.load_batch(batch_size,thermal_ext=".jpeg")):
                 if batch_i == self.max_batches:
                     print ("maximum number of batches per epoch is reached")
                     break
