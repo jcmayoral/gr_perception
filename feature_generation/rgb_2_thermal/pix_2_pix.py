@@ -47,19 +47,23 @@ class Pix2Pix():
 
 
         # Calculate output shape of D (PatchGAN)
-        patch =16 #from the paper
+        patch =64 #from the paper
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
-        self.gf = 48
-        self.df = 48
+        self.gf = 16
+        self.df = 16
 
-        optimizer = Adam(0.0002,0.5,0.999)
+        optimizer = Adam(0.0001)#,0.5,0.999)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
 
-        self.discriminator.compile(loss='mse',
+        #self.discriminator.compile(loss='mse',
+        #    optimizer=optimizer,
+        #    metrics=['accuracy'])
+
+        self.discriminator.compile(loss='binary_crossentropy',
             optimizer=optimizer,
             metrics=['accuracy'])
 
@@ -85,7 +89,7 @@ class Pix2Pix():
         valid = self.discriminator([img_rgb,fake_thermal])
 
         self.combined = Model(inputs=[img_rgb, img_thermal], outputs=[valid, fake_thermal])
-        self.combined.compile(loss=["mse","mae"],
+        self.combined.compile(loss="binary_crossentropy",#["mse","mae"],
                               loss_weights=[1,100],
                               optimizer=optimizer)
         self.combined.summary()
@@ -132,7 +136,7 @@ class Pix2Pix():
         u6 = deconv2d(u5, d1, self.gf)
 
         u7 = UpSampling2D(size=2)(u6)
-        output_img = Conv2D(self.thermal_channels, kernel_size=4, strides=1, padding='same', activation='tanh',name="thermal")(u7)
+        output_img = Conv2D(self.thermal_channels, kernel_size=4, strides=1, padding='same', activation='sigmoid',name="thermal")(u7)
 
         return Model(d0, output_img)
 
@@ -155,14 +159,14 @@ class Pix2Pix():
 
         d1 = d_layer(combined_imgs, self.df, bn=False,strides=2) #128
         d2 = d_layer(d1, self.df*4,strides=1) #64
-        d3 = d_layer(d2, self.df*4,strides=1) #128
+        #d3 = d_layer(d2, self.df*4,strides=1) #128
         #d4 = d_layer(d3, self.df*8,strides=1) #128
         #d5=  d_layer(d4, self.df*8,strides=1)
 
         #validity 0 allows image size 256
-        validity0 = MaxPooling2D(pool_size = (4, 4),name="pooling")(d3)
+        #validity0 = MaxPooling2D(pool_size = (4, 4),name="pooling")(d3)
 
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(validity0)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same',name="validity")(d2)#(validity0)
 
         return Model([img_rgb, img_thermal], validity)
 
@@ -209,7 +213,7 @@ class Pix2Pix():
                     self.sample_images(epoch,batch_i,batch_size)
 
     def sample_images(self, epoch,batch_i, num_images=5):
-        target_folder='current_results/{}/{}'.format(epoch,batch_i)
+        target_folder='current_results_masked/{}/{}'.format(epoch,batch_i)
         if not os.path.exists(target_folder):
             os.makedirs(target_folder)#, exist_ok=True)
         r, c = num_images, 3
@@ -233,13 +237,13 @@ class Pix2Pix():
         cnt = 0
         for i in range(r):
             axs[i,0].imshow(imgs_rgb[i])
-            axs[i,1].imshow(imgs_thermal[i][:,:,0],cmap="hot")
-            axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
+            axs[i,1].imshow(imgs_thermal[i][:,:,0])#,cmap="hot")
+            axs[i,2].imshow(fake_thermal[i][:,:,0])#),cmap="hot")
 
             for j in range(c):
                 axs[i, j].set_title(titles[j])
                 axs[i,j].axis('off')
-        fig.savefig("current_results/{}/{}/image.png".format(epoch,batch_i))
+        fig.savefig("current_results_masked/{}/{}/image.png".format(epoch,batch_i))
 
 
         plt.close()

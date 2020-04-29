@@ -54,7 +54,7 @@ class DataLoader():
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
             thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
-
+            thermal_imgs = filter_thermal(thermal_imgs)
             yield rgb_imgs, thermal_imgs
 
 
@@ -75,7 +75,10 @@ class DataLoader():
             thermal_imgs.append(thermal_img)
         rgb_imgs=np.array(rgb_imgs)/127.5-1
         thermal_imgs=np.array(thermal_imgs)
-        thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
+        print thermal_imgs.shape
+        thermal_imgs = filter_thermal(thermal_imgs)
+        #thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
+        print thermal_imgs.shape
         return rgb_imgs, thermal_imgs
 
     def match_by_name(self,rgb_files):
@@ -143,8 +146,9 @@ class DataLoader():
                 thermal_imgs.append(thermal_img)
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
-            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
+            thermal_imgs = np.array(thermal_imgs)#[:,:,:,np.newaxis]/127.5 - 1.
             thermal_imgs = filter_thermal(thermal_imgs)
+            #thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
 
             yield rgb_imgs, thermal_imgs
 

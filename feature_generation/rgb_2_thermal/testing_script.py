@@ -22,11 +22,12 @@ def filter_thermal(original_thermal):
     proccessed_images = list()
     for i in original_thermal:
         j = convert(i, 0, 255, np.uint8)
-        #j = cv2.dilate(j, (3,3), iterations=2)
+        #j = cv2.dilate(j, (3,3), iterations=1)
         #i = cv2.cvtColor(i, cv2.COLOR_BGR2GRAY)
         #j = cv2.Laplacian(j, cv2.CV_8UC1, ksize=3)
-        r,j = cv2.threshold(j,180,255,cv2.THRESH_BINARY)
-        #j = cv2.erode(j, (3,3), iterations=25)
+        r,j = cv2.threshold(j,180,1,cv2.THRESH_BINARY)
+        #print np.unique(j)
+        #j = cv2.erode(j, (3,3), iterations=1)
         #print "image proccessed"
         proccessed_images.append(j)
 
@@ -49,4 +50,5 @@ if __name__ == '__main__':
 
     rgb_images, thermal_images = data_loader.load_samples(num_imgs=batch_size, thermal_ext=".jpeg")
     processed_imgs_thermal = filter_thermal(thermal_images)
-    sample_test_images(rgb_images, processed_imgs_thermal, batch_size)
+    print thermal_images.shape, processed_imgs_thermal.shape
+    sample_test_images(thermal_images, processed_imgs_thermal, batch_size)

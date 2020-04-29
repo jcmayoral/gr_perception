@@ -49,4 +49,4 @@ model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB"
                         path_timestamp_matching="",
                         match_by_timestamps = False)
 
-model.train(n_epochs, batch_size=num_imgs, sample_interval=50)
+model.train(n_epochs, batch_size=num_imgs, sample_interval=25)
