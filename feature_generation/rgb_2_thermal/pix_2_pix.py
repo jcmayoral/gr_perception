@@ -212,13 +212,13 @@ class Pix2Pix():
                 if batch_i % sample_interval == 0:
                     self.sample_images(epoch,batch_i,batch_size)
 
-    def sample_images(self, epoch,batch_i, num_images=5):
+    def sample_images(self, epoch,batch_i, num_images=5, thermal_ext = ".jpeg"):
         target_folder='current_results_masked/{}/{}'.format(epoch,batch_i)
         if not os.path.exists(target_folder):
             os.makedirs(target_folder)#, exist_ok=True)
         r, c = num_images, 3
 
-        imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=".jpeg")
+        imgs_rgb, imgs_thermal = self.data_loader.load_samples(num_images,thermal_ext=thermal_ext)
         fake_thermal = self.generator.predict(imgs_rgb)
 
         #TEST uncomment this if needed

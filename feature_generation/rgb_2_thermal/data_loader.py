@@ -20,6 +20,7 @@ class DataLoader():
         self.rgb_dataset_folder=rgb_dataset_folder
         self.thermal_dataset_folder=thermal_dataset_folder
         self.path_timestamp_matching = path_timestamp_matching
+        self.match_by_timestamps = match_by_timestamps
 
         if match_by_timestamps:
             self.match_thermalfunction= self.match_by_timestamp
@@ -125,14 +126,16 @@ class DataLoader():
         i = 0
         while True:
             batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
+            thermal_batch = self.match_thermalfunction(batch)
+
             i+=1
             if i == self.n_batches:
                 print "RESTARTING GENERATOR"
                 i = 0
             rgb_imgs, thermal_imgs = [], []
-            for img_name in batch:
+            for img_name, thermal_name in zip(batch, thermal_batch):
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
-                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
+                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name.split(".")[0]+thermal_ext))
                 h, w, _ = rgb_img.shape
 
                 rgb_img = cv2.resize(rgb_img, self.img_res)
@@ -167,7 +170,8 @@ class DataLoader():
         try:
             img= cv2.imread(path)
             #For FIELDSAFE
-            #img = self.crop_image(img)
+            if self.match_by_timestamps:
+                img = self.crop_image(img)
             img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             return img
         except:
