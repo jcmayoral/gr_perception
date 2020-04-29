@@ -13,7 +13,7 @@ class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
                  rgb_dataset_folder="/floyd/input/flir_adas/train/RGB",
                  thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit",
-                 path_timestamp_matching="~/", match_by_timestamps=False):
+                 path_timestamp_matching="~/", match_by_timestamps=False, thermal_threshold=180):
         self.dataset_name = dataset_name
         self.img_res = img_res
         self.thermal_res = (img_res[0], img_res[1],1)
@@ -21,6 +21,7 @@ class DataLoader():
         self.thermal_dataset_folder=thermal_dataset_folder
         self.path_timestamp_matching = path_timestamp_matching
         self.match_by_timestamps = match_by_timestamps
+        self.thermal_threshold = thermal_threshold
 
         if match_by_timestamps:
             self.match_thermalfunction= self.match_by_timestamp
@@ -55,7 +56,7 @@ class DataLoader():
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
             thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
-            thermal_imgs = filter_thermal(thermal_imgs)
+            thermal_imgs = filter_thermal(thermal_imgs, self.thermal_threshold)
             yield rgb_imgs, thermal_imgs
 
 
@@ -77,7 +78,7 @@ class DataLoader():
         rgb_imgs=np.array(rgb_imgs)/127.5-1
         thermal_imgs=np.array(thermal_imgs)
         print thermal_imgs.shape
-        thermal_imgs = filter_thermal(thermal_imgs)
+        thermal_imgs = filter_thermal(thermal_imgs, self.thermal_threshold)
         #thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
         print thermal_imgs.shape
         return rgb_imgs, thermal_imgs
@@ -150,7 +151,7 @@ class DataLoader():
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
             thermal_imgs = np.array(thermal_imgs)#[:,:,:,np.newaxis]/127.5 - 1.
-            thermal_imgs = filter_thermal(thermal_imgs)
+            thermal_imgs = filter_thermal(thermal_imgs, self.thermal_threshold)
             #thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
 
             yield rgb_imgs, thermal_imgs

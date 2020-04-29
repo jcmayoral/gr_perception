@@ -18,14 +18,14 @@ def convert(img, target_type_min, target_type_max, target_type):
     new_img = (new_img * 255).astype(target_type)
     return new_img
 
-def filter_thermal(original_thermal):
+def filter_thermal(original_thermal,threshold = 180):
     proccessed_images = list()
     for i in original_thermal:
         j = convert(i, 0, 255, np.uint8)
         #j = cv2.dilate(j, (3,3), iterations=1)
         #i = cv2.cvtColor(i, cv2.COLOR_BGR2GRAY)
         #j = cv2.Laplacian(j, cv2.CV_8UC1, ksize=3)
-        r,j = cv2.threshold(j,180,1,cv2.THRESH_BINARY)
+        r,j = cv2.threshold(j,threshold,1,cv2.THRESH_BINARY)
         #print np.unique(j)
         #j = cv2.erode(j, (3,3), iterations=1)
         #print "image proccessed"

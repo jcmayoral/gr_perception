@@ -43,7 +43,7 @@ data_loader = DataLoader(dataset_name, img_res=im_size,
              rgb_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
              thermal_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
              path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
-             match_by_timestamps = True)
+             match_by_timestamps = True, thermal_threshold=100)
 
 
 
@@ -51,7 +51,7 @@ val_data_loader = DataLoader(dataset_name, img_res=im_size,
              rgb_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
              thermal_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
              path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
-             match_by_timestamps = True)
+             match_by_timestamps = True, thermal_threshold=100)
 
 steps_per_epoch = int(0.0025*len(data_loader.rgb_images_list) / batch_size)
 val_steps_per_epoch = 10#int(len(val_data_loader.rgb_images_list) / batch_size)
