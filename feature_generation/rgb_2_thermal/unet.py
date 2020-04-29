@@ -65,11 +65,11 @@ def unet(pretrained_weights = None,input_size = (256,256,1), neurons_number=16, 
     return model
 
 import matplotlib.pyplot as plt
-def sample_images(model, data_loader, name, num_images=5):
+def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     target_folder='{}'.format(name)
     r, c = num_images, 3
 
-    imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=".jpeg")
+    imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=thermal_ext)
     fake_thermal = model.predict(imgs_rgb)
 
     imgs_thermal=0.5*imgs_thermal+0.5
