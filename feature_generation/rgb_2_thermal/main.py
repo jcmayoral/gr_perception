@@ -10,9 +10,10 @@ import sys
 #NOTE Rotating and trim might be helpful
 #TODO Change to pytorch
 
-num_imgs = 10
+num_imgs = 4
 im_size = (128,128)
-dataset_name = "flir"
+#dataset_name = "flir"
+dataset_name = "fieldsafe"
 neurons_factor = 1
 #todo check why thermanl chanels are three
 thermal_channels = 1
@@ -31,27 +32,30 @@ if len(sys.argv) >1:
 
 model_name = "pix2pix_16times_{}".format(str(neurons_factor))
 
-
-model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,
-                thermal_channels=thermal_channels, max_batches = max_batches, output_folder = "{}_{}".format(dataset_name, model_name))
-
-
 #FOR FLIR
 #Images already matched by name
 
 if dataset_name == "flir":
+    thermal_extension = ".jpeg"
+    model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,
+                thermal_channels=thermal_channels, max_batches = max_batches, output_folder = "{}_{}".format(dataset_name, model_name),
+                thermal_extension = thermal_extension)
     model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
                         "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit",
                         path_timestamp_matching="",
                         match_by_timestamps = False,
-                        factor=neurons_factor)
+                        factor=neurons_factor, thermal_threshold=200)
 else:
     #FOR FIELDSAFE
     #For some reasons it is not parametrized the rgb and thermal
+    thermal_extension = ".tiff"
+    model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,
+                    thermal_channels=thermal_channels, max_batches = max_batches, output_folder = "{}_{}".format(dataset_name, model_name),
+                    thermal_extension = thermal_extension)
     model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
                     "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
                     path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
                     match_by_timestamps = True,
-                    factor = neurons_factor)
+                    factor = neurons_factor, thermal_threshold = 50)
 
 model.train(n_epochs, batch_size=num_imgs, sample_interval=25)

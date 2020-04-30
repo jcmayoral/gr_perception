@@ -13,7 +13,7 @@ class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
                  rgb_dataset_folder="/floyd/input/flir_adas/train/RGB",
                  thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit",
-                 path_timestamp_matching="~/", match_by_timestamps=False, thermal_threshold=180):
+                 path_timestamp_matching="~/", match_by_timestamps=False, thermal_threshold=127):
         self.dataset_name = dataset_name
         self.img_res = img_res
         self.thermal_res = (img_res[0], img_res[1],1)
@@ -27,6 +27,7 @@ class DataLoader():
             self.match_thermalfunction= self.match_by_timestamp
         else:
             self.match_thermalfunction = self.match_by_name
+        self.dyn_threshold = 127
 
         #TODO match images
         self.thermal_min_max_scaler = preprocessing.MinMaxScaler()
@@ -38,11 +39,14 @@ class DataLoader():
 
         for i in range(self.n_batches-1):
             batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
+            thermal_batch = self.match_thermalfunction(batch)
+
             rgb_imgs, thermal_imgs = [], []
-            for img_name in batch:
+            for img_name, thermal_name in zip(batch, thermal_batch):
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
-                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,img_name.split(".")[0]+thermal_ext))
+                thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name.split(".")[0]+thermal_ext))
                 h, w, _ = rgb_img.shape
+
 
                 rgb_img = cv2.resize(rgb_img, self.img_res)
                 thermal_img = cv2.resize(thermal_img, self.img_res)
@@ -56,7 +60,8 @@ class DataLoader():
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
             thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
-            thermal_imgs = filter_thermal(thermal_imgs, self.thermal_threshold)
+            thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
+            self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
             yield rgb_imgs, thermal_imgs
 
 
@@ -77,10 +82,10 @@ class DataLoader():
             thermal_imgs.append(thermal_img)
         rgb_imgs=np.array(rgb_imgs)/127.5-1
         thermal_imgs=np.array(thermal_imgs)
-        print thermal_imgs.shape
-        thermal_imgs = filter_thermal(thermal_imgs, self.thermal_threshold)
+        print thermal_imgs.shape, self.dyn_threshold
+        thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
+        self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
         #thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
-        print thermal_imgs.shape
         return rgb_imgs, thermal_imgs
 
     def match_by_name(self,rgb_files):
@@ -122,8 +127,6 @@ class DataLoader():
     #practicaly the same of original_load_batch only difference on return
     def generator(self, batch_size=2, thermal_ext=".tiff"):
         self.n_batches = int(len(self.rgb_images_list) / batch_size)
-
-        #for i in range(self.n_batches-1):
         i = 0
         while True:
             batch = self.rgb_images_list[i*batch_size:(i+1)*batch_size]
@@ -150,10 +153,10 @@ class DataLoader():
                 thermal_imgs.append(thermal_img)
 
             rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
-            thermal_imgs = np.array(thermal_imgs)#[:,:,:,np.newaxis]/127.5 - 1.
-            thermal_imgs = filter_thermal(thermal_imgs, self.thermal_threshold)
-            #thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
-
+            thermal_imgs = np.array(thermal_imgs)[:,:,:]/127.5 - 1
+            thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
+            self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
+            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]
             yield rgb_imgs, thermal_imgs
 
     #fieldsafe specific

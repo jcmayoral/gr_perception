@@ -24,7 +24,8 @@ class Pix2Pix():
                  thermal_channels=3,
                  dataset_name="flir_rgbdas",
                  max_batches = 20,
-                 output_folder = "."
+                 output_folder = ".",
+                 thermal_extension=".jpeg"
                 ):
         # Input shape
         self.output_folder = output_folder
@@ -36,17 +37,18 @@ class Pix2Pix():
         self.thermal_channels=thermal_channels
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.thermal_img_shape=(self.img_rows,self.img_cols,self.thermal_channels)
-
+        self.thermal_extension = thermal_extension
         # Configure data loader
         self.dataset_name = dataset_name
 
-    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps, factor=1):
+    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps, factor=1, thermal_threshold=127):
         self.data_loader = DataLoader(dataset_name=self.dataset_name,
                                       img_res=(self.img_rows, self.img_cols),
                                       rgb_dataset_folder=rgb_dataset_folder,
                                       thermal_dataset_folder=thermal_dataset_folder,
                                       path_timestamp_matching = path_timestamp_matching,
-                                      match_by_timestamps = match_by_timestamps)
+                                      match_by_timestamps = match_by_timestamps,
+                                      thermal_threshold=thermal_threshold)
 
 
         # Calculate output shape of D (PatchGAN)
@@ -186,7 +188,8 @@ class Pix2Pix():
         fake = np.zeros((batch_size,) + self.disc_patch)
 
         for epoch in range(epochs):
-            for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.load_batch(batch_size,thermal_ext=".jpeg")):
+            print self.thermal_extension
+            for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.load_batch(batch_size,thermal_ext=self.thermal_extension)):
                 if batch_i == self.max_batches:
                     print ("maximum number of batches per epoch is reached")
                     break
@@ -217,7 +220,7 @@ class Pix2Pix():
 
                 # If at save interval => save generated image samples
                 if batch_i % sample_interval == 0:
-                    self.sample_images(epoch,batch_i,batch_size)
+                    self.sample_images(epoch,batch_i,batch_size, self.thermal_extension)
 
     def sample_images(self, epoch,batch_i, num_images=5, thermal_ext = ".jpeg"):
         target_folder='{}/{}'.format(self.output_folder, epoch)
@@ -244,7 +247,7 @@ class Pix2Pix():
         cnt = 0
         for i in range(r):
             axs[i,0].imshow(imgs_rgb[i])
-            axs[i,1].imshow(imgs_thermal[i][:,:,0])#,cmap="hot")
+            axs[i,1].imshow(imgs_thermal[i][:,:])#,cmap="hot")
             axs[i,2].imshow(fake_thermal[i][:,:,0])#),cmap="hot")
 
             for j in range(c):

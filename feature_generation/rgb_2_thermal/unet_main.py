@@ -29,7 +29,7 @@ if len(sys.argv) >1:
 
 batch_size = 50
 im_size = (128,128)
-dataset_name = "fielsafe"
+dataset_name = "fieldsafe"
 network_name = "unet_factor_{}_masked".format(str(neuron_factor))
 
 if not os.path.exists(dataset_name + network_name):
@@ -58,6 +58,7 @@ if dataset_name != "fieldsafe":
 
 
 else:
+    print "FIELDSAFE"
     thermal_extension = ".tiff"
 
     data_loader = DataLoader(dataset_name, img_res=im_size,
