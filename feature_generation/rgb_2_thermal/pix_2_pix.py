@@ -23,9 +23,12 @@ class Pix2Pix():
                 channels=3,
                  thermal_channels=3,
                  dataset_name="flir_rgbdas",
-                 max_batches = 20
+                 max_batches = 20,
+                 output_folder = "."
                 ):
         # Input shape
+        self.output_folder = output_folder
+        self.dataset_name = dataset_name
         self.max_batches = max_batches
         self.img_rows = img_rows
         self.img_cols = img_cols
@@ -213,7 +216,7 @@ class Pix2Pix():
                     self.sample_images(epoch,batch_i,batch_size)
 
     def sample_images(self, epoch,batch_i, num_images=5, thermal_ext = ".jpeg"):
-        target_folder='current_results_masked/{}/{}'.format(epoch,batch_i)
+        target_folder='{}/{}'.format(self.output_folder, epoch)
         if not os.path.exists(target_folder):
             os.makedirs(target_folder)#, exist_ok=True)
         r, c = num_images, 3
@@ -243,7 +246,7 @@ class Pix2Pix():
             for j in range(c):
                 axs[i, j].set_title(titles[j])
                 axs[i,j].axis('off')
-        fig.savefig("current_results_masked/{}/{}/image.png".format(epoch,batch_i))
+        fig.savefig("{}/{}/image{}.png".format(self.output_folder,epoch,batch_i))
 
 
         plt.close()
@@ -253,4 +256,4 @@ class Pix2Pix():
         #print("uncomment save_weights after time matching has been implemented")
         #self.generator.save_weights("saved_models/{}_batch_{}.h5".format(epoch,batch_i))
         #instead store one
-        self.generator.save_weights("saved_models/last_model.h5")
+        self.generator.save_weights("saved_models/model{}.h5".format(self.dataset_name))
