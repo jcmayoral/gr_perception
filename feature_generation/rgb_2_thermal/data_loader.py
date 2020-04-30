@@ -173,6 +173,8 @@ class DataLoader():
             #For FIELDSAFE
             if self.match_by_timestamps:
                 img = self.crop_image(img)
+                #img = self.rotate_image(img)
+
             img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             return img
         except:
@@ -181,6 +183,8 @@ class DataLoader():
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
         thermal_img= skimage.io.imread(thermal_img_path)
+        if self.match_by_timestamps:
+            thermal_img = self.rotate_image(thermal_img)
         #if thermal_img.dtype != np.uint8:
         #    thermal_img = self.convert(thermal_img, 0, 255, np.uint8)
         return thermal_img
