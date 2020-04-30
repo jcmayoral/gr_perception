@@ -58,8 +58,8 @@ class DataLoader():
                 rgb_imgs.append(rgb_img)
                 thermal_imgs.append(thermal_img)
 
-            rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
-            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]/127.5 - 1.
+            rgb_imgs = np.array(rgb_imgs)#/127.5 - 1.
+            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]#/127.5 - 1.
             thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
             self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
             yield rgb_imgs, thermal_imgs
@@ -76,16 +76,22 @@ class DataLoader():
             thermal_img_path=os.path.join(self.thermal_dataset_folder,thermal_img_name.split(".")[0]+thermal_ext)
             rgb_img=self.imread(rgb_img_path)
             thermal_img=self.thermal_imread(thermal_img_path)
-            rgb_img = cv2.resize(rgb_img, self.img_res)
-            thermal_img = cv2.resize(thermal_img, self.img_res)
+            print rgb_img.shape
+            rgb_img = cv2.resize(rgb_img, (self.img_res[0], self.img_res[1]))
+            #rgb_img = rgb_img[:,:,np.newaxis]
+            print rgb_img.shape, "B"
+            thermal_img = cv2.resize(thermal_img, (self.img_res[0], self.img_res[1]))
+            rgb_img = rgb_img[:,:,np.newaxis]
+            thermal_img = thermal_img[:,:,np.newaxis]
             rgb_imgs.append(rgb_img)
             thermal_imgs.append(thermal_img)
-        rgb_imgs=np.array(rgb_imgs)/127.5-1
+        rgb_imgs=np.array(rgb_imgs)#/127.5-1
         thermal_imgs=np.array(thermal_imgs)
         print thermal_imgs.shape, self.dyn_threshold
         thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
         self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
         #thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
+        print rgb_imgs.shape, thermal_imgs.shape
         return rgb_imgs, thermal_imgs
 
     def match_by_name(self,rgb_files):
@@ -140,23 +146,26 @@ class DataLoader():
             for img_name, thermal_name in zip(batch, thermal_batch):
                 rgb_img = self.imread(os.path.join(self.rgb_dataset_folder,img_name))
                 thermal_img= self.thermal_imread(os.path.join(self.thermal_dataset_folder,thermal_name.split(".")[0]+thermal_ext))
-                h, w, _ = rgb_img.shape
 
-                rgb_img = cv2.resize(rgb_img, self.img_res)
-                thermal_img = cv2.resize(thermal_img, self.img_res)
+                rgb_img = cv2.resize(rgb_img, (self.img_res[0],self.img_res[1]))
+                thermal_img = cv2.resize(thermal_img, (self.img_res[0],self.img_res[1]))
+                #h, w, _ = rgb_img.shape
+
 
                 if np.random.random() > 0.5:
                         rgb_img = np.fliplr(rgb_img)
                         thermal_img = np.fliplr(thermal_img)
-
+                rgb_img = rgb_img[:,:,np.newaxis]
+                thermal_img = thermal_img[:,:,np.newaxis]
                 rgb_imgs.append(rgb_img)
                 thermal_imgs.append(thermal_img)
 
-            rgb_imgs = np.array(rgb_imgs)/127.5 - 1.
-            thermal_imgs = np.array(thermal_imgs)[:,:,:]/127.5 - 1
+            rgb_imgs = np.array(rgb_imgs)#[:,:,:]#/127.5 - 1.
+            thermal_imgs = np.array(thermal_imgs)#[:,:,:]#/127.5 - 1
             thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
             self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
-            thermal_imgs = np.array(thermal_imgs)[:,:,:,np.newaxis]
+            rgb_imgs = np.array(rgb_imgs)#[:,:,:,np.newaxis]
+            thermal_imgs = np.array(thermal_imgs)#[:,:,:,np.newaxis]
             yield rgb_imgs, thermal_imgs
 
     #fieldsafe specific
@@ -171,17 +180,18 @@ class DataLoader():
         return image[:,300:,:]
 
     def imread(self, path):
-        try:
-            img= cv2.imread(path)
-            #For FIELDSAFE
-            if self.match_by_timestamps:
-                img = self.crop_image(img)
-                #img = self.rotate_image(img)
+        #try:
+        img= cv2.imread(path)
+        #For FIELDSAFE
+        if self.match_by_timestamps:
+            img = self.crop_image(img)
+            #img = self.rotate_image(img)
 
-            img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-            return img
-        except:
-            print(path)
+        #img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        return img
+        #except:
+        #    print(path)
 
     def thermal_imread(self,img_path):
         thermal_img_path= img_path

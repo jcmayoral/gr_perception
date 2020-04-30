@@ -17,11 +17,17 @@ print " "
 
 neuron_factor = 1
 n_epochs = 3
+percent = 10
 
-print "used argv 1 is n_epochs and argv 2 neuron_factor"
+if len(sys.argv) < 4:
+    print "used argv 1 is n_epochs and argv 2 neuron_factor"
+    sys.exit()
+
+if len(sys.argv) >3:
+    neuron_factor = int(sys.argv[2])
 
 if len(sys.argv) >2:
-    neuron_factor = int(sys.argv[2])
+    percent = int(sys.argv[2])
 
 if len(sys.argv) >1:
     n_epochs = int(sys.argv[1])
@@ -29,7 +35,7 @@ if len(sys.argv) >1:
 
 batch_size = 50
 im_size = (128,128)
-dataset_name = "fieldsafe"
+dataset_name = "fieldsafe_{}percentdata".format(percent)
 network_name = "unet_factor_{}_masked".format(str(neuron_factor))
 
 if not os.path.exists(dataset_name + network_name):
@@ -37,20 +43,20 @@ if not os.path.exists(dataset_name + network_name):
 os.chdir(dataset_name + network_name)
 
 
-model = unet(input_size=(im_size[0], im_size[1],  3), neuron_factor=neuron_factor, loss = 'binary_crossentropy')
+model = unet(input_size=(im_size[0], im_size[1],  1), neuron_factor=neuron_factor, loss = 'binary_crossentropy')
 model.summary()
 
 
 if dataset_name != "fieldsafe":
     thermal_extension = ".jpeg"
     data_loader = DataLoader(dataset_name=dataset_name,
-                         img_res=(im_size[0], im_size[1]),
+                         img_res=(im_size[0], im_size[1],1),
                          rgb_dataset_folder="/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
                          thermal_dataset_folder="/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit",
                          path_timestamp_matching = "",
                          match_by_timestamps = False)
     val_data_loader = DataLoader(dataset_name=dataset_name,
-                         img_res=(im_size[0], im_size[1]),
+                         img_res=(im_size[0], im_size[1],1),
                          rgb_dataset_folder="/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/val/RGB",
                          thermal_dataset_folder="/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/val/thermal_8_bit",
                          path_timestamp_matching = "",
@@ -73,8 +79,8 @@ else:
              path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
              match_by_timestamps = True, thermal_threshold=245)
 
-steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)
-val_steps_per_epoch = int(steps_per_epoch*0.05)#int(len(val_data_loader.rgb_images_list) / batch_size)
+steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)*percent
+val_steps_per_epoch = int(steps_per_epoch)*0.2#int(len(val_data_loader.rgb_images_list) / batch_size)
 
 print ("Steps per epoch {} Total batches {} Epochs{}".format(steps_per_epoch, int(len(data_loader.rgb_images_list) / batch_size), n_epochs))
 history = model.fit_generator(data_loader.generator(batch_size, thermal_extension), steps_per_epoch= steps_per_epoch, epochs=n_epochs,

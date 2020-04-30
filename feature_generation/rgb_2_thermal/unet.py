@@ -70,11 +70,12 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     r, c = num_images, 3
 
     imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=thermal_ext)
+    print imgs_rgb.shape
     fake_thermal = model.predict(imgs_rgb)
 
-    imgs_thermal=0.5*imgs_thermal+0.5
-    imgs_rgb=0.5*imgs_rgb+0.5
-    fake_thermal=0.5*fake_thermal+0.5
+    #imgs_thermal=0.5*imgs_thermal+0.5
+    #imgs_rgb=0.5*imgs_rgb+0.5
+    #fake_thermal=0.5*fake_thermal+0.5
 
 
     titles = ['Condition','Original', 'Generated']
@@ -82,7 +83,7 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     fig, axs = plt.subplots(r, c,figsize=[20,20])
     cnt = 0
     for i in range(r):
-        axs[i,0].imshow(imgs_rgb[i])
+        axs[i,0].imshow(imgs_rgb[i][:,:,0])
         axs[i,1].imshow(imgs_thermal[i][:,:,0],cmap="hot")
         axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
 
@@ -99,8 +100,8 @@ def sample_test_images(original_imgs_thermal, processed_imgs_thermal, num_images
     #imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=".jpeg")
     #fake_thermal = model.predict(imgs_rgb)
 
-    original_imgs_thermal=0.5*original_imgs_thermal+0.5
-    processed_imgs_thermal=0.5*processed_imgs_thermal+0.5
+    #original_imgs_thermal=0.5*original_imgs_thermal+0.5
+    #processed_imgs_thermal=0.5*processed_imgs_thermal+0.5
     #fake_thermal=0.5*fake_thermal+0.5
     titles = ['Original', 'Processed']
     #plt.figure(figsize=(5,5))

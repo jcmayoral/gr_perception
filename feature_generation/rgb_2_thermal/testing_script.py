@@ -38,11 +38,14 @@ def filter_thermal(original_thermal,threshold = 180):
         h = j.shape[0]
         w = j.shape[1]
 
+        if 0 > threshold > 255:
+            print "ERROR ", threshold
+
         for y in range(0, h):
             for x in range(0, w):
                 j[y, x] = 255 if j[y, x] > threshold else 0
         #j = convert(i, 0, 255, np.uint8)
-        #print np.unique(j)
+        #print np.unique(j, return_counts = True), threccshold
         #print threshold
         #if i.dtype!=np.uint8:
         #    print "converting", j.dtype
