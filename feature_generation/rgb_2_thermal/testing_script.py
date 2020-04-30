@@ -22,6 +22,17 @@ def filter_thermal(original_thermal,threshold = 180):
     proccessed_images = list()
     for i in original_thermal:
         j = convert(i, 0, 255, np.uint8)
+        mean = np.mean(j)
+        threshold = mean
+
+        h = j.shape[0]
+        w = j.shape[1]
+
+        for y in range(0, h):
+            for x in range(0, w):
+                j[y, x] = 255 if j[y, x] >= threshold else 0
+        #print np.unique(j)
+        #
         #j = cv2.dilate(j, (3,3), iterations=1)
         #i = cv2.cvtColor(i, cv2.COLOR_BGR2GRAY)
         #j = cv2.Laplacian(j, cv2.CV_8UC1, ksize=3)
