@@ -11,7 +11,8 @@ from pix_2_pix import Pix2Pix
 
 num_imgs = 10
 im_size = (128,128)
-dataset_name = "garbage"
+dataset_name = "flir"
+model_name = "pix2pix"
 #todo check why thermanl chanels are three
 thermal_channels = 1
 n_epochs = 5
@@ -33,20 +34,23 @@ if False:
     exit(1)
 
 model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,
-                thermal_channels=thermal_channels, max_batches = max_batches)
+                thermal_channels=thermal_channels, max_batches = max_batches, output_folder = "{}_{}".format(model_name,dataset_name))
 
-#FOR FIELDSAFE
-#For some reasons it is not parametrized the rgb and thermal
-#model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
-        #                "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
-        #                path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
-        #                match_by_timestamps = True)
 
 #FOR FLIR
 #Images already matched by name
-model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
+
+if dataset_name == "flir":
+    model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
                         "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit",
                         path_timestamp_matching="",
                         match_by_timestamps = False)
+else:
+    #FOR FIELDSAFE
+    #For some reasons it is not parametrized the rgb and thermal
+    model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
+                    "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
+                    path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
+                    match_by_timestamps = True)
 
 model.train(n_epochs, batch_size=num_imgs, sample_interval=25)
