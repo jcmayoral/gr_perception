@@ -109,8 +109,8 @@ def sample_test_images(original_imgs_thermal, processed_imgs_thermal, num_images
     print r,c
     for i in range(r):
         print i
-        axs[i,0].imshow(original_imgs_thermal[i][:,:,0],cmap="hot")
-        axs[i,1].imshow(processed_imgs_thermal[i][:,:,0],cmap="hot")
+        axs[i,0].imshow(original_imgs_thermal[i][:,:,0])
+        axs[i,1].imshow(processed_imgs_thermal[i][:,:,0])
         #axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
 
         for j in range(c):
