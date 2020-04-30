@@ -24,7 +24,7 @@ if len(sys.argv) < 4:
     sys.exit()
 
 if len(sys.argv) >3:
-    neuron_factor = int(sys.argv[2])
+    neuron_factor = int(sys.argv[3])
 
 if len(sys.argv) >2:
     percent = int(sys.argv[2])
