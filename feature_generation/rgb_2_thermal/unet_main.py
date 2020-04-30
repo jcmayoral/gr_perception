@@ -5,6 +5,7 @@ from data_loader import DataLoader
 from unet import unet, sample_images
 import pickle
 import os
+import sys
 
 from tensorflow.python.client import device_lib
 print(device_lib.list_local_devices())
@@ -14,19 +15,29 @@ print(device_lib.list_local_devices())
 
 print " "
 
+neuron_factor = 1
+n_epochs = 3
+
+print "used argv 1 is n_epochs and argv 2 neuron_factor"
+
+if len(sys.argv) >2:
+    neuron_factor = int(sys.argv[2])
+
+if len(sys.argv) >1:
+    n_epochs = int(sys.argv[1])
+
+
 batch_size = 50
-neurons_number = 2
 im_size = (128,128)
 dataset_name = "fielsafe"
-network_name = "unet_{}_masked".format(str(neurons_number))
-n_epochs = 3
+network_name = "unet_factor_{}_masked".format(str(neuron_factor))
 
 if not os.path.exists(dataset_name + network_name):
     os.makedirs(dataset_name + network_name)#, exist_ok=True)
 os.chdir(dataset_name + network_name)
 
 
-model = unet(input_size=(im_size[0], im_size[1],  3), neurons_number=neurons_number, loss = 'binary_crossentropy')
+model = unet(input_size=(im_size[0], im_size[1],  3), neuron_factor=neuron_factor, loss = 'binary_crossentropy')
 model.summary()
 
 
