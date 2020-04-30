@@ -35,8 +35,8 @@ if len(sys.argv) >1:
 
 batch_size = 50
 im_size = (128,128)
-dataset_name = "fieldsafe_{}percentdata".format(percent)
-network_name = "unet_factor_{}_masked".format(str(neuron_factor))
+dataset_name = "fieldsafe_{}percentdata_".format(percent)
+network_name = "unet_factor_{}_greyscalemasked".format(str(neuron_factor))
 
 if not os.path.exists(dataset_name + network_name):
     os.makedirs(dataset_name + network_name)#, exist_ok=True)
@@ -79,7 +79,7 @@ else:
              path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
              match_by_timestamps = True, thermal_threshold=245)
 
-steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)*percent
+steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)*(percent/100)
 val_steps_per_epoch = int(steps_per_epoch)*0.2#int(len(val_data_loader.rgb_images_list) / batch_size)
 
 print ("Steps per epoch {} Total batches {} Epochs{}".format(steps_per_epoch, int(len(data_loader.rgb_images_list) / batch_size), n_epochs))
