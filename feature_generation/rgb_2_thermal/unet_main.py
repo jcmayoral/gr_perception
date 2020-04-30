@@ -78,10 +78,8 @@ else:
              thermal_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
              path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
              match_by_timestamps = True, thermal_threshold=245)
-
-steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)*(percent/100)
+steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size)*(percent/100.)
 val_steps_per_epoch = int(steps_per_epoch*0.2)#int(len(val_data_loader.rgb_images_list) / batch_size)
-
 print ("Steps per epoch {} Total batches {} Epochs{}".format(steps_per_epoch, int(len(data_loader.rgb_images_list) / batch_size), n_epochs))
 history = model.fit_generator(data_loader.generator(batch_size, thermal_extension), steps_per_epoch= steps_per_epoch, epochs=n_epochs,
                                 validation_data=val_data_loader.generator(batch_size, thermal_extension), validation_steps=val_steps_per_epoch)
