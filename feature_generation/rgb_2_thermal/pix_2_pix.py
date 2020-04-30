@@ -40,7 +40,7 @@ class Pix2Pix():
         # Configure data loader
         self.dataset_name = dataset_name
 
-    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps):
+    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps, factor=1):
         self.data_loader = DataLoader(dataset_name=self.dataset_name,
                                       img_res=(self.img_rows, self.img_cols),
                                       rgb_dataset_folder=rgb_dataset_folder,
@@ -53,9 +53,13 @@ class Pix2Pix():
         patch =64 #from the paper
         self.disc_patch = (patch, patch, 1)
 
+        if factor <0:
+            print "factor should be higher than 0, setting to 1"
+            factor = 1
+
         # Number of filters in the first layer of G and D
-        self.gf = 16
-        self.df = 16
+        self.gf = int(factor*16)
+        self.df = int(factor*16)
 
         optimizer = Adam(0.0001)#,0.5,0.999)
 

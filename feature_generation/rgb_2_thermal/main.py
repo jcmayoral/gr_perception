@@ -2,6 +2,7 @@ from data_loader import DataLoader
 import matplotlib.pyplot as plt
 from tools import visualize
 from pix_2_pix import Pix2Pix
+import sys
 
 #MAIN TODO IMPORTANT
 #Create a hashtable or other to match rgb and thermal
@@ -12,29 +13,27 @@ from pix_2_pix import Pix2Pix
 num_imgs = 10
 im_size = (128,128)
 dataset_name = "flir"
-model_name = "pix2pix"
+neurons_factor = 1
 #todo check why thermanl chanels are three
 thermal_channels = 1
 n_epochs = 5
 max_batches = -1
 
-
-print("Uncomment np.save on final approach to save batch")
-
 #TODO add as arg
-if False:
-    data_loader = DataLoader(dataset_name, img_res=im_size,
-                 rgb_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
-                 thermal_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
-                 path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching")
 
-    rgb_imgs, thermal_imgs = data_loader.load_samples(num_imgs=num_imgs,thermal_ext=".tiff")
-    #imshow a sample of images
-    visualize(rgb_imgs, thermal_imgs)
-    exit(1)
+print "used argv 1 is n_epochs and argv 2 neurons_factor: factor 4 is default"
+
+if len(sys.argv) >2:
+    neurons_factor = int(sys.argv[2])
+
+if len(sys.argv) >1:
+    n_epochs = int(sys.argv[1])
+
+model_name = "pix2pix_16times_{}".format(str(neurons_factor))
+
 
 model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name,
-                thermal_channels=thermal_channels, max_batches = max_batches, output_folder = "{}_{}".format(model_name,dataset_name))
+                thermal_channels=thermal_channels, max_batches = max_batches, output_folder = "{}_{}".format(dataset_name, model_name))
 
 
 #FOR FLIR
@@ -44,13 +43,15 @@ if dataset_name == "flir":
     model.custom_initialize("/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
                         "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit",
                         path_timestamp_matching="",
-                        match_by_timestamps = False)
+                        match_by_timestamps = False,
+                        factor=neurons_factor)
 else:
     #FOR FIELDSAFE
     #For some reasons it is not parametrized the rgb and thermal
     model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
                     "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
                     path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
-                    match_by_timestamps = True)
+                    match_by_timestamps = True,
+                    factor = neurons_factor)
 
 model.train(n_epochs, batch_size=num_imgs, sample_interval=25)
