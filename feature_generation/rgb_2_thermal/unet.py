@@ -83,41 +83,16 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     fig, axs = plt.subplots(r, c,figsize=[20,20])
     cnt = 0
     for i in range(r):
-        axs[i,0].imshow(imgs_rgb[i][:,:,0])
-        axs[i,1].imshow(imgs_thermal[i][:,:,0],cmap="hot")
+        axs[i,0].imshow(imgs_rgb[i][:,:,0], cmap='gray')
+        axs[i,1].imshow(imgs_thermal[i][:,:,0]*255,cmap="hot")
         axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
+
+        print np.unique(fake_thermal[i][:,:,0])
+        print np.unique(imgs_thermal[i][:,:,0])
+
 
         for j in range(c):
             axs[i, j].set_title(titles[j])
             axs[i,j].axis('off')
     fig.savefig("sample_{}.png".format(name))
-    plt.close()
-
-def sample_test_images(original_imgs_thermal, processed_imgs_thermal, num_images=5):
-    r, c = num_images, 2
-    print original_imgs_thermal.shape
-    print processed_imgs_thermal.shape
-    #imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=".jpeg")
-    #fake_thermal = model.predict(imgs_rgb)
-
-    #original_imgs_thermal=0.5*original_imgs_thermal+0.5
-    #processed_imgs_thermal=0.5*processed_imgs_thermal+0.5
-    #fake_thermal=0.5*fake_thermal+0.5
-    titles = ['Original', 'Processed']
-    #plt.figure(figsize=(5,5))
-    fig, axs = plt.subplots(r, c,figsize=[20,20])
-    cnt = 0
-    print r,c
-    for i in range(r):
-        print i
-        axs[i,0].imshow(original_imgs_thermal[i][:,:,0])
-        axs[i,1].imshow(processed_imgs_thermal[i][:,:,0])
-        #axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
-
-        for j in range(c):
-            print i, j
-            axs[i, j].set_title(titles[j])
-            axs[i,j].axis('off')
-    #fig.savefig("sample_{}.png".format(name))
-    plt.show()
     plt.close()

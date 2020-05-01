@@ -1,7 +1,6 @@
 import cv2
 import matplotlib.pyplot as plt
 from tools import visualize
-from unet import  sample_test_images
 import pickle
 import os
 import numpy as np
@@ -30,10 +29,15 @@ def filter_thermal(original_thermal,threshold = 180):
         j = convert(i, 0, 255, np.uint8)
         #j =  img_as_float(i)
         #print mean
-        fthreshold = np.mean(j)
+        fthreshold = threshold
         #print np.unique(j)
         #print original_thermal.shape
         #print fthreshold
+
+        if threshold < 10:
+            #print "hack" , threshold
+            fthreshold = np.mean(j)#threshold
+
 
         h = j.shape[0]
         w = j.shape[1]
@@ -43,7 +47,7 @@ def filter_thermal(original_thermal,threshold = 180):
 
         for y in range(0, h):
             for x in range(0, w):
-                j[y, x] = 255 if j[y, x] > threshold else 0
+                j[y, x] = 1 if j[y, x] >= fthreshold else 0
         #j = convert(i, 0, 255, np.uint8)
         #print np.unique(j, return_counts = True), threccshold
         #print threshold
@@ -72,14 +76,10 @@ if __name__ == '__main__':
     from data_loader import DataLoader
 
     data_loader = DataLoader(dataset_name=dataset_name,
-                         img_res=(im_size[0], im_size[1]),
+                        img_res=(im_size[0], im_size[1],1),
                          rgb_dataset_folder="/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB",
                          thermal_dataset_folder="/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit",
                          path_timestamp_matching = "",
                          match_by_timestamps = False)
-
-
     rgb_images, thermal_images = data_loader.load_samples(num_imgs=batch_size, thermal_ext=".jpeg")
-    processed_imgs_thermal = filter_thermal(thermal_images)
-    print thermal_images.shape, processed_imgs_thermal.shape
-    sample_test_images(thermal_images, processed_imgs_thermal, batch_size)
+    processed_imgs_thermal, threshold = filter_thermal(thermal_images)

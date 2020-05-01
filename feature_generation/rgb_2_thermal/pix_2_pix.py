@@ -41,15 +41,14 @@ class Pix2Pix():
         # Configure data loader
         self.dataset_name = dataset_name
 
-    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps, factor=1, thermal_threshold=127):
+    def custom_initialize(self, rgb_dataset_folder, thermal_dataset_folder, path_timestamp_matching, match_by_timestamps, factor=1, thermal_threshold=127, data_percentage = 100):
         self.data_loader = DataLoader(dataset_name=self.dataset_name,
                                       img_res=(self.img_rows, self.img_cols),
                                       rgb_dataset_folder=rgb_dataset_folder,
                                       thermal_dataset_folder=thermal_dataset_folder,
                                       path_timestamp_matching = path_timestamp_matching,
                                       match_by_timestamps = match_by_timestamps,
-                                      thermal_threshold=thermal_threshold)
-
+                                      thermal_threshold=thermal_threshold, data_percentage = data_percentage)
 
         # Calculate output shape of D (PatchGAN)
         patch =64 #from the paper
@@ -236,9 +235,9 @@ class Pix2Pix():
         #np.save(target_folder+"/original_thermal.npy",imgs_thermal)
         #np.save(target_folder+"/fake_thermal.npy",fake_thermal)
 
-        imgs_thermal=0.5*imgs_thermal+0.5
-        imgs_rgb=0.5*imgs_rgb+0.5
-        fake_thermal=0.5*fake_thermal+0.5
+        #imgs_thermal=0.5*imgs_thermal+0.5
+        #imgs_rgb=0.5*imgs_rgb+0.5
+        #fake_thermal=0.5*fake_thermal+0.5
 
 
         titles = ['Condition','Original', 'Generated']
@@ -246,9 +245,9 @@ class Pix2Pix():
         fig, axs = plt.subplots(r, c,figsize=[20,20])
         cnt = 0
         for i in range(r):
-            axs[i,0].imshow(imgs_rgb[i])
-            axs[i,1].imshow(imgs_thermal[i][:,:])#,cmap="hot")
-            axs[i,2].imshow(fake_thermal[i][:,:,0])#),cmap="hot")
+            axs[i,0].imshow(imgs_rgb[i][:,:,0],cmap="gray")
+            axs[i,1].imshow(imgs_thermal[i][:,:,0],cmap="hot")
+            axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
 
             for j in range(c):
                 axs[i, j].set_title(titles[j])
