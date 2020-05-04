@@ -84,8 +84,8 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     cnt = 0
     for i in range(r):
         axs[i,0].imshow(imgs_rgb[i][:,:,0], cmap='gray')
-        axs[i,1].imshow(imgs_thermal[i][:,:,0]*255,cmap="hot")
-        axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="hot")
+        axs[i,1].imshow(imgs_thermal[i][:,:,0]*255,cmap="gray")
+        axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="gray")
 
         print np.unique(fake_thermal[i][:,:,0])
         print np.unique(imgs_thermal[i][:,:,0])

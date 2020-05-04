@@ -67,13 +67,13 @@ class Pix2Pix():
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
 
-        #self.discriminator.compile(loss='mse',
-        #    optimizer=optimizer,
-        #    metrics=['accuracy'])
-
-        self.discriminator.compile(loss='binary_crossentropy',
+        self.discriminator.compile(loss='mse',
             optimizer=optimizer,
             metrics=['accuracy'])
+
+        #self.discriminator.compile(loss='binary_crossentropy',
+        #    optimizer=optimizer,
+        #    metrics=['accuracy'])
 
         #-------------------------
         # Construct Computational

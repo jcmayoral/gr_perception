@@ -1,6 +1,9 @@
+import sys
+sys.path.append("..")
+
+from tools.tools import visualize
 import cv2
 import matplotlib.pyplot as plt
-from tools import visualize
 import pickle
 import os
 import numpy as np
@@ -36,7 +39,7 @@ def filter_thermal(original_thermal,threshold = 180):
 
         if threshold < 10:
             #print "hack" , threshold
-            fthreshold = np.mean(j)#threshold
+            fthreshold = np.mean(j)+np.sqrt(np.var(j))#threshold
 
 
         h = j.shape[0]
@@ -47,7 +50,7 @@ def filter_thermal(original_thermal,threshold = 180):
 
         for y in range(0, h):
             for x in range(0, w):
-                j[y, x] = 1 if j[y, x] >= fthreshold else 0
+                j[y, x] = 0 if j[y, x] > fthreshold else 1
         #j = convert(i, 0, 255, np.uint8)
         #print np.unique(j, return_counts = True), threccshold
         #print threshold

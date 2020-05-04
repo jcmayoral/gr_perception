@@ -1,7 +1,6 @@
-from data_loader import DataLoader
 import matplotlib.pyplot as plt
-from tools import visualize
-from pix_2_pix import Pix2Pix
+from tools.tools import visualize
+from models.pix_2_pix import Pix2Pix
 import sys
 
 #MAIN TODO IMPORTANT

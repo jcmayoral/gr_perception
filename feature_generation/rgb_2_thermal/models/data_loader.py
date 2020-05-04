@@ -7,7 +7,7 @@ import os
 import cv2
 import random
 from sklearn import preprocessing
-from testing_script import filter_thermal
+from filters.preprocessing import filter_thermal
 
 class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),

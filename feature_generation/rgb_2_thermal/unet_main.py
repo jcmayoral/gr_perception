@@ -1,8 +1,8 @@
-from data_loader import DataLoader
+from models.data_loader import DataLoader
 import matplotlib.pyplot as plt
-from tools import visualize
+from tools.tools import visualize
 from data_loader import DataLoader
-from unet import unet, sample_images
+from models.unet import unet, sample_images
 import pickle
 import os
 import sys
