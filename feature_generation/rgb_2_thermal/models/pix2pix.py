@@ -57,6 +57,7 @@ import time
 
 from matplotlib import pyplot as plt
 from IPython import display
+import tensorflow as tf
 
 
 PATH = "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/RGB/"#os.path.join(os.path.dirname(path_to_zip), 'facades/')
@@ -102,9 +103,15 @@ def resize(input_image, real_image, height, width):
     input_image = cv2.resize(input_image, (height,width))
     #HACK
     real_image = cv2.resize(real_image, (height,width))
-    w,h = real_image.shape
+    #input_image = tf.cast(input_image, tf.float32)
+    #real_image = tf.cast(real_image, tf.float32)
+    #real_image = tf.expand_dims(real_image, 0)
     #real_image = real_image.reshape(w,h,1)
-
+    #input_image = tf.image.resize(input_image, [height, width],
+                    #            method=tf.image.ResizeMethod.NEAREST_NEIGHBOR)
+    #real_image = tf.image.resize(real_image, [height, width],
+                    #           method=tf.image.ResizeMethod.NEAREST_NEIGHBOR)
+    #print input_image.shape, real_image.shape, "OOOOOo"
     return input_image, real_image
 
 
@@ -125,10 +132,15 @@ def load_tuplesample():
     thermal_dataset = glob.glob(THERMAL_PATH+'*.jpeg')
     max_index = min(len(train_dataset), len(thermal_dataset))
     index = str(randint(1,max_index)).zfill(5)
-    inp, re = load(PATH+'FLIR_{}.jpg'.format(index), THERMAL_PATH+'FLIR_{}.jpeg'.format(index))
-    inp, re = resize(inp,re, IMG_HEIGHT, IMG_WIDTH)
-    inp, re = normalize(inp, re)
-    return inp,np.expand_dims(re, axis=2)
+
+    try:
+        inp, re = load(PATH+'FLIR_{}.jpg'.format(index), THERMAL_PATH+'FLIR_{}.jpeg'.format(index))
+        inp, re = resize(inp,re, IMG_HEIGHT, IMG_WIDTH)
+        inp, re = normalize(inp, re)
+        return inp,np.expand_dims(re, axis=2)
+    except:
+        print "ERROR ", "IMAGE ", index
+        load_tuplesample()
 
 
 #train_dataset = train_dataset.map(load_image_train,num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -151,10 +163,11 @@ test_dataset = test_dataset.batch(BATCH_SIZE)
 #   * There are skip connections between the encoder and decoder (as in U-Net).
 #
 
-from keras.models import Sequential, Model
-from keras.layers import Conv2D, BatchNormalization, LeakyReLU, Input, Conv2DTranspose, ReLU, Concatenate, Dropout
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Conv2D, BatchNormalization, LeakyReLU, Input, Conv2DTranspose, ReLU, Concatenate, Dropout
 
-OUTPUT_CHANNELS = 3
+#in this case number of channels of the thermal image
+OUTPUT_CHANNELS = 1
 
 def downsample(filters, size, apply_batchnorm=True):
     #initializer = tf.random_normal_initializer(0., 0.02)
@@ -196,11 +209,10 @@ def upsample(filters, size, apply_dropout=False):
 from unet import unet
 
 def Generator():
-    model = unet(input_size = (IMG_HEIGHT,IMG_WIDTH,3), neuron_factor=2, loss = 'mse', compile=False)
-    model.summary()
-    return model
-    """
-    inputs = Input(shape=[IMG_HEIGHT,IMG_WIDTH,10], name="error_layer")
+    #model = unet(input_size = (IMG_HEIGHT,IMG_WIDTH,3), neuron_factor=2, loss = 'mse', compile=False)
+    #model.summary()
+    #return model
+    inputs = Input(shape=[IMG_HEIGHT,IMG_WIDTH,3], name="error_layer")
     down_stack = [
     downsample(64, 4, apply_batchnorm=False), # (bs, 128, 128, 64)
     downsample(128, 4), # (bs, 64, 64, 128)
@@ -232,7 +244,7 @@ def Generator():
 
     for down in down_stack:
         x = down(x)
-    skips.append(x)
+        skips.append(x)
 
     skips = reversed(skips[:-1])
     # Upsampling and establishing the skip connections
@@ -241,11 +253,10 @@ def Generator():
         x = Concatenate()([x, skip])
     x = last(x)
     return Model(inputs=inputs, outputs=x)
-    """
 
-from keras.utils import plot_model
+from tensorflow.keras.utils import plot_model
 generator = Generator()
-plot_model(generator, show_shapes=True, dpi=64)
+plot_model(generator, show_shapes=True)#, dpi=64)
 
 #print input.shape
 #gen_output = generator(input)
@@ -264,18 +275,19 @@ plot_model(generator, show_shapes=True, dpi=64)
 # In[25]:
 
 
-LAMBDA = 100
+LAMBDA = 100#np.float64(100)
 
 
 # In[26]:
 
-from keras.backend import ones_like, abs, mean, zeros_like
-
 def generator_loss(disc_generated_output, gen_output, target):
-    gan_loss = loss_object(ones_like(disc_generated_output), disc_generated_output)
+    gan_loss = loss_object(tf.ones_like(disc_generated_output), disc_generated_output)
     # mean absolute error
     #l1_loss = tf.reduce_mean(abs(target - gen_output))
-    l1_loss = mean(abs(target - gen_output))
+    #gan_loss = tf.cast(gan_loss,"float64")
+    l1_loss =tf.reduce_mean(tf.abs(target - gen_output))
+    #l1_loss = tf.cast(l1_loss,"float32")
+
     total_gen_loss = gan_loss + (LAMBDA * l1_loss)
     return total_gen_loss, gan_loss, l1_loss
 
@@ -292,12 +304,12 @@ def generator_loss(disc_generated_output, gen_output, target):
 #     * Input image and the generated image (output of generator), which it should classify as fake.
 #     * We concatenate these 2 inputs together in the code (`tf.concat([inp, tar], axis=-1)`)
 
-from keras.layers import ZeroPadding2D, concatenate
+from tensorflow.keras.layers import ZeroPadding2D, concatenate
 
 def Discriminator():
     #initializer = tf.random_normal_initializer(0., 0.02)
-    inp = Input(shape=[IMG_HEIGHT, IMG_WIDTH, 3], name='input_image')
-    tar = Input(shape=[IMG_HEIGHT, IMG_WIDTH, 1], name='target_image')
+    inp = Input(shape=[IMG_HEIGHT, IMG_WIDTH, 3], name='dinput_image')
+    tar = Input(shape=[IMG_HEIGHT, IMG_WIDTH, 1], name='dtarget_image')
     x = Concatenate(axis=-1)([inp, tar]) # (bs, 256, 256, channels*2)
     down1 = downsample(64, 4, False)(x) # (bs, 128, 128, 64)
     down2 = downsample(128, 4)(down1) # (bs, 64, 64, 128)
@@ -337,8 +349,9 @@ loss_object = BinaryCrossentropy(from_logits=True)
 
 
 def discriminator_loss(disc_real_output, disc_generated_output):
-    real_loss = loss_object(ones_like(disc_real_output), disc_real_output)
-    generated_loss = loss_object(zeros_like(disc_generated_output), disc_generated_output)
+    real_loss = loss_object(tf.ones_like(disc_real_output), disc_real_output)
+    generated_loss = loss_object(tf.zeros_like(disc_generated_output), disc_generated_output)
+    #geneated_los = tf.cast(generator_loss, "float64")
     total_disc_loss = real_loss + generated_loss
     return total_disc_loss
 
@@ -354,14 +367,14 @@ def discriminator_loss(disc_real_output, disc_generated_output):
 
 # In[32]:
 
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 
 generator_optimizer = Adam(2e-4, beta_1=0.5)
 discriminator_optimizer = Adam(2e-4, beta_1=0.5)
 
 # In[33]:
 
-from keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 checkpoint_dir = './training_checkpoints'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
@@ -417,7 +430,7 @@ def get_batch():
         r,re = load_tuplesample()
         rgb.append(r)
         real.append(re)
-    a,b =  np.asarray(rgb), np.asarray(real)
+    a,b =  np.asarray(rgb, dtype=np.float32), np.asarray(real, dtype=np.float32)
     print a.shape, b.shape, "CHECKIT OUT"
     return a,b
 
@@ -449,23 +462,32 @@ import datetime
 #  log_dir + "fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 
-# In[38]:
+log_dir=""
+summary_writer = tf.summary.FileWriter(
+                log_dir + "fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 
-
+@tf.function
 def train_step(input_image, target, epoch):
-    discriminator.compile(loss='mse',
-        optimizer="adam",
-        metrics=['accuracy'])
-    discriminator.summary()
+    #discriminator.compile(loss='mse',
+    #    optimizer="adam",
+    #    metrics=['accuracy'])
+    #discriminator.summary()
     valid = np.ones((BATCH_SIZE,30,30,1))
     fake = np.ones((BATCH_SIZE,30,30,1))
-    gen_output = generator.predict(input_image)
-    disc_real_output = discriminator.train_on_batch([input_image, target],valid)
-    disc_generated_output = discriminator.train_on_batch([input_image, gen_output],fake)
 
-    gen_total_loss, gen_gan_loss, gen_l1_loss = generator_loss(disc_generated_output, gen_output, target)
-    disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
+    with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
+        #gen_output = generator.predict(input_image)
+        #disc_real_output = discriminator.train_on_batch([input_image, target],valid)
+        #disc_generated_output = discriminator.train_on_batch([input_image, gen_output],fake)
 
+        gen_output = generator(input_image, training=True)
+        disc_real_output = discriminator([input_image, target], training=True)
+        disc_generated_output = discriminator([input_image, gen_output], training=True)
+
+        #disc_real_output = [np.float64(v) for v in disc_real_output]
+        #disc_generated_output = [np.float64(v) for v in disc_generated_output]
+        gen_total_loss, gen_gan_loss, gen_l1_loss = generator_loss(disc_generated_output, gen_output, target)
+        disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
     generator_gradients = gen_tape.gradient(gen_total_loss,
                                           generator.trainable_variables)
     discriminator_gradients = disc_tape.gradient(disc_loss,
@@ -475,11 +497,17 @@ def train_step(input_image, target, epoch):
     discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
                                               discriminator.trainable_variables))
 
-    #with summary_writer.as_default():
-        #tf.summary.scalar('gen_total_loss', gen_total_loss, step=epoch)
-        #tf.summary.scalar('gen_gan_loss', gen_gan_loss, step=epoch)
-        #tf.summary.scalar('gen_l1_loss', gen_l1_loss, step=epoch)
-        #tf.summary.scalar('disc_loss', disc_loss, step=epoch)
+    print "TOTAL LOSS {}".format(gen_total_loss)
+    print "GAN LOSS {}".format(gen_gan_loss)
+    print "L1 LOSS {}".format(gen_l1_loss)
+    print "DISC LOSS {}".format(disc_loss)
+
+    #TODO MAKE THIS WORK
+    #with summary_writer as sm:
+    #    sm.add_summary(tf.summary.scalar('gen_total_loss', gen_total_loss))#, step=epoch))
+    #    sm.add_summary(tf.summary.scalar('gen_gan_loss', gen_gan_loss))#, step=epoch))
+    #    sm.add_summary(tf.summary.scalar('gen_l1_loss', gen_l1_loss))#, step=epoch))
+    #    sm.add_summary(tf.summary.scalar('disc_loss', disc_loss))#, step=epoch))
 
 
 # The actual training loop:
