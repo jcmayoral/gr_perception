@@ -13,7 +13,9 @@ class DataLoader():
     def __init__(self, dataset_name, img_res=(128, 128),
                  rgb_dataset_folder="/floyd/input/flir_adas/train/RGB",
                  thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit",
-                 path_timestamp_matching="~/", match_by_timestamps=False, thermal_threshold=127, data_percentage=100):
+                 path_timestamp_matching="~/", match_by_timestamps=False, thermal_threshold=127, data_percentage=100,
+                 input_channels=3):
+        self.input_channels = input_channels
         self.dataset_name = dataset_name
         self.data_percentage = data_percentage/100.
         print "data percentage ", self.data_percentage
@@ -54,7 +56,8 @@ class DataLoader():
                 if not is_testing and np.random.random() > 0.5:
                         rgb_img = np.fliplr(rgb_img)
                         thermal_img = np.fliplr(thermal_img)
-                rgb_img = rgb_img[:,:,np.newaxis]
+                if self.input_channels == 1:
+                    rgb_img = rgb_img[:,:,np.newaxis]
                 thermal_img = thermal_img[:,:,np.newaxis]
                 rgb_imgs.append(rgb_img)
                 thermal_imgs.append(thermal_img)
@@ -80,7 +83,8 @@ class DataLoader():
             rgb_img = cv2.resize(rgb_img, (self.img_res[0], self.img_res[1]))
             #rgb_img = rgb_img[:,:,np.newaxis]
             thermal_img = cv2.resize(thermal_img, (self.img_res[0], self.img_res[1]))
-            rgb_img = rgb_img[:,:,np.newaxis]
+            if self.input_channels == 1:
+                rgb_img = rgb_img[:,:,np.newaxis]
             thermal_img = thermal_img[:,:,np.newaxis]
             rgb_imgs.append(rgb_img)
             thermal_imgs.append(thermal_img)
@@ -148,13 +152,15 @@ class DataLoader():
 
                 rgb_img = cv2.resize(rgb_img, (self.img_res[0],self.img_res[1]))
                 thermal_img = cv2.resize(thermal_img, (self.img_res[0],self.img_res[1]))
-
+                if self.input_channels == 1:
+                    rgb_img = rgb_img[:,:,np.newaxis]
+                thermal_img = thermal_img[:,:,np.newaxis]
 
                 if np.random.random() > 0.5:
                         rgb_img = np.fliplr(rgb_img)
                         thermal_img = np.fliplr(thermal_img)
-                rgb_img = rgb_img[:,:,np.newaxis]
-                thermal_img = thermal_img[:,:,np.newaxis]
+                #rgb_img = rgb_img[:,:,np.newaxis]
+                #thermal_img = thermal_img[:,:,np.newaxis]
                 rgb_imgs.append(rgb_img)
                 thermal_imgs.append(thermal_img)
 
@@ -186,7 +192,8 @@ class DataLoader():
             #img = self.rotate_image(img)
 
         #img= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if self.input_channels == 1:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         return img
         #except:
         #    print(path)

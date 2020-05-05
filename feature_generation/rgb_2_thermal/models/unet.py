@@ -11,7 +11,7 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 
 
-def unet(pretrained_weights = None,input_size = (256,256,1), neuron_factor=16, loss = 'mse'):
+def unet(pretrained_weights = None,input_size = (256,256,1), neuron_factor=16, loss = 'mse', compile=True):
     inputs = Input(input_size)
     conv1 = Conv2D(neuron_factor*4, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
     conv1 = Conv2D(neuron_factor*4, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
@@ -51,11 +51,12 @@ def unet(pretrained_weights = None,input_size = (256,256,1), neuron_factor=16, l
     conv9 = Conv2D(neuron_factor*4, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(merge9)
     conv9 = Conv2D(neuron_factor*4, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
     conv9 = Conv2D(2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
-    conv10 = Conv2D(1, 1, activation = 'sigmoid')(conv9)
+    conv10 = Conv2D(1, 1, activation = 'relu')(conv9)
 
     model = Model(input = inputs, output = conv10)
 
-    model.compile(optimizer = Adam(lr = 1e-4), loss = loss , metrics = ['accuracy', 'mse'])
+    if compile:
+        model.compile(optimizer = Adam(lr = 1e-4), loss = loss , metrics = ['accuracy', 'mse'])
 
     #model.summary()
 
@@ -83,9 +84,9 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     fig, axs = plt.subplots(r, c,figsize=[20,20])
     cnt = 0
     for i in range(r):
-        axs[i,0].imshow(imgs_rgb[i][:,:,0], cmap='gray')
-        axs[i,1].imshow(imgs_thermal[i][:,:,0]*255,cmap="gray")
-        axs[i,2].imshow(fake_thermal[i][:,:,0],cmap="gray")
+        axs[i,0].imshow(imgs_rgb[i][:,:,0])
+        axs[i,1].imshow(imgs_thermal[i][:,:,0])
+        axs[i,2].imshow(fake_thermal[i][:,:,0],cmap)
 
         print np.unique(fake_thermal[i][:,:,0])
         print np.unique(imgs_thermal[i][:,:,0])
