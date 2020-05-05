@@ -65,7 +65,7 @@ THERMAL_PATH = "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit
 
 
 BUFFER_SIZE = 400
-BATCH_SIZE = 2
+BATCH_SIZE = 1
 IMG_WIDTH = 256
 IMG_HEIGHT = 256
 
@@ -140,7 +140,7 @@ def load_tuplesample():
         return inp,np.expand_dims(re, axis=2)
     except:
         print "ERROR ", "IMAGE ", index
-        load_tuplesample()
+        return load_tuplesample()
 
 
 #train_dataset = train_dataset.map(load_image_train,num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -404,21 +404,41 @@ checkpoint = ModelCheckpoint(filepath='test_weights.hdf5', verbose=1, save_best_
 
 
 def generate_images(model, test_input, tar):
-    print test_input.shape
-    prediction = model(test_input)#, training=True)
-    plt.figure(figsize=(15,15))
+    init_op = tf.global_variables_initializer()
 
-    display_list = [test_input[0], tar[0], prediction[0]]
-    title = ['Input Image', 'Ground Truth', 'Predicted Image']
+    with tf.Session() as sess:
+        sess.run(init_op)
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(coord=coord)
 
-    for i in range(3):
-        plt.subplot(1, 3, i+1)
-        plt.title(title[i])
-        # getting the pixel values between [0, 1] to plot it.
-        plt.imshow(display_list[i] * 0.5 + 0.5)
-        plt.axis('off')
-        plt.show()
+        w,h,c = test_input.shape
+        test_input = test_input.reshape(1,w,h,c)
+        w,h,c = tar.shape
+        tar = tar.reshape(w,h)
+        prediction = model(test_input, training=True)
+        s,w,h,c  = prediction.shape
+        prediction2 = tf.reshape(prediction,[w,h])
+        prediction2 = prediction2.eval() #here is your image Tensor :)
 
+        print "CORRECT ?", prediction2
+        #prediction = tf.reshape(prediction[0],(w,h))
+        #prediction = tf.make_ndarray( tf.compat.v1.make_tensor_proto(prediction[0]))
+        plt.figure(figsize=(15,15))
+        display_list = [test_input[0], tar, prediction2]
+        title = ['Input Image', 'Ground Truth', 'Predicted Image']
+
+        for i in range(3):
+            plt.subplot(1, 3, i+1)
+            plt.title(title[i])
+            #print display_list[i]
+            print type(display_list[i]), display_list[i].dtype, title[i]
+
+            # getting the pixel values between [0, 1] to plot it.
+            #if i ==2:
+            #    display_list[i] = display_list[0][:, :]
+            plt.imshow(display_list[i] * 0.5 + 0.5)
+            plt.axis('off')
+    plt.show()
 
 # In[35]:
 #TODO
@@ -449,7 +469,7 @@ def get_batch():
 
 # In[36]:
 
-EPOCHS = 150
+EPOCHS = 1
 
 
 # In[37]:
@@ -621,5 +641,7 @@ fit(train_dataset, EPOCHS, test_dataset)
 
 
 # Run the trained model on a few examples from the test dataset
-for inp, tar in test_dataset.take(5):
+img_batch, real_batch = get_batch()
+
+for inp, tar in zip(img_batch, real_batch):
   generate_images(generator, inp, tar)
