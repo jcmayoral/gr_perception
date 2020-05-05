@@ -15,7 +15,7 @@ print(device_lib.list_local_devices())
 print " "
 input_channels = 3
 
-neuron_factor = 1
+neurons_factor = 1
 n_epochs = 3
 percent = 10
 
@@ -35,14 +35,14 @@ if len(sys.argv) >1:
 batch_size = 50
 im_size = (128,128)
 dataset_name = "fieldsafe_{}percentdata_".format(percent)
-network_name = "unet_factor_{}_greyscalemasked_inputchannels{}".format(str(neuron_factor), input_channels)
+network_name = "unet_factor_{}_greyscalemasked_inputchannels{}".format(str(neurons_factor), input_channels)
 
 if not os.path.exists(dataset_name + network_name):
     os.makedirs(dataset_name + network_name)#, exist_ok=True)
 os.chdir(dataset_name + network_name)
 
 
-model = unet(input_size=(im_size[0], im_size[1],  input_channels), neuron_factor=neuron_factor, loss = 'mse')
+model = unet(input_size=(im_size[0], im_size[1],  input_channels), neuron_factor=neurons_factor, loss = 'mse')
 model.summary()
 
 
