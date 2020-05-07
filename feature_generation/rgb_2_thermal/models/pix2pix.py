@@ -378,7 +378,10 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 
 checkpoint_dir = 'training_checkpoints'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
-checkpoint = ModelCheckpoint(filepath='test_weights.hdf5', verbose=1, save_best_only=True)
+checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
+                                 discriminator_optimizer=discriminator_optimizer,
+                                 generator=generator,
+                                 discriminator=discriminator)
 
 #checkpoint = ModelCheckpoint(generator_optimizer=generator_optimizer,
 #                                 discriminator_optimizer=discriminator_optimizer,
@@ -509,30 +512,34 @@ def train_step(input_image, target, epoch):
         #disc_generated_output = [np.float64(v) for v in disc_generated_output]
         gen_total_loss, gen_gan_loss, gen_l1_loss = generator_loss(disc_generated_output, gen_output, target)
         disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
-    generator_gradients = gen_tape.gradient(gen_total_loss,
+
+        #FROM HERE TAB TO LEFT IF FAILS
+        generator_gradients = gen_tape.gradient(gen_total_loss,
                                           generator.trainable_variables)
-    discriminator_gradients = disc_tape.gradient(disc_loss,
+        discriminator_gradients = disc_tape.gradient(disc_loss,
                                                discriminator.trainable_variables)
-    generator_optimizer.apply_gradients(zip(generator_gradients,
+        generator_optimizer.apply_gradients(zip(generator_gradients,
                                           generator.trainable_variables))
-    discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
+        discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
                                               discriminator.trainable_variables))
-
-    print ("TOTAL LOSS {}".format(gen_total_loss))
-    print ("GAN LOSS {}".format(gen_gan_loss))
-    print ("L1 LOSS {}".format(gen_l1_loss))
-    print ("DISC LOSS {}".format(disc_loss))
-
     #TODO MAKE THIS WORK
+    #sess = tf.compat.v1.Session()
+    #sess.run(v.initializer)
+    #with tf.compat.v1.Session() as sess:
+    #    print (sess.run(gen_total_loss))
+    #print ("GAN LOSS {}".format(gen_gan_loss))
+    ##print ("L1 LOSS {}".format(gen_l1_loss))
+    #print ("DISC LOSS {}".format(disc_loss))
+
     #with summary_writer as sm:
     with summary_writer.as_default():
-        print ("TYPE ", type(gen_total_loss))
+        #print ("TYPE ", type(gen_total_loss))
         #print (tf.make_ndarray(gen_total_loss))
         #tf.summary.scalar("my_metric", 0.5, step=epoch)
         tf.summary.scalar('gen_total_loss', gen_total_loss, step=epoch)
-        tf.summary.scalar('gen_gan_loss', gen_gan_loss, step=epoch))
-        tf.summary.scalar('gen_l1_loss', gen_l1_loss, step=epoch))
-        tf.summary.scalar('disc_loss', disc_loss, step=epoch))
+        tf.summary.scalar('gen_gan_loss', gen_gan_loss, step=epoch)
+        tf.summary.scalar('gen_l1_loss', gen_l1_loss, step=epoch)
+        tf.summary.scalar('disc_loss', disc_loss, step=epoch)
     summary_writer.flush()
 
 
@@ -573,17 +580,21 @@ def fit(train_ds, epochs, test_ds):
                                 str(epochs),str(current_epoch_batch),
                                 str(batches_per_epoch)))
 
+
+
+
+        # saving (checkpoint) the model every 20 epochs
+        if (current_epoch + 1) % 20 == 0:
+            checkpoint.save(file_path=checkpoint_prefix)
+        print ('Time taken for epoch {} is {} sec\n'.format(current_epoch + 1,
+                                                        time.time()-start))
+
         if current_epoch_batch == batches_per_epoch:
             current_epoch = current_epoch + 1
             current_epoch_batch  = 0
 
+    checkpoint.save(file_path=checkpoint_prefix)
 
-        # saving (checkpoint) the model every 20 epochs
-        #if (epoch + 1) % 20 == 0:
-            #checkpoint.save(file_prefix = checkpoint_prefix)
-        #print ('Time taken for epoch {} is {} sec\n'.format(epoch + 1,
-        #                                                time.time()-start))
-        #checkpoint.save(file_prefix = checkpoint_prefix)
 
 
 # This training loop saves logs you can easily view in TensorBoard to monitor the training progress. Working locally you would launch a separate tensorboard process. In a notebook, if you want to monitor with TensorBoard it's easiest to launch the viewer before starting the training.
@@ -652,7 +663,7 @@ fit(train_dataset, EPOCHS, test_dataset)
 
 
 # restoring the latest checkpoint in checkpoint_dir
-#checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
+checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
 
 # ## Generate using test dataset
