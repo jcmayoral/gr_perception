@@ -71,7 +71,6 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     r, c = num_images, 3
 
     imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=thermal_ext)
-    print imgs_rgb.shape
     fake_thermal = model.predict(imgs_rgb)
 
     #imgs_thermal=0.5*imgs_thermal+0.5
@@ -88,9 +87,8 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
         axs[i,1].imshow(imgs_thermal[i][:,:,0])
         axs[i,2].imshow(fake_thermal[i][:,:,0])
 
-        print np.unique(fake_thermal[i][:,:,0])
-        print np.unique(imgs_thermal[i][:,:,0])
-
+        #print np.unique(fake_thermal[i][:,:,0])
+        #print np.unique(imgs_thermal[i][:,:,0])
 
         for j in range(c):
             axs[i, j].set_title(titles[j])

@@ -139,7 +139,7 @@ def load_tuplesample():
         inp, re = normalize(inp, re)
         return inp,np.expand_dims(re, axis=2)
     except:
-        print "ERROR ", "IMAGE ", index
+        print ("ERROR ", "IMAGE ", index)
         return load_tuplesample()
 
 
@@ -376,7 +376,7 @@ discriminator_optimizer = Adam(2e-4, beta_1=0.5)
 
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-checkpoint_dir = './training_checkpoints'
+checkpoint_dir = 'training_checkpoints'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
 checkpoint = ModelCheckpoint(filepath='test_weights.hdf5', verbose=1, save_best_only=True)
 
@@ -420,7 +420,7 @@ def generate_images(model, test_input, tar):
         prediction2 = tf.reshape(prediction,[w,h])
         prediction2 = prediction2.eval() #here is your image Tensor :)
 
-        print "CORRECT ?", prediction2
+        print ("CORRECT ?", prediction2)
         #prediction = tf.reshape(prediction[0],(w,h))
         #prediction = tf.make_ndarray( tf.compat.v1.make_tensor_proto(prediction[0]))
         plt.figure(figsize=(15,15))
@@ -431,7 +431,7 @@ def generate_images(model, test_input, tar):
             plt.subplot(1, 3, i+1)
             plt.title(title[i])
             #print display_list[i]
-            print type(display_list[i]), display_list[i].dtype, title[i]
+            #print type(display_list[i]), display_list[i].dtype, title[i]
 
             # getting the pixel values between [0, 1] to plot it.
             #if i ==2:
@@ -470,7 +470,7 @@ def get_batch():
 
 # In[36]:
 
-EPOCHS = 10
+EPOCHS = 100
 
 
 # In[37]:
@@ -484,7 +484,7 @@ import datetime
 
 
 log_dir=""
-summary_writer = tf.summary.FileWriter(
+summary_writer = tf.summary.create_file_writer(
                 log_dir + "fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 @tf.function
@@ -518,17 +518,22 @@ def train_step(input_image, target, epoch):
     discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
                                               discriminator.trainable_variables))
 
-    print "TOTAL LOSS {}".format(gen_total_loss)
-    print "GAN LOSS {}".format(gen_gan_loss)
-    print "L1 LOSS {}".format(gen_l1_loss)
-    print "DISC LOSS {}".format(disc_loss)
+    print ("TOTAL LOSS {}".format(gen_total_loss))
+    print ("GAN LOSS {}".format(gen_gan_loss))
+    print ("L1 LOSS {}".format(gen_l1_loss))
+    print ("DISC LOSS {}".format(disc_loss))
 
     #TODO MAKE THIS WORK
     #with summary_writer as sm:
-    #    sm.add_summary(tf.summary.scalar('gen_total_loss', gen_total_loss))#, step=epoch))
-    #    sm.add_summary(tf.summary.scalar('gen_gan_loss', gen_gan_loss))#, step=epoch))
-    #    sm.add_summary(tf.summary.scalar('gen_l1_loss', gen_l1_loss))#, step=epoch))
-    #    sm.add_summary(tf.summary.scalar('disc_loss', disc_loss))#, step=epoch))
+    with summary_writer.as_default():
+        print ("TYPE ", type(gen_total_loss))
+        #print (tf.make_ndarray(gen_total_loss))
+        #tf.summary.scalar("my_metric", 0.5, step=epoch)
+        tf.summary.scalar('gen_total_loss', gen_total_loss, step=epoch)
+        tf.summary.scalar('gen_gan_loss', gen_gan_loss, step=epoch))
+        tf.summary.scalar('gen_l1_loss', gen_l1_loss, step=epoch))
+        tf.summary.scalar('disc_loss', disc_loss, step=epoch))
+    summary_writer.flush()
 
 
 # The actual training loop:
@@ -564,7 +569,9 @@ def fit(train_ds, epochs, test_ds):
         #print()
         train_step(img_batch, real_batch, current_epoch)
 
-        print "epoch {}/{} batch {} of {}".format(str(current_epoch), str(epochs),str(current_epoch_batch), str(batches_per_epoch))
+        print ("epoch {}/{} batch {} of {}".format(str(current_epoch),
+                                str(epochs),str(current_epoch_batch),
+                                str(batches_per_epoch)))
 
         if current_epoch_batch == batches_per_epoch:
             current_epoch = current_epoch + 1
