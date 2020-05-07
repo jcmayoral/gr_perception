@@ -406,43 +406,29 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
 # In[34]:
 
 
-def generate_images(model, test_input, tar):
-    init_op = tf.global_variables_initializer()
-
-    with tf.Session() as sess:
-        sess.run(init_op)
-        coord = tf.train.Coordinator()
-        threads = tf.train.start_queue_runners(coord=coord)
-
-        w,h,c = test_input.shape
-        test_input = test_input.reshape(1,w,h,c)
-        w,h,c = tar.shape
-        tar = tar.reshape(w,h)
-        prediction = model(test_input, training=True)
-        s,w,h,c  = prediction.shape
-        prediction2 = tf.reshape(prediction,[w,h])
-        prediction2 = prediction2.eval() #here is your image Tensor :)
-
-        print ("CORRECT ?", prediction2)
-        #prediction = tf.reshape(prediction[0],(w,h))
-        #prediction = tf.make_ndarray( tf.compat.v1.make_tensor_proto(prediction[0]))
-        plt.figure(figsize=(15,15))
-        display_list = [test_input[0], tar, prediction2]
-        title = ['Input Image', 'Ground Truth', 'Predicted Image']
-
-        for i in range(3):
-            plt.subplot(1, 3, i+1)
-            plt.title(title[i])
-            #print display_list[i]
-            #print type(display_list[i]), display_list[i].dtype, title[i]
-
-            # getting the pixel values between [0, 1] to plot it.
-            #if i ==2:
-            #    display_list[i] = display_list[0][:, :]
+def generate_images(model, test_input, tar, filename="finaltestingpix2pix"):
+    prediction = model(test_input, training=True)
+    plt.figure(figsize=(15,15))
+    display_list = [test_input[0], tar[0], prediction[0]]
+    title = ['Input Image', 'Ground Truth', 'Predicted Image']
+    for i in range(3):
+        plt.subplot(1, 3, i+1)
+        plt.title(title[i])
+        # getting the pixel values between [0, 1] to plot it.
+        a,b,c = display_list[i].shape
+        print a,b,c, i
+        if c == 1:
+            plt.imshow(display_list[i][:,:,0] * 0.5 + 0.5)
+        else:#continue
             plt.imshow(display_list[i] * 0.5 + 0.5)
-            plt.axis('off')
-    plt.savefig("testingpix2pix.jpg")
-    plt.show()
+        plt.axis('off')
+
+    try:
+        os.mkdir(os.path.join("fit","imagesamples"))
+    except:
+        pass
+    plt.savefig(os.path.join("fit","imagesamples", filename+".jpg"))
+    #plt.show()
 
 # In[35]:
 #TODO
@@ -563,9 +549,13 @@ def fit(train_ds, epochs, test_ds):
         for current_batch in range(batches_per_epoch):
             #display.clear_output(wait=True)
             img_batch, real_batch = get_batch()
+            #if current_batch%1 == 0:
+            #    generate_images(generator, img_batch, real_batch)
+
             #current_epoch_batch = current_epoch_batch + 1
             #for (example_input, example_target) in zip(img_batch, real_batch):
-            #    generate_images(generator, example_input, example_target)
+            if current_batch%10 == 0:
+                generate_images(generator, img_batch, real_batch, filename="pix2pix_batch{}_epoch_{}".format(str(current_batch), str(current_epoch)))
             #print("Epoch: ", epoch
             # Train
             #for n, (input_image, target) in enumerate(zip(img_batch, real_batch)):
