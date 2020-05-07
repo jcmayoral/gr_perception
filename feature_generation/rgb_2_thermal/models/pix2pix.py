@@ -477,7 +477,7 @@ summary_writer = tf.summary.create_file_writer(
                 log_dir + "fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 @tf.function
-def train_step(input_image, target, epoch):
+def train_step(input_image, target, epoch, save_summary=False):
     #discriminator.compile(loss='mse',
     #    optimizer="adam",
     #    metrics=['accuracy'])
@@ -518,6 +518,9 @@ def train_step(input_image, target, epoch):
     #print ("DISC LOSS {}".format(disc_loss))
 
     #with summary_writer as sm:
+    if not save_summary:
+        return
+
     with summary_writer.as_default():
         #print ("TYPE ", type(gen_total_loss))
         #print (tf.make_ndarray(gen_total_loss))
@@ -541,7 +544,7 @@ def train_step(input_image, target, epoch):
 
 def fit(train_ds, epochs, test_ds):
     current_epoch = 0
-    batches_per_epoch = int(500/BATCH_SIZE)
+    batches_per_epoch = int(1500/BATCH_SIZE)
     current_epoch_batch = 0
 
     while current_epoch < epochs:
@@ -554,7 +557,7 @@ def fit(train_ds, epochs, test_ds):
 
             #current_epoch_batch = current_epoch_batch + 1
             #for (example_input, example_target) in zip(img_batch, real_batch):
-            if current_batch%10 == 0:
+            if current_batch%30 == 0:
                 generate_images(generator, img_batch, real_batch, filename="pix2pix_batch{}_epoch_{}".format(str(current_batch), str(current_epoch)))
             #print("Epoch: ", epoch
             # Train
@@ -564,7 +567,12 @@ def fit(train_ds, epochs, test_ds):
             #        print()
             #    train_step(input_image, target, epoch)
             #print()
-            train_step(img_batch, real_batch, current_epoch)
+            save_summary = False
+
+            if current_batch%20 == 0:
+                save_summary = True
+
+            train_step(img_batch, real_batch, current_epoch, save_summary)
             print ("epoch {}/{} batch {} of {}".format(str(current_epoch),
                                 str(epochs),str(current_batch),
                                 str(batches_per_epoch)))
