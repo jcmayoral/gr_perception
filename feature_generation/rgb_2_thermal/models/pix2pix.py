@@ -65,7 +65,7 @@ THERMAL_PATH = "/media/datasets/flir/FLIR_FREE/FLIR_ADAS_1_3/train/thermal_8_bit
 
 
 BUFFER_SIZE = 400
-BATCH_SIZE = 1
+BATCH_SIZE = 10
 IMG_WIDTH = 256
 IMG_HEIGHT = 256
 
@@ -513,14 +513,14 @@ def train_step(input_image, target, epoch):
         gen_total_loss, gen_gan_loss, gen_l1_loss = generator_loss(disc_generated_output, gen_output, target)
         disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
-        #FROM HERE TAB TO LEFT IF FAILS
-        generator_gradients = gen_tape.gradient(gen_total_loss,
+    #FROM HERE TAB TO LEFT IF FAILS
+    generator_gradients = gen_tape.gradient(gen_total_loss,
                                           generator.trainable_variables)
-        discriminator_gradients = disc_tape.gradient(disc_loss,
+    discriminator_gradients = disc_tape.gradient(disc_loss,
                                                discriminator.trainable_variables)
-        generator_optimizer.apply_gradients(zip(generator_gradients,
+    generator_optimizer.apply_gradients(zip(generator_gradients,
                                           generator.trainable_variables))
-        discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
+    discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
                                               discriminator.trainable_variables))
     #TODO MAKE THIS WORK
     #sess = tf.compat.v1.Session()
@@ -555,45 +555,39 @@ def train_step(input_image, target, epoch):
 
 def fit(train_ds, epochs, test_ds):
     current_epoch = 0
-    batches_per_epoch = 500
+    batches_per_epoch = int(500/BATCH_SIZE)
     current_epoch_batch = 0
 
     while current_epoch < epochs:
         start = time.time()
-        #display.clear_output(wait=True)
-        img_batch, real_batch = get_batch()
-        current_epoch_batch = current_epoch_batch + 1
-
-        #for (example_input, example_target) in zip(img_batch, real_batch):
-        #    generate_images(generator, example_input, example_target)
-        #print("Epoch: ", epoch)
-        # Train
-        #for n, (input_image, target) in enumerate(zip(img_batch, real_batch)):
-        #    print('.')
-        #    if (n+1) % 100 == 0:
-        #        print()
-        #    train_step(input_image, target, epoch)
-        #print()
-        train_step(img_batch, real_batch, current_epoch)
-
-        print ("epoch {}/{} batch {} of {}".format(str(current_epoch),
-                                str(epochs),str(current_epoch_batch),
+        for current_batch in range(batches_per_epoch):
+            #display.clear_output(wait=True)
+            img_batch, real_batch = get_batch()
+            #current_epoch_batch = current_epoch_batch + 1
+            #for (example_input, example_target) in zip(img_batch, real_batch):
+            #    generate_images(generator, example_input, example_target)
+            #print("Epoch: ", epoch
+            # Train
+            #for n, (input_image, target) in enumerate(zip(img_batch, real_batch)):
+            #    print('.')
+            #    if (n+1) % 100 == 0:
+            #        print()
+            #    train_step(input_image, target, epoch)
+            #print()
+            train_step(img_batch, real_batch, current_epoch)
+            print ("epoch {}/{} batch {} of {}".format(str(current_epoch),
+                                str(epochs),str(current_batch),
                                 str(batches_per_epoch)))
-
-
 
 
         # saving (checkpoint) the model every 20 epochs
         if (current_epoch + 1) % 20 == 0:
-            checkpoint.save(file_path=checkpoint_prefix)
+            checkpoint.save(file_prefix=checkpoint_prefix)
         print ('Time taken for epoch {} is {} sec\n'.format(current_epoch + 1,
                                                         time.time()-start))
+        current_epoch = current_epoch + 1
 
-        if current_epoch_batch == batches_per_epoch:
-            current_epoch = current_epoch + 1
-            current_epoch_batch  = 0
-
-    checkpoint.save(file_path=checkpoint_prefix)
+    checkpoint.save(file_prefix=checkpoint_prefix)
 
 
 
