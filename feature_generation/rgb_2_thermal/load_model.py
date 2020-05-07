@@ -5,6 +5,7 @@ import os
 from models.unet import unet, sample_images
 import numpy as np
 
+ROOT_PATH = "/media/WIP/rgb2thermal"
 dataset_name = "fieldsafe"
 
 #TODO add as arg
@@ -21,7 +22,7 @@ dataset_name = "fieldsafe_{}percentdata_".format(data_percentage)
 model_name = "unet_factor_{}_greyscalemasked_inputchannels{}".format(str(neurons_factor), input_channels)
 model_name = dataset_name + model_name
  
-file_name = os.path.join(model_name, model_name+".h5")
+file_name = os.path.join(ROOT_PATH, model_name, model_name+".h5")
 print file_name
 
 
