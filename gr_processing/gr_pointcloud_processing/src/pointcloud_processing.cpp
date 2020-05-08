@@ -1,15 +1,13 @@
-#include <pcl_gpu_tools/gpu_example.h>
+#include <gr_pointcloud_processing/pointcloud_processing.h>
 
-GPUExample::GPUExample (): dynamic_std_(0.1), output_publish_(false),
+PointCloudProcessor::PointCloudProcessor (): dynamic_std_(0.1), output_publish_(false),
                            remove_ground_(true), passthrough_enable_(true),
                            is_processing_(false), is_timer_enable_(true),
                            tf2_listener_(tf_buffer_), last_detection_(ros::Time(0)),
                            sensor_frame_("velodyne"), global_frame_("odom"),
                            distance_to_floor_(0.0){
     ros::NodeHandle nh("~");
-    //gec.setMaxClusterSize (0);
 
-    //conditional_filter_ = pc0l::ConditionAnd<pcl::PointXYZ>::Ptr(new pcl::ConditionAnd<pcl::PointXYZ> ());
     //cilinder ROI
     tStart = clock();
     double limit = 15.0;
@@ -37,31 +35,17 @@ GPUExample::GPUExample (): dynamic_std_(0.1), output_publish_(false),
     radius_cuda_pass_.setScaleAxis(scale_axis[0]);
     radius_cuda_pass_.setXYScaler(xy_scale);
 
-    /*
-    pcl::ConditionAnd<pcl::PointXYZ>::Ptr conditional_filter (new pcl::ConditionAnd<pcl::PointXYZ> ());
-    //conditional_filter->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::GT, -0.8)));
-    //range_condAND->      addComparison (     FieldComparisonConstPtr (new pcl::FieldComparison<PointT> ("x", pcl::ComparisonOps::GE, newOriginX)));
-    //conditional_filter_->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::GT, -limit)));
-    //conditional_filter->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::LT, 2.0)));
-    conditional_filter->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("y", pcl::ComparisonOps::GT, -limit)));
-    conditional_filter->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("y", pcl::ComparisonOps::LT, limit)));
-    conditional_filter->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("x", pcl::ComparisonOps::GT, -limit)));
-    conditional_filter->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (new pcl::FieldComparison<pcl::PointXYZ> ("x", pcl::ComparisonOps::LT, limit)));
-    condition_removal_.setCondition (conditional_filter);
-    condition_removal_.setKeepOrganized(false);
-    */
-
     segmentation_filter_.setModelType(pcl::SACMODEL_PERPENDICULAR_PLANE);
     Eigen::Vector3f axis = Eigen::Vector3f(0.0,0.0,1.0);
     segmentation_filter_.setAxis(axis);
     //segmentation_filter_.setModelType(pcl::SACMODEL_PARALLEL_PLANE);
     segmentation_filter_.setMethodType(pcl::SAC_RANSAC);
 
-    timer_ = nh.createTimer(ros::Duration(time_window), &GPUExample::timer_cb, this);
-    dyn_server_cb_ = boost::bind(&GPUExample::dyn_reconfigureCB, this, _1, _2);
+    timer_ = nh.createTimer(ros::Duration(time_window), &PointCloudProcessor::timer_cb, this);
+    dyn_server_cb_ = boost::bind(&PointCloudProcessor::dyn_reconfigureCB, this, _1, _2);
     dyn_server_.setCallback(dyn_server_cb_);
 
-    pc_sub_ = nh.subscribe("/velodyne_points", 1, &GPUExample::pointcloud_cb, this);
+    pc_sub_ = nh.subscribe("/velodyne_points", 1, &PointCloudProcessor::pointcloud_cb, this);
    	pc_pub_ = nh.advertise<sensor_msgs::PointCloud2>("/velodyne_points/filtered", 1);
     cluster_pub_ = nh.advertise<geometry_msgs::PoseArray>("detected_objects",1);
     bb_pub_ = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("/detection/bounding_boxes", 1);
@@ -69,7 +53,7 @@ GPUExample::GPUExample (): dynamic_std_(0.1), output_publish_(false),
 
 };
 
-void GPUExample::dyn_reconfigureCB(pcl_gpu_tools::GPUFilterConfig &config, uint32_t level){
+void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level){
     boost::mutex::scoped_lock lock(mutex_);
     main_cloud_.points.clear();
     ROS_ERROR("RECONFIGURING");
@@ -113,7 +97,7 @@ void GPUExample::dyn_reconfigureCB(pcl_gpu_tools::GPUFilterConfig &config, uint3
 
 };
 
-void GPUExample::timer_cb(const ros::TimerEvent&){
+void PointCloudProcessor::timer_cb(const ros::TimerEvent&){
     //boost::mutex::scoped_lock lock(mutex_);
     //  ROS_ERROR("timer ");
     tStart = clock();
@@ -122,7 +106,7 @@ void GPUExample::timer_cb(const ros::TimerEvent&){
 }
 
 
-template <class T> void GPUExample::publishPointCloud(T t){
+template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
     if(t.points.size() ==0 ){
       return;
@@ -136,7 +120,7 @@ template <class T> void GPUExample::publishPointCloud(T t){
 }
 
 
-void GPUExample::pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg){
+void PointCloudProcessor::pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg){
     //run_filter(*msg);
     //ROS_ERROR("pointcloud cb");
     sensor_frame_ = msg->header.frame_id;
@@ -147,7 +131,7 @@ void GPUExample::pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg){
 };
 
 
-void GPUExample::removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc){
+void PointCloudProcessor::removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc){
   //ROS_ERROR("Remove ground");
   int original_size = (int) pc->points.size ();
   pcl::ModelCoefficients::Ptr filter_coefficients(new pcl::ModelCoefficients);
@@ -175,7 +159,7 @@ void GPUExample::removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>
 }
 
 //template <template <typename> class Storage> void
-int GPUExample::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered){
+int PointCloudProcessor::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered){
     //boost::mutex::scoped_lock lock(mutex_);
     ROS_INFO("filter");
     bb.boxes.clear();
@@ -214,7 +198,7 @@ int GPUExample::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXY
     return 1;
 }
 
-void GPUExample::addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label){
+void PointCloudProcessor::addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label){
   jsk_recognition_msgs::BoundingBox cluster_bb;
   //cluster_bb.header.stamp = ros::Time::now();
   geometry_msgs::Pose out;
@@ -237,14 +221,14 @@ void GPUExample::addBoundingBox(const geometry_msgs::Pose center, double v_x, do
   bb.boxes.push_back(cluster_bb);
 }
 
-void GPUExample::publishBoundingBoxes(){
+void PointCloudProcessor::publishBoundingBoxes(){
   bb.header.stamp = ros::Time::now();
   bb.header.frame_id = global_frame_;//cluster_array.header.frame_id;
   bb_pub_.publish(bb);
   //ROS_INFO_STREAM("BoundingBoxes " << bb.boxes.size());
 }
 
-void GPUExample::cluster(){
+void PointCloudProcessor::cluster(){
     //ROS_ERROR("cluster");
     boost::mutex::scoped_lock lock(mutex_);
     //Cluster implementation requires XYZ ... If you have a lot of time maybe worth it to modifyied it

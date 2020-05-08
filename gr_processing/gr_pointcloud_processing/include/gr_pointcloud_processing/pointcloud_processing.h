@@ -18,7 +18,6 @@
 #include <pcl/gpu/segmentation/gpu_extract_clusters.h>
 #include <pcl/gpu/segmentation/impl/gpu_extract_clusters.hpp>
 
-
 #include <functional>
 #include <iostream>
 #include <mutex>
@@ -35,13 +34,13 @@
 #include <geometry_msgs/PoseArray.h>
 #include <jsk_recognition_msgs/BoundingBoxArray.h>
 #include <pcl/filters/passthrough.h>
-#include <pcl_gpu_tools/GPUFilterConfig.h>
+#include <gr_pointcloud_processing/PointCloudConfig.h>
 #include <dynamic_reconfigure/server.h>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
-#include <pcl_gpu_tools/math_functions.hpp>
+#include <gr_pointcloud_processing/math_functions.hpp>
 
 #include <pcl_cuda_tools/filters/filter_passthrough.h>
 #include <pcl_cuda_tools/filters/pcl_filter_passthrough.h>
@@ -49,14 +48,10 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_listener.h>
 
-//using namespace pcl::cuda;
-//using pcl::cuda::PointCloudAOS;
-//using pcl::cuda::Device;
-
-#include <pcl_gpu_tools/utils.h>
+#include <gr_pointcloud_processing/utils.h>
 
 
-class GPUExample
+class PointCloudProcessor
 {
 private:
   //pcl::cuda::DisparityToCloud d2c;
@@ -70,7 +65,6 @@ private:
   pcl::gpu::EuclideanClusterExtraction gec;
   pcl::ExtractIndices<pcl::PointXYZI> extraction_filter_;
   pcl::SACSegmentation<pcl::PointXYZI> segmentation_filter_;
-  //pcl::ConditionAnd<pcl::PointXYZ>::Ptr conditional_filter_;
   pcl::PassThrough<pcl::PointXYZI> pass_through_filter_;
   pcl::ConditionalRemoval<pcl::PointXYZI> condition_removal_;
   pcl::StatisticalOutlierRemoval<pcl::PointXYZI> outliers_filter_;
@@ -84,8 +78,8 @@ private:
   pcl_gpu::PCLFilterPassThrough pcl_cuda_pass_;
 
   //Dynamic Reconfigure
-  dynamic_reconfigure::Server<pcl_gpu_tools::GPUFilterConfig> dyn_server_;
-  dynamic_reconfigure::Server<pcl_gpu_tools::GPUFilterConfig>::CallbackType dyn_server_cb_;
+  dynamic_reconfigure::Server<gr_pointcloud_processing::PointCloudConfig> dyn_server_;
+  dynamic_reconfigure::Server<gr_pointcloud_processing::PointCloudConfig>::CallbackType dyn_server_cb_;
   double dynamic_std_;
   double dynamic_std_z_;
   double distance_to_floor_;
@@ -107,8 +101,8 @@ private:
   PersonArray persons_array_;
 
 public:
-    GPUExample ();
-    ~GPUExample(){};
+    PointCloudProcessor();
+    ~PointCloudProcessor(){};
     void pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg);
     int run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered);
     template <class T> void publishPointCloud(T);
@@ -116,6 +110,6 @@ public:
     void cluster();
     void publishBoundingBoxes();
     void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label);
-    void dyn_reconfigureCB(pcl_gpu_tools::GPUFilterConfig &config, uint32_t level);
+    void dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level);
     void removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc);
 };

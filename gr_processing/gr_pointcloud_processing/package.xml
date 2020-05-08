@@ -1,8 +1,8 @@
 <package>
-    <name>pcl_gpu_tools</name>
-    <version>0.5.0</version>
+    <name>gr_pointcloud_processing</name>
+    <version>0.6.0</version>
     <description>
-      ROS Wrapper of pcl gpu examples
+      Node for processing Velodyne LiDAR
     </description>
 
     <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>

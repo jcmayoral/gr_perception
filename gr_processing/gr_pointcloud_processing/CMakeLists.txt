@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(pcl_gpu_tools)
+project(gr_pointcloud_processing)
 
 add_compile_options(-std=c++14)
 add_definitions(-Wno-deprecated-declarations)
@@ -38,7 +38,7 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 generate_dynamic_reconfigure_options(
-  cfg/GPUFilter.cfg
+  cfg/PointCloud.cfg
 )
 
 include_directories(include
@@ -69,17 +69,11 @@ catkin_package(
 add_definitions(${PCL_DEFINITIONS})
 
 add_library(${PROJECT_NAME}
-            src/gpu_example.cpp
+            src/pointcloud_processing.cpp
 
 )
 
-
-#add_library(gr_map_utils src/tf_frame_publisher.cpp)
-#cuda_add_library(TestLib src/kinetic_ransac.cu)
-#set_property(TARGET TestLib PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-
-
-add_executable(${PROJECT_NAME}_node src/gpu_example_node.cpp)
+add_executable(${PROJECT_NAME}_node src/pointcloud_processing_node.cpp)
 
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
@@ -97,7 +91,6 @@ target_link_libraries(${PROJECT_NAME}
 
 add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
 
-#add_dependencies(topological_map_converter ${catkin_EXPORTED_TARGETS} gr_map_utils_gencfg gr_map_utils_gencpp)
 
 ## Install executables and/or libraries
 #install(TARGETS ${PROJECT_NAME}
