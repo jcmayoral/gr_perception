@@ -283,9 +283,8 @@ void GPUExample::cluster(){
     //pcl::PointCloud<pcl::PointXYZI>::Ptr concatenated_xyzi;
     pcl::copyPointCloud(*pointcloud_xyz.get(),pointcloud_xyzi);
 
-
-
     //Clean
+    //REST AGE PARAM TO ALL the memory files DELETE IN NOT FOUND
     for(std::map<int, Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
       if(it->second.age < 2){
         it = persons_array_.persons.erase(it);
@@ -329,6 +328,18 @@ void GPUExample::cluster(){
 
         cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
+
+        //ON TESTING 
+        id = var_i*100;
+        Person new_cluster;
+        new_cluster.pose.position.x = 
+        new_cluster.pose.position.y =
+        //TODO add orientation
+        new_cluster.variance.x = var_x;
+        new_cluster.variance.y = var_y;
+        new_cluster.variance.z = var_z;
+        new_cluster.varid = id;
+
         if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
           //centroids for proximity policy
@@ -338,23 +349,26 @@ void GPUExample::cluster(){
           auto range_z = getAbsoluteRange<double>(z_vector);
           
           //var_i seems to be more stable that bb volume
-          id = var_i*100;//int(range_x * range_y *range_z *100);//two decimals
-          std::cout << id << std::endl;
+          //int(range_x * range_y *range_z *100);//two decimals
+          //std::cout << id << std::endl;
 
-          if(persons_array_.persons.find(id) != persons_array_.persons.end()){
-            ROS_ERROR("person found");
-            persons_array_.persons[id].age = 5;
+          
+          //ON TESTING
+          auto matchingid =voting (persons_array_, new_cluster);
+          //if(persons_array_.persons.find(id) != persons_array_.persons.end()){
+          if (matchingid>-1){
+            ROS_ERROR_STREAM("updating person found" << matchingid);
+            persons_array_.persons[matchingid].age = 5;
             //just add if seen before
             // bounding boxes... TODO merge with persons_array (if approved by memory then add)
             addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, id);
           }
           else{
-            
+            ROS_WARN_STREAM("person found"<< matchingid);            
           }
-
+          
           //testing map array_person (memory)
           person.age = 10;
-          
           persons_array_.persons.insert(std::pair<int,Person>(id, person));
    
         }
