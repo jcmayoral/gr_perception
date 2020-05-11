@@ -145,33 +145,26 @@ void PointCloudProcessor::removeGround(boost::shared_ptr <pcl::PointCloud<pcl::P
     segmentation_filter_.setInputCloud(pc);
     segmentation_filter_.segment(*filter_inliers, *filter_coefficients);
     distance_to_floor_ = filter_coefficients->values[3]/filter_coefficients->values[2];
-    ROS_INFO_STREAM("Distance to floor " << distance_to_floor_);
-      if (filter_inliers->indices.size () != 0){
-          extraction_filter_.setInputCloud(pc);
-          extraction_filter_.setIndices(filter_inliers);
-          extraction_filter_.filter(*pc);
-          number_of_surfaces++;
-      }
+    if (filter_inliers->indices.size () != 0){
+      extraction_filter_.setInputCloud(pc);
+      extraction_filter_.setIndices(filter_inliers);
+      extraction_filter_.filter(*pc);
+      number_of_surfaces++;
+    }
   }
   while (filter_inliers->indices.size () != 0 && pc->points.size()> init_size*0.8);
-
-  ROS_INFO_STREAM("Surface remove " << number_of_surfaces);
+  //ROS_INFO_STREAM("Distance to floor " << distance_to_floor_);
+  //ROS_INFO_STREAM("Surface remove " << number_of_surfaces);
 }
 
 //template <template <typename> class Storage> void
 int PointCloudProcessor::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered){
     //boost::mutex::scoped_lock lock(mutex_);
-    ROS_INFO("filter");
     bb.boxes.clear();
 
     //Reducing x,y
     radius_cuda_pass_.setHostCloud(cloud_filtered);
     auto res = radius_cuda_pass_.do_stuff("xy", *cloud_filtered);
-
-    //radius_cuda_pass_.setHostCloud(cloud_filtered);
-    //auto res2 = radius_cuda_pass_.do_stuff('y', *cloud_filtered);
-    //condition_removal_.setInputCloud (cloud_filtered);
-    //condition_removal_.filter (*cloud_filtered);
 
     //Remove Ground or passthrough on z
     if (remove_ground_){
@@ -184,10 +177,6 @@ int PointCloudProcessor::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl
     if (passthrough_enable_){
       pcl_cuda_pass_.setHostCloud(cloud_filtered);
       pcl_cuda_pass_.do_stuff(*cloud_filtered);
-      //cuda_pass_.setHostCloud(cloud_filtered);
-      //auto res = cuda_pass_.do_stuff("z", *cloud_filtered);
-      //pass_through_filter_.setInputCloud (cloud_filtered);
-      //pass_through_filter_.filter (*cloud_filtered);
     }
     main_cloud_ += *cloud_filtered;
 
@@ -242,8 +231,7 @@ void PointCloudProcessor::cluster(){
       ROS_ERROR("Cluster empty");
       return;
     }
-    //ROS_INFO_STREAM("points "<< pointcloud_xyz->points.size());
-    //concatenated_pc->width  = pointcloud_xyz->points.size();
+
     cloud_device.upload(pointcloud_xyz->points);
     pcl::gpu::Octree::Ptr octree_device (new pcl::gpu::Octree);
     octree_device->setCloud(cloud_device);
@@ -263,8 +251,7 @@ void PointCloudProcessor::cluster(){
     std::vector<double> i_vector;
 
     //TODO Test
-    pcl::PointCloud<PointXYZI> pointcloud_xyzi;//(new pcl::PointCloud<PointXYZI>);
-    //pcl::PointCloud<pcl::PointXYZI>::Ptr concatenated_xyzi;
+    pcl::PointCloud<PointXYZI> pointcloud_xyzi;
     pcl::copyPointCloud(*pointcloud_xyz.get(),pointcloud_xyzi);
 
     //Clean
@@ -272,7 +259,7 @@ void PointCloudProcessor::cluster(){
     for(std::map<int, Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
       if(it->second.age < 2){
         it = persons_array_.persons.erase(it);
-        ROS_WARN_STREAM("delete person and remaining "<< persons_array_.persons.size()) ;
+        ROS_ERROR_STREAM("deleting person because has not been detected "<< persons_array_.persons.size()) ;
       }
       else{
         it->second.age--;
@@ -304,14 +291,12 @@ void PointCloudProcessor::cluster(){
             i_vector.push_back(main_cloud_.points[*pit].intensity);
         }
 
-        //cluster_std = calculateStd<double>(x_vector)*calculateStd<double>(y_vector);
         double var_x = calculateVariance<double>(x_vector);
         double var_y = calculateVariance<double>(y_vector);
         double var_z = calculateVariance<double>(z_vector);
         double var_i = calculateVariance<double>(z_vector);
 
         cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
-
 
         //ON TESTING 
         id = var_i*100;
@@ -333,31 +318,26 @@ void PointCloudProcessor::cluster(){
           auto range_z = getAbsoluteRange<double>(z_vector);
           
           //var_i seems to be more stable that bb volume
-          //int(range_x * range_y *range_z *100);//two decimals
-          //std::cout << id << std::endl;
-
-          
           //ON TESTING
           auto matchingid =voting (persons_array_, new_cluster);
-          //if(persons_array_.persons.find(id) != persons_array_.persons.end()){
           if (matchingid>-1){
-            ROS_ERROR_STREAM("updating person found" << matchingid);
+            ROS_ERROR_STREAM("person previously detected: " << matchingid);
             persons_array_.persons[matchingid].age = 5;
             //just add if seen before
             // bounding boxes... TODO merge with persons_array (if approved by memory then add)
             addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, id);
           }
           else{
-            ROS_WARN_STREAM("person found"<< matchingid);            
+            ROS_ERROR_STREAM("A new person has been found adding to the array"<< matchingid);            
+            //testing map array_person (memory)
+            person.age = 5;
+            persons_array_.persons.insert(std::pair<int,Person>(id, person));
           }
-          
-          //testing map array_person (memory)
-          person.age = 10;
-          persons_array_.persons.insert(std::pair<int,Person>(id, person));
    
         }
     }
 
+    ROS_INFO_STREAM("Current persons on queue "<< persons_array_.persons.size());
     
     clusters_msg.header.frame_id = "velodyne";
     clusters_msg.header.stamp = ros::Time::now();

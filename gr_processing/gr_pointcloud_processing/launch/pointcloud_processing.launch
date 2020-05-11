@@ -6,7 +6,7 @@
   <arg name="xy_scale" default="2" />
   <arg name="scale_axis" default='y' />
 
-  <node pkg="gr_pointcloud_processing" type="pointcloud_processing_node" name="pointcloud_processing_node" output="screen">
+  <node pkg="gr_pointcloud_processing" type="gr_pointcloud_processing_node" name="pointcloud_processing_node" output="screen">
     <param name="roi" value="$(arg roi)" />
     <param name="time_window" value="$(arg time_window)" />
     <param name="global_frame" value="$(arg global_frame)" />
