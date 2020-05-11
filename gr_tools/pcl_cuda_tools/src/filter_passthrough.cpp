@@ -34,7 +34,6 @@ double FilterPassThrough::do_stuff (std::string channel, pcl::PointCloud<PointTy
   int y_scale = 1;
 
   if (scale_axis_ == 'x'){
-    std::cout << "scaling x  by" << xy_scaler_ << std::endl;
     y_scale = xy_scaler_;
   }
 
