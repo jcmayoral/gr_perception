@@ -11,7 +11,6 @@
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/filters/statistical_outlier_removal.h>
 
-
 // The GPU specific stuff here
 #include <pcl/gpu/octree/octree.hpp>
 #include <pcl/gpu/containers/device_array.hpp>
@@ -54,8 +53,6 @@
 class PointCloudProcessor
 {
 private:
-  //pcl::cuda::DisparityToCloud d2c;
-  //pcl::visualization::CloudViewer viewer;
   boost::mutex mutex_;
   ros::Subscriber pc_sub_;
   ros::Publisher pc_pub_;
@@ -73,7 +70,6 @@ private:
   geometry_msgs::TransformStamped to_odom_transform;
 
   //Testing
-  //pcl_gpu::FilterPassThrough cuda_pass_;
   pcl_gpu::FilterPassThrough radius_cuda_pass_;
   pcl_gpu::PCLFilterPassThrough pcl_cuda_pass_;
 

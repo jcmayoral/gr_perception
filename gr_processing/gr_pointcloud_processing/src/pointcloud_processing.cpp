@@ -157,7 +157,6 @@ void PointCloudProcessor::removeGround(boost::shared_ptr <pcl::PointCloud<pcl::P
   //ROS_INFO_STREAM("Surface remove " << number_of_surfaces);
 }
 
-//template <template <typename> class Storage> void
 int PointCloudProcessor::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered){
     //boost::mutex::scoped_lock lock(mutex_);
     bb.boxes.clear();
@@ -214,11 +213,9 @@ void PointCloudProcessor::publishBoundingBoxes(){
   bb.header.stamp = ros::Time::now();
   bb.header.frame_id = global_frame_;//cluster_array.header.frame_id;
   bb_pub_.publish(bb);
-  //ROS_INFO_STREAM("BoundingBoxes " << bb.boxes.size());
 }
 
 void PointCloudProcessor::cluster(){
-    //ROS_ERROR("cluster");
     boost::mutex::scoped_lock lock(mutex_);
     //Cluster implementation requires XYZ ... If you have a lot of time maybe worth it to modifyied it
     boost::shared_ptr <pcl::PointCloud<pcl::PointXYZ>> pointcloud_xyz = boost::make_shared<pcl::PointCloud<pcl::PointXYZ>>();
@@ -256,7 +253,8 @@ void PointCloudProcessor::cluster(){
 
     //Clean
     //REST AGE PARAM TO ALL the memory files DELETE IN NOT FOUND
-    for(std::map<int, Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
+    for( auto it = persons_array_.persons.begin(); it != persons_array_.persons.end();  ){
+    //for(std::map<std::string,Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
       if(it->second.age < 2){
         it = persons_array_.persons.erase(it);
         ROS_ERROR_STREAM("deleting person because has not been detected "<< persons_array_.persons.size()) ;
@@ -270,7 +268,6 @@ void PointCloudProcessor::cluster(){
     double cluster_std;
 
     Person person;
-    int id= 0;
 
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
         //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
@@ -299,19 +296,18 @@ void PointCloudProcessor::cluster(){
         cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
         //ON TESTING 
-        id = var_i*100;
-        Person new_cluster;
-        new_cluster.pose.position.x = 
-        new_cluster.pose.position.y =
+        person.pose.position.x = cluster_center.position.x;
+        person.pose.position.y =  cluster_center.position.y;
         //TODO add orientation
-        new_cluster.variance.x = var_x;
-        new_cluster.variance.y = var_y;
-        new_cluster.variance.z = var_z;
-        new_cluster.varid = id;
+        person.variance.x = var_x;
+        person.variance.y = var_y;
+        person.variance.z = var_z;
+        person.vari = var_i;
 
         if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
           //centroids for proximity policy
+          ROS_ERROR("A");
           clusters_msg.poses.push_back(cluster_center);
           auto range_x = getAbsoluteRange<double>(x_vector);
           auto range_y = getAbsoluteRange<double>(y_vector);
@@ -319,19 +315,28 @@ void PointCloudProcessor::cluster(){
           
           //var_i seems to be more stable that bb volume
           //ON TESTING
-          auto matchingid =voting (persons_array_, new_cluster);
-          if (matchingid>-1){
-            ROS_ERROR_STREAM("person previously detected: " << matchingid);
+          auto matchingid =voting (persons_array_, person);
+          if (!matchingid.empty()){
+            ROS_INFO_STREAM("person previously detected: " << matchingid << "Updating");
+            persons_array_.persons[matchingid] = person;
             persons_array_.persons[matchingid].age = 5;
+            //persons_array_.persons[matchingid].pose = person.pose;
+            //persons_array_.persons[matchingid].variance = person.variance;
+            //persons_array_.persons[matchingid].pose = person.pose;
+            //persons_array_.persons[matchingid].varid = person.varid;
+            
             //just add if seen before
             // bounding boxes... TODO merge with persons_array (if approved by memory then add)
-            addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, id);
+            addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
           }
           else{
-            ROS_ERROR_STREAM("A new person has been found adding to the array"<< matchingid);            
+            ROS_WARN_STREAM("A new person has been found adding to the array"<< matchingid);            
             //testing map array_person (memory)
+            int scale = 2;
+            person.id = "person_"+std::to_string(int(person.pose.position.x*scale))+ "_" + std::to_string(int(person.pose.position.y*scale));
             person.age = 5;
-            persons_array_.persons.insert(std::pair<int,Person>(id, person));
+            auto new_id = person.id;
+            persons_array_.persons.insert(std::pair<std::string,Person>(new_id, person));
           }
    
         }
@@ -347,5 +352,5 @@ void PointCloudProcessor::cluster(){
     if (output_publish_){
         publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(pointcloud_xyzi);
     }
-    ROS_ERROR_STREAM ("Clustering Time: " << (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    //ROS_ERROR_STREAM ("Clustering Time: " << (double)(clock() - tStart)/CLOCKS_PER_SEC);
 };
