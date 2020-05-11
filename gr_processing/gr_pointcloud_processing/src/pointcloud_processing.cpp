@@ -238,7 +238,6 @@ void PointCloudProcessor::cluster(){
 
     gec.setHostCloud(pointcloud_xyz);
     gec.extract (cluster_indices_gpu);
-    //octree_device->clear();
 
     geometry_msgs::PoseArray clusters_msg;
 
@@ -275,6 +274,10 @@ void PointCloudProcessor::cluster(){
         y_vector.clear();
         z_vector.clear();
         geometry_msgs::Pose cluster_center;
+        //NEW FEATURE
+        geometry_msgs::Quaternion cluster_orientation;
+        tf2::Quaternion tf2_quat;
+
         cluster_center.orientation.w = 1.0;
         for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit){
             cluster_center.position.x += main_cloud_.points[*pit].x/it->indices.size();
@@ -298,6 +301,8 @@ void PointCloudProcessor::cluster(){
         //ON TESTING 
         person.pose.position.x = cluster_center.position.x;
         person.pose.position.y =  cluster_center.position.y;
+
+
         //TODO add orientation
         person.variance.x = var_x;
         person.variance.y = var_y;
@@ -308,7 +313,6 @@ void PointCloudProcessor::cluster(){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
           //centroids for proximity policy
           ROS_ERROR("A");
-          clusters_msg.poses.push_back(cluster_center);
           auto range_x = getAbsoluteRange<double>(x_vector);
           auto range_y = getAbsoluteRange<double>(y_vector);
           auto range_z = getAbsoluteRange<double>(z_vector);
@@ -317,28 +321,36 @@ void PointCloudProcessor::cluster(){
           //ON TESTING
           auto matchingid =voting (persons_array_, person);
           if (!matchingid.empty()){
+            //Adding orientation TODO test
+            auto nx = person.pose.position.x- persons_array_.persons[matchingid].pose.position.x;
+            auto ny = person.pose.position.y- persons_array_.persons[matchingid].pose.position.y;
+            auto nz = person.pose.position.z- persons_array_.persons[matchingid].pose.position.z;
+            std::cout << nx << ", " << ny << " " << nz << std::endl;
+            tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
+            person.pose.orientation = tf2::toMsg(tf2_quat);
+            cluster_center.orientation = person.pose.orientation;
+
+            //Updating
             ROS_INFO_STREAM("person previously detected: " << matchingid << "Updating");
             persons_array_.persons[matchingid] = person;
             persons_array_.persons[matchingid].age = 5;
-            //persons_array_.persons[matchingid].pose = person.pose;
-            //persons_array_.persons[matchingid].variance = person.variance;
-            //persons_array_.persons[matchingid].pose = person.pose;
-            //persons_array_.persons[matchingid].varid = person.varid;
             
             //just add if seen before
             // bounding boxes... TODO merge with persons_array (if approved by memory then add)
             addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
+
           }
           else{
             ROS_WARN_STREAM("A new person has been found adding to the array"<< matchingid);            
             //testing map array_person (memory)
-            int scale = 2;
+            int scale = 1000;
             person.id = "person_"+std::to_string(int(person.pose.position.x*scale))+ "_" + std::to_string(int(person.pose.position.y*scale));
             person.age = 5;
             auto new_id = person.id;
             persons_array_.persons.insert(std::pair<std::string,Person>(new_id, person));
           }
-   
+          //Update for pose array
+          clusters_msg.poses.push_back(cluster_center);   
         }
     }
 

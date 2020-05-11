@@ -45,3 +45,22 @@ template<typename T>
 
         return sqrt(accum / (v.size()-1));
     }
+
+
+
+template<typename T>
+    double calculateYaw(T x, T y, T z){
+        std::cout << atan2(y,x)<< std::endl;
+        return atan2(y,x);
+        if (x>0 && y>0){
+            //90 DEGREES
+            return M_PI_4;
+        }
+
+        if (x<0 && y<0){
+            //-90 DEGREES
+            return -M_PI_4;
+        }
+
+        return 0;
+    }
