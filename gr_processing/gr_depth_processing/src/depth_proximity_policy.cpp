@@ -136,7 +136,7 @@ namespace gr_depth_processing
    float center_y = camera_depth_info_.K[5];
    float constant_x = 1.0 /  camera_depth_info_.K[0];
    float constant_y = 1.0 /  camera_depth_info_.K[4];
-   geometry_msgs::TransformStamped to_base_link_transform; // My frames are named "base_link" and "leap_motion"
+   geometry_msgs::TransformStamped to_base_link_transform; 
 
    objects_array_.objects.clear();
 
