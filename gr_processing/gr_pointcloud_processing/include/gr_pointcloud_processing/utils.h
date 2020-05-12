@@ -71,3 +71,35 @@ std::string voting(PersonArray detected, Person new_cluster){
     return {};
 }
 
+
+
+std::string scoreFunction(PersonArray detected, Person new_cluster){
+    std::vector<float> scores;
+    std::vector<int> varintensities;
+    std::vector<std::string> ids;
+
+    for( auto it = detected.persons.begin(); it != detected.persons.end(); it++){
+        float score = 0;
+        score += std::abs(it->second.pose.position.x - new_cluster.pose.position.x);
+        score += std::abs(it->second.pose.position.y - new_cluster.pose.position.y);
+        score += std::abs(it->second.pose.position.z - new_cluster.pose.position.z);
+        std::cout << "SC: " << score << std::endl;
+        scores.push_back(score);
+        varintensities.push_back(new_cluster.vari);
+        ids.push_back(it->first);
+    }
+
+    if (scores.size()==0){
+        return {};
+    }
+
+    auto min_score = min_element(scores.begin(), scores.end());
+    std::cout << "MIN SCORE " << *min_score << std::endl;
+    //FIND Proper threshold
+    if (*min_score < 1.0){
+        int argmin = std::distance(scores.begin(), min_score);
+        return ids[argmin];
+    }
+
+    return {};
+}

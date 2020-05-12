@@ -302,7 +302,6 @@ void PointCloudProcessor::cluster(){
         person.pose.position.x = cluster_center.position.x;
         person.pose.position.y =  cluster_center.position.y;
 
-
         //TODO add orientation
         person.variance.x = var_x;
         person.variance.y = var_y;
@@ -312,26 +311,27 @@ void PointCloudProcessor::cluster(){
         if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
           //centroids for proximity policy
-          ROS_ERROR("A");
           auto range_x = getAbsoluteRange<double>(x_vector);
           auto range_y = getAbsoluteRange<double>(y_vector);
           auto range_z = getAbsoluteRange<double>(z_vector);
           
           //var_i seems to be more stable that bb volume
           //ON TESTING
-          auto matchingid =voting (persons_array_, person);
+          //auto matchingid =voting (persons_array_, person);
+          auto matchingid = scoreFunction(persons_array_, person);
+
           if (!matchingid.empty()){
             //Adding orientation TODO test
             auto nx = person.pose.position.x- persons_array_.persons[matchingid].pose.position.x;
             auto ny = person.pose.position.y- persons_array_.persons[matchingid].pose.position.y;
             auto nz = person.pose.position.z- persons_array_.persons[matchingid].pose.position.z;
-            std::cout << nx << ", " << ny << " " << nz << std::endl;
+            //std::cout << nx << ", " << ny << " " << nz << std::endl;
             tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
             person.pose.orientation = tf2::toMsg(tf2_quat);
             cluster_center.orientation = person.pose.orientation;
 
             //Updating
-            ROS_INFO_STREAM("person previously detected: " << matchingid << "Updating");
+            ROS_INFO_STREAM("Updating person with id: " << matchingid);
             persons_array_.persons[matchingid] = person;
             persons_array_.persons[matchingid].age = 5;
             
