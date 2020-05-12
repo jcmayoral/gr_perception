@@ -344,7 +344,7 @@ void PointCloudProcessor::cluster(){
             ROS_WARN_STREAM("A new person has been found adding to the array"<< matchingid);            
             //testing map array_person (memory)
             int scale = 1000;
-            person.id = "person_"+std::to_string(int(person.pose.position.x*scale))+ "_" + std::to_string(int(person.pose.position.y*scale));
+            person.id = "person_"+ randomString();
             person.age = 5;
             auto new_id = person.id;
             persons_array_.persons.insert(std::pair<std::string,Person>(new_id, person));

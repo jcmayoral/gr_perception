@@ -75,7 +75,6 @@ std::string voting(PersonArray detected, Person new_cluster){
 
 std::string scoreFunction(PersonArray detected, Person new_cluster){
     std::vector<float> scores;
-    std::vector<int> varintensities;
     std::vector<std::string> ids;
 
     for( auto it = detected.persons.begin(); it != detected.persons.end(); it++){
@@ -83,9 +82,7 @@ std::string scoreFunction(PersonArray detected, Person new_cluster){
         score += std::abs(it->second.pose.position.x - new_cluster.pose.position.x);
         score += std::abs(it->second.pose.position.y - new_cluster.pose.position.y);
         score += std::abs(it->second.pose.position.z - new_cluster.pose.position.z);
-        std::cout << "SC: " << score << std::endl;
         scores.push_back(score);
-        varintensities.push_back(new_cluster.vari);
         ids.push_back(it->first);
     }
 
@@ -94,12 +91,28 @@ std::string scoreFunction(PersonArray detected, Person new_cluster){
     }
 
     auto min_score = min_element(scores.begin(), scores.end());
-    std::cout << "MIN SCORE " << *min_score << std::endl;
     //FIND Proper threshold
+    //research minimum social distance
     if (*min_score < 1.0){
         int argmin = std::distance(scores.begin(), min_score);
         return ids[argmin];
     }
 
     return {};
+}
+
+//FROM https://gist.github.com/abhijeetchopra/8e3068ef30702aeed84af0bb1fb87dd7
+//TODO HASH function
+std::string randomString(){
+	std::string str = "AAAAAA";
+    // string sequence
+	str[0] = rand() % 26 + 65;
+	str[1] = rand() % 26 + 65;
+	str[2] = rand() % 26 + 65;
+
+    // number sequence
+	str[3] = rand() % 10 + 48;
+	str[4] = rand() % 10 + 48;
+	str[5] = rand() % 10 + 48;
+	return str;
 }
