@@ -325,10 +325,18 @@ void PointCloudProcessor::cluster(){
             auto nx = person.pose.position.x- persons_array_.persons[matchingid].pose.position.x;
             auto ny = person.pose.position.y- persons_array_.persons[matchingid].pose.position.y;
             auto nz = person.pose.position.z- persons_array_.persons[matchingid].pose.position.z;
-            //std::cout << nx << ", " << ny << " " << nz << std::endl;
-            tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
-            person.pose.orientation = tf2::toMsg(tf2_quat);
-            cluster_center.orientation = person.pose.orientation;
+
+            //IF the distance is bigger than 5? cm then compute orientation and update
+            if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
+              //tf2_quat.setRPY(0,0, calculateYaw<double>(var_x,var_y,nz));
+              tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
+              person.pose.orientation = tf2::toMsg(tf2_quat);
+              cluster_center.orientation = person.pose.orientation;
+            }
+            else{
+              //Reuse orientation
+              person.pose.orientation = persons_array_.persons[matchingid].pose.orientation;
+            }
 
             //Updating
             ROS_INFO_STREAM("Updating person with id: " << matchingid);
