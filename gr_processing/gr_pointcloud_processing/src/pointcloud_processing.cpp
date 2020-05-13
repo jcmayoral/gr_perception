@@ -252,21 +252,12 @@ void PointCloudProcessor::cluster(){
 
     //Clean
     //REST AGE PARAM TO ALL the memory files DELETE IN NOT FOUND
-    for( auto it = persons_array_.persons.begin(); it != persons_array_.persons.end();  ){
-    //for(std::map<std::string,Person>::iterator it = persons_array_.persons.begin(); it!=persons_array_.persons.end(); ) {
-      if(it->second.age < 2){
-        it = persons_array_.persons.erase(it);
-        ROS_ERROR_STREAM("deleting person because has not been detected "<< persons_array_.persons.size()) ;
-      }
-      else{
-        it->second.age--;
-        it++;
-      }
-    }
+    //TODO to it timewise
+    gr_detection::cleanUpCycle();
 
     double cluster_std;
 
-    Person person;
+    gr_detection::Person person;
 
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
         //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
@@ -317,31 +308,29 @@ void PointCloudProcessor::cluster(){
           
           //var_i seems to be more stable that bb volume
           //ON TESTING
-          //auto matchingid =voting (persons_array_, person);
-          auto matchingid = scoreFunction(persons_array_, person);
+          auto matchingid = gr_detection::matchDetection(person);
 
           if (!matchingid.empty()){
-            //Adding orientation TODO test
-            auto nx = person.pose.position.x- persons_array_.persons[matchingid].pose.position.x;
-            auto ny = person.pose.position.y- persons_array_.persons[matchingid].pose.position.y;
-            auto nz = person.pose.position.z- persons_array_.persons[matchingid].pose.position.z;
+            //GEt matched object
+            auto matched_object = gr_detection::GetObject(matchingid);
+            auto nx = person.pose.position.x- matched_object.pose.position.x;
+            auto ny = person.pose.position.y- matched_object.pose.position.y;
+            auto nz = person.pose.position.z- matched_object.pose.position.z;
 
             //IF the distance is bigger than 5? cm then compute orientation and update
             if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
-              //tf2_quat.setRPY(0,0, calculateYaw<double>(var_x,var_y,nz));
               tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
               person.pose.orientation = tf2::toMsg(tf2_quat);
               cluster_center.orientation = person.pose.orientation;
             }
             else{
               //Reuse orientation
-              person.pose.orientation = persons_array_.persons[matchingid].pose.orientation;
+              person.pose.orientation = matched_object.pose.orientation;
             }
 
             //Updating
             ROS_INFO_STREAM("Updating person with id: " << matchingid);
-            persons_array_.persons[matchingid] = person;
-            persons_array_.persons[matchingid].age = 5;
+            gr_detection::UpdateObject(matchingid, person);
             
             //just add if seen before
             // bounding boxes... TODO merge with persons_array (if approved by memory then add)
@@ -349,13 +338,9 @@ void PointCloudProcessor::cluster(){
 
           }
           else{
-            ROS_WARN_STREAM("A new person has been found adding to the array"<< matchingid);            
+            ROS_WARN_STREAM("A new person has been found adding to the array");            
             //testing map array_person (memory)
-            int scale = 1000;
-            person.id = "person_"+ randomString();
-            person.age = 5;
-            auto new_id = person.id;
-            persons_array_.persons.insert(std::pair<std::string,Person>(new_id, person));
+            gr_detection::insertNewObject(person);
           }
           //Update for pose array
           clusters_msg.poses.push_back(cluster_center);   

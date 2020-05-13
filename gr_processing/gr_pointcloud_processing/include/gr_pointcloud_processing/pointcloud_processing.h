@@ -47,7 +47,7 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_listener.h>
 
-#include <gr_pointcloud_processing/utils.h>
+#include <common_detection_utils/fusion_detection_utils.hpp>
 
 
 class PointCloudProcessor
@@ -94,7 +94,7 @@ private:
   std::string global_frame_;
 
   //Testing
-  PersonArray persons_array_;
+  gr_detection::PersonArray persons_array_;
 
 public:
     PointCloudProcessor();

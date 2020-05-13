@@ -14,23 +14,10 @@ find_package(catkin REQUIRED
         tf2
         tf2_ros
         dynamic_reconfigure
+        common_detection_utils
 )
 
 find_package(PCL REQUIRED)
-
-
-#SET(CUDA_NVCC_FLAGS "-arch=sm_61" CACHE STRING "nvcc flags" FORCE)
-#SET (CUDA_VERBOSE_BUILD ON CACHE BOOL "nvcc verbose" FORCE)
-#set(CUDA_INCLUDE_DIRS /usr/local/cuda-10.1/include/ ${CUDA_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
-#SET(CUDA_LIBRARIES ${CUDA_LIBRARIES} "/usr/local/cuda-10.1/lib64/libcudart.so" "/usr/local/cuda-10.1/lib64/libcublas.so")
-
-#SET(LIB_TYPE STATIC)
-#CUDA_ADD_LIBRARY(TestLib ${LIB_TYPE} src/kinetic_ransac.cu)
-#cuda_add_executable(
-#  TestLib
-#  src/kinetic_ransac.cu
-#)
-
 
 
 find_package(Boost REQUIRED COMPONENTS
@@ -44,7 +31,6 @@ generate_dynamic_reconfigure_options(
 include_directories(include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
-  #${CUDA_INCLUDE_DIRS}
   /usr/local/include/pcl_cuda_tools/
 )
 
@@ -61,6 +47,7 @@ catkin_package(
     tf2
     tf2_ros
     dynamic_reconfigure
+    common_detection_utils
   DEPENDS
     PCL
 )
@@ -78,10 +65,8 @@ add_executable(${PROJECT_NAME}_node src/pointcloud_processing_node.cpp)
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
    ${PCL_LIBRARIES}
-   #${PROJECT_NAME}
    pcl_cuda_tools
  )
-
 
  target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
@@ -90,13 +75,6 @@ target_link_libraries(${PROJECT_NAME}
  )
 
 add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
-
-
-## Install executables and/or libraries
-#install(TARGETS ${PROJECT_NAME}
-#  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY include/${PROJECT_NAME}
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
