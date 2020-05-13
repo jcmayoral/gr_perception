@@ -30,7 +30,7 @@ if __name__ == '__main__':
         try:
             #print msg.encoding
             cv_image = bridge.imgmsg_to_cv2(msg)
-            #cv_image = cv_image/255
+            cv_image = cv_image/255
             filename = os.path.join("image_"+str(msg.header.seq)+".jpg")
             cv2.imwrite(filename, cv_image)
         except CvBridgeError as e:
