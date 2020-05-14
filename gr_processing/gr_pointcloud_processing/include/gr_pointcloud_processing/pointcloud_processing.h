@@ -46,66 +46,68 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_listener.h>
 
-#include <common_detection_utils/fusion_detection_utils.hpp>
+#include <common_detection_utils/common_detection_utils.h>
 #include <common_detection_utils/math_functions.hpp>
 
+namespace gr_detection{
+  
+  class PointCloudProcessor : FusionDetection
+  {
+  private:
+    boost::mutex mutex_;
+    ros::Subscriber pc_sub_;
+    ros::Publisher pc_pub_;
+    ros::Publisher cluster_pub_;
+    ros::Publisher bb_pub_;
+    pcl::gpu::Octree::PointCloud cloud_device;
+    pcl::gpu::EuclideanClusterExtraction gec;
+    pcl::ExtractIndices<pcl::PointXYZI> extraction_filter_;
+    pcl::SACSegmentation<pcl::PointXYZI> segmentation_filter_;
+    pcl::PassThrough<pcl::PointXYZI> pass_through_filter_;
+    pcl::ConditionalRemoval<pcl::PointXYZI> condition_removal_;
+    pcl::StatisticalOutlierRemoval<pcl::PointXYZI> outliers_filter_;
+    pcl::PointCloud<pcl::PointXYZI> main_cloud_;
+    ros::Timer timer_;
+    geometry_msgs::TransformStamped to_odom_transform;
 
-class PointCloudProcessor
-{
-private:
-  boost::mutex mutex_;
-  ros::Subscriber pc_sub_;
-  ros::Publisher pc_pub_;
-  ros::Publisher cluster_pub_;
-  ros::Publisher bb_pub_;
-  pcl::gpu::Octree::PointCloud cloud_device;
-  pcl::gpu::EuclideanClusterExtraction gec;
-  pcl::ExtractIndices<pcl::PointXYZI> extraction_filter_;
-  pcl::SACSegmentation<pcl::PointXYZI> segmentation_filter_;
-  pcl::PassThrough<pcl::PointXYZI> pass_through_filter_;
-  pcl::ConditionalRemoval<pcl::PointXYZI> condition_removal_;
-  pcl::StatisticalOutlierRemoval<pcl::PointXYZI> outliers_filter_;
-  pcl::PointCloud<pcl::PointXYZI> main_cloud_;
-  ros::Timer timer_;
-  geometry_msgs::TransformStamped to_odom_transform;
+    //Testing
+    pcl_gpu::FilterPassThrough radius_cuda_pass_;
+    pcl_gpu::PCLFilterPassThrough pcl_cuda_pass_;
 
-  //Testing
-  pcl_gpu::FilterPassThrough radius_cuda_pass_;
-  pcl_gpu::PCLFilterPassThrough pcl_cuda_pass_;
+    //Dynamic Reconfigure
+    dynamic_reconfigure::Server<gr_pointcloud_processing::PointCloudConfig> dyn_server_;
+    dynamic_reconfigure::Server<gr_pointcloud_processing::PointCloudConfig>::CallbackType dyn_server_cb_;
+    double dynamic_std_;
+    double dynamic_std_z_;
+    double distance_to_floor_;
 
-  //Dynamic Reconfigure
-  dynamic_reconfigure::Server<gr_pointcloud_processing::PointCloudConfig> dyn_server_;
-  dynamic_reconfigure::Server<gr_pointcloud_processing::PointCloudConfig>::CallbackType dyn_server_cb_;
-  double dynamic_std_;
-  double dynamic_std_z_;
-  double distance_to_floor_;
+    bool output_publish_;
+    bool remove_ground_;
+    bool passthrough_enable_;
+    bool is_processing_;
+    bool is_timer_enable_;
+    jsk_recognition_msgs::BoundingBoxArray bb;
+    std::clock_t tStart;
+    ros::Time last_detection_;
+    tf2_ros::Buffer tf_buffer_;
+    tf2_ros::TransformListener tf2_listener_;
+    std::string sensor_frame_;
+    std::string global_frame_;
 
-  bool output_publish_;
-  bool remove_ground_;
-  bool passthrough_enable_;
-  bool is_processing_;
-  bool is_timer_enable_;
-  jsk_recognition_msgs::BoundingBoxArray bb;
-  std::clock_t tStart;
-  ros::Time last_detection_;
-  tf2_ros::Buffer tf_buffer_;
-  tf2_ros::TransformListener tf2_listener_;
-  std::string sensor_frame_;
-  std::string global_frame_;
+    //Testing
+    //gr_detection::PersonArray persons_array_;
 
-  //Testing
-  //gr_detection::PersonArray persons_array_;
-
-public:
-    PointCloudProcessor();
-    ~PointCloudProcessor(){};
-    void pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg);
-    int run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered);
-    template <class T> void publishPointCloud(T);
-    void timer_cb(const ros::TimerEvent&);
-    void cluster();
-    void publishBoundingBoxes();
-    void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label);
-    void dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level);
-    void removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc);
+  public:
+      PointCloudProcessor();
+      ~PointCloudProcessor(){};
+      void pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg);
+      int run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered);
+      template <class T> void publishPointCloud(T);
+      void timer_cb(const ros::TimerEvent&);
+      void cluster();
+      void publishBoundingBoxes();
+      void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label);
+      void dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level);
+      void removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc);
+  };
 };

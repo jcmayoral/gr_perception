@@ -128,7 +128,7 @@ namespace gr_depth_processing
       return;
     }
     
-    gr_detection::cleanUpCycle();
+    cleanUpCycle();
     
     detected_objects_.poses.clear();
     double dist;
@@ -183,10 +183,10 @@ namespace gr_depth_processing
       //assuming global frame same of pointclouds
       person.pose = out.pose;
 
-      auto matchingid = gr_detection::matchDetection(person);
+      auto matchingid = matchDetection(person);
       if (!matchingid.empty()){
         //GEt matched object
-        auto matched_object = gr_detection::GetObject(matchingid);
+        auto matched_object = GetObject(matchingid);
         auto nx = person.pose.position.x- matched_object.pose.position.x;
         auto ny = person.pose.position.y- matched_object.pose.position.y;
         auto nz = person.pose.position.z- matched_object.pose.position.z;
@@ -205,12 +205,12 @@ namespace gr_depth_processing
         out.pose.orientation = person.pose.orientation;
         //Updating
         ROS_INFO_STREAM("Updating person with id: " << matchingid);
-        gr_detection::UpdateObject(matchingid, person);
+        UpdateObject(matchingid, person);
       }
       else{
         ROS_WARN_STREAM("A new person has been found adding to the array");            
         //testing map array_person (memory)
-        gr_detection::insertNewObject(person);
+        insertNewObject(person);
       }
       //UPDATE ARRAY TO PROXIMITY RINGS
       detected_objects_.poses.push_back(out.pose);

@@ -52,12 +52,10 @@ catkin_package(
     PCL
 )
 
-
 add_definitions(${PCL_DEFINITIONS})
 
 add_library(${PROJECT_NAME}
             src/pointcloud_processing.cpp
-
 )
 
 add_executable(${PROJECT_NAME}_node src/pointcloud_processing_node.cpp)

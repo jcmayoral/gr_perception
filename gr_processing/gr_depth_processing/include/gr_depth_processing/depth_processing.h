@@ -33,7 +33,7 @@
 #include <darknet_ros_msgs/BoundingBoxes.h>
 #include <safety_msgs/FoundObjectsArray.h>
 
-#include <common_detection_utils/fusion_detection_utils.hpp>
+#include <common_detection_utils/common_detection_utils.h>
 #include <common_detection_utils/math_functions.hpp>
 
 namespace gr_depth_processing
@@ -48,7 +48,7 @@ namespace gr_depth_processing
     return *msg_pointer;
   }
 
-  class MyNodeletClass : public nodelet::Nodelet
+  class MyNodeletClass : public nodelet::Nodelet, gr_detection::FusionDetection
   {
     public:
       virtual void onInit();
