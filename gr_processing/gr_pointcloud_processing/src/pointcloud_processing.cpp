@@ -282,10 +282,10 @@ void PointCloudProcessor::cluster(){
             i_vector.push_back(main_cloud_.points[*pit].intensity);
         }
 
-        double var_x = calculateVariance<double>(x_vector);
-        double var_y = calculateVariance<double>(y_vector);
-        double var_z = calculateVariance<double>(z_vector);
-        double var_i = calculateVariance<double>(z_vector);
+        double var_x = gr_detection::calculateVariance<double>(x_vector);
+        double var_y = gr_detection::calculateVariance<double>(y_vector);
+        double var_z = gr_detection::calculateVariance<double>(z_vector);
+        double var_i = gr_detection::calculateVariance<double>(z_vector);
 
         cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
@@ -302,9 +302,9 @@ void PointCloudProcessor::cluster(){
         if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
         //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
           //centroids for proximity policy
-          auto range_x = getAbsoluteRange<double>(x_vector);
-          auto range_y = getAbsoluteRange<double>(y_vector);
-          auto range_z = getAbsoluteRange<double>(z_vector);
+          auto range_x = gr_detection::getAbsoluteRange<double>(x_vector);
+          auto range_y = gr_detection::getAbsoluteRange<double>(y_vector);
+          auto range_z = gr_detection::getAbsoluteRange<double>(z_vector);
           
           //var_i seems to be more stable that bb volume
           //ON TESTING
@@ -319,7 +319,7 @@ void PointCloudProcessor::cluster(){
 
             //IF the distance is bigger than 5? cm then compute orientation and update
             if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
-              tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
+              tf2_quat.setRPY(0,0, gr_detection::calculateYaw<double>(nx,ny,nz));
               person.pose.orientation = tf2::toMsg(tf2_quat);
               cluster_center.orientation = person.pose.orientation;
             }
@@ -347,7 +347,7 @@ void PointCloudProcessor::cluster(){
         }
     }
 
-    ROS_INFO_STREAM("Current persons on queue "<< persons_array_.persons.size());
+    ROS_INFO_STREAM("Current persons on queue "<< gr_detection::getDetectionsNumber());
     
     clusters_msg.header.frame_id = "velodyne";
     clusters_msg.header.stamp = ros::Time::now();

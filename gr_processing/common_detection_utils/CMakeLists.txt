@@ -24,10 +24,17 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
+add_executable(fusion_detection_utils_node  src/fusion_detection_utils_node.cpp)
+#add_dependencies(fusion_detection_utils_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(fusion_detection_utils_node ${catkin_LIBRARIES})
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE)
+
+  install(TARGETS fusion_detection_utils_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

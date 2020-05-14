@@ -39,7 +39,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
-#include <gr_pointcloud_processing/math_functions.hpp>
 
 #include <pcl_cuda_tools/filters/filter_passthrough.h>
 #include <pcl_cuda_tools/filters/pcl_filter_passthrough.h>
@@ -48,6 +47,7 @@
 #include <tf2_ros/transform_listener.h>
 
 #include <common_detection_utils/fusion_detection_utils.hpp>
+#include <common_detection_utils/math_functions.hpp>
 
 
 class PointCloudProcessor
@@ -94,7 +94,7 @@ private:
   std::string global_frame_;
 
   //Testing
-  gr_detection::PersonArray persons_array_;
+  //gr_detection::PersonArray persons_array_;
 
 public:
     PointCloudProcessor();

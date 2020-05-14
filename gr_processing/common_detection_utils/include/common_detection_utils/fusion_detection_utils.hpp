@@ -2,6 +2,10 @@
 #include <geometry_msgs/Vector3.h>
 #include <string>
 
+
+#ifndef GRFUSIONPERSON_H
+#define GRFUSIONPERSON_H
+
 namespace gr_detection{
     struct Person{
         int age = 10;
@@ -11,13 +15,11 @@ namespace gr_detection{
         std::string id;
     };
 
-    struct PersonArray{
-        std::map<std::string, Person> persons;
-    };
+    static std::map<std::string, Person> DETECTIONSARRAY;
 
-    //TODO add lockable class
-    static PersonArray DETECTIONSARRAY;
-
+    int getDetectionsNumber(){
+        return DETECTIONSARRAY.size();
+    }
     //FROM https://gist.github.com/abhijeetchopra/8e3068ef30702aeed84af0bb1fb87dd7
     //TODO HASH function
     std::string randomString(){
@@ -35,19 +37,18 @@ namespace gr_detection{
     }
 
     void UpdateOrientation(geometry_msgs::Quaternion q, std::string id){
-        DETECTIONSARRAY.persons[id].pose.orientation = q;
+        DETECTIONSARRAY[id].pose.orientation = q;
     }
 
     void UpdateObject(std::string id, Person p){
-        DETECTIONSARRAY.persons[id] = p;
-        DETECTIONSARRAY.persons[id].age = 5;
+        DETECTIONSARRAY[id] = p;
+        DETECTIONSARRAY[id].age = 5;
     }
 
     void cleanUpCycle(){
-        for( auto it = DETECTIONSARRAY.persons.begin(); it != DETECTIONSARRAY.persons.end();  ){
+        for( auto it = DETECTIONSARRAY.begin(); it != DETECTIONSARRAY.end();  ){
             if(it->second.age < 2){
-                it = DETECTIONSARRAY.persons.erase(it);
-                ROS_ERROR_STREAM("deleting person because has not been detected "<< DETECTIONSARRAY.persons.size()) ;
+                it = DETECTIONSARRAY.erase(it);
             }
             else{
                 it->second.age--;
@@ -56,14 +57,20 @@ namespace gr_detection{
         }
     }
 
+     void plotIDS(){
+        for( auto it = DETECTIONSARRAY.begin(); it != DETECTIONSARRAY.end(); it++  ){
+            std::cout << it->first << std::endl;
+        }
+    }
+
     void insertNewObject(Person p){
         p.id = "person_"+ gr_detection::randomString();
         p.age = 5;
-        DETECTIONSARRAY.persons.insert(std::pair<std::string,Person>(p.id, p));   
+        DETECTIONSARRAY.insert(std::pair<std::string,Person>(p.id, p));   
     }
 
     Person GetObject(std::string id){
-        return DETECTIONSARRAY.persons[id];
+        return DETECTIONSARRAY[id];
     }
 
 
@@ -71,7 +78,7 @@ namespace gr_detection{
         std::vector<float> scores;
         std::vector<std::string> ids;
 
-        for( auto it = DETECTIONSARRAY.persons.begin(); it != DETECTIONSARRAY.persons.end(); it++){
+        for( auto it = DETECTIONSARRAY.begin(); it != DETECTIONSARRAY.end(); it++){
             float score = 0;
             score += std::abs(it->second.pose.position.x - new_cluster.pose.position.x);
             score += std::abs(it->second.pose.position.y - new_cluster.pose.position.y);
@@ -97,3 +104,5 @@ namespace gr_detection{
 
 
 }
+
+#endif

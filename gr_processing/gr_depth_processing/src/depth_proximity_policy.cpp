@@ -124,49 +124,50 @@ namespace gr_depth_processing
     const uint16_t * depth_array = reinterpret_cast<const uint16_t *>(&(depth_image->data[0]));
 
 
-    if (!convertROSImage2Mat(process_frame, depth_image)){//DEPTH
-    //if (!convertROSImage2Mat(process_frame, color_image)){//COLOR
+    if (!convertROSImage2Mat(process_frame, depth_image)){
       return;
     }
+    
+    gr_detection::cleanUpCycle();
+    
+    detected_objects_.poses.clear();
+    double dist;
+    
+    //TODO THESE ARE CONSTANTS
+    float center_x = camera_depth_info_.K[2];
+    float center_y = camera_depth_info_.K[5];
+    float constant_x = 1.0 /  camera_depth_info_.K[0];
+    float constant_y = 1.0 /  camera_depth_info_.K[4];
 
-   detected_objects_.poses.clear();
-   double dist;
+    geometry_msgs::TransformStamped to_base_link_transform; 
 
-   float center_x = camera_depth_info_.K[2];
-   float center_y = camera_depth_info_.K[5];
-   float constant_x = 1.0 /  camera_depth_info_.K[0];
-   float constant_y = 1.0 /  camera_depth_info_.K[4];
-   geometry_msgs::TransformStamped to_base_link_transform; 
+    objects_array_.objects.clear();
 
-   objects_array_.objects.clear();
+    for (auto it = bounding_boxes->bounding_boxes.begin(); it != bounding_boxes->bounding_boxes.end(); ++it){
+      geometry_msgs::PoseStamped in, out;
+      int center_row = it->xmin + (it->xmax - it->xmin)/2;
+      int center_col = it->ymin + (it->ymax - it->ymin)/2;
+      objects_center.push_back(std::make_pair(center_row, center_col));
+      dist = registerImage(*it, process_frame, camera_depth_info_);
 
-   for (auto it = bounding_boxes->bounding_boxes.begin(); it != bounding_boxes->bounding_boxes.end(); ++it){
-     geometry_msgs::PoseStamped in, out;
-     int center_row = it->xmin + (it->xmax - it->xmin)/2;
-     int center_col = it->ymin + (it->ymax - it->ymin)/2;
-     objects_center.push_back(std::make_pair(center_row, center_col));
-     dist = registerImage(*it, process_frame, camera_depth_info_);
+      in.header = depth_image->header;
+      in.pose.orientation.w = 1.0;
+      in.pose.position.x = (center_row - center_x) * dist * constant_x;
+      in.pose.position.y = (center_col - center_y) * dist * constant_y;
+      in.pose.position.z = dist;
 
-     in.header = depth_image->header;
-     in.pose.orientation.w = 1.0;
-     in.pose.position.x = (center_row - center_x) * dist * constant_x;
-     in.pose.position.y = (center_col - center_y) * dist * constant_y;
-     in.pose.position.z = dist;
-     
-     if (dist<0.1 || dist > max_range_){
-       ROS_WARN_STREAM("Object out of range"<< dist);
-       continue;
+      if (dist<0.1 || dist > max_range_){
+        ROS_WARN_STREAM("Object out of range"<< dist);
+        continue;
       }
 
       to_base_link_transform = tf_buffer_.lookupTransform(global_frame_, in.header.frame_id, ros::Time(0), ros::Duration(1.0) );
       tf2::doTransform(in, out, to_base_link_transform);
-      
+
       detected_objects_.header= out.header;
       detected_objects_.header.stamp = ros::Time::now();
-      detected_objects_.poses.push_back(out.pose);
-      distance_to_objects.push_back(it->Class + std::to_string(dist));
-      boundRect.push_back(cv::Rect(it->xmin, it->ymin, it->xmax - it->xmin, it->ymax - it->ymin));
 
+      //THIS IF FOR GR_ML
       //Fill Object
       safety_msgs::Object object;
       //Copy header from transform useful to match timestamps
@@ -176,20 +177,58 @@ namespace gr_depth_processing
       //copy class
       object.class_name = it->Class;
       objects_array_.objects.push_back(object);
+
+      //THIS IS FOR THE COMMON_DETECTION_UTILS
+      gr_detection::Person person;
+      //assuming global frame same of pointclouds
+      person.pose = out.pose;
+
+      auto matchingid = gr_detection::matchDetection(person);
+      if (!matchingid.empty()){
+        //GEt matched object
+        auto matched_object = gr_detection::GetObject(matchingid);
+        auto nx = person.pose.position.x- matched_object.pose.position.x;
+        auto ny = person.pose.position.y- matched_object.pose.position.y;
+        auto nz = person.pose.position.z- matched_object.pose.position.z;
+
+        tf2::Quaternion tf2_quat;
+        //IF the distance is bigger than 5? cm then compute orientation and update
+        if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
+          tf2_quat.setRPY(0,0, gr_detection::calculateYaw<double>(nx,ny,nz));
+          person.pose.orientation = tf2::toMsg(tf2_quat);
+        }
+        else{
+          //Reuse orientation
+          person.pose.orientation = matched_object.pose.orientation;
+        }
+
+        out.pose.orientation = person.pose.orientation;
+        //Updating
+        ROS_INFO_STREAM("Updating person with id: " << matchingid);
+        gr_detection::UpdateObject(matchingid, person);
+      }
+      else{
+        ROS_WARN_STREAM("A new person has been found adding to the array");            
+        //testing map array_person (memory)
+        gr_detection::insertNewObject(person);
+      }
+      //UPDATE ARRAY TO PROXIMITY RINGS
+      detected_objects_.poses.push_back(out.pose);
+      distance_to_objects.push_back(it->Class + std::to_string(dist));
+      boundRect.push_back(cv::Rect(it->xmin, it->ymin, it->xmax - it->xmin, it->ymax - it->ymin));
     }
 
+    //TO DRAW OUTPUT FRAME MAYBE WILL BE DELETED ON FUTURE VERSIONS
     auto it = distance_to_objects.begin();
     auto it2 = objects_center.begin();
     auto it3 = boundRect.begin();
 
-
     for (; it!= distance_to_objects.end(); ++it, ++it2, ++it3){
       cv::putText(process_frame, *it, cv::Point(it2->first, it2->second), cv::FONT_HERSHEY_PLAIN, 1,   0xffff , 2, 8);
-     // cv::putText(process_frame, std::to_string(0.001*(depth_array[it2->first+ it2->second * process_frame.rows])), cv::Point(it2->first, it2->second+20), cv::FONT_HERSHEY_PLAIN,
-       //                       1,   0xffff , 2, 8);
+      // cv::putText(process_frame, std::to_string(0.001*(depth_array[it2->first+ it2->second * process_frame.rows])), cv::Point(it2->first, it2->second+20), cv::FONT_HERSHEY_PLAIN,
+      //                       1,   0xffff , 2, 8);
       cv::rectangle(process_frame, *it3, 0xffff);
     }
-
     publishOutput(process_frame, false);
   }
 

@@ -33,6 +33,9 @@
 #include <darknet_ros_msgs/BoundingBoxes.h>
 #include <safety_msgs/FoundObjectsArray.h>
 
+#include <common_detection_utils/fusion_detection_utils.hpp>
+#include <common_detection_utils/math_functions.hpp>
+
 namespace gr_depth_processing
 {
   typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> ImagesSyncPolicy;
