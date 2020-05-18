@@ -11,7 +11,7 @@ namespace gr_depth_processing
 
     //Local NodeHandle
     ros::NodeHandle local_nh("~");
-    local_nh.getParam("global_frame", global_frame_);
+    local_nh.param<std::string>("global_frame", global_frame_, "base_link");
 
     tf2_listener_= new  tf2_ros::TransformListener(tf_buffer_);
 
@@ -204,11 +204,11 @@ namespace gr_depth_processing
 
         out.pose.orientation = person.pose.orientation;
         //Updating
-        ROS_INFO_STREAM("Updating person with id: " << matchingid);
+        //ROS_INFO_STREAM("Updating person with id: " << matchingid);
         UpdateObject(matchingid, person);
       }
       else{
-        ROS_WARN_STREAM("A new person has been found adding to the array");            
+        //ROS_WARN_STREAM("A new person has been found adding to the array");            
         //testing map array_person (memory)
         insertNewObject(person);
       }
@@ -217,6 +217,9 @@ namespace gr_depth_processing
       distance_to_objects.push_back(it->Class + std::to_string(dist));
       boundRect.push_back(cv::Rect(it->xmin, it->ymin, it->xmax - it->xmin, it->ymax - it->ymin));
     }
+
+    ROS_INFO_STREAM("Detections read on camera");
+    showCurrentDetections();
 
     //TO DRAW OUTPUT FRAME MAYBE WILL BE DELETED ON FUTURE VERSIONS
     auto it = distance_to_objects.begin();

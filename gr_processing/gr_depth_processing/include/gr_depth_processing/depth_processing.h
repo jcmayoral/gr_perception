@@ -36,6 +36,9 @@
 #include <common_detection_utils/common_detection_utils.h>
 #include <common_detection_utils/math_functions.hpp>
 
+
+//gr_detection::DetectionArray gr_detection::FusionDetection::DETECTIONSARRAY = gr_detection::DetectionArray();
+
 namespace gr_depth_processing
 {
   typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> ImagesSyncPolicy;
