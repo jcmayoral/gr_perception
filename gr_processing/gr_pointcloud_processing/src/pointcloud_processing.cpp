@@ -1,136 +1,147 @@
 #include <gr_pointcloud_processing/pointcloud_processing.h>
+#include <pluginlib/class_list_macros.h>
+
+PLUGINLIB_EXPORT_CLASS(gr_pointcloud_processing::PointCloudProcessor, nodelet::Nodelet)
+
+using namespace gr_detection;
+
+namespace gr_pointcloud_processing{
+
+  void PointCloudProcessor::onInit(){
+    dynamic_std_ = 0.1;
+    output_publish_ = false;
+    remove_ground_ = true;
+    passthrough_enable_ = true;
+    is_processing_ = false;
+    is_timer_enable_ = true;
+    tf2_listener_ = new tf2_ros::TransformListener(tf_buffer_);
+    last_detection_ = ros::Time(0);
+    sensor_frame_ = "velodyne";
+    global_frame_ = "odom";
+    distance_to_floor_ = 0.0;
+
+    ros::NodeHandle nh("~");
+
+    //cilinder ROI
+    tStart = clock();
+    double limit = 15.0;
+    double time_window = 0.2;
+    std::string scale_axis = "y";
+    int xy_scale = 2;
+
+    nh.getParam("roi", limit);
+    nh.getParam("time_window", time_window);
+    nh.getParam("global_frame", global_frame_);
+    nh.getParam("sensor_frame", sensor_frame_);
+    nh.getParam("xy_scale", xy_scale);
+    //Error passing char as param
+    nh.getParam("scale_axis", scale_axis);
+
+    ROS_INFO_STREAM("ROI Radius [m] "<< limit );
+    ROS_INFO_STREAM("Time Window [s] "<< time_window );
+    ROS_INFO_STREAM("Global Frame "<< global_frame_ );
+    ROS_INFO_STREAM("XY Scaler "<< xy_scale );
+    ROS_INFO_STREAM("Scale Axis "<< scale_axis);
+
+    pass_through_filter_.setFilterFieldName ("z");
+    radius_cuda_pass_.setMinimumValue(-limit);
+    radius_cuda_pass_.setMaximumValue(limit);
+    radius_cuda_pass_.setScaleAxis(scale_axis[0]);
+    radius_cuda_pass_.setXYScaler(xy_scale);
+
+    segmentation_filter_.setModelType(pcl::SACMODEL_PERPENDICULAR_PLANE);
+    Eigen::Vector3f axis = Eigen::Vector3f(0.0,0.0,1.0);
+    segmentation_filter_.setAxis(axis);
+    //segmentation_filter_.setModelType(pcl::SACMODEL_PARALLEL_PLANE);
+    segmentation_filter_.setMethodType(pcl::SAC_RANSAC);
+
+    timer_ = nh.createTimer(ros::Duration(time_window), &PointCloudProcessor::timer_cb, this);
+    dyn_server_cb_ = boost::bind(&PointCloudProcessor::dyn_reconfigureCB, this, _1, _2);
+    dyn_server_.setCallback(dyn_server_cb_);
+
+    pc_sub_ = nh.subscribe("/velodyne_points", 1, &PointCloudProcessor::pointcloud_cb, this);
+    pc_pub_ = nh.advertise<sensor_msgs::PointCloud2>("/velodyne_points/filtered", 1);
+    cluster_pub_ = nh.advertise<geometry_msgs::PoseArray>("detected_objects",1);
+    bb_pub_ = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("/detection/bounding_boxes", 1);
+    ROS_INFO("Setup Done ready to work");
+
+};
+
+void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level){
+    boost::mutex::scoped_lock lock(mutex_);
+    main_cloud_.points.clear();
+    ROS_ERROR("RECONFIGURING");
+    timer_.stop();
+    timer_.setPeriod(ros::Duration(config.cummulative_time), true);
+    pass_through_filter_.setFilterLimits (config.min_passthrough_z, config.max_passthrough_z);
+    //cuda_pass_.setMinimumValue(config.min_passthrough_z);
+    //cuda_pass_.setMaximumValue(config.max_passthrough_z);
+    pcl_cuda_pass_.setMinimumValue(config.min_passthrough_z);
+    pcl_cuda_pass_.setMaximumValue(config.max_passthrough_z);
+
+    segmentation_filter_.setEpsAngle(config.eps_angle* (M_PI/180.0f) ); // plane can be within n degrees of X-Z plane
+    segmentation_filter_.setMaxIterations(config.max_iterations);
+    segmentation_filter_.setDistanceThreshold(config.distance_threshold);
+    segmentation_filter_.setOptimizeCoefficients(config.optimize_coefficients);
+    extraction_filter_.setNegative(config.set_negative);
+    outliers_filter_.setMeanK(config.outlier_meank);
+    outliers_filter_.setStddevMulThresh(config.outlier_std);
+    gec.setClusterTolerance (config.cluster_tolerance);
+    gec.setMinClusterSize (config.min_cluster_size);
+    dynamic_std_ = config.dynamic_classifier;
+    dynamic_std_z_ = config.dynamic_classifier_z;
+    output_publish_ = config.publish_output;
+
+    if (config.mode == 1){
+      remove_ground_ = false;//config.remove_ground = false;
+      passthrough_enable_ = true;//config.passthrough_filter = true;
+    }
+
+    if (config.mode == 0){
+      remove_ground_ = true;//config.remove_ground = true;
+      passthrough_enable_ = false;//config.passthrough_filter = true;
+    }
+
+    is_timer_enable_ = config.timer_enable;
+
+    if (config.timer_enable){
+      timer_.start();
+    }
+    ROS_ERROR("END reconfigure");
+
+};
+
+void PointCloudProcessor::timer_cb(const ros::TimerEvent&){
+    //boost::mutex::scoped_lock lock(mutex_);
+    //  ROS_ERROR("timer ");
+    tStart = clock();
+    cluster();
+    main_cloud_.points.clear();
+}
 
 
-namespace gr_detection{
+template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
-  PointCloudProcessor::PointCloudProcessor (): dynamic_std_(0.1), output_publish_(false),
-                            remove_ground_(true), passthrough_enable_(true),
-                            is_processing_(false), is_timer_enable_(true),
-                            tf2_listener_(tf_buffer_), last_detection_(ros::Time(0)),
-                            sensor_frame_("velodyne"), global_frame_("odom"),
-                            distance_to_floor_(0.0){
-      ros::NodeHandle nh("~");
-
-      //cilinder ROI
-      tStart = clock();
-      double limit = 15.0;
-      double time_window = 0.2;
-      std::string scale_axis = "y";
-      int xy_scale = 2;
-
-      nh.getParam("roi", limit);
-      nh.getParam("time_window", time_window);
-      nh.getParam("global_frame", global_frame_);
-      nh.getParam("sensor_frame", sensor_frame_);
-      nh.getParam("xy_scale", xy_scale);
-      //Error passing char as param
-      nh.getParam("scale_axis", scale_axis);
-
-      ROS_INFO_STREAM("ROI Radius [m] "<< limit );
-      ROS_INFO_STREAM("Time Window [s] "<< time_window );
-      ROS_INFO_STREAM("Global Frame "<< global_frame_ );
-      ROS_INFO_STREAM("XY Scaler "<< xy_scale );
-      ROS_INFO_STREAM("Scale Axis "<< scale_axis);
-
-      pass_through_filter_.setFilterFieldName ("z");
-      radius_cuda_pass_.setMinimumValue(-limit);
-      radius_cuda_pass_.setMaximumValue(limit);
-      radius_cuda_pass_.setScaleAxis(scale_axis[0]);
-      radius_cuda_pass_.setXYScaler(xy_scale);
-
-      segmentation_filter_.setModelType(pcl::SACMODEL_PERPENDICULAR_PLANE);
-      Eigen::Vector3f axis = Eigen::Vector3f(0.0,0.0,1.0);
-      segmentation_filter_.setAxis(axis);
-      //segmentation_filter_.setModelType(pcl::SACMODEL_PARALLEL_PLANE);
-      segmentation_filter_.setMethodType(pcl::SAC_RANSAC);
-
-      timer_ = nh.createTimer(ros::Duration(time_window), &PointCloudProcessor::timer_cb, this);
-      dyn_server_cb_ = boost::bind(&PointCloudProcessor::dyn_reconfigureCB, this, _1, _2);
-      dyn_server_.setCallback(dyn_server_cb_);
-
-      pc_sub_ = nh.subscribe("/velodyne_points", 1, &PointCloudProcessor::pointcloud_cb, this);
-      pc_pub_ = nh.advertise<sensor_msgs::PointCloud2>("/velodyne_points/filtered", 1);
-      cluster_pub_ = nh.advertise<geometry_msgs::PoseArray>("detected_objects",1);
-      bb_pub_ = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("/detection/bounding_boxes", 1);
-      ROS_INFO("Setup Done ready to work");
-
-  };
-
-  void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level){
-      boost::mutex::scoped_lock lock(mutex_);
-      main_cloud_.points.clear();
-      ROS_ERROR("RECONFIGURING");
-      timer_.stop();
-      timer_.setPeriod(ros::Duration(config.cummulative_time), true);
-      pass_through_filter_.setFilterLimits (config.min_passthrough_z, config.max_passthrough_z);
-      //cuda_pass_.setMinimumValue(config.min_passthrough_z);
-      //cuda_pass_.setMaximumValue(config.max_passthrough_z);
-      pcl_cuda_pass_.setMinimumValue(config.min_passthrough_z);
-      pcl_cuda_pass_.setMaximumValue(config.max_passthrough_z);
-
-      segmentation_filter_.setEpsAngle(config.eps_angle* (M_PI/180.0f) ); // plane can be within n degrees of X-Z plane
-      segmentation_filter_.setMaxIterations(config.max_iterations);
-      segmentation_filter_.setDistanceThreshold(config.distance_threshold);
-      segmentation_filter_.setOptimizeCoefficients(config.optimize_coefficients);
-      extraction_filter_.setNegative(config.set_negative);
-      outliers_filter_.setMeanK(config.outlier_meank);
-      outliers_filter_.setStddevMulThresh(config.outlier_std);
-      gec.setClusterTolerance (config.cluster_tolerance);
-      gec.setMinClusterSize (config.min_cluster_size);
-      dynamic_std_ = config.dynamic_classifier;
-      dynamic_std_z_ = config.dynamic_classifier_z;
-      output_publish_ = config.publish_output;
-
-      if (config.mode == 1){
-        remove_ground_ = false;//config.remove_ground = false;
-        passthrough_enable_ = true;//config.passthrough_filter = true;
-      }
-
-      if (config.mode == 0){
-        remove_ground_ = true;//config.remove_ground = true;
-        passthrough_enable_ = false;//config.passthrough_filter = true;
-      }
-
-      is_timer_enable_ = config.timer_enable;
-
-      if (config.timer_enable){
-        timer_.start();
-      }
-      ROS_ERROR("END reconfigure");
-
-  };
-
-  void PointCloudProcessor::timer_cb(const ros::TimerEvent&){
-      //boost::mutex::scoped_lock lock(mutex_);
-      //  ROS_ERROR("timer ");
-      tStart = clock();
-      cluster();
-      main_cloud_.points.clear();
-  }
-
-
-  template <class T> void PointCloudProcessor::publishPointCloud(T t){
-
-      if(t.points.size() ==0 ){
-        return;
-      } 
-      sensor_msgs::PointCloud2 output_pointcloud_;
-      pcl::toROSMsg(t, output_pointcloud_);
-      output_pointcloud_.header.frame_id = sensor_frame_;
-      output_pointcloud_.header.stamp = ros::Time::now();
-      // Publish the data
-      pc_pub_.publish(output_pointcloud_);
+    if(t.points.size() ==0 ){
+      return;
+    } 
+    sensor_msgs::PointCloud2 output_pointcloud_;
+    pcl::toROSMsg(t, output_pointcloud_);
+    output_pointcloud_.header.frame_id = sensor_frame_;
+    output_pointcloud_.header.stamp = ros::Time::now();
+    // Publish the data
+    pc_pub_.publish(output_pointcloud_);
   }
 
 
   void PointCloudProcessor::pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg){
-      //run_filter(*msg);
-      //ROS_ERROR("pointcloud cb");
-      sensor_frame_ = msg->header.frame_id;
-      pcl::PointCloud<pcl::PointXYZI>::Ptr output (new pcl::PointCloud<pcl::PointXYZI>);
-      pcl::fromROSMsg(*msg, *output);
-      //ROS_INFO("PointCloud conversion succeded");
-      auto result = run_filter(output);
+    //run_filter(*msg);
+    //ROS_ERROR("pointcloud cb");
+    sensor_frame_ = msg->header.frame_id;
+    pcl::PointCloud<pcl::PointXYZI>::Ptr output (new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::fromROSMsg(*msg, *output);
+    //ROS_INFO("PointCloud conversion succeded");
+    auto result = run_filter(output);
   };
 
 

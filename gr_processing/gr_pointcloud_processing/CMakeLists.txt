@@ -15,6 +15,7 @@ find_package(catkin REQUIRED
         tf2_ros
         dynamic_reconfigure
         common_detection_utils
+        nodelet
 )
 
 find_package(PCL REQUIRED)
@@ -37,7 +38,7 @@ include_directories(include
 link_directories(/usr/local/include/pcl_cuda_tools/)
 
 catkin_package(
-  INCLUDE_DIRS include/${PROJECT_NAME}
+  INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
     roscpp
@@ -48,6 +49,7 @@ catkin_package(
     tf2_ros
     dynamic_reconfigure
     common_detection_utils
+    nodelet
   DEPENDS
     PCL
 )
@@ -58,7 +60,6 @@ add_library(${PROJECT_NAME}
             src/pointcloud_processing.cpp
 )
 
-add_executable(${PROJECT_NAME}_node src/pointcloud_processing_node.cpp)
 
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
@@ -66,15 +67,7 @@ target_link_libraries(${PROJECT_NAME}
    pcl_cuda_tools
  )
 
- target_link_libraries(${PROJECT_NAME}_node
-   ${catkin_LIBRARIES}
-   ${PCL_LIBRARIES}
-   ${PROJECT_NAME}
- )
-
-add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
-
-install(DIRECTORY include/${PROJECT_NAME}
+install(DIRECTORY include
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   PATTERN ".svn" EXCLUDE
 )

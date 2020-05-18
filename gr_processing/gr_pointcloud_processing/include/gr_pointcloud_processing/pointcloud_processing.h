@@ -49,10 +49,11 @@
 #include <common_detection_utils/common_detection_utils.h>
 #include <common_detection_utils/math_functions.hpp>
 
-namespace gr_detection{
+#include <nodelet/nodelet.h>
+
+namespace gr_pointcloud_processing{
   
-  class PointCloudProcessor : FusionDetection
-  {
+  class PointCloudProcessor : public nodelet::Nodelet, gr_detection::FusionDetection{
   private:
     boost::mutex mutex_;
     ros::Subscriber pc_sub_;
@@ -90,7 +91,7 @@ namespace gr_detection{
     std::clock_t tStart;
     ros::Time last_detection_;
     tf2_ros::Buffer tf_buffer_;
-    tf2_ros::TransformListener tf2_listener_;
+    tf2_ros::TransformListener* tf2_listener_;
     std::string sensor_frame_;
     std::string global_frame_;
 
@@ -98,8 +99,7 @@ namespace gr_detection{
     //gr_detection::PersonArray persons_array_;
 
   public:
-      PointCloudProcessor();
-      ~PointCloudProcessor(){};
+      virtual void onInit();
       void pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg);
       int run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered);
       template <class T> void publishPointCloud(T);

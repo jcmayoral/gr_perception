@@ -1,0 +1,7 @@
+<library path="lib/libgr_pointcloud_processing">
+  <class name="gr_pointcloud_processing/PointCloudProcessor" type="gr_pointcloud_processing::PointCloudProcessor" base_class_type="nodelet::Nodelet">
+  <description>
+    gr_pointcloud_processing nodelet
+  </description>
+  </class>
+</library>
