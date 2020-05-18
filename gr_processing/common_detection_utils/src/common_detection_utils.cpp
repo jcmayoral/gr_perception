@@ -2,10 +2,11 @@
 
 using namespace gr_detection;
 
-DetectionArray FusionDetection::DETECTIONSARRAY = DetectionArray();
-
+CustomArray* FusionDetection::d_array_ = new CustomArray();
 
 FusionDetection::FusionDetection(){
+    std::cout << "constructor ";
+    //DETECTIONSARRAY = new CustomArray();
 
 }
 FusionDetection::~FusionDetection(){
@@ -17,7 +18,8 @@ FusionDetection::FusionDetection(const FusionDetection& other){
 }
 
 int FusionDetection::getDetectionsNumber(){
-    return DETECTIONSARRAY.size();
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+    return d_array_->DETECTIONSARRAY.size();
 }
 
 std::string FusionDetection::randomString(){
@@ -35,18 +37,21 @@ std::string FusionDetection::randomString(){
 }
 
 void FusionDetection::UpdateOrientation(geometry_msgs::Quaternion q, std::string id){
-    DETECTIONSARRAY[id].pose.orientation = q;
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+    d_array_->DETECTIONSARRAY.at(id).pose.orientation = q;
 }
 
 void FusionDetection::UpdateObject(std::string id, Person p){
-    DETECTIONSARRAY[id] = p;
-    DETECTIONSARRAY[id].age = 5;
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+    d_array_->DETECTIONSARRAY.at(id) = p;
+    d_array_->DETECTIONSARRAY.at(id).age = 5;
 }
 
 void FusionDetection::cleanUpCycle(){
-    for( auto it = DETECTIONSARRAY.begin(); it != DETECTIONSARRAY.end();  ){
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+    for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end();  ){
         if(it->second.age < 2){
-            it = DETECTIONSARRAY.erase(it);
+            it = d_array_->DETECTIONSARRAY.erase(it);
         }
         else{
             it->second.age--;
@@ -56,33 +61,38 @@ void FusionDetection::cleanUpCycle(){
 }
 
 void FusionDetection::showCurrentDetections(){
-    std::cout << getDetectionsNumber() << std::endl;
-    for( auto it = DETECTIONSARRAY.begin(); it != DETECTIONSARRAY.end(); it++){
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+    for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end(); it++){
         std::cout << it->first << std::endl;
     }
 }
 
 void FusionDetection::insertNewObject(Person p){
     p.id = "person_"+ randomString();
-    p.age = 5;
-    DETECTIONSARRAY.insert(std::pair<std::string,Person>(p.id, p));   
+    p.age = 5;    
+    boost::mutex::scoped_lock lck(d_array_->mtx);{
+    d_array_->DETECTIONSARRAY.insert(std::pair<std::string,Person>(p.id, p));
+    }
 }
 
 Person FusionDetection::GetObject(std::string id){
-    return DETECTIONSARRAY[id];
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+    return d_array_->DETECTIONSARRAY.at(id);
 }
 
 std::string FusionDetection::matchDetection(Person new_cluster){
     std::vector<float> scores;
     std::vector<std::string> ids;
 
-    for( auto it = DETECTIONSARRAY.begin(); it != DETECTIONSARRAY.end(); it++){
+    boost::mutex::scoped_lock lck(d_array_->mtx);{
+    for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end(); it++){
         float score = 0;
         score += std::abs(it->second.pose.position.x - new_cluster.pose.position.x);
         score += std::abs(it->second.pose.position.y - new_cluster.pose.position.y);
         score += std::abs(it->second.pose.position.z - new_cluster.pose.position.z);
         scores.push_back(score);
         ids.push_back(it->first);
+    };
     }
 
     if (scores.size()==0){

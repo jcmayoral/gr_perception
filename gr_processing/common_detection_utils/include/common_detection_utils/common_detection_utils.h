@@ -4,6 +4,8 @@
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/Vector3.h>
 #include <string>
+#include <mutex>
+#include <boost/thread/mutex.hpp>
 
 namespace gr_detection{
 
@@ -15,7 +17,19 @@ namespace gr_detection{
         std::string id;
     };
 
-    typedef std::map<std::string, Person> DetectionArray;
+    typedef std::map<std::string, Person> CustomMap;
+
+    class CustomArray{
+        public:
+            CustomArray(): mtx(){
+
+            };
+            ~CustomArray(){
+
+            };
+            CustomMap DETECTIONSARRAY;
+            boost::mutex mtx;
+    };
 
     class FusionDetection{
         public:
@@ -31,9 +45,7 @@ namespace gr_detection{
             void insertNewObject(Person p);
             Person GetObject(std::string id);
             std::string matchDetection(Person new_cluster);
-        protected:
-            static DetectionArray DETECTIONSARRAY;
-
+            static CustomArray* d_array_;
     };
 };
 #endif
