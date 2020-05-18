@@ -1,11 +1,13 @@
 #include "nodelet/nodelet.h"
 #include "nodelet/loader.h"
 #include <ros/ros.h>
+#include <gr_fused_detectors/fused_detectors.h>
 
 using namespace gr_detection;
 
 int main(int argc, char** argv){
     ros::init(argc, argv, "aaaa");
+    DetectorsFuser detectors_fuser;
 
     nodelet::Loader n(false);
     ros::NodeHandle nh;
@@ -17,7 +19,6 @@ int main(int argc, char** argv){
     std::string name = "gr_depth_processing/MyNodeletClass";
     std::string type = "gr_depth_processing/MyNodeletClass";
 
-  
     ros::M_string remappings = ros::names::getRemappings ();
     std::vector<std::string> argvs;
 

@@ -15,6 +15,7 @@ find_library(my_library REQUIRED)
 find_library(PCL 1.9 REQUIRED)
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
@@ -29,8 +30,17 @@ catkin_package(
     nodelet
 )
 
+add_library(${PROJECT_NAME} src/fused_detectors.cpp)
 add_executable(${PROJECT_NAME}_node src/ros_wrapper_node.cpp)
+
 target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
    ${PCL_LIBRARIES}
+   ${PROJECT_NAME}
+)
+
+target_link_libraries(${PROJECT_NAME}
+   ${catkin_LIBRARIES}
+   ${PCL_LIBRARIES}
+   ${PROJECT_NAME}
 )
