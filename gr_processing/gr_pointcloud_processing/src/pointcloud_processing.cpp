@@ -343,7 +343,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               }
 
               //Updating
-              ROS_INFO_STREAM("Updating person with id: " << matchingid);
+              //ROS_INFO_STREAM("Updating person with id: " << matchingid);
               UpdateObject(matchingid, person);
               
               //just add if seen before
@@ -352,7 +352,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
             }
             else{
-              ROS_WARN_STREAM("A new person has been found adding to the array");            
+              //ROS_WARN_STREAM("A new person has been found adding to the array");            
               //testing map array_person (memory)
               insertNewObject(person);
             }
@@ -361,8 +361,8 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           }
       }
 
-      ROS_INFO_STREAM("Current persons on queue "<< getDetectionsNumber());
-      
+      ROS_INFO("Detection on PC");
+      showCurrentDetections();
       clusters_msg.header.frame_id = "velodyne";
       clusters_msg.header.stamp = ros::Time::now();
       cluster_pub_.publish(clusters_msg);

@@ -1,0 +1,23 @@
+<package>
+    <name>gr_fused_detectors</name>
+    <version>0.0.1</version>
+    <description>
+      Nodelets wrapper for detectors fusion
+    </description>
+
+    <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>roscpp</build_depend>
+    <build_depend>common_detection_utils</build_depend>
+    <build_depend>nodelet</build_depend>
+    <build_depend>gr_pointcloud_processing</build_depend>
+
+    <run_depend>roscpp</run_depend>
+    <run_depend>common_detection_utils</run_depend>
+    <run_depend>nodelet</run_depend>
+    <run_depend>gr_pointcloud_processing</run_depend>
+
+</package>
