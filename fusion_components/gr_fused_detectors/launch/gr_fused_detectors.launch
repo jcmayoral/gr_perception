@@ -1,0 +1,11 @@
+<launch>
+  <arg name="global_frame" default="base_link" />
+
+  <node pkg="gr_fused_detectors" type="gr_fused_detectors_node" name="fusion_manager"  args="manager" output="screen">
+    <!--param name="global_frame" value="$(arg global_frame)" /-->
+    <!--remap from="/camera/color/image_raw" to="/camera/color/image_raw"/-->
+    <!--remap from="/camera/color/camera_info" to="/camera/color/camera_info"/-->
+    <!--remap from="/camera/depth/image_rect_raw" to="/camera/depth/image_rect_raw"/-->
+    <!--remap from="/camera/depth/camera_info" to="/camera/depth/camera_info"/-->
+  </node>
+</launch>
