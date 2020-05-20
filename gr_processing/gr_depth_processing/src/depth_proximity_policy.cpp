@@ -20,7 +20,7 @@ namespace gr_depth_processing
       std::cout << "STANDALONE"<< std::endl;
       color_camera_info  =  "/camera/color/camera_info";
       color_camera_frame  = "/camera/color/image_raw";
-      depth_camera_info  = "/camera/color/camera_info";
+      depth_camera_info  = "/camera/depth/camera_info";
       depth_camera_frame = "/camera/depth/image_rect_raw";
       boundingboxes_topic = "/darknet_ros/bounding_boxes";
     }
