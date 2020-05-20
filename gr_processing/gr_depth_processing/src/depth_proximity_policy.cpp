@@ -18,8 +18,8 @@ namespace gr_depth_processing
     auto args = getRemappingArgs();
     if (args.size() == 0){
       std::cout << "STANDALONE"<< std::endl;
-      color_camera_info  =  "/camera/color/image_raw";
-      color_camera_frame  = "/camera/color/camera_info";
+      color_camera_info  =  "/camera/color/camera_info";
+      color_camera_frame  = "/camera/color/image_raw";
       depth_camera_info  = "/camera/color/camera_info";
       depth_camera_frame = "/camera/depth/image_rect_raw";
       boundingboxes_topic = "/darknet_ros/bounding_boxes";
