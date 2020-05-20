@@ -43,7 +43,7 @@ namespace gr_depth_processing
 
     ros::NodeHandle nh = getMTNodeHandle();
     max_range_ = 8.0;
-    ROS_INFO("Waiting for rgb and depth camera info");
+    ROS_INFO_STREAM("Waiting for rgb and depth camera info: " << color_camera_info<<" " << depth_camera_info);
     camera_color_info_ = getOneMessage<sensor_msgs::CameraInfo>(color_camera_info);
     camera_depth_info_ = getOneMessage<sensor_msgs::CameraInfo>(depth_camera_info);
     ROS_INFO("Camera info received");
