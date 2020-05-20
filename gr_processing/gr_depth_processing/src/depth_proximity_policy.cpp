@@ -10,8 +10,27 @@ namespace gr_depth_processing
   void MyNodeletClass::onInit(){
 
     //Local NodeHandle
-    ros::NodeHandle local_nh("~");
+    ros::NodeHandle local_nh = getMTPrivateNodeHandle();
     local_nh.param<std::string>("global_frame", global_frame_, "base_link");
+
+    //MEGA HACK
+    std::string color_camera_info, depth_camera_info, color_camera_frame, depth_camera_frame, boundingboxes_topic;
+    auto args = getRemappingArgs();
+    if (args.size() == 0){
+      std::cout << "STANDALONE"<< std::endl;
+      color_camera_info  =  "/camera/color/image_raw";
+      color_camera_frame  = "/camera/color/camera_info";
+      depth_camera_info  = "/camera/color/camera_info";
+      depth_camera_frame = "/camera/depth/image_rect_raw";
+      boundingboxes_topic = "/darknet_ros/bounding_boxes";
+    }
+    else{
+      color_camera_info = args["color_info"];
+      depth_camera_info = args["depth_info"];
+      color_camera_frame = args["color_frame"];
+      depth_camera_frame = args["depth_frame"];
+      boundingboxes_topic = args["bounding_boxes"];
+    }
 
     tf2_listener_= new  tf2_ros::TransformListener(tf_buffer_);
 
@@ -22,11 +41,11 @@ namespace gr_depth_processing
     registerImage = &register_median_pointclouds;
     //registerImage = &cuda_register_median_pointclouds;
 
-    ros::NodeHandle nh;
+    ros::NodeHandle nh = getMTNodeHandle();
     max_range_ = 8.0;
     ROS_INFO("Waiting for rgb and depth camera info");
-    camera_color_info_ = getOneMessage<sensor_msgs::CameraInfo>("/camera/color/camera_info");
-    camera_depth_info_ = getOneMessage<sensor_msgs::CameraInfo>("/camera/depth/camera_info");;
+    camera_color_info_ = getOneMessage<sensor_msgs::CameraInfo>(color_camera_info);
+    camera_depth_info_ = getOneMessage<sensor_msgs::CameraInfo>(depth_camera_info);
     ROS_INFO("Camera info received");
 
     //Publisher to Proximity Monitor
@@ -36,9 +55,9 @@ namespace gr_depth_processing
     //Publish FoundObjectArray using for training Models
     safety_pub_ = nh.advertise<safety_msgs::FoundObjectsArray>("found_object",1);
 
-    color_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, "/camera/color/image_raw", 2);
-    depth_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, "/camera/depth/image_rect_raw", 2);
-    bounding_boxes_sub_ = new message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes>(nh, "/darknet_ros/bounding_boxes", 2);
+    color_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, color_camera_frame, 2);
+    depth_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, depth_camera_frame, 2);
+    bounding_boxes_sub_ = new message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes>(nh,boundingboxes_topic, 2);
 
 
     if(false){
