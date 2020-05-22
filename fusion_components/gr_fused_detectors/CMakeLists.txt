@@ -8,6 +8,7 @@ find_package(catkin REQUIRED
         roscpp
         common_detection_utils
         gr_pointcloud_processing
+        geometry_msgs
         nodelet
 )
 
@@ -27,6 +28,7 @@ catkin_package(
     roscpp
     common_detection_utils
     gr_pointcloud_processing
+    geometry_msgs
     nodelet
 )
 

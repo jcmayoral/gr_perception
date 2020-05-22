@@ -6,6 +6,7 @@
 #include <string>
 #include <mutex>
 #include <boost/thread/mutex.hpp>
+#include <geometry_msgs/PoseArray.h>
 
 namespace gr_detection{
 
@@ -45,6 +46,7 @@ namespace gr_detection{
             void insertNewObject(Person p);
             Person GetObject(std::string id);
             std::string matchDetection(Person new_cluster);
+            geometry_msgs::PoseArray createPoseArray();
             static CustomArray* d_array_;
     };
 };

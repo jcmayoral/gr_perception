@@ -1,6 +1,6 @@
 <package>
     <name>gr_fused_detectors</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
       Nodelets wrapper for detectors fusion
     </description>
@@ -14,10 +14,12 @@
     <build_depend>common_detection_utils</build_depend>
     <build_depend>nodelet</build_depend>
     <build_depend>gr_pointcloud_processing</build_depend>
+    <build_depend>geometry_msgs</build_depend>
 
     <run_depend>roscpp</run_depend>
     <run_depend>common_detection_utils</run_depend>
     <run_depend>nodelet</run_depend>
     <run_depend>gr_pointcloud_processing</run_depend>
+    <run_depend>geometry_msgs</run_depend>
 
 </package>

@@ -67,6 +67,20 @@ void FusionDetection::showCurrentDetections(){
     }
 }
 
+geometry_msgs::PoseArray FusionDetection::createPoseArray(){
+    geometry_msgs::PoseArray array;
+    //TODO SET THIS LINK SOMEWHERE
+    array.header.frame_id = "base_link";
+    boost::mutex::scoped_lock lck(d_array_->mtx);
+
+    geometry_msgs::Pose p;
+    for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end(); it++){
+        p = it->second.pose;
+        array.poses.push_back(p);
+    }
+    return array;
+}
+
 void FusionDetection::insertNewObject(Person p){
     p.id = "person_"+ randomString();
     p.age = 5;    

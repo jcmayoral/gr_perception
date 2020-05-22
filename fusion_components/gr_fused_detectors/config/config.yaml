@@ -1,0 +1,16 @@
+depth_nodelet:
+- type: gr_depth_processing/MyNodeletClass
+- remappings: 
+  - color_info: /color_info1
+  - depth_info: /depth_info1
+  - color_frame: /depth_frame1
+  - depth_frame: /depth_frame1
+  - bounding_boxes: /bounding_boxes1
+depth_nodelet_2:
+- type: gr_depth_processing/MyNodeletClass
+- remappings: 
+  - color_info: /color_info2
+  - depth_info: /depth_info2
+  - color_frame: /depth_frame2
+  - depth_frame: /depth_frame2
+  - bounding_boxes: /bounding_boxes2
