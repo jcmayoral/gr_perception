@@ -12,7 +12,6 @@ find_package(catkin REQUIRED
         nodelet
 )
 
-find_library(my_library REQUIRED)
 find_library(PCL 1.9 REQUIRED)
 
 include_directories(
