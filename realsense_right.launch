@@ -1,0 +1,31 @@
+<launch>
+  <arg name="serial_no1"           default="947122070559"/>
+  <arg name="camera1"              default="camera"/>
+  <arg name="tf_prefix1"           default="$(arg camera1)"/>
+  <arg name="serial_no2"           default="947122071259"/>
+  <arg name="camera2"              default="camera2"/>
+  <arg name="tf_prefix2"           default="$(arg camera2)"/>
+  <arg name="external_manager"     default="false"/>
+  <arg name="color_fps"     default="15"/>
+  <arg name="depth_fps"     default="15"/>
+
+  <!--include file="$(find realsense2_camera)/launch/rs_camera.launch">
+      <arg name="serial_no" value="$(arg serial_no1)"/>
+      <arg name="camera" value="$(arg camera1)"/>
+      <arg name="tf_prefix" value="$(arg tf_prefix1)"/>
+      <arg name="external_manager" value="$(arg external_manager)"/>
+  </include-->
+
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+      <arg name="serial_no" value="$(arg serial_no2)"/>
+      <arg name="camera" value="$(arg camera2)"/>
+      <arg name="tf_prefix" value="$(arg tf_prefix2)"/>
+      <arg name="external_manager" value="$(arg external_manager)"/>
+      <arg name="color_fps" value="$(arg color_fps)"/>
+      <arg name="depth_fps" value="$(arg depth_fps)"/>
+  </include>
+
+  <node pkg="tf" type="static_transform_publisher" name="hack_camera2_frame" args="0 0.1 0 0 1.5755 0 base_link camera2_depth_optical_frame 100"/>
+
+
+</launch>
