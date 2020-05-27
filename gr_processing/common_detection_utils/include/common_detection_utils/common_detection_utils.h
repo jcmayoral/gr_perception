@@ -5,6 +5,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <string>
 #include <mutex>
+#include <ctime>
 #include <boost/thread/mutex.hpp>
 #include <geometry_msgs/PoseArray.h>
 
@@ -12,6 +13,7 @@ namespace gr_detection{
 
     struct Person{
         int age = 10;
+        clock_t last_update = clock();
         geometry_msgs::Pose pose;
         geometry_msgs::Vector3 variance;
         int vari = 0;

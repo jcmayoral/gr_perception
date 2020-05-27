@@ -38,6 +38,7 @@ std::string FusionDetection::randomString(){
 
 void FusionDetection::UpdateOrientation(geometry_msgs::Quaternion q, std::string id){
     boost::mutex::scoped_lock lck(d_array_->mtx);
+    d_array_->DETECTIONSARRAY.at(id).last_update = clock();
     d_array_->DETECTIONSARRAY.at(id).pose.orientation = q;
 }
 
@@ -45,12 +46,18 @@ void FusionDetection::UpdateObject(std::string id, Person p){
     boost::mutex::scoped_lock lck(d_array_->mtx);
     d_array_->DETECTIONSARRAY.at(id) = p;
     d_array_->DETECTIONSARRAY.at(id).age = 5;
+    d_array_->DETECTIONSARRAY.at(id).last_update = clock();
 }
 
 void FusionDetection::cleanUpCycle(){
     boost::mutex::scoped_lock lck(d_array_->mtx);
+    clock_t curr_time = clock();
+
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end();  ){
-        if(it->second.age < 2){
+        //if(it->second.age < 2){
+        clock_t elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
+        //TODO parametrized 2 seconds
+        if(elapsed_seconds>2){
             it = d_array_->DETECTIONSARRAY.erase(it);
         }
         else{
