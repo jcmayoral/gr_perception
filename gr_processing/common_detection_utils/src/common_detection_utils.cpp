@@ -55,7 +55,8 @@ void FusionDetection::cleanUpCycle(){
 
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end();  ){
         //if(it->second.age < 2){
-        clock_t elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
+        double elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
+	std::cout << "UPDATE AFTER " << elapsed_seconds << std::endl;
         //TODO parametrized 2 seconds
         if(elapsed_seconds>2){
             it = d_array_->DETECTIONSARRAY.erase(it);
