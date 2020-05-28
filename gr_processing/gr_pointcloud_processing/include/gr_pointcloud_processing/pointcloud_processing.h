@@ -48,6 +48,8 @@
 
 #include <common_detection_utils/common_detection_utils.h>
 #include <common_detection_utils/math_functions.hpp>
+ 
+#include <safety_msgs/FoundObjectsArray.h>
 
 #include <nodelet/nodelet.h>
 
@@ -59,6 +61,7 @@ namespace gr_pointcloud_processing{
     ros::Subscriber pc_sub_;
     ros::Publisher pc_pub_;
     ros::Publisher cluster_pub_;
+    ros::Publisher safety_pub_;
     ros::Publisher bb_pub_;
     pcl::gpu::Octree::PointCloud cloud_device;
     pcl::gpu::EuclideanClusterExtraction gec;

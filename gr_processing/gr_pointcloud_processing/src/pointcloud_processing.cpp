@@ -62,6 +62,8 @@ namespace gr_pointcloud_processing{
     pc_sub_ = nh.subscribe("/velodyne_points", 1, &PointCloudProcessor::pointcloud_cb, this);
     pc_pub_ = nh.advertise<sensor_msgs::PointCloud2>("/velodyne_points/filtered", 1);
     cluster_pub_ = nh.advertise<geometry_msgs::PoseArray>("detected_objects",1);
+    safety_pub_ = nh.advertise<safety_msgs::FoundObjectsArray>("found_object",1);
+
     bb_pub_ = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("/detection/bounding_boxes", 1);
     ROS_INFO("Setup Done ready to work");
 
@@ -254,6 +256,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
       gec.extract (cluster_indices_gpu);
 
       geometry_msgs::PoseArray clusters_msg;
+      safety_msgs::FoundObjectsArray safety_msg;
 
       std::vector<double> x_vector;
       std::vector<double> y_vector;
@@ -272,6 +275,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
       double cluster_std;
 
       Person person;
+      safety_msgs::Object object;
 
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
           //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
@@ -303,15 +307,16 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
           cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
-          //ON TESTING 
+          //FOR FUSION
           person.pose.position.x = cluster_center.position.x;
           person.pose.position.y =  cluster_center.position.y;
-
-          //TODO add orientation
           person.variance.x = var_x;
           person.variance.y = var_y;
           person.variance.z = var_z;
           person.vari = var_i;
+
+          //FOR GRIDMAP
+          object.pose.position = cluster_center.position;
 
           if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
           //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
@@ -323,7 +328,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             //var_i seems to be more stable that bb volume
             //ON TESTING
             auto matchingid = matchDetection(person);
-
+            object.object_id = matchingid;
             if (!matchingid.empty()){
               //GEt matched object
               auto matched_object = GetObject(matchingid);
@@ -336,10 +341,12 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
                 tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
+                object.pose.orientation = cluster_center.orientation;
               }
               else{
                 //Reuse orientation
                 person.pose.orientation = matched_object.pose.orientation;
+                object.pose.orientation = person.pose.orientation;
               }
 
               //Updating
@@ -358,6 +365,9 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             }
             //Update for pose array
             clusters_msg.poses.push_back(cluster_center);   
+            //for gridmap
+            safety_msg.objects.push_back(object);
+
           }
       }
 
@@ -366,6 +376,9 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
       clusters_msg.header.frame_id = "velodyne";
       clusters_msg.header.stamp = ros::Time::now();
       cluster_pub_.publish(clusters_msg);
+
+      safety_msg.header = clusters_msg.header;
+      safety_pub_.publish(safety_msg);
       publishBoundingBoxes();
 
       if (output_publish_){

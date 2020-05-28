@@ -10,6 +10,7 @@ find_package(catkin REQUIRED
         roscpp
         pcl_conversions
         geometry_msgs
+        safety_msgs
         jsk_recognition_msgs
         tf2
         tf2_ros
@@ -44,6 +45,7 @@ catkin_package(
     roscpp
     pcl_conversions
     geometry_msgs
+    safety_msgs
     jsk_recognition_msgs
     tf2
     tf2_ros
