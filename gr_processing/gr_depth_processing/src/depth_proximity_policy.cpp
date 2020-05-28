@@ -190,11 +190,10 @@ namespace gr_depth_processing
       //Fill Object
       safety_msgs::Object object;
       //Copy header from transform useful to match timestamps
-      object.centroid.header = out.header;
+      objects_array_.header = out.header;
       //Copy centroid position
-      object.centroid.point = out.pose.position;
+      object.pose = out.pose;
       //copy class
-      object.class_name = it->Class;
       objects_array_.objects.push_back(object);
 
       //THIS IS FOR THE COMMON_DETECTION_UTILS
@@ -203,6 +202,8 @@ namespace gr_depth_processing
       person.pose = out.pose;
 
       auto matchingid = matchDetection(person);
+      object.object_id = matchingid;
+
       if (!matchingid.empty()){
         //GEt matched object
         auto matched_object = GetObject(matchingid);
@@ -237,7 +238,7 @@ namespace gr_depth_processing
       boundRect.push_back(cv::Rect(it->xmin, it->ymin, it->xmax - it->xmin, it->ymax - it->ymin));
     }
 
-    ROS_INFO_STREAM("Detections read on camera");
+    //ROS_INFO_STREAM("Detections read on camera");
     showCurrentDetections();
 
     //TO DRAW OUTPUT FRAME MAYBE WILL BE DELETED ON FUTURE VERSIONS
