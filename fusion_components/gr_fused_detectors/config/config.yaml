@@ -1,7 +1,3 @@
-lidar_nodelet:
-  type: gr_pointcloud_processing/PointCloudProcessor
-  remappings: 
-    global_frame: velodyne
 depth_nodelet:
   type: gr_depth_processing/MyNodeletClass
   remappings: 
@@ -13,8 +9,12 @@ depth_nodelet:
 depth_nodelet_2:
   type: gr_depth_processing/MyNodeletClass
   remappings: 
-    color_info:/color_info2
-    depth_info:/depth_info2
-    color_frame:/depth_frame2
-    depth_frame:/depth_frame2
-    bounding_boxes:/bounding_boxes2
+    color_info: /color_info2
+    depth_info: /depth_info2
+    color_frame: /depth_frame2
+    depth_frame: /depth_frame2
+    bounding_boxes: /bounding_boxes2
+lidar_nodelet:
+  type: gr_pointcloud_processing/PointCloudProcessor
+  remappings: 
+    global_frame: velodyne
