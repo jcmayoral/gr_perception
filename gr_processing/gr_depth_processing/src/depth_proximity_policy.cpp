@@ -16,20 +16,19 @@ namespace gr_depth_processing
     //MEGA HACK
     std::string color_camera_info, depth_camera_info, color_camera_frame, depth_camera_frame, boundingboxes_topic;
     auto args = getRemappingArgs();
-    if (args.size() == 0){
-      std::cout << "STANDALONE"<< std::endl;
-      color_camera_info  =  "/camera/color/camera_info";
-      color_camera_frame  = "/camera/color/image_raw";
-      depth_camera_info  = "/camera/depth/camera_info";
-      depth_camera_frame = "/camera/depth/image_rect_raw";
-      boundingboxes_topic = "/darknet_ros/bounding_boxes";
-    }
-    else{
-      color_camera_info = args["color_info"];
-      depth_camera_info = args["depth_info"];
-      color_camera_frame = args["color_frame"];
-      depth_camera_frame = args["depth_frame"];
-      boundingboxes_topic = args["bounding_boxes"];
+
+    color_camera_info  =  "/camera/color/camera_info";
+    color_camera_frame  = "/camera/color/image_raw";
+    depth_camera_info  = "/camera/depth/camera_info";
+    depth_camera_frame = "/camera/depth/image_rect_raw";
+    boundingboxes_topic = "/darknet_ros/bounding_boxes";
+    
+    if (args.size() > 0){
+      loadFromRemappings<std::string>(args,"color_info",color_camera_info);
+      loadFromRemappings<std::string>(args,"depth_info",depth_camera_info);
+      loadFromRemappings<std::string>(args,"color_frame",color_camera_frame);
+      loadFromRemappings<std::string>(args,"depth_frame",depth_camera_frame);
+      loadFromRemappings<std::string>(args,"bounding_boxes",boundingboxes_topic);
     }
 
     tf2_listener_= new  tf2_ros::TransformListener(tf_buffer_);

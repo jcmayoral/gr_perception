@@ -20,7 +20,8 @@ namespace gr_pointcloud_processing{
     global_frame_ = "odom";
     distance_to_floor_ = 0.0;
 
-    ros::NodeHandle nh("~");
+    //Node Handler from nodelet
+    ros::NodeHandle nh = getMTPrivateNodeHandle();
 
     //cilinder ROI
     tStart = clock();
@@ -42,6 +43,15 @@ namespace gr_pointcloud_processing{
     ROS_INFO_STREAM("Global Frame "<< global_frame_ );
     ROS_INFO_STREAM("XY Scaler "<< xy_scale );
     ROS_INFO_STREAM("Scale Axis "<< scale_axis);
+
+    auto args = getRemappingArgs();
+    if (args.size()>0){
+      //loadFromRemappings<double>(args,"roi",limit);
+      //loadFromRemappings<double>(args,"time_window",limit);
+      loadFromRemappings<std::string>(args,"global_frame",global_frame_);
+      //loadFromRemappings<int>(args,"xy_scale",xy_scale);
+      loadFromRemappings<std::string>(args,"scale_axis",scale_axis);
+    }
 
     pass_through_filter_.setFilterFieldName ("z");
     radius_cuda_pass_.setMinimumValue(-limit);

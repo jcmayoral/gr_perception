@@ -55,6 +55,13 @@
 
 namespace gr_pointcloud_processing{
   
+  template <typename T>
+  void loadFromRemappings(std::map<std::string, std::string> args, std::string id, T& value){
+    if(args.find(id) != args.end()){
+      value = args[id];
+    }
+  };
+
   class PointCloudProcessor : public nodelet::Nodelet, gr_detection::FusionDetection{
   private:
     boost::mutex mutex_;

@@ -51,6 +51,13 @@ namespace gr_depth_processing
     return *msg_pointer;
   }
 
+  template <typename T>
+  void loadFromRemappings(std::map<std::string, std::string> args, std::string id, T& value){
+    if(args.find(id) != args.end()){
+      value = args[id];
+    }
+  }
+
   class MyNodeletClass : public nodelet::Nodelet, gr_detection::FusionDetection
   {
     public:
