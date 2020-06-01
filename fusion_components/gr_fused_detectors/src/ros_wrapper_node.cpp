@@ -10,7 +10,6 @@ int main(int argc, char** argv){
     DetectorsFuser detectors_fuser;
     ros::NodeHandle nh("~");
     nodelet::Loader n(false);
-    std::cout << nh.getNamespace() << std::endl;
 
     std::string path = ros::package::getPath("gr_fused_detectors");
     std::string config_path;
@@ -19,37 +18,26 @@ int main(int argc, char** argv){
     nh.param<std::string>("config_file", config_file, "config.yaml");
     YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_path+"/"+config_file).c_str());
 
+    std::string name;
+    std::string type;
+
     for(YAML::const_iterator it=config_yaml.begin();it!=config_yaml.end();++it) {
-        //std::cout << it->first << " name " << it->second << std::endl;
+        std::cout << it->first << " name " << it->second << std::endl;
+        name = it->first.as<std::string>();
         YAML::Node params(it->second);
-        std::cout << params["type"] << "OK" << std::endl;
-        YAML::Node remappings(params["remappings"]);
-        for(YAML::const_iterator init=remappings.begin();init!=remappings.end();++init) {
+        type = params["type"].as<std::string>();
+        std::cout << "type " << params["type"] << std::endl;
+        YAML::Node node_remappings(params["remappings"]);
+        ros::M_string remappings = ros::names::getRemappings ();
+        std::vector<std::string> argvs;   
+        std::string r1, r2;
+        for(YAML::const_iterator init=node_remappings.begin();init!=node_remappings.end();++init) {
             std::cout << init->first << " remaps to " << init->second << std::endl;
+            r1 = init->first.as<std::string>().c_str();            
+            r2 = init->second.as<std::string>().c_str();
+            remappings.insert(std::pair<std::string,std::string>(r1,r2));
         }
+        std::cout << "RESULT : "<< n.load(name, type, remappings, argvs) << std::endl;
     }
-
-    std::string name = "/depth_nodelet";//ros::this_node::getNamespace();//ros::this;
-    std::string type = "gr_depth_processing/MyNodeletClass";
-
-    ros::M_string remappings = ros::names::getRemappings ();
-    remappings.insert(std::pair<std::string,std::string>("color_info","/camera/color/camera_info"));
-    remappings.insert(std::pair<std::string,std::string>("depth_info","/camera/depth/camera_info"));
-    remappings.insert(std::pair<std::string,std::string>("color_frame","/camera/color/image_raw"));
-    remappings.insert(std::pair<std::string,std::string>("depth_frame","/camera/depth/image_rect_raw"));
-    remappings.insert(std::pair<std::string,std::string>("bounding_boxes","/darknet_ros/bounding_boxes"));
-
-    std::vector<std::string> argvs;   
-    std::cout << "RESULT : "<< n.load(name, type, remappings, argvs) << std::endl;
-
-    auto name2="/depth_nodelet_2";
-    remappings["color_info"] = "/camera2/color/camera_info";
-    remappings["depth_info"] = "/camera2/depth/camera_info";
-    remappings["color_frame"] = "/camera2/color/image_raw";
-    remappings["depth_frame"] = "/camera2/depth/image_rect_raw";
-    remappings["bounding_boxes"] = "/darknet_ros/bounding_boxes";
-    
-    std::cout << "RESULT : "<< n.load(name2, type, remappings, argvs) << std::endl;
-
     ros::spin();
 }
