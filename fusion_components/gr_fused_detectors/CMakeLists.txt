@@ -14,10 +14,13 @@ find_package(catkin REQUIRED
 
 find_library(PCL 1.9 REQUIRED)
 
+find_package(YAML-CPP 0.6 REQUIRED)
+
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${YAML_CPP_INCLUDE_DIR}
 )
 
 add_definitions(${PCL_DEFINITIONS})
@@ -38,6 +41,7 @@ target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
    ${PCL_LIBRARIES}
    ${PROJECT_NAME}
+   yaml-cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

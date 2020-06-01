@@ -12,6 +12,23 @@ int main(int argc, char** argv){
     nodelet::Loader n(false);
     std::cout << nh.getNamespace() << std::endl;
 
+    std::string path = ros::package::getPath("gr_fused_detectors");
+    std::string config_path;
+    std::string config_file;
+    nh.param<std::string>("config_path", config_path, "config");
+    nh.param<std::string>("config_file", config_file, "config.yaml");
+    YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_path+"/"+config_file).c_str());
+
+    for(YAML::const_iterator it=config_yaml.begin();it!=config_yaml.end();++it) {
+        //std::cout << it->first << " name " << it->second << std::endl;
+        YAML::Node params(it->second);
+        std::cout << params["type"] << "OK" << std::endl;
+        YAML::Node remappings(params["remappings"]);
+        for(YAML::const_iterator init=remappings.begin();init!=remappings.end();++init) {
+            std::cout << init->first << " remaps to " << init->second << std::endl;
+        }
+    }
+
     std::string name = "/depth_nodelet";//ros::this_node::getNamespace();//ros::this;
     std::string type = "gr_depth_processing/MyNodeletClass";
 

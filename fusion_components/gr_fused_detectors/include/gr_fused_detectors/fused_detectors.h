@@ -1,6 +1,8 @@
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <common_detection_utils/common_detection_utils.h>
 #include <geometry_msgs/PoseArray.h>
+#include <yaml-cpp/yaml.h>
 
 namespace gr_detection{
     class DetectorsFuser : gr_detection::FusionDetection{//:public gr_detection::FusionDetector {
