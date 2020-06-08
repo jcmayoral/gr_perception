@@ -8,6 +8,8 @@
   <arg name="external_manager"     default="false"/>
   <arg name="color_fps"     default="15"/>
   <arg name="depth_fps"     default="15"/>
+  <arg name="enable_pointcloud"     default="false"/>
+  <arg name="tf_frame"     default="base_link"/>
 
   <!--include file="$(find realsense2_camera)/launch/rs_camera.launch">
       <arg name="serial_no" value="$(arg serial_no1)"/>
@@ -23,9 +25,10 @@
       <arg name="external_manager" value="$(arg external_manager)"/>
       <arg name="color_fps" value="$(arg color_fps)"/>
       <arg name="depth_fps" value="$(arg depth_fps)"/>
+      <arg name="enable_pointcloud" value="$(arg enable_pointcloud)"/>
   </include>
 
-  <node pkg="tf" type="static_transform_publisher" name="hack_camera2_frame" args="0 0.1 0 0 1.5755 0 base_link camera2_depth_optical_frame 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="hack_camera2_frame" args="0 0 1 0 0 0 $(arg tf_frame) camera2_link 100"/>
 
 
 </launch>

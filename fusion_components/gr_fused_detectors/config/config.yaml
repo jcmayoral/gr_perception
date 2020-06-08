@@ -1,19 +1,11 @@
 depth_nodelet:
   type: gr_depth_processing/MyNodeletClass
   remappings: 
-    color_info: /color_info1
-    depth_info: /depth_info1
-    color_frame: /depth_frame1
-    depth_frame: /depth_frame1
-    bounding_boxes: /bounding_boxes1
-depth_nodelet_2:
-  type: gr_depth_processing/MyNodeletClass
-  remappings: 
-    color_info: /color_info2
-    depth_info: /depth_info2
-    color_frame: /depth_frame2
-    depth_frame: /depth_frame2
-    bounding_boxes: /bounding_boxes2
+    color_info: /camera/color/camera_info
+    depth_info: /camera/depth/camera_info
+    color_frame: /camera/color/image_raw
+    depth_frame: /camera/depth/image_rect_raw
+    bounding_boxes: /darknet_msgs/bounding_boxes
 lidar_nodelet:
   type: gr_pointcloud_processing/PointCloudProcessor
   remappings: 
