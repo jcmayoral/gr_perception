@@ -3,7 +3,7 @@
 
 extern "C"
 {
-  int do_cuda_stuff(int *o_x, int size);
+  int call_registration(int *o_x, int size);
   void stop_cuda_stuff(int *x, int *t);
 }
 

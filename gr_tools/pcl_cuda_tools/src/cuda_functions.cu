@@ -7,13 +7,15 @@ extern "C"{
       return blockIdx.x *blockDim.x + threadIdx.x;
     }
     __global__
-    void do_cuda_stuff_kernel(int *x, int* t){
+    void registration_kernel(int *x, int* t){
       //__shared__ int s[256];
       //int idx = blockIdx.x * blockDim.x + threadIdx.x;
       //int index = blockIdx.x * blockDim.x + threadIdx.x;
       //int stride = blockDim.x * gridDim.x;
       int index = get_globalIdx_1D_1D();
-      t[x[index]] += 1;
+
+      //printf("Value %d %d \n", index,index, x[index]);
+      t[x[index]] = t[x[index]] + 1;
     }
 
     void stop_cuda_stuff(int *x, int *t){
@@ -21,44 +23,49 @@ extern "C"{
       cudaFree(t);
     }
 
-    int do_cuda_stuff(int* o_x, int size){
+    int call_registration(int* o_x, int size){
       // initialize x array on the host
-      int * x, *t, *tr;
+      int * x;
+      int * bin_counts;
+      int * cpu_results;
+      int bin_number = 1000;
 
-      // Allocate Unified Memory – accessible from CPU or GPU
       cudaMallocManaged(&x, size*sizeof(int));
       cudaMemcpy(x, o_x, size*sizeof(int), cudaMemcpyHostToDevice);
+      bin_counts = static_cast<int*>(malloc(sizeof(int) * bin_number));
+      memset(bin_counts, 0, bin_number*sizeof(int));
+      cudaMallocManaged(&bin_counts, bin_number*sizeof(int));
+    
+//      for (int i =0; i< bin_number; i++){
+  //       printf("index %d", bin_counts[i]);
+    //  }
+      int ngrid = 32;
+      dim3 grid (ngrid);
+      int nblocks = ceil((size+ngrid -1)/ngrid);
 
-      int nthreads = 512;
-      dim3 threads (nthreads);
-      int nblocks =  1 + ceil(size / nthreads);//size/ nthreads -1;
-
-      cudaMallocManaged(&t, nthreads*sizeof(int));
-      t = static_cast<int*>(malloc(sizeof(int) * nthreads));
-      tr = static_cast<int*>(malloc(sizeof(int) * nthreads));
-
-      memset(t, 0x00, nthreads);
-      dim3 blocks(nblocks);
-      // First param blocks
-      // Second param number of threads
-      //  blocks, threads each
-      do_cuda_stuff_kernel<<<blocks,threads>>>(x,t);
+      registration_kernel<<<nblocks,grid>>>(x,bin_counts);
       cudaDeviceSynchronize(); // to print results
-      cudaMemcpy(tr, t, sizeof(x), cudaMemcpyDeviceToHost);
-      stop_cuda_stuff(x, t);
 
+      cpu_results = (int *) malloc(bin_number * sizeof(int));
+      cudaMemcpy(cpu_results, bin_counts, bin_number*sizeof(int), cudaMemcpyDeviceToHost);
 
+      cudaFree(x);
+      cudaFree(bin_counts);
+      
       int max_value = -1;
       int max_index = -1;
-      tr[0] = -2;
+      cpu_results[0] = 0;
 
-      for (int i =0; i< nthreads; i++){
-        if (tr[i] > max_value){
-          max_value = tr[i];
+      int counting = 0;
+      for (int i =0; i< bin_number; i++){
+       //  printf("index %d %d /n", counting, cpu_results[i]);
+        if (cpu_results[i] > max_value){
+          max_value = cpu_results[i];
           max_index = i;
         }
+        counting = counting + 1;
       }
-
+      printf("Max index %d", max_index);
       return max_index;
     }
 }

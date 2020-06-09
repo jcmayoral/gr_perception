@@ -15,9 +15,14 @@ double DepthRegistration::run(){
   int height = frame_.rows;
   int _stride = frame_.step;//in case cols != strides
 
+  float max_value = 65535;
+  int bin_number = 1000;
+  float delta = max_value/bin_number;
+
   for(int i = 0; i < height; i++){
       for(int j = 0; j < width; j++){
-          x[ j * i + i] = static_cast<int>(frame_.at<unsigned char>(i,j));
+          x[ j * i + i] = static_cast<int>(frame_.at<ushort>(i,j))/delta;
+          //printf("%d \n",x[j*i +i]);// << " , " <<  x[ j * i + i] <<  std::endl;
       }
   }
 
@@ -35,8 +40,8 @@ double DepthRegistration::run(){
   */
   int n = frame_.rows * frame_.cols;
 
-  bool result = do_cuda_stuff(x, n);
-  return result * 0.001;
+  int result = call_registration(x, n);
+  return double(result*delta*0.001);
 
 }
 
