@@ -2,9 +2,9 @@
 
 using namespace gr_detection;
 
-CustomArray* FusionDetection::d_array_ = new CustomArray();
+boost::shared_ptr<CustomArray> FusionDetection::d_array_(new CustomArray);
 
-FusionDetection::FusionDetection(){
+FusionDetection::FusionDetection(): time_break_{0.5}, matching_mindistance_{1.5}{
     std::cout << "constructor ";
     //DETECTIONSARRAY = new CustomArray();
 
@@ -15,6 +15,8 @@ FusionDetection::~FusionDetection(){
 
 FusionDetection::FusionDetection(const FusionDetection& other){
     std::cout << "calling copy constructor"<< std::endl;
+    time_break_ = other.time_break_;
+    matching_mindistance_ = other.matching_mindistance_;
 }
 
 int FusionDetection::getDetectionsNumber(){
@@ -58,7 +60,7 @@ void FusionDetection::cleanUpCycle(){
         double elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
 	std::cout << "UPDATE AFTER " << elapsed_seconds << std::endl;
         //TODO parametrized 2 seconds
-        if(elapsed_seconds>2){
+        if(elapsed_seconds>time_break_){
             it = d_array_->DETECTIONSARRAY.erase(it);
         }
         else{
@@ -124,7 +126,7 @@ std::string FusionDetection::matchDetection(Person new_cluster){
     auto min_score = min_element(scores.begin(), scores.end());
     //FIND Proper threshold
     //research minimum social distance
-    if (*min_score < 1.0){
+    if (*min_score < matching_mindistance_){
         int argmin = std::distance(scores.begin(), min_score);
         return ids[argmin];
     }

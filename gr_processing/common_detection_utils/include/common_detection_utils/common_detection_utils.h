@@ -9,6 +9,7 @@
 #include <boost/thread/mutex.hpp>
 #include <geometry_msgs/PoseArray.h>
 
+
 namespace gr_detection{
 
     struct Person{
@@ -49,7 +50,9 @@ namespace gr_detection{
             Person GetObject(std::string id);
             std::string matchDetection(Person new_cluster);
             geometry_msgs::PoseArray createPoseArray();
-            static CustomArray* d_array_;
+            static boost::shared_ptr<CustomArray> d_array_;
+            float time_break_;
+            float matching_mindistance_;
     };
 };
 #endif
