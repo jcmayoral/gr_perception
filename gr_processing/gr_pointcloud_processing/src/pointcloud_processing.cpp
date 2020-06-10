@@ -21,7 +21,7 @@ namespace gr_pointcloud_processing{
     distance_to_floor_ = 0.0;
 
     //Node Handler from nodelet
-    ros::NodeHandle nh = getMTPrivateNodeHandle();
+    ros::NodeHandle nh("~");// =getMTPrivateNodeHandle();
 
     //cilinder ROI
     tStart = clock();
@@ -33,16 +33,12 @@ namespace gr_pointcloud_processing{
     nh.getParam("roi", limit);
     nh.getParam("time_window", time_window);
     nh.getParam("global_frame", global_frame_);
+    std::cout << "WTF " << global_frame_ <<std::endl;
     nh.getParam("sensor_frame", sensor_frame_);
     nh.getParam("xy_scale", xy_scale);
     //Error passing char as param
     nh.getParam("scale_axis", scale_axis);
 
-    ROS_INFO_STREAM("ROI Radius [m] "<< limit );
-    ROS_INFO_STREAM("Time Window [s] "<< time_window );
-    ROS_INFO_STREAM("Global Frame "<< global_frame_ );
-    ROS_INFO_STREAM("XY Scaler "<< xy_scale );
-    ROS_INFO_STREAM("Scale Axis "<< scale_axis);
 
     auto args = getRemappingArgs();
     if (args.size()>0){
@@ -52,6 +48,13 @@ namespace gr_pointcloud_processing{
       //loadFromRemappings<int>(args,"xy_scale",xy_scale);
       loadFromRemappings<std::string>(args,"scale_axis",scale_axis);
     }
+
+    ROS_INFO_STREAM("ROI Radius [m] "<< limit );
+    ROS_INFO_STREAM("Time Window [s] "<< time_window );
+    ROS_INFO_STREAM("Global Frame "<< global_frame_ );
+    ROS_INFO_STREAM("XY Scaler "<< xy_scale );
+    ROS_INFO_STREAM("Scale Axis "<< scale_axis);
+
 
     pass_through_filter_.setFilterFieldName ("z");
     radius_cuda_pass_.setMinimumValue(-limit);
