@@ -6,8 +6,8 @@ using namespace gr_detection;
 int main(int argc, char **argv){
     std::cout << "PLOTTING EXITING IDS: "<<std::endl;
     FusionDetection* a = new FusionDetection();
-    boost::shared_ptr<CustomArray> b;
-    b = boost::static_pointer_cast<CustomArray>(a->d_array_);
+    //boost::shared_ptr<CustomArray> b;
+    //b = boost::static_pointer_cast<CustomArray>(a->d_array_);
     a->showCurrentDetections();
     //a->showCurrentDetections();
     std::cout << "DN " <<a->getDetectionsNumber()<<std::endl;
