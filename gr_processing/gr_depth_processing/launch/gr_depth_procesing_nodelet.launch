@@ -12,5 +12,6 @@
   </node>
   <node pkg="nodelet" type="nodelet" name="depth_nodelet" args="load gr_depth_processing/MyNodeletClass depth_processing_nodelet" output="screen"/>
 
- <node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera" args="0 0 0 0 0 1.5755 base_link camera_depth_optical_frame" />
+ <node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera" args="0 0 0 0 0 0 base_link camera_link" />
+ <node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera2" args="0 0 0 0 0 1.575 camera_link camera_depth_optical_frame" />
 </launch>

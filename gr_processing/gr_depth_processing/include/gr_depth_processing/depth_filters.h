@@ -253,7 +253,6 @@ double register_ransac_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, c
                     continue;
                 }
                 if (std::isfinite(depth_array[n])){
-                    //mean_depth+= depth_array[n];
                     current_indices[n] = std::make_pair(cell_x,cell_y);
                 }
             }
@@ -441,19 +440,6 @@ double register_median_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, c
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 double cuda_register_median_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, cv::Mat& depth_image, sensor_msgs::CameraInfo camera_info){
   try{
       // Setup a rectangle to define your region of interest
@@ -463,7 +449,7 @@ double cuda_register_median_pointclouds(darknet_ros_msgs::BoundingBox bounding_b
       // Note that this doesn't copy the data
       cv::Mat croppedImage = depth_image(myROI);
       DepthRegistration depth_registrator(croppedImage);
-      double result = depth_registrator.run();
+      auto result = depth_registrator.run();
       ROS_INFO_STREAM("Finished"<< result);
 
       return result;
