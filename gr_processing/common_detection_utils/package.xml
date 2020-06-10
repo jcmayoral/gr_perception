@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>common_detection_utils</name>
-  <version>0.4.2</version>
+  <version>0.4.3</version>
   <description>This package provide a common static member to fuse several detectors</description>
   <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>
 
@@ -9,9 +9,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>geometry_msgs</build_depend>
-  <build_depend>cmake_modules</build_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>geometry_msgs</run_depend>
-  <run_depend>cmake_modules</run_depend>
 
 </package>

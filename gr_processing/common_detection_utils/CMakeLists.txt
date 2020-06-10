@@ -7,12 +7,10 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   geometry_msgs
-  cmake_modules
 )
 
 #TODO create config gile of "magic thresholds"
 find_package(YAML-CPP 0.6 REQUIRED)
-add_definitions(-DCURL_STATICLIB)
 
 
 ## Specify additional locations of header files
@@ -25,7 +23,6 @@ catkin_package(
   CATKIN_DEPENDS
   roscpp
   geometry_msgs
-  cmake_modules
 )
 
 ###########
@@ -33,7 +30,7 @@ catkin_package(
 ###########
 
 
-add_library(${PROJECT_NAME} STATIC src/common_detection_utils.cpp)
+add_library(${PROJECT_NAME} src/common_detection_utils.cpp)
 
 add_executable(${PROJECT_NAME}_node src/fusion_detection_utils_node.cpp)
 #add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
