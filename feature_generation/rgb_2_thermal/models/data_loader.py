@@ -18,7 +18,7 @@ class DataLoader():
         self.input_channels = input_channels
         self.dataset_name = dataset_name
         self.data_percentage = data_percentage/100.
-        print "data percentage ", self.data_percentage
+        print ("data percentage ", self.data_percentage)
         self.img_res = img_res
         self.thermal_res = (img_res[0], img_res[1],1)
         self.rgb_dataset_folder=rgb_dataset_folder
@@ -92,7 +92,7 @@ class DataLoader():
         thermal_imgs=np.array(thermal_imgs)
         thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
         self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
-        print "current dyn threshold ", self.dyn_threshold
+        print ("current dyn threshold ", self.dyn_threshold)
         #thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
         return rgb_imgs, thermal_imgs
 
@@ -143,7 +143,7 @@ class DataLoader():
 
             i+=1
             if i == self.n_batches:
-                print "RESTARTING GENERATOR"
+                print ("RESTARTING GENERATOR")
                 i = 0
             rgb_imgs, thermal_imgs = [], []
             for img_name, thermal_name in zip(batch, thermal_batch):

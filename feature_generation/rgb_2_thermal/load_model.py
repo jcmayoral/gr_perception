@@ -70,11 +70,11 @@ data_loader = DataLoader(dataset_name, img_res=im_size,
 imgs, thermalimgs = data_loader.load_samples(thermal_ext=thermal_extension)
 
 try:
-    os.mkdir("testing")
+    os.mkdir("testing2")
 except:
     pass
 
-os.chdir("testing")
+os.chdir("testing2")
 
 for i in range(10):
     sample_images(model, data_loader, "testing_sample_{}".format(str(i)) + model_name, num_images=5,thermal_ext=thermal_extension)

@@ -50,7 +50,7 @@ def filter_thermal(original_thermal,threshold = 180):
         w = j.shape[1]
 
         if 0 > threshold > 255:
-            print "ERROR ", threshold
+            print ("ERROR ", threshold)
 
         for y in range(0, h):
             for x in range(0, w):
