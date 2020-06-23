@@ -9,9 +9,9 @@ ROOT_PATH = "/media/WIP/rgb2thermal"
 dataset_name = "fieldsafe"
 
 #TODO add as arg
-
+print(len(sys.argv))
 if len(sys.argv) < 3:
-    print "used argv 1 is neurons_factor argv2 input_channels argv3 data_percentage"
+    print ("used argv 1 is neurons_factor argv2 input_channels argv3 data_percentage")
     sys.exit()
 
 data_percentage = int(sys.argv[3])
@@ -21,10 +21,9 @@ neurons_factor = int(sys.argv[1])
 dataset_name = "fieldsafe_{}percentdata_".format(data_percentage)
 model_name = "unet_factor_{}_greyscalemasked_inputchannels{}".format(str(neurons_factor), input_channels)
 model_name = dataset_name + model_name
- 
-file_name = os.path.join(ROOT_PATH, model_name, model_name+".h5")
-print file_name
 
+file_name = os.path.join(ROOT_PATH, model_name, model_name+".h5")
+print (file_name)
 
 im_size = (128,128)
 
@@ -33,7 +32,7 @@ model = unet(input_size=(im_size[0], im_size[1],  input_channels), neuron_factor
 model.load_weights(file_name)
 
 # store weights before loading pre-trained weights
-print model.layers
+print (model.layers)
 preloaded_layers = model.layers
 preloaded_weights = []
 
