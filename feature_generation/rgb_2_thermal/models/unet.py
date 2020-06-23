@@ -8,7 +8,7 @@ from keras.models import *
 from keras.layers import *
 from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
-from keras import backend as keras
+#from keras import backend as keras
 
 
 def unet(pretrained_weights = None,input_size = (256,256,1), neuron_factor=16, loss = 'mse', compile=True):
@@ -92,6 +92,43 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
 
         for j in range(c):
             axs[i, j].set_title(titles[j])
+            axs[i,j].axis('off')
+    fig.savefig("sample_{}.png".format(name))
+    plt.close()
+
+
+def sample_images(model, emodel, data_loader, name, num_images=5,thermal_ext=".jpeg"):
+    print("called correct function ")
+    target_folder='{}'.format(name)
+    r, c = num_images, 2
+
+    imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=thermal_ext)
+    fake_thermal = model.predict(imgs_rgb)
+    extend_model_result = emodel.predict([imgs_rgb,fake_thermal])
+    print ("WORK", extend_model_result)
+
+    #imgs_thermal=0.5*imgs_thermal+0.5
+    #imgs_rgb=0.5*imgs_rgb+0.5
+    #fake_thermal=0.5*fake_thermal+0.5
+
+
+    titles = ['Original', 'Generated']
+    plt.figure(figsize=(5,5))
+    fig, axs = plt.subplots(r, c,figsize=[20,20])
+    cnt = 0
+    for i in range(r):
+        print("extended_results ,", extend_model_result[i])
+        print("extended_results ,", np.max(extend_model_result[i]), np.argmax(extend_model_result[i]))
+        classtype=np.argmax(extend_model_result[i])
+        axs[i,0].imshow(imgs_rgb[i][:,:,0])
+        axs[i,1].imshow(fake_thermal[i][:,:,0])
+        #axs[i,2].imshow(fake_thermal[i][:,:,0])
+
+        #print np.unique(fake_thermal[i][:,:,0])
+        #print np.unique(imgs_thermal[i][:,:,0])
+
+        for j in range(c):
+            axs[i, j].set_title(titles[j]+ " CLASS " + str(classtype))
             axs[i,j].axis('off')
     fig.savefig("sample_{}.png".format(name))
     plt.close()

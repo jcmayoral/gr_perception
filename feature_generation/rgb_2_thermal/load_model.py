@@ -1,5 +1,9 @@
+#import keras.backend.tensorflow_backend as tb
+#tb._SYMBOLIC_SCOPE.value = True
+
 from keras.models import load_model
 from models.data_loader import DataLoader
+from models.append_layers import extend_model
 import sys
 import os
 from models.unet import unet, sample_images
@@ -52,7 +56,14 @@ for layer, pre in zip(model.layers, preloaded_weights):
         else:
             print('loaded', layer.name)
 
-#model.summary()
+
+emodel = extend_model(model)
+model.summary()
+emodel.summary()
+
+from tensorflow.keras.utils import plot_model
+plot_model(emodel, to_file='extendedmodel.png')
+
 #fieldsafe
 thermal_extension = ".tiff"
 #openfield
@@ -76,6 +87,43 @@ except:
 
 os.chdir("testing2")
 
+#TRAINING emodel
+from keras.losses import binary_crossentropy, mean_absolute_error, categorical_crossentropy, sparse_categorical_crossentropy
+from keras.optimizers import RMSprop
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from generator import SuperGeneratorV2
+import copy
+
+model_id = "trashabletraining"
+model_cp_cb = ModelCheckpoint(model_id+'.h5', save_best_only=True)
+loss_mode = categorical_crossentropy
+
+emodel.compile(optimizer=RMSprop(0.001), loss= loss_mode, # SumOfLosses(loss_mode, mean_absolute_error),
+                metrics= ['accuracy'])#,Recall()])
+
+#test
+batch_size=20
+n_epochs=5
+#increase the size of the image (instead of reducing the crop we enlarge the "nibio")
+traingenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/train/",
+                                batch_size=batch_size, use_perc=0.005, flip_images=True,
+                                validation_split=0.01, test_split=0.01, image_size = (128,128),
+                                filter_datasets="openfield_all", n_classes=4, add_noise=False, add_shift=True)
+#hack to validation on generator
+val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
+#two epochs to observe all data
+steps = np.floor(traingenerator.trainsamples/batch_size) - val_steps
+print ("training_steps %d validation_steps %d"%(steps, val_steps))
+history = emodel.fit_generator(traingenerator.generator(),
+                               steps_per_epoch=steps,
+                               epochs=n_epochs, workers=0)
+                               #callbacks=[model_cp_cb])#, EarlyStopping()])
+traingenerator.stop_iterator()
+del traingenerator
+loss_id= ''.join(str(e) for e in traindataset)
+loss_id += model_id
+history_data[loss_id] = copy.deepcopy(history.history)
+
+
 for i in range(10):
-    sample_images(model, data_loader, "testing_sample_{}".format(str(i)) + model_name, num_images=5,thermal_ext=thermal_extension)
-#def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
+    sample_images(model, emodel, data_loader, "testing_sample_{}".format(str(i)) + model_name, num_images=5,thermal_ext=thermal_extension)
