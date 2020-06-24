@@ -23,42 +23,58 @@ except:
 
 os.chdir("testing3")
 
-#TRAINING model
 from keras.losses import binary_crossentropy, mean_absolute_error, categorical_crossentropy, sparse_categorical_crossentropy
 from keras.optimizers import RMSprop
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from generator import SuperGeneratorV2
 import copy
 
-model_id = "trashabletraining"
+model_id = "disponsable_mobilenet"
 model_cp_cb = ModelCheckpoint(model_id+'.h5', save_best_only=True)
 loss_mode = categorical_crossentropy
 
 model.compile(optimizer=RMSprop(0.001), loss= loss_mode, # SumOfLosses(loss_mode, mean_absolute_error),
                 metrics= ['accuracy'])#,Recall()])
 
-#test
 batch_size=20
-n_epochs=50
-#increase the size of the image (instead of reducing the crop we enlarge the "nibio")
+n_epochs=25
 traingenerator = SuperGeneratorV2(model=None,root_dir="/media/autolabel_traintest/train/",
-                                batch_size=batch_size, use_perc=0.15, flip_images=True,
-                                validation_split=0.1, test_split=0.01, image_size = (128,128),
+                                batch_size=batch_size, use_perc=0.25, flip_images=True,
+                                validation_split=0.2, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=True)
-#hack to validation on generator
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
-#two epochs to observe all data
 steps = np.floor(traingenerator.trainsamples/batch_size) - val_steps
 print ("training_steps %d validation_steps %d"%(steps, val_steps))
 history = model.fit_generator(traingenerator.generator(),
                                 validation_data=traingenerator.validation_data,
                                steps_per_epoch=steps,
-                               epochs=n_epochs)
-                               #callbacks=[model_cp_cb])#, EarlyStopping()])
+                               epochs=n_epochs,
+                               callbacks=[model_cp_cb])#, EarlyStopping()])
 traingenerator.stop_iterator()
-#loss_id= ''.join(str(e) for e in traindataset)
-#loss_id += model_id
-#history_data[loss_id] = copy.deepcopy(history.history)
+del traingenerator
+
+testgenerator = SuperGeneratorV2(model=None,root_dir="/media/autolabel_traintest/test/",
+                                batch_size=batch_size, use_perc=0.25, flip_images=False,
+                                validation_split=0.2, test_split=0.01, image_size = (128,128),
+                                filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=False)
+
 model_name ="mobilenet"
-for i in range(10):
-    sample_images2(model, traingenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=5)
+for i in range(30):
+    sample_images2(model, testgenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=2)
+
+import matplotlib.pyplot as plt
+print(history.history)
+plt.figure()
+x = np.arange(n_epochs)
+plt.plot(x, history.history["loss"], label="loss fuction")
+plt.plot(x, history.history["val_loss"], label="validation loss")
+plt.legend()
+plt.savefig("lossfunctions.png")
+
+
+plt.figure()
+print(x)
+plt.plot(x, history.history["accuracy"], label="accuracy")
+plt.plot(x, history.history["val_accuracy"], label="validation accuracy")
+plt.legend()
+plt.savefig("accs.png")

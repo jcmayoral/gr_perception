@@ -83,7 +83,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from generator import SuperGeneratorV2
 import copy
 
-model_id = "trashabletraining"
+model_id = "disponsable_training"
 model_cp_cb = ModelCheckpoint(model_id+'.h5', save_best_only=True)
 loss_mode = categorical_crossentropy
 
@@ -95,7 +95,7 @@ batch_size=20
 n_epochs=25
 #increase the size of the image (instead of reducing the crop we enlarge the "nibio")
 traingenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/train/",
-                                batch_size=batch_size, use_perc=0.15, flip_images=True,
+                                batch_size=batch_size, use_perc=0.25, flip_images=True,
                                 validation_split=0.1, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=True)
 #hack to validation on generator
@@ -106,9 +106,33 @@ print ("training_steps %d validation_steps %d"%(steps, val_steps))
 history = emodel.fit_generator(traingenerator.generator(),
                                 validation_data=traingenerator.validation_data,
                                steps_per_epoch=steps,
-                               epochs=n_epochs, workers=0)
-                               #callbacks=[model_cp_cb])#, EarlyStopping()])
+                               epochs=n_epochs, workers=0,
+                               callbacks=[model_cp_cb])#, EarlyStopping()])
 traingenerator.stop_iterator()
+del traingenerator
 
-for i in range(10):
-    sample_images(model, emodel,traingenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=5,thermal_ext=thermal_extension)
+
+testgenerator = SuperGeneratorV2(model=None,root_dir="/media/autolabel_traintest/test/",
+                                batch_size=batch_size, use_perc=0.25, flip_images=False,
+                                validation_split=0.2, test_split=0.01, image_size = (128,128),
+                                filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=False)
+
+for i in range(30):
+    sample_images(model, emodel,testgenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=2,thermal_ext=thermal_extension)
+
+import matplotlib.pyplot as plt
+print(history.history)
+plt.figure()
+x = np.arange(n_epochs)
+plt.plot(x, history.history["loss"], label="loss fuction")
+plt.plot(x, history.history["val_loss"], label="validation loss")
+plt.legend()
+plt.savefig("lossfunctions.png")
+
+
+plt.figure()
+print(x)
+plt.plot(x, history.history["accuracy"], label="accuracy")
+plt.plot(x, history.history["val_accuracy"], label="validation accuracy")
+plt.legend()
+plt.savefig("accs.png")

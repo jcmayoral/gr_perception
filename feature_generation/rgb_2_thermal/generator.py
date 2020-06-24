@@ -101,7 +101,7 @@ class SuperGeneratorV2:
         if self.n_classes == 4:
             self.classes_dict = {"0": 0, "1": 1, "2": 2, "3": 3}
             self.in_classes_dict = {3:"Safe", 2: "Warn", 1:"Unsafe", 0:"Danger"}
-            print (self.classes_dict)
+            print (self.classes_dict, self.in_classes_dict, self.n_classes)
         #MEGA HACK
         if self.n_classes == 3:
             self.classes_dict = {"3": 2, "2": 1, "1": 1, "0": 0}

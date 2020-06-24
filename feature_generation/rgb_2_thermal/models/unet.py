@@ -134,7 +134,6 @@ def sample_images(model, emodel, generator, name, num_images=5,thermal_ext=".jpe
 
 
 def sample_images2(model, generator, name, num_images=5):
-    print("called correct2 function ")
     target_folder='{}'.format(name)
     r, c = num_images, 1
 
@@ -148,7 +147,6 @@ def sample_images2(model, generator, name, num_images=5):
     for i in range(r):
         gtclass=np.argmax(gts[i])
         predictedclass=np.argmax(predictions[i])
-        print(imgs_rgb[i].shape)
         axs[i].imshow(imgs_rgb[i])
 
         axs[i].set_title(titles[0]+ " GT CLASS " + str(gtclass)+ " PREDICTED CLASS " + str(predictedclass))
