@@ -101,11 +101,11 @@ def sample_images(model, emodel, generator, name, num_images=5,thermal_ext=".jpe
     print("called correct function ")
     target_folder='{}'.format(name)
     r, c = num_images, 2
-    [imgs_rgb,fake_thermal], gt = generator.chunk_generator(num_images,generator.trainsamples)
+    images, gt = generator.chunk_generator(num_images,generator.trainsamples)
     print(gt)
     #print(imgs_rgb[0].shape)
     #fake_thermal = model.predict(imgs_rgb)
-    predictions = emodel.predict([imgs_rgb,fake_thermal])
+    predictions = emodel.predict([images[0],images[1]])
     #imgs_thermal=0.5*imgs_thermal+0.5
     #imgs_rgb=0.5*imgs_rgb+0.5
     #fake_thermal=0.5*fake_thermal+0.5
@@ -119,8 +119,8 @@ def sample_images(model, emodel, generator, name, num_images=5,thermal_ext=".jpe
         print("extended_results ,", predictions[i])
         prediction=np.argmax(predictions[i])
         label = np.argmax(gt[i])
-        axs[i,0].imshow(imgs_rgb[i][:,:,0])
-        axs[i,1].imshow(fake_thermal[i][:,:,0])
+        axs[i,0].imshow(images[0][i][:,:,0])
+        axs[i,1].imshow(images[1][i][:,:,0])
 
 
         axs[i, 0].set_title(titles[0]+ " GT " + str(label))

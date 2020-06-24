@@ -96,7 +96,7 @@ n_epochs=25
 #increase the size of the image (instead of reducing the crop we enlarge the "nibio")
 traingenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/train/",
                                 batch_size=batch_size, use_perc=0.25, flip_images=True,
-                                validation_split=0.1, test_split=0.01, image_size = (128,128),
+                                validation_split=0.15, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=True)
 #hack to validation on generator
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
@@ -112,7 +112,7 @@ traingenerator.stop_iterator()
 del traingenerator
 
 
-testgenerator = SuperGeneratorV2(model=None,root_dir="/media/autolabel_traintest/test/",
+testgenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/test/",
                                 batch_size=batch_size, use_perc=0.25, flip_images=False,
                                 validation_split=0.2, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=False)
