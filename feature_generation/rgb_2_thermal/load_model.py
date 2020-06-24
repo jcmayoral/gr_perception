@@ -57,7 +57,7 @@ for layer, pre in zip(model.layers, preloaded_weights):
             print('loaded', layer.name)
 
 
-emodel = extend_model(model)
+emodel = extend_model(model,multiplier=3)
 model.summary()
 emodel.summary()
 
@@ -103,26 +103,27 @@ emodel.compile(optimizer=RMSprop(0.001), loss= loss_mode, # SumOfLosses(loss_mod
 
 #test
 batch_size=20
-n_epochs=5
+n_epochs=50
 #increase the size of the image (instead of reducing the crop we enlarge the "nibio")
 traingenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/train/",
-                                batch_size=batch_size, use_perc=0.005, flip_images=True,
+                                batch_size=batch_size, use_perc=0.25, flip_images=True,
                                 validation_split=0.01, test_split=0.01, image_size = (128,128),
-                                filter_datasets="openfield_all", n_classes=4, add_noise=False, add_shift=True)
+                                filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=True)
 #hack to validation on generator
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
 #two epochs to observe all data
 steps = np.floor(traingenerator.trainsamples/batch_size) - val_steps
 print ("training_steps %d validation_steps %d"%(steps, val_steps))
 history = emodel.fit_generator(traingenerator.generator(),
+                                validation_data=traingenerator.validation_data,
                                steps_per_epoch=steps,
                                epochs=n_epochs, workers=0)
                                #callbacks=[model_cp_cb])#, EarlyStopping()])
 traingenerator.stop_iterator()
 del traingenerator
-loss_id= ''.join(str(e) for e in traindataset)
-loss_id += model_id
-history_data[loss_id] = copy.deepcopy(history.history)
+#loss_id= ''.join(str(e) for e in traindataset)
+#loss_id += model_id
+#history_data[loss_id] = copy.deepcopy(history.history)
 
 
 for i in range(10):

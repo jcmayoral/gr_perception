@@ -35,13 +35,14 @@ class SuperGeneratorV2:
         self.readsamples_counter = 0
         datasets_list = self.get_datasets_names()
         filtered_list = list()
+        print (filter_datasets)
 
         if filter_datasets is not None:
             for f in filter_datasets:
                 for d in datasets_list:
                     #print (d, f)
                     if f in d:
-                        #print ("adding dataset ", d)
+                        print ("adding dataset ", d , " with ", f)
                         filtered_list.append(d)
         else:
             self.datasets_list = dataset_list
