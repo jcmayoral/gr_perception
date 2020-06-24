@@ -57,28 +57,17 @@ for layer, pre in zip(model.layers, preloaded_weights):
             print('loaded', layer.name)
 
 
-emodel = extend_model(model,multiplier=3)
+emodel = extend_model(model,multiplier=2)
 model.summary()
 emodel.summary()
 
-from tensorflow.keras.utils import plot_model
+from keras.utils import plot_model
 plot_model(emodel, to_file='extendedmodel.png')
 
 #fieldsafe
 thermal_extension = ".tiff"
 #openfield
 thermal_extension = ".jpg"
-
-data_loader = DataLoader(dataset_name, img_res=im_size,
-             #rgb_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
-             rgb_dataset_folder="/media/subset_labeled_datasets/train/openfield/Danger",
-             #thermal_dataset_folder="/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
-             thermal_dataset_folder="/media/subset_labeled_datasets/train/openfield/Danger",
-             path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
-             #match_by_timestamps = True, thermal_threshold=245, input_channels=input_channels)
-             match_by_timestamps = False, thermal_threshold=245, input_channels=input_channels)
-
-imgs, thermalimgs = data_loader.load_samples(thermal_ext=thermal_extension)
 
 try:
     os.mkdir("testing2")
@@ -103,11 +92,11 @@ emodel.compile(optimizer=RMSprop(0.001), loss= loss_mode, # SumOfLosses(loss_mod
 
 #test
 batch_size=20
-n_epochs=50
+n_epochs=25
 #increase the size of the image (instead of reducing the crop we enlarge the "nibio")
 traingenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/train/",
-                                batch_size=batch_size, use_perc=0.25, flip_images=True,
-                                validation_split=0.01, test_split=0.01, image_size = (128,128),
+                                batch_size=batch_size, use_perc=0.15, flip_images=True,
+                                validation_split=0.1, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=True)
 #hack to validation on generator
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
@@ -120,11 +109,6 @@ history = emodel.fit_generator(traingenerator.generator(),
                                epochs=n_epochs, workers=0)
                                #callbacks=[model_cp_cb])#, EarlyStopping()])
 traingenerator.stop_iterator()
-del traingenerator
-#loss_id= ''.join(str(e) for e in traindataset)
-#loss_id += model_id
-#history_data[loss_id] = copy.deepcopy(history.history)
-
 
 for i in range(10):
-    sample_images(model, emodel, data_loader, "testing_sample_{}".format(str(i)) + model_name, num_images=5,thermal_ext=thermal_extension)
+    sample_images(model, emodel,traingenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=5,thermal_ext=thermal_extension)

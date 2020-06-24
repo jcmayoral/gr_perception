@@ -250,8 +250,11 @@ class SuperGeneratorV2:
                 images[i+o_batch_size] = flip_im
                 self.class_indexes[i+o_batch_size] = ind
                 labels[i+o_batch_size] = self.onehot_encoder[ind]
-        modeloutput = self.model.predict(images)
-        return ([images,modeloutput],labels)#, weights.reshape(-1,))
+        if self.model is not None:
+            modeloutput = self.model.predict(images)
+            return ([images,modeloutput],labels)#, weights.reshape(-1,))
+        else:
+            return (images, labels)
 
     def generator(self):
         self.run = True

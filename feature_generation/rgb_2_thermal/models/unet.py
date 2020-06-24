@@ -97,16 +97,15 @@ def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
     plt.close()
 
 
-def sample_images(model, emodel, data_loader, name, num_images=5,thermal_ext=".jpeg"):
+def sample_images(model, emodel, generator, name, num_images=5,thermal_ext=".jpeg"):
     print("called correct function ")
     target_folder='{}'.format(name)
     r, c = num_images, 2
-
-    imgs_rgb, imgs_thermal = data_loader.load_samples(num_images,thermal_ext=thermal_ext)
-    fake_thermal = model.predict(imgs_rgb)
-    extend_model_result = emodel.predict([imgs_rgb,fake_thermal])
-    print ("WORK", extend_model_result)
-
+    [imgs_rgb,fake_thermal], gt = generator.chunk_generator(num_images,generator.trainsamples)
+    print(gt)
+    #print(imgs_rgb[0].shape)
+    #fake_thermal = model.predict(imgs_rgb)
+    predictions = emodel.predict([imgs_rgb,fake_thermal])
     #imgs_thermal=0.5*imgs_thermal+0.5
     #imgs_rgb=0.5*imgs_rgb+0.5
     #fake_thermal=0.5*fake_thermal+0.5
@@ -117,18 +116,42 @@ def sample_images(model, emodel, data_loader, name, num_images=5,thermal_ext=".j
     fig, axs = plt.subplots(r, c,figsize=[20,20])
     cnt = 0
     for i in range(r):
-        print("extended_results ,", extend_model_result[i])
-        print("extended_results ,", np.max(extend_model_result[i]), np.argmax(extend_model_result[i]))
-        classtype=np.argmax(extend_model_result[i])
+        print("extended_results ,", predictions[i])
+        prediction=np.argmax(predictions[i])
+        label = np.argmax(gt[i])
         axs[i,0].imshow(imgs_rgb[i][:,:,0])
         axs[i,1].imshow(fake_thermal[i][:,:,0])
-        #axs[i,2].imshow(fake_thermal[i][:,:,0])
 
-        #print np.unique(fake_thermal[i][:,:,0])
-        #print np.unique(imgs_thermal[i][:,:,0])
 
-        for j in range(c):
-            axs[i, j].set_title(titles[j]+ " CLASS " + str(classtype))
-            axs[i,j].axis('off')
+        axs[i, 0].set_title(titles[0]+ " GT " + str(label))
+        axs[i,0].axis('off')
+        axs[i, 1].set_title(titles[1]+ " Predicition " + str(prediction))
+        axs[i,1].axis('off')
+
+    fig.savefig("sample_{}.png".format(name))
+    plt.close()
+
+
+
+def sample_images2(model, generator, name, num_images=5):
+    print("called correct2 function ")
+    target_folder='{}'.format(name)
+    r, c = num_images, 1
+
+    imgs_rgb, gts = generator.chunk_generator(num_images,generator.trainsamples)
+    predictions = model.predict(imgs_rgb)
+
+    titles = ['RESULT ']
+    plt.figure(figsize=(5,1))
+    fig, axs = plt.subplots(r, c,figsize=[10,10])
+    cnt = 0
+    for i in range(r):
+        gtclass=np.argmax(gts[i])
+        predictedclass=np.argmax(predictions[i])
+        print(imgs_rgb[i].shape)
+        axs[i].imshow(imgs_rgb[i])
+
+        axs[i].set_title(titles[0]+ " GT CLASS " + str(gtclass)+ " PREDICTED CLASS " + str(predictedclass))
+        axs[i].axis('off')
     fig.savefig("sample_{}.png".format(name))
     plt.close()
