@@ -57,8 +57,11 @@ for layer, pre in zip(model.layers, preloaded_weights):
             print('loaded', layer.name)
 
 
-emodel = extend_model(model,multiplier=2)
+emodel = extend_model(model,multiplier=4)
+model.trainable = False
+print(model.trainable)
 model.summary()
+print(emodel.trainable)
 emodel.summary()
 
 from keras.utils import plot_model

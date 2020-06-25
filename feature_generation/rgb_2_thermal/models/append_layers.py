@@ -74,7 +74,7 @@ def extend_model2(model, n_classes=4,activation = "relu", multiplier=2):
     #model01 = create_convolution_sequence(model0,2*multiplier, kernel_size=(1,1), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
     #model02 = create_convolution_sequence(model01,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
 
-    model1 = create_convolution_sequence(model.output,4*multiplier, kernel_size=(3,3), padding='same', activation=activation, pooling=True)
+    #model1 = create_convolution_sequence(model.output,4*multiplier, kernel_size=(3,3), padding='same', activation=activation, pooling=True)
     #model11 = create_convolution_sequence(model1,2*multiplier, kernel_size=(3,3), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
     #model12 = create_convolution_sequence(model11,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
 
@@ -87,10 +87,10 @@ def extend_model2(model, n_classes=4,activation = "relu", multiplier=2):
     #model32 = create_convolution_sequence(model31,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
 
     #concatenated = Concatenate()([model12, model22, model32])
-    flattened = Flatten() (model1)
-    flattened = create_fullyconnected_sequence(flattened,128)
-    flattened = create_fullyconnected_sequence(flattened,64)
-
+    flattened = Flatten() (model.output)
+    flattened = create_fullyconnected_sequence(flattened,multiplier*16)
+    flattened = create_fullyconnected_sequence(flattened,multiplier*8)
+    flattened = create_fullyconnected_sequence(flattened,multiplier*4)
     o_activation = "softmax"
 
     if n_classes == 1:

@@ -9,8 +9,15 @@ ROOT_PATH = "/media/WIP/rgb2thermal"
 
 im_size = (128,128)
 
-model = MobileNet(input_shape=(im_size[0], im_size[1],  3), include_top=False, alpha=0.25)
-model = extend_model2(model,multiplier=2)
+alpha=0.5
+model = MobileNet(input_shape=(im_size[0], im_size[1],  3), include_top=False, alpha=alpha)
+
+# Freeze n number of layers from the last
+#for layer in model.layers: layer.trainable = False
+# Check the trainable status of the individual layers
+#for layer in model.layers: print(layer, layer.trainable)
+model.summary()
+model = extend_model2(model,multiplier=4)
 model.summary()
 
 from keras.utils import plot_model
@@ -29,7 +36,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from generator import SuperGeneratorV2
 import copy
 
-model_id = "disponsable_mobilenet"
+model_id = "disponsable_mobilenet"+str(alpha)
 model_cp_cb = ModelCheckpoint(model_id+'.h5', save_best_only=True)
 loss_mode = categorical_crossentropy
 
@@ -60,7 +67,7 @@ testgenerator = SuperGeneratorV2(model=None,root_dir="/media/autolabel_traintest
 
 model_name ="mobilenet"
 for i in range(30):
-    sample_images2(model, testgenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=2)
+    sample_images2(model, testgenerator, "{}_testing_sample_{}".format(str(alpha),str(i)) + model_name, num_images=2)
 
 import matplotlib.pyplot as plt
 print(history.history)
@@ -69,7 +76,7 @@ x = np.arange(n_epochs)
 plt.plot(x, history.history["loss"], label="loss fuction")
 plt.plot(x, history.history["val_loss"], label="validation loss")
 plt.legend()
-plt.savefig("lossfunctions.png")
+plt.savefig(str(alpha)+"lossfunctions.png")
 
 
 plt.figure()
@@ -77,4 +84,4 @@ print(x)
 plt.plot(x, history.history["accuracy"], label="accuracy")
 plt.plot(x, history.history["val_accuracy"], label="validation accuracy")
 plt.legend()
-plt.savefig("accs.png")
+plt.savefig(str(alpha)+"accs.png")
