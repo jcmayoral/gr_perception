@@ -12,15 +12,13 @@ print(device_lib.list_local_devices())
 #from keras import backend as K
 #K.tensorflow_backend._get_available_gpus()
 
-print " "
 input_channels = 3
 
 neurons_factor = 1
 n_epochs = 3
-percent = 10
 
 if len(sys.argv) < 4:
-    print "used argv 1 is n_epochs and argv 2 neurons_factor argv3 data_percentage"
+    print ("used argv 1 is n_epochs and argv 2 neurons_factor argv3 data_percentage")
     sys.exit()
 
 if len(sys.argv) >3:
@@ -34,8 +32,8 @@ if len(sys.argv) >1:
 
 batch_size = 50
 im_size = (128,128)
-dataset_name = "fieldsafe_{}percentdata_".format(percent)
-network_name = "unet_factor_{}_greyscalemasked_inputchannels{}".format(str(neurons_factor), input_channels)
+dataset_name = "flir_{}".format(data_percentage)
+network_name = "unet_factor_{}".format(str(neurons_factor))
 
 if not os.path.exists(dataset_name + network_name):
     os.makedirs(dataset_name + network_name)#, exist_ok=True)
@@ -47,6 +45,7 @@ model.summary()
 
 
 if "fieldsafe" not in dataset_name:
+    print ("FLIR")
     thermal_extension = ".jpeg"
     data_loader = DataLoader(dataset_name=dataset_name,
                          img_res=(im_size[0], im_size[1],1),
@@ -63,7 +62,6 @@ if "fieldsafe" not in dataset_name:
 
 
 else:
-    print "FIELDSAFE"
     thermal_extension = ".tiff"
 
     data_loader = DataLoader(dataset_name, img_res=im_size,
@@ -80,10 +78,15 @@ else:
 steps_per_epoch = int(len(data_loader.rgb_images_list) / batch_size*(percent/100.))
 val_steps_per_epoch = int(steps_per_epoch*0.2)#int(len(val_data_loader.rgb_images_list) / batch_size)
 print ("Steps per epoch {} Total batches {} Epochs{}".format(steps_per_epoch, int(len(data_loader.rgb_images_list) / batch_size), n_epochs))
+
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+model_cp_cb = ModelCheckpoint('weights.h5', save_best_only=True)
+
 history = model.fit_generator(data_loader.generator(batch_size, thermal_extension), steps_per_epoch= steps_per_epoch, epochs=n_epochs,
-                                validation_data=val_data_loader.generator(batch_size, thermal_extension), validation_steps=val_steps_per_epoch)
+                                validation_data=val_data_loader.generator(batch_size, thermal_extension), validation_steps=val_steps_per_epoch,
+                                callbacks=[model_cp_cb])
 pickle.dump(history, open(dataset_name + network_name + ".p", "wb" ))
 
 model.save_weights(dataset_name+network_name+".h5")
 
-sample_images(model, data_loader, dataset_name +"_"+ network_name, num_images=5, thermal_ext=thermal_extension)
+sample_images(model, data_loader, name=dataset_name +"_"+ network_name, num_images=5, thermal_ext=thermal_extension)

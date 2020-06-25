@@ -3,6 +3,7 @@ from glob import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage
+from skimage import io, transform
 import os
 import cv2
 import random
@@ -92,7 +93,7 @@ class DataLoader():
         thermal_imgs=np.array(thermal_imgs)
         thermal_imgs, new_threshold = filter_thermal(thermal_imgs, self.dyn_threshold)
         self.dyn_threshold = (self.dyn_threshold+new_threshold)/2
-        print ("current dyn threshold ", self.dyn_threshold)
+        #print ("current dyn threshold ", self.dyn_threshold)
         #thermal_imgs = thermal_imgs[:,:,:,np.newaxis]/127.5-1
         return rgb_imgs, thermal_imgs
 
@@ -177,7 +178,7 @@ class DataLoader():
         (rows,cols) = image.shape
         #M = cv2.getRotationMatrix2D((rows/2, cols/2), 180, 1)
         #thermal_img = imutils.rotate(thermal_img, 180, dtype = np.float32)
-        return skimage.transform.rotate(image,180)#cv2.warpAffine(image, M, (rows, cols))
+        return transform.rotate(image,180)#cv2.warpAffine(image, M, (rows, cols))
 
     #fieldsafe specific
     def crop_image(self, image):
@@ -200,7 +201,7 @@ class DataLoader():
 
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
-        thermal_img= skimage.io.imread(thermal_img_path)
+        thermal_img= io.imread(thermal_img_path)
         if self.match_by_timestamps:
             thermal_img = self.rotate_image(thermal_img)
         #if thermal_img.dtype != np.uint8:

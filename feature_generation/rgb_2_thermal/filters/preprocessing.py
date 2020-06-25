@@ -26,11 +26,11 @@ def convert(img, target_type_min, target_type_max, target_type):
     return new_img
 
 def filter_thermal(original_thermal,threshold = 180):
-    proccessed_images = list()
     for i,im in enumerate(original_thermal):
+    #    original_thermal[i] = convert(im, 0, 127, np.uint8)
         original_thermal[i] = convert(im, 0, 255, np.uint8)
-    #print np.unique(original_thermal[0])
     return original_thermal, threshold
+    proccessed_images = list()
 
     for i in original_thermal:
         j = convert(i, 0, 255, np.uint8)

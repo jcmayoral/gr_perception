@@ -1,17 +1,19 @@
 import scipy
 import cv2
 from keras.datasets import mnist
-from instance_normalization import InstanceNormalization
+from .instance_normalization import InstanceNormalization
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout, Concatenate, MaxPooling2D
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.models import Sequential, Model
-from keras.optimizers import Adam
+#from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
+
 import datetime
 import matplotlib.pyplot as plt
 import sys
-from data_loader import DataLoader
+from .data_loader import DataLoader
 import numpy as np
 import os
 SEED=1234
@@ -55,7 +57,7 @@ class Pix2Pix():
         self.disc_patch = (patch, patch, 1)
 
         if factor <0:
-            print "factor should be higher than 0, setting to 1"
+            print ("factor should be higher than 0, setting to 1")
             factor = 1
 
         # Number of filters in the first layer of G and D
@@ -69,11 +71,7 @@ class Pix2Pix():
 
         self.discriminator.compile(loss='mse',
             optimizer=optimizer,
-            metrics=['accuracy'])
-
-        #self.discriminator.compile(loss='binary_crossentropy',
-        #    optimizer=optimizer,
-        #    metrics=['accuracy'])
+            metrics=['accuracy','mse'])
 
         #-------------------------
         # Construct Computational
@@ -97,7 +95,7 @@ class Pix2Pix():
         valid = self.discriminator([img_rgb,fake_thermal])
 
         self.combined = Model(inputs=[img_rgb, img_thermal], outputs=[valid, fake_thermal])
-        self.combined.compile(loss="binary_crossentropy",#["mse","mae"],
+        self.combined.compile(loss=["mse","mae"],
                               loss_weights=[1,100],
                               optimizer=optimizer)
         self.combined.summary()
@@ -144,7 +142,7 @@ class Pix2Pix():
         u6 = deconv2d(u5, d1, self.gf)
 
         u7 = UpSampling2D(size=2)(u6)
-        output_img = Conv2D(self.thermal_channels, kernel_size=4, strides=1, padding='same', activation='sigmoid',name="thermal")(u7)
+        output_img = Conv2D(self.thermal_channels, kernel_size=4, strides=1, padding='same', activation='relu',name="thermal")(u7)
 
         return Model(d0, output_img)
 
@@ -187,7 +185,6 @@ class Pix2Pix():
         fake = np.zeros((batch_size,) + self.disc_patch)
 
         for epoch in range(epochs):
-            print self.thermal_extension
             for batch_i, (imgs_rgb, imgs_thermal) in enumerate(self.data_loader.load_batch(batch_size,thermal_ext=self.thermal_extension)):
                 if batch_i == self.max_batches:
                     print ("maximum number of batches per epoch is reached")
@@ -253,13 +250,17 @@ class Pix2Pix():
                 axs[i, j].set_title(titles[j])
                 axs[i,j].axis('off')
         fig.savefig("{}/{}/image{}.png".format(self.output_folder,epoch,batch_i))
-
-
         plt.close()
 
-        if not os.path.exists("saved_models"):
-            os.makedirs("saved_models")#, exist_ok=True)
+        print (":AAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+        target_folder='{}/{}'.format(self.output_folder, "saved_models")
+
+        if not os.path.exists(target_folder):
+            print ("jhhhhh")
+            os.makedirs(target_folder)#, exist_ok=True)
         #print("uncomment save_weights after time matching has been implemented")
         #self.generator.save_weights("saved_models/{}_batch_{}.h5".format(epoch,batch_i))
         #instead store one
-        self.generator.save_weights("saved_models/model{}.h5".format(self.dataset_name))
+
+        self.generator.save_weights("{}/model{}.h5".format(target_folder,self.dataset_name))

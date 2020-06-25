@@ -6,8 +6,9 @@ from models.data_loader import DataLoader
 from models.append_layers import extend_model
 import sys
 import os
-from models.unet import unet, sample_images
 import numpy as np
+from models.pix_2_pix import Pix2Pix
+from models.unet import sample_images
 
 ROOT_PATH = "/media/WIP/rgb2thermal"
 
@@ -23,46 +24,29 @@ neurons_factor = int(sys.argv[1])
 
 dataset_name = "flir_{}".format(data_percentage)
 model_name = "unet_factor_{}".format(str(neurons_factor))
+model_name = "pix2pix_factor_{}".format(str(neurons_factor))
 
 model_name = dataset_name + model_name
 
 #file_name = os.path.join(ROOT_PATH, model_name, model_name+".h5")
-file_name = os.path.join(model_name,"weights.h5")
+file_name = os.path.join(model_name,"saved_models", "modelflir_15.0.h5")
 
 im_size = (128,128)
+thermal_extension = ".jpeg"
 
-model = unet(input_size=(im_size[0], im_size[1],  input_channels), neuron_factor=neurons_factor, loss = 'mse')
+#TODO trainable initilizaer
+model = Pix2Pix(img_rows=im_size[0], img_cols=im_size[1], dataset_name= dataset_name, channels =3,
+            thermal_channels=1, max_batches = 1, output_folder = model_name,
+            thermal_extension = thermal_extension)
+model.custom_initialize("/media/datasets/thermal_fieldsafe/dataset/_Multisense_left_image_rect_color",
+            "/media/datasets/thermal_fieldsafe/dataset/_FlirA65_image_raw",
+            path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/matching",
+            match_by_timestamps = True,
+            factor = neurons_factor, thermal_threshold = 50,
+            data_percentage=data_percentage)
+model.generator.load_weights(file_name)
 
-#model = unet(input_size=(im_size[0], im_size[1],  input_channels), neuron_factor=neurons_factor, loss = 'mse', compile=False)
-#model = unet
-model.load_weights(file_name)
-
-# store weights before loading pre-trained weights
-print (model.layers)
-preloaded_layers = model.layers
-preloaded_weights = []
-
-for pre in preloaded_layers:
-    preloaded_weights.append(pre.get_weights())
-
-# load pre-trained weights
-model.load_weights(file_name, by_name=True)
-
-# compare previews weights vs loaded weights
-for layer, pre in zip(model.layers, preloaded_weights):
-    weights = layer.get_weights()
-
-    if weights:
-        if np.array_equal(weights, pre):
-            print('not loaded', layer.name)
-        else:
-            print('loaded', layer.name)
-
-
-emodel = extend_model(model,multiplier=4)
-model.trainable = False
-print(model.trainable)
-model.summary()
+emodel = extend_model(model.generator,multiplier=4)
 print(emodel.trainable)
 emodel.summary()
 
@@ -99,8 +83,8 @@ emodel.compile(optimizer=RMSprop(0.001), loss= loss_mode, # SumOfLosses(loss_mod
 batch_size=20
 n_epochs=25
 #increase the size of the image (instead of reducing the crop we enlarge the "nibio")
-traingenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/train/",
-                                batch_size=batch_size, use_perc=0.25, flip_images=True,
+traingenerator = SuperGeneratorV2(model=model.generator,root_dir="/media/autolabel_traintest/train/",
+                                batch_size=batch_size, use_perc=0.2, flip_images=True,
                                 validation_split=0.15, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=True)
 #hack to validation on generator
@@ -117,13 +101,13 @@ traingenerator.stop_iterator()
 del traingenerator
 
 
-testgenerator = SuperGeneratorV2(model=model,root_dir="/media/autolabel_traintest/test/",
+testgenerator = SuperGeneratorV2(model=model.generator,root_dir="/media/autolabel_traintest/test/",
                                 batch_size=batch_size, use_perc=0.25, flip_images=False,
                                 validation_split=0.2, test_split=0.01, image_size = (128,128),
                                 filter_datasets=["openfield_all"], n_classes=4, add_noise=False, add_shift=False)
 
 for i in range(30):
-    sample_images(model, emodel,testgenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=2,thermal_ext=thermal_extension)
+    sample_images(model.generator, emodel,testgenerator, "testing_sample_{}".format(str(i)) + model_name, num_images=2,thermal_ext=thermal_extension)
 
 import matplotlib.pyplot as plt
 print(history.history)

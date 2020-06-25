@@ -66,7 +66,7 @@ def unet(pretrained_weights = None,input_size = (256,256,1), neuron_factor=16, l
     return model
 
 import matplotlib.pyplot as plt
-def sample_images(model, data_loader, name, num_images=5,thermal_ext=".jpeg"):
+def sample_images(model, data_loader, name="default", num_images=5,thermal_ext=".jpeg"):
     target_folder='{}'.format(name)
     r, c = num_images, 3
 
@@ -113,7 +113,7 @@ def sample_images(model, emodel, generator, name, num_images=5,thermal_ext=".jpe
 
     titles = ['Original', 'Generated']
     plt.figure(figsize=(5,5))
-    fig, axs = plt.subplots(r, c,figsize=[20,20])
+    fig, axs = plt.subplots(r, c,figsize=[10,10])
     cnt = 0
     for i in range(r):
         print("extended_results ,", predictions[i])

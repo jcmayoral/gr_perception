@@ -7,7 +7,7 @@ import numpy as np
 
 ROOT_PATH = "/media/WIP/rgb2thermal"
 
-im_size = (256,256)
+im_size = (128,128)
 
 model_id = "disponsable_{}".format("MobileNet")
 #model = InceptionV3(input_shape=(im_size[0], im_size[1],  3), include_top=True, classes=4, weights=None)

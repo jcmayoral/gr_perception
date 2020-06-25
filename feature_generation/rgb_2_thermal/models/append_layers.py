@@ -70,8 +70,8 @@ def extend_model(model, n_classes=4,activation = "relu", multiplier=2):
 
 
 def extend_model2(model, n_classes=4,activation = "relu", multiplier=2):
-    x = create_convolution_sequence(model.output,4*multiplier, kernel_size=(1,1), padding='same', activation="relu", pooling=True)
-    flattened = Flatten() (x)
+    #x = create_convolution_sequence(model.output,4*multiplier, kernel_size=(1,1), padding='same', activation="relu", pooling=True)
+    flattened = Flatten() (model.output)
     flattened = create_fullyconnected_sequence(flattened,multiplier*16)
     flattened = create_fullyconnected_sequence(flattened,multiplier*8)
     flattened = create_fullyconnected_sequence(flattened,multiplier*4)
