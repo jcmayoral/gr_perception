@@ -15,7 +15,7 @@ class DataLoader():
                  rgb_dataset_folder="/floyd/input/flir_adas/train/RGB",
                  thermal_dataset_folder="/floyd/input/flir_adas/train/thermal_8_bit",
                  path_timestamp_matching="~/", match_by_timestamps=False, thermal_threshold=127, data_percentage=100,
-                 input_channels=3):
+                 input_channels=3, rgb_ext="jpg", thermal_ext="tiff"):
         self.input_channels = input_channels
         self.dataset_name = dataset_name
         self.data_percentage = data_percentage/100.
@@ -27,6 +27,8 @@ class DataLoader():
         self.path_timestamp_matching = path_timestamp_matching
         self.match_by_timestamps = match_by_timestamps
         self.thermal_threshold = thermal_threshold
+        self.rgb_ext = rgb_ext
+        self.thermal_ext = thermal_ext
 
         if match_by_timestamps:
             self.match_thermalfunction= self.match_by_timestamp
@@ -36,8 +38,8 @@ class DataLoader():
 
         #TODO match images
         self.thermal_min_max_scaler = preprocessing.MinMaxScaler()
-        self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith("jpg")]
-        self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith("tiff")]
+        self.rgb_images_list=[image_name for image_name in os.listdir(self.rgb_dataset_folder) if image_name.endswith(self.rgb_ext)]
+        self.thermal_images_list=[image_name for image_name in os.listdir(self.thermal_dataset_folder) if image_name.endswith(self.thermal_ext)]
 
     def load_batch(self, batch_size=1, is_testing=False,thermal_ext=".jpeg"):
         self.n_batches = int(self.data_percentage*len(self.rgb_images_list) / batch_size)
@@ -70,8 +72,11 @@ class DataLoader():
             yield rgb_imgs, thermal_imgs
 
 
-    def load_samples(self,num_imgs=32,thermal_ext=".tiff"):
+    def load_samples(self,num_imgs=32,thermal_ext=None):
+        if thermal_ext is None:
+            thermal_ext="."+self.thermal_ext
         rgb_imgs,thermal_imgs=[],[]
+        print (self.rgb_images_list)
         random_rgb_image_name_list=np.random.choice(self.rgb_images_list,size=num_imgs).tolist()
         #random_thermal_image_name_list=np.random.choice(self.thermal_images_list,size=num_imgs).tolist()
         random_thermal_image_name_list = self.match_thermalfunction(random_rgb_image_name_list)
@@ -117,8 +122,9 @@ class DataLoader():
         thermal_files = list()
         for r in rgb_files:
             r = r.replace("image_filter_bag","")
-            r = r.replace(".jpg","")
-            r = r[2:]
+            r = r.replace("."+self.rgb_ext,"")
+            r = r[:-4]
+            print (r)
             filename = os.path.join(self.path_timestamp_matching, r +".txt")
             with open(filename) as f:
                  thermal_index = f.read()
@@ -134,7 +140,9 @@ class DataLoader():
         return np.asarray(thermal_files)
 
     #practicaly the same of original_load_batch only difference on return
-    def generator(self, batch_size=2, thermal_ext=".tiff"):
+    def generator(self, batch_size=2, thermal_ext=None):
+        if thermal_ext is None:
+            thermal_ext="."+self.thermal_ext
         self.n_batches = int(self.data_percentage*len(self.rgb_images_list) / batch_size)
         #self.n_batches = int(len(self.rgb_images_list) / batch_size)
         i = 0
