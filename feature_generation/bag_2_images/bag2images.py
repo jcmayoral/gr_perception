@@ -5,6 +5,7 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from scipy import ndimage
 import sys
+from skimage import io, transform
 
 if __name__ == '__main__':
 
@@ -31,8 +32,11 @@ if __name__ == '__main__':
             #print msg.encoding
             cv_image = bridge.imgmsg_to_cv2(msg)
             cv_image = cv_image/255
-            filename = os.path.join("image_"+str(msg.header.seq)+".jpg")
+            #filename = os.path.join(str(msg.header.stamp) + str(msg.header.seq)+".jpg")
+            filename = os.path.join(str(msg.header.stamp)+".jpg")
+            #filename = os.path.join(store_path ,"fieldsafe_image_"+name+str(msg.header.seq)+".jpg")
             cv2.imwrite(filename, cv_image)
+            #io.imsave(filename, cv_image)
         except CvBridgeError as e:
             print(e)
             exit(1)
