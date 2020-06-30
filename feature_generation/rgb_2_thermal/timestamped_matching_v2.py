@@ -28,8 +28,7 @@ class TimeStampedMatcher():
             i = file.replace("image_filter_bag","")
             i = i.replace(".png","")
             bag_file = "rgb" + rootfilename+i[0]+".txt"
-            #remove "_"
-            i = i[10:-4]
+            i = i[:-4]
             with open(bag_file, "a+") as f:
                 f.write(i+"\n")
             rgb_list.append(i)
@@ -42,8 +41,7 @@ class TimeStampedMatcher():
             j = file.replace("image_filter_bag","")
             i = j.replace(".jpg","")
             bag_file = "thermal" + rootfilename+i[0]+".txt"
-            #remove "_"
-            i = i[10:-4]
+            i = i[:-4]
             with open(bag_file, "a+") as f:
                 f.write(i+"\n")
             thermal_list.append(i)
@@ -56,17 +54,18 @@ class TimeStampedMatcher():
             pass
         os.chdir("depthmatching")
 
-        rgb_array = np.asarray(rgb_list, dtype=np.int64)
-        thermal_array = np.asarray(thermal_list, dtype=np.int64)
+        rgb_array = np.asarray(rgb_list, dtype=np.uint64)
+        thermal_array = np.asarray(thermal_list, dtype=np.uint64)
 
         for file in self.rgb_images_list:
             i = file.replace("image_filter_bag","")
             i = i.replace(".png","")
-            #remove "_"
-            print i, "A"
+            i = i[:-4]
+            #print i, "A"
             r = rospy.Time(int(i[:-4]))
             print r.to_nsec(),"aaaaaaaaaaaaaaaaaa"
-            i = r.to_nsec()#i[10:-4]
+            print str(i)
+            #i = r.to_nsec()#i[10:-4]
             print i, "B"
             print np.abs(thermal_array - float(i)).min()
             filename = str(i)+".txt"
