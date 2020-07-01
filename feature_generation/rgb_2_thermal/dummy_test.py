@@ -58,7 +58,7 @@ import copy
 
 model.compile(optimizer="adam", loss= categorical_crossentropy,
                 metrics= ['accuracy'])#,Recall()])
-n_epochs=25
+n_epochs=15
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
 print (data_loader.train_samples)
 steps = np.floor(data_loader.train_samples/batch_size) - val_steps

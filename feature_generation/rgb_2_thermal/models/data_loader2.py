@@ -85,10 +85,8 @@ class DataLoader2():
             yield self.load_samples()
 
     def load_samples(self,thermal_ext=None,rbatching=None):
-        print (rbatching)
         if rbatching is None:
-            print ("AA")
-            rbatching = self.o_batch_size
+            rbatching = self.obatch_size
 
         if thermal_ext is None:
             thermal_ext="."+self.thermal_ext
