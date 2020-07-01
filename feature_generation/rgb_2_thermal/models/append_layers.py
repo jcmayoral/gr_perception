@@ -82,3 +82,41 @@ def extend_model2(model, n_classes=4,activation = "relu", multiplier=2):
     output = Dense(n_classes,activation=o_activation)(flattened)
     model = Model(inputs=model.input, outputs=output)
     return model
+
+
+def extend_with_depth(im_size, n_classes=4,activation = "relu", multiplier=2):
+    input_layer = Input(shape=(im_size[0], im_size[1], 3))
+    input_layer2 = Input(shape=(im_size[0], im_size[1], 1))
+    model0 = create_convolution_sequence(input_layer,4*multiplier, kernel_size=(1,1), padding='same', activation=activation, pooling=True)
+    model01 = create_convolution_sequence(model0,2*multiplier, kernel_size=(1,1), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
+    model02 = create_convolution_sequence(model01,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
+
+    model1 = create_convolution_sequence(input_layer,4*multiplier, kernel_size=(3,3), padding='same', activation=activation, pooling=True)
+    model11 = create_convolution_sequence(model1,2*multiplier, kernel_size=(3,3), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
+    model12 = create_convolution_sequence(model11,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
+
+    model2 = create_convolution_sequence(input_layer,4*multiplier, kernel_size=(5,5), padding='same', activation=activation, pooling=True)
+    model21 = create_convolution_sequence(model2,2*multiplier, kernel_size=(5,5), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
+    model22 = create_convolution_sequence(model21,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
+
+    model3 = create_convolution_sequence(input_layer,4*multiplier, kernel_size=(7,7), padding='same', activation=activation, pooling=True)
+    model31 = create_convolution_sequence(model3,2*multiplier, kernel_size=(7,7), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
+    model32 = create_convolution_sequence(model31,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
+
+    model_4 = create_convolution_sequence(input_layer2,10*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=False, padding='same', activation=activation)
+    model_41 = create_convolution_sequence(model_4,2*multiplier, kernel_size=(7,7), padding='same', scale_pool=(4,4), pooling=True, activation=activation)
+    model_42 = create_convolution_sequence(model_41,2*multiplier, kernel_size=(7,7), padding='same', scale_pool=(4,4), pooling=True, activation=activation)
+
+    concatenated = Concatenate()([model12, model22, model32, model_42])#, model4])#, model4])
+    flattened = Flatten() (concatenated)
+    flattened = create_fullyconnected_sequence(flattened,128)
+    flattened = create_fullyconnected_sequence(flattened,64)
+
+    o_activation = "softmax"
+
+    if n_classes == 1:
+        o_activation = "sigmoid"
+    output = Dense(n_classes,activation=o_activation)(flattened)
+    model = Model(inputs=[input_layer,input_layer2], outputs=output)
+    #model.summary()
+    return model
