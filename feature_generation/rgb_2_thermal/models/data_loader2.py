@@ -51,7 +51,7 @@ class DataLoader2():
         self.all_files = dict()
         self.find_all_files()
         self.queue_files = dict()
-        self.train_samples = self.get_total_samples()*(data_percentage/100)
+        self.train_samples = int(self.get_total_samples()*(data_percentage/100))
         print ("DATA percentage", data_percentage)
         print ("total samples ", self.get_total_samples())
         print ("training samples ", self.train_samples)
@@ -86,12 +86,22 @@ class DataLoader2():
 
         for i in range(self.obatch_size):
             if self.readsamples_counter >= self.train_samples:
+                print("RESTART")
                 self.restart_generator()
 
-            dataset = rnd.choice(list(self.queue_files.keys()))
-            cl = rnd.choice(list(self.queue_files[dataset].keys()))
-            path = os.path.join(dataset, cl)
-            n_items = len(self.queue_files[dataset][cl])
+            n_items = 0
+            readingattempt = 0
+
+            while n_items < 1:
+                dataset = rnd.choice(list(self.queue_files.keys()))
+                cl = rnd.choice(list(self.queue_files[dataset].keys()))
+                path = os.path.join(dataset, cl)
+                n_items = len(self.queue_files[dataset][cl])
+                if readingattempt > 200:
+                    print (readingattempt)
+                    readingattempt +=1
+                    self.restart_generator()
+
             image = rnd.choice(self.queue_files[dataset][cl])
             image_list.append(image)
             image_name = os.path.join(path, image)
@@ -99,6 +109,8 @@ class DataLoader2():
             im = cv2.imread(image_name, cv2.IMREAD_COLOR)
             im = cv2.resize(im,(self.img_res[1], self.img_res[0]))
             ind = self.classes_dict[cl]
+
+            self.readsamples_counter+=1
 
             if self.flip_images:
                 flip_im = cv2.flip(im, 1 )
@@ -119,7 +131,7 @@ class DataLoader2():
             thermal_img = thermal_img[:,:,np.newaxis]
             depth[i]= thermal_img
 
-        return [images, depth], labels
+        return ([images, depth], labels)
 
     def match_by_name(self,rgb_files):
         return np.asarray(rgb_files)
@@ -182,7 +194,9 @@ class DataLoader2():
 
     def thermal_imread(self,img_path):
         thermal_img_path= img_path
-        thermal_img= io.imread(thermal_img_path)
+        #thermal_img= io.imread(thermal_img_path)
+        thermal_imgread = np.load(thermal_img_path)
+        thermal_img = thermal_imgread['image']
         #if self.match_by_timestamps:
         thermal_img = self.rotate_image(thermal_img)
         thermal_img = thermal_img[:, ::-1]
