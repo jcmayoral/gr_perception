@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 
 im_size = (256,256)
-batch_size = 25
+batch_size = 20
 
 data_loader = DataLoader2(dataset_name="dummy",
                           img_res=im_size,
@@ -20,18 +20,25 @@ data_loader = DataLoader2(dataset_name="dummy",
                           path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/depthmatching",
                           match_by_timestamps = True,
                           thermal_threshold=100, data_percentage = 10, rgb_ext="png", thermal_ext="npz", batch_size=batch_size)
-
-(rgb, depth), labels = data_loader.load_samples()
 """
+(rgb, depth), labels = data_loader.load_samples()
 plt.figure()
 plt.imshow(rgb[0])
 plt.figure()
 plt.imshow(depth[0].reshape(im_size[0],im_size[1]))
 plt.show()
+print (labels, labels.shape)
 """
-
+print(data_loader.validation_data[0][0].shape)
+print(data_loader.validation_data[0][1].shape)
+print(data_loader.validation_data[1].shape)
 model = extend_with_depth(im_size)
 model.summary()
+
+
+
+from keras.utils import plot_model
+plot_model(model, to_file='disponsabledepthmodel.png')
 
 try:
     os.mkdir("depthtesting")
@@ -47,9 +54,9 @@ from generator import SuperGeneratorV2
 import copy
 
 #model_cp_cb = ModelCheckpoint(model_id+'.h5', save_best_only=True)
-loss_mode = categorical_crossentropy
+#loss_mode = categorical_crossentropy
 
-model.compile(optimizer=RMSprop(0.001), loss= loss_mode, # SumOfLosses(loss_mode, mean_absolute_error),
+model.compile(optimizer="adam", loss= categorical_crossentropy,
                 metrics= ['accuracy'])#,Recall()])
 n_epochs=25
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
@@ -57,7 +64,7 @@ print (data_loader.train_samples)
 steps = np.floor(data_loader.train_samples/batch_size) - val_steps
 print ("training_steps %d validation_steps %d"%(steps, val_steps))
 history = model.fit_generator(data_loader.generator(),
-                               #validation_data=traingenerator.validation_data,
+                               validation_data=data_loader.validation_data,
                                steps_per_epoch=steps,
                                epochs=n_epochs)
 
@@ -66,7 +73,7 @@ print(history.history)
 plt.figure()
 x = np.arange(n_epochs)
 plt.plot(x, history.history["loss"], label="loss fuction")
-#plt.plot(x, history.history["val_loss"], label="validation loss")
+plt.plot(x, history.history["val_loss"], label="validation loss")
 plt.legend()
 plt.savefig(model_id+"lossfunctions.png")
 
@@ -74,6 +81,6 @@ plt.savefig(model_id+"lossfunctions.png")
 plt.figure()
 print(x)
 plt.plot(x, history.history["accuracy"], label="accuracy")
-#plt.plot(x, history.history["val_accuracy"], label="validation accuracy")
+plt.plot(x, history.history["val_accuracy"], label="validation accuracy")
 plt.legend()
 plt.savefig(model_id+"accs.png")

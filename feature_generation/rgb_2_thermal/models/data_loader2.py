@@ -10,6 +10,7 @@ import random
 from sklearn import preprocessing
 from filters.preprocessing import filter_thermal
 import random as rnd
+import copy
 
 classes = ["3", "2", "1", "0"]
 
@@ -23,6 +24,7 @@ class DataLoader2():
         self.input_channels = input_channels
         self.dataset_name = dataset_name
         self.data_percentage = data_percentage/100.
+        print ("original batch size ", self.obatch_size)
         print ("data percentage ", self.data_percentage)
         self.img_res = img_res
         self.thermal_res = (img_res[0], img_res[1],1)
@@ -51,11 +53,26 @@ class DataLoader2():
         self.all_files = dict()
         self.find_all_files()
         self.queue_files = dict()
-        self.train_samples = int(self.get_total_samples()*(data_percentage/100))
-        print ("DATA percentage", data_percentage)
-        print ("total samples ", self.get_total_samples())
-        print ("training samples ", self.train_samples)
 
+
+        total_samples = int(self.get_total_samples()*(data_percentage/100))
+        self.validationsamples = int(total_samples*0.1)
+        self.train_samples = total_samples - self.validationsamples
+        print ("DATA percentage", data_percentage)
+        print ("total samples ", total_samples)
+        print ("training samples ", self.train_samples)
+        print ("validation samples ", self.validationsamples)
+
+        self.select_testvalidationset()
+
+    def select_testvalidationset(self):
+        self.restart_generator()
+        #TODO function load_validation_data load_testing_data
+        #test_data = self.load_samples(self.testingsamples, self.data_samples)
+        self.validation_data = self.load_samples(rbatching= self.validationsamples)
+
+        #Files that are remaining are the new total
+        self.all_files = copy.deepcopy(self.queue_files)
         self.restart_generator()
 
     def restart_generator(self):
@@ -67,14 +84,19 @@ class DataLoader2():
         while self.run:#Should be iteration run per epoch Stop function on stop_iterator
             yield self.load_samples()
 
-    def load_samples(self,thermal_ext=None):
+    def load_samples(self,thermal_ext=None,rbatching=None):
+        print (rbatching)
+        if rbatching is None:
+            print ("AA")
+            rbatching = self.o_batch_size
+
         if thermal_ext is None:
             thermal_ext="."+self.thermal_ext
 
         if self.flip_images:
-            batch_size = 2* self.obatch_size
+            batch_size = 2* rbatching
         else:
-            batch_size = self.obatch_size
+            batch_size = rbatching
 
         rgb_imgs,thermal_imgs=[],[]
         #random_rgb_image_name_list=np.random.choice(self.rgb_images_list,size=num_imgs).tolist()
@@ -84,9 +106,8 @@ class DataLoader2():
         labels = np.zeros((batch_size, self.n_classes))
         image_list = list()
 
-        for i in range(self.obatch_size):
+        for i in range(rbatching):
             if self.readsamples_counter >= self.train_samples:
-                print("RESTART")
                 self.restart_generator()
 
             n_items = 0
@@ -112,12 +133,13 @@ class DataLoader2():
 
             self.readsamples_counter+=1
 
+            images[i] = im
+            labels[i] = np.eye(4)[ind]
+
             if self.flip_images:
                 flip_im = cv2.flip(im, 1 )
-                images[i+self.obatch_size] = flip_im
-                labels[i+self.obatch_size] = ind
-            images[i] = im
-            labels[i] = ind
+                images[i+rbatching] = flip_im
+                labels[i+rbatching] =  np.eye(4)[ind]
 
         self.class_indexes = np.zeros(batch_size)
         self.batch_filenames = list()
