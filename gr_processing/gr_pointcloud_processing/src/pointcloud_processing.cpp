@@ -299,18 +299,23 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           //NEW FEATURE
           geometry_msgs::Quaternion cluster_orientation;
           tf2::Quaternion tf2_quat;
-
           cluster_center.orientation.w = 1.0;
+          
+
+          //Testing
+          pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZI>);
+
           for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit){
               cluster_center.position.x += main_cloud_.points[*pit].x/it->indices.size();
               cluster_center.position.y += main_cloud_.points[*pit].y/it->indices.size();
               cluster_center.position.z += main_cloud_.points[*pit].z/it->indices.size();
-              //concatenated is already filtered
+              //not so sure if this makes sense now.
               pointcloud_xyzi.points[*pit].intensity = main_cloud_.points[*pit].intensity;
               x_vector.push_back(main_cloud_.points[*pit].x);
               y_vector.push_back(main_cloud_.points[*pit].y);
               z_vector.push_back(main_cloud_.points[*pit].z);
               i_vector.push_back(main_cloud_.points[*pit].intensity);
+              cloud_cluster->points.push_back (main_cloud_.points[*pit]);
           }
 
           double var_x = calculateVariance<double>(x_vector);
@@ -369,7 +374,12 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               //just add if seen before
               // bounding boxes... TODO merge with persons_array (if approved by memory then add)
               addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
-
+              //publish persons
+              publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(*cloud_cluster);
+              auto timestamp = ros::Time::now().toNSec();
+              std::string filename("/media/datasets/persons_pcd/"+matchingid+"_"+std::to_string(timestamp)+"_"+".pcd");
+              pcl::io::savePCDFile(filename.c_str(), *cloud_cluster.get(),true);
+              ros::Duration(1).sleep();
             }
             else{
               //ROS_WARN_STREAM("A new person has been found adding to the array");            
@@ -380,7 +390,6 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             clusters_msg.poses.push_back(cluster_center);   
             //for gridmap
             safety_msg.objects.push_back(object);
-
           }
       }
 

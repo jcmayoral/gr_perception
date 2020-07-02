@@ -39,7 +39,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
-
 #include <pcl_cuda_tools/filters/filter_passthrough.h>
 #include <pcl_cuda_tools/filters/pcl_filter_passthrough.h>
 
@@ -52,6 +51,9 @@
 #include <safety_msgs/FoundObjectsArray.h>
 
 #include <nodelet/nodelet.h>
+
+//Save PCD
+ #include <pcl/io/pcd_io.h>
 
 namespace gr_pointcloud_processing{
   
