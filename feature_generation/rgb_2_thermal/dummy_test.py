@@ -10,8 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-im_size = (256,256)
-batch_size = 20
+im_size = (128,128)
+batch_size = 10
 
 data_loader = DataLoader2(dataset_name="dummy",
                           img_res=im_size,
@@ -20,18 +20,18 @@ data_loader = DataLoader2(dataset_name="dummy",
                           path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/depthmatching",
                           match_by_timestamps = True,
                           thermal_threshold=100, data_percentage = 10, rgb_ext="png", thermal_ext="npz", batch_size=batch_size)
-"""
+
 (rgb, depth), labels = data_loader.load_samples()
 plt.figure()
-plt.imshow(rgb[0])
+plt.imshow(rgb[-1])
 plt.figure()
-plt.imshow(depth[0].reshape(im_size[0],im_size[1]))
+plt.imshow(depth[-1].reshape(im_size[0],im_size[1]))
 plt.show()
 print (labels, labels.shape)
-"""
+aaa
 print(data_loader.validation_data[0][0].shape)
 print(data_loader.validation_data[0][1].shape)
-print(data_loader.validation_data[1].shape)
+print(data_loader.validation_data[1])
 model = extend_with_depth(im_size)
 model.summary()
 
@@ -56,9 +56,14 @@ import copy
 #model_cp_cb = ModelCheckpoint(model_id+'.h5', save_best_only=True)
 #loss_mode = categorical_crossentropy
 
-model.compile(optimizer="adam", loss= categorical_crossentropy,
+model.compile(optimizer="rmsprop", loss= categorical_crossentropy,
                 metrics= ['accuracy'])#,Recall()])
-n_epochs=15
+
+
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+model_cp_cb = ModelCheckpoint('weights.h5', save_best_only=True)
+
+n_epochs=20
 val_steps = 0#np.floor((traingenerator.trainsamples*0.15)/batch_size)
 print (data_loader.train_samples)
 steps = np.floor(data_loader.train_samples/batch_size) - val_steps
@@ -66,7 +71,7 @@ print ("training_steps %d validation_steps %d"%(steps, val_steps))
 history = model.fit_generator(data_loader.generator(),
                                validation_data=data_loader.validation_data,
                                steps_per_epoch=steps,
-                               epochs=n_epochs)
+                               epochs=n_epochs,callbacks=[model_cp_cb])
 
 import matplotlib.pyplot as plt
 print(history.history)
@@ -75,7 +80,7 @@ x = np.arange(n_epochs)
 plt.plot(x, history.history["loss"], label="loss fuction")
 plt.plot(x, history.history["val_loss"], label="validation loss")
 plt.legend()
-plt.savefig(model_id+"lossfunctions.png")
+plt.savefig("lossfunctions.png")
 
 
 plt.figure()
@@ -83,4 +88,4 @@ print(x)
 plt.plot(x, history.history["accuracy"], label="accuracy")
 plt.plot(x, history.history["val_accuracy"], label="validation accuracy")
 plt.legend()
-plt.savefig(model_id+"accs.png")
+plt.savefig("accs.png")

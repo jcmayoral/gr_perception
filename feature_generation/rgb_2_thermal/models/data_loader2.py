@@ -56,7 +56,7 @@ class DataLoader2():
 
 
         total_samples = int(self.get_total_samples()*(data_percentage/100))
-        self.validationsamples = int(total_samples*0.1)
+        self.validationsamples = int(total_samples*0.2)
         self.train_samples = total_samples - self.validationsamples
         print ("DATA percentage", data_percentage)
         print ("total samples ", total_samples)
@@ -150,6 +150,9 @@ class DataLoader2():
             thermal_img = cv2.resize(thermal_img, (self.img_res[0], self.img_res[1]))
             thermal_img = thermal_img[:,:,np.newaxis]
             depth[i]= thermal_img
+            if self.flip_images:
+                depth[i+rbatching] =  cv2.flip(thermal_img,1)
+
 
         return ([images, depth], labels)
 
@@ -219,7 +222,7 @@ class DataLoader2():
         thermal_img = thermal_imgread['image']
         #if self.match_by_timestamps:
         thermal_img = self.rotate_image(thermal_img)
-        thermal_img = thermal_img[:, ::-1]
+        thermal_img = cv2.flip(thermal_img, 1)
 
         #if thermal_img.dtype != np.uint8:
         #    thermal_img = self.convert(thermal_img, 0, 255, np.uint8)
