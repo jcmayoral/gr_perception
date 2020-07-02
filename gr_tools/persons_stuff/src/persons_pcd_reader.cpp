@@ -15,19 +15,24 @@ void PersonsPCDReader::readBatchPCDFiles(int batch_size, int persons_per_batch){
     //TODO not start from begin()
     sensor_msgs::PointCloud2 output;
     pcl::PointCloud<pcl::PointXYZI> ccloud;
-
     int counter =0 ;
 
     fs::path p { "/media/datasets/persons_pcd/" };
     auto it = fs::directory_iterator(p);
+    //FOR HACK
+    auto it2 = fs::directory_iterator();
+    int filesnumber = std::distance(it,it2);
+    std::cout << "FILES NUMBER? "<< filesnumber << std::endl;
+
+    //WITHOUT NEXT LINE CODE CRASHES
+    it = fs::directory_iterator(p);
+
     for ( int i=0 ; i<batch_size*persons_per_batch ;i++){
-        std::cout << "AAAA";
         it++;
         pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
         auto entry = *it;
-        std::cout << entry.path().string() << std::endl;
         if (pcl::io::loadPCDFile<pcl::PointXYZI> (entry.path().string(), *cloud) == -1){
-            PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
+            ROS_ERROR_STREAM("Couldn't read file " << entry);
             continue;
         }
         if (counter< persons_per_batch-1){
@@ -52,7 +57,7 @@ void PersonsPCDReader::readAllPCDFiles(){
         std::cout << entry << std::endl;
         pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
         if (pcl::io::loadPCDFile<pcl::PointXYZI> (entry.path().string(), *cloud) == -1){
-            PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
+            ROS_ERROR_STREAM("Couldn't read file " << entry);
             continue;
         }
         std::cout << "PUBLISHING "<<std::endl;
