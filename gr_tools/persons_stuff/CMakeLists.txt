@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(persons_stuff)
 
-add_compile_options(-std=c++14)
+add_compile_options(-std=c++17)
 add_definitions(-Wno-deprecated-declarations)
 add_definitions(-Wno-dev)
 

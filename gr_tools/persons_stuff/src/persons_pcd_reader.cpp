@@ -2,22 +2,38 @@
 
 using namespace persons_stuff;
 
-PersonsPCDReader::PersonsPCDReader(){
-
+PersonsPCDReader::PersonsPCDReader(): nh_{"~"}{
+     pc_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("fake_pc", 1);
 }
 
 PersonsPCDReader::~PersonsPCDReader(){
     
 }
 
-int PersonsPCDReader::readPCDFile(){
-    pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
-    if (pcl::io::loadPCDFile<pcl::PointXYZI> ("test_pcd.pcd", *cloud) == -1){
-        PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
-        return (-1);
+void PersonsPCDReader::readBatchPCDFiles(int batch_size){
+    //TODO not start from begin()
+    fs::path p { "/media/datasets/persons_pcd/" };
+    auto it = fs::directory_iterator(p);
+    for ( int i=0 ; i<batch_size ;i++){
+        it++;
+        pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
+        auto entry = *it;
+        if (pcl::io::loadPCDFile<pcl::PointXYZI> (entry.path().string(), *cloud) == -1){
+            PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
+            continue;
+        }
     }
-    for (size_t i = 0; i < cloud->points.size (); ++i)
-    std::cout << "    " << cloud->points[i].x
-              << " "    << cloud->points[i].y
-              << " "    << cloud->points[i].z << std::endl;
+}
+
+void PersonsPCDReader::readAllPCDFiles(){
+    fs::path p { "/media/datasets/persons_pcd/" };
+    for (auto& entry : fs::directory_iterator(p)){
+        std::cout << entry << std::endl;
+        pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
+        if (pcl::io::loadPCDFile<pcl::PointXYZI> (entry.path().string(), *cloud) == -1){
+            PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
+            continue;
+        }
+        ros::Duration(1).sleep();
+    }
 }
