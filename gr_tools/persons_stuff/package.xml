@@ -1,0 +1,29 @@
+<package>
+  <name>persons_stuff</name>
+  <version>0.0.1</version>
+  <description>
+	  Stuff for person's pointcloud
+  </description>
+
+  <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>pcl_conversions</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>safety_msgs</build_depend>
+  <build_depend>jsk_recognition_msgs</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_ros</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>pcl_conversions</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>safety_msgs</run_depend>
+  <run_depend>jsk_recognition_msgs</run_depend>
+  <run_depend>tf2</run_depend>
+  <run_depend>tf2_ros</run_depend>
+
+</package>
