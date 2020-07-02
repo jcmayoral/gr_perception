@@ -20,7 +20,7 @@ data_loader = DataLoader2(dataset_name="dummy",
                           path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/depthmatching",
                           match_by_timestamps = True,
                           thermal_threshold=100, data_percentage = 10, rgb_ext="png", thermal_ext="npz", batch_size=batch_size)
-
+"""
 (rgb, depth), labels = data_loader.load_samples()
 plt.figure()
 plt.imshow(rgb[-1])
@@ -28,9 +28,9 @@ plt.figure()
 plt.imshow(depth[-1].reshape(im_size[0],im_size[1]))
 plt.show()
 print (labels, labels.shape)
-aaa
 print(data_loader.validation_data[0][0].shape)
 print(data_loader.validation_data[0][1].shape)
+"""
 print(data_loader.validation_data[1])
 model = extend_with_depth(im_size)
 model.summary()

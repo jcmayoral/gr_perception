@@ -151,9 +151,7 @@ class DataLoader2():
             thermal_img = thermal_img[:,:,np.newaxis]
             depth[i]= thermal_img
             if self.flip_images:
-                depth[i+rbatching] =  cv2.flip(thermal_img,1)
-
-
+                depth[i+rbatching] =  cv2.flip(thermal_img,1)[:,:,np.newaxis]
         return ([images, depth], labels)
 
     def match_by_name(self,rgb_files):
