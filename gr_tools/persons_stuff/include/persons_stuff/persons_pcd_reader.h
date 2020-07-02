@@ -13,7 +13,7 @@ namespace persons_stuff{
         PersonsPCDReader();
         ~PersonsPCDReader();
         void readAllPCDFiles();
-        void readBatchPCDFiles(int batch_size);
+        void readBatchPCDFiles(int batch_size, int persons_per_batch=3);
         private:
         ros::NodeHandle nh_;
         ros::Publisher pc_pub_;
