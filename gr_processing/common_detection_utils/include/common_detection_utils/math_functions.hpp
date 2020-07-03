@@ -1,9 +1,23 @@
+#include <numeric>
+
 namespace gr_detection{
     template<typename T>
         double getAbsoluteRange(std::vector<T> v){
             auto min_value = *std::min_element(std::begin(v), std::end(v));
             auto max_value = *std::max_element(std::begin(v), std::end(v));
             return std::fabs(max_value-min_value);
+        }
+
+    template<typename T>
+        double getMinimum(std::vector<T> v){
+            auto min_value = *std::min_element(std::begin(v), std::end(v));
+            return min_value;
+        }
+
+    template<typename T>
+        double getMaximum(std::vector<T> v){
+            auto max_value = *std::max_element(std::begin(v), std::end(v));
+            return max_value;
         }
 
     template<typename T>
@@ -43,6 +57,13 @@ namespace gr_detection{
             });
 
             return sqrt(accum / (v.size()-1));
+        }
+
+    template<typename T>
+        double calculateMean(std::vector<T> v){
+            auto sum = std::accumulate(std::begin(v), std::end(v), 0.0);
+            auto m =  sum / v.size();
+            return m;
         }
 
     template<typename T>

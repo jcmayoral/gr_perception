@@ -4,7 +4,7 @@ using namespace gr_detection;
 
 boost::shared_ptr<CustomArray> FusionDetection::d_array_(new CustomArray);
 
-FusionDetection::FusionDetection(): time_break_{0.5}, matching_mindistance_{1.5}{
+FusionDetection::FusionDetection(): time_break_{0.5}, matching_mindistance_{1.0}{
     std::cout << "constructor ";
     //DETECTIONSARRAY = new CustomArray();
 
@@ -58,10 +58,12 @@ void FusionDetection::cleanUpCycle(){
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end();  ){
         //if(it->second.age < 2){
         double elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
-	std::cout << "UPDATE AFTER " << elapsed_seconds << std::endl;
+        std::cout << "UPDATE AFTER " << elapsed_seconds << std::endl;
         //TODO parametrized 2 seconds
         if(elapsed_seconds>time_break_){
+            std::cout << "1 " <<std::endl;
             it = d_array_->DETECTIONSARRAY.erase(it);
+            std::cout << "2 " <<std::endl;
         }
         else{
             it->second.age--;
@@ -82,7 +84,6 @@ geometry_msgs::PoseArray FusionDetection::createPoseArray(){
     //TODO SET THIS LINK SOMEWHERE
     array.header.frame_id = "base_link";
     boost::mutex::scoped_lock lck(d_array_->mtx);
-
     geometry_msgs::Pose p;
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end(); it++){
         p = it->second.pose;
