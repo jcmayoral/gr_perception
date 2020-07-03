@@ -1,5 +1,4 @@
-from gr_ml.gr_person_stuff import PersonsPCDReader
+#!/usr/bin/python
+from gr_ml.gr_person_stuff.read_pcd import PersonsPCDReader
 
-if __name__ == '__main__':
-    ppr = PersonsPCDReader()
-    print (ppr.pcd_file_list)
+ppr = PersonsPCDReader()
