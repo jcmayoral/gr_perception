@@ -10,16 +10,8 @@ int main (int argc, char** argv){
         ppr->readAllPCDFiles();
         return 1;
     }
-    int personspercloud = 3;
     int cloudsnumber = std::stoi(argv[1]);
-
-    if (argc>2){
-        personspercloud = std::stoi(argv[2]);
-    }
-
     std::cout << "Clouds number " << cloudsnumber << std::endl;
-    std::cout << "PPB " << personspercloud << std::endl;
-
-    ppr->readBatchPCDFiles(cloudsnumber, personspercloud);
+    ppr->readBatchPCDFiles(cloudsnumber);
     return 0;
 }

@@ -5,12 +5,23 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <experimental/filesystem>
 #include <common_detection_utils/math_functions.hpp>
+#include <safety_msgs/RiskIndexes.h>
+#include <safety_msgs/FoundObjectsArray.h>
 
 namespace fs = ::boost::filesystem;
 
 namespace persons_stuff{
+    template<typename T>
+    T getOneMessage(std::string topic_name){
+        boost::shared_ptr<T const> msg_pointer;
+        msg_pointer =  ros::topic::waitForMessage<T>(topic_name);
+        return *msg_pointer;
+    }
 
     struct PersonInfo{
+        std::string original_id;
+        std::string stamp;
+        std::string labeled_id;
         double mean_x;
         double mean_y;
         double mean_z;
@@ -23,12 +34,14 @@ namespace persons_stuff{
         double rangey;
         double rangez;
         double rangei;
+        double safety_index;
     };
 
     std::ostream& operator<<(std::ostream& os, const PersonInfo& pi){
-        return os<<pi.mean_x << "," <<pi.mean_y << "," << pi.mean_z << ", " << pi.mean_i << ", " <<
-        pi.var_x << "," <<pi.var_y << "," << pi.var_z << ", " << pi.var_i << ", " <<
-        pi.rangex << "," <<pi.rangey << "," << pi.rangez << ", " << pi.rangei  << '\n';
+        return os<<pi.original_id << "," << pi.stamp << pi.labeled_id << "," << pi.mean_x << "," <<pi.mean_y << ","<< 
+        pi.mean_z << "," << pi.mean_i << "," << pi.var_x << "," <<pi.var_y << "," << 
+        pi.var_z << ", " << pi.var_i << ", " << pi.rangex << "," <<pi.rangey << "," << 
+        pi.rangez << ", " << pi.rangei  << '\n';
     }
 
     class PersonsPCDReader{
@@ -36,10 +49,14 @@ namespace persons_stuff{
         PersonsPCDReader();
         ~PersonsPCDReader();
         void readAllPCDFiles();
-        void readBatchPCDFiles(int batch_size, int persons_per_batch=3);
+        void readBatchPCDFiles(int batch_size);
+        void getHeaderInfo(const std::string stack, std::string& id, std::string& timestamp);
         PersonInfo evaluateCloud(const pcl::PointCloud<pcl::PointXYZI>::Ptr pc);
+        void assignSafety(PersonInfo& i);
         private:
         ros::NodeHandle nh_;
         ros::Publisher pc_pub_;
+        ros::Publisher safety_pub_;
+
     };
 }

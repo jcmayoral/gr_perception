@@ -3,8 +3,8 @@
 using namespace persons_stuff;
 using namespace gr_detection;
 
-PersonsPCDReader::PersonsPCDReader(): nh_{"~"}{
-     pc_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("fake_pc", 1);
+PersonsPCDReader::PersonsPCDReader(): nh_{}{
+     pc_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/velodyne_points", 1);
      ros::spinOnce();
 }
 
@@ -45,12 +45,42 @@ PersonInfo PersonsPCDReader::evaluateCloud(const pcl::PointCloud<pcl::PointXYZI>
     return info;
 }
 
-void PersonsPCDReader::readBatchPCDFiles(int batch_size, int persons_per_batch){
+void PersonsPCDReader::getHeaderInfo(const std::string stack, std::string& id, std::string& timestamp){
+        std::string help = stack;
+        std::cout << help <<  std::endl;
+        auto found = help.find_last_of("/");
+		if (found != std::string::npos) { //if a match was found
+			help.replace(help.begin(), help.begin()+found+1, "");            
+		}
+
+        auto found2 = help.find_last_of("_");
+		if (found2 != std::string::npos) { //if a match was found
+			//help= help.substr(help.begin()+found2, help.end());
+			help.replace(help.begin()+found2, help.end(), "");            
+        }
+
+        auto found3 = help.find("*");
+        id = help.substr(0,found3);
+        timestamp = help.substr(found3+1);
+        std::cout << help <<  std::endl;
+        std::cout << id << ", " << timestamp << std::endl;
+        //id = "id";
+        //timestamp = "id";
+}
+
+
+void PersonsPCDReader::assignSafety(PersonInfo& i){
+    safety_msgs::RiskIndexes msg = getOneMessage<safety_msgs::RiskIndexes>("/safety_indexes");
+    ROS_INFO_STREAM(msg);
+    std::cout << i.original_id << " , " << i.stamp << std::endl;
+    //ID DOES NOT MATCH
+    i.labeled_id = msg.objects_id[0];
+    i.safety_index = msg.risk_indexes[0];
+}
+
+void PersonsPCDReader::readBatchPCDFiles(int batch_size){
     //TODO not start from begin()
     sensor_msgs::PointCloud2 output;
-    pcl::PointCloud<pcl::PointXYZI> ccloud;
-    int counter =0 ;
-
     fs::path p { "/media/datasets/persons_pcd/" };
     auto it = fs::directory_iterator(p);
     //FOR HACK
@@ -61,7 +91,7 @@ void PersonsPCDReader::readBatchPCDFiles(int batch_size, int persons_per_batch){
     //WITHOUT NEXT LINE CODE CRASHES
     it = fs::directory_iterator(p);
 
-    for ( int i=0 ; i<batch_size*persons_per_batch ;i++){
+    for ( int i=0 ; i<batch_size ;i++){
         it++;
         pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
         auto entry = *it;
@@ -71,22 +101,14 @@ void PersonsPCDReader::readBatchPCDFiles(int batch_size, int persons_per_batch){
         }
 
         PersonInfo info;
+        std::string file = entry.path().string();
         info = evaluateCloud(cloud);
-        std::cout << info << std::endl;
-
-        if (counter<= persons_per_batch-1){
-            ccloud += *cloud;
-            counter++;
-            //ROS_INFO("APPEND PC");
-            continue;
-        }
-        counter = 0;
-        std::cout << "PUBLISHING "<<std::endl;
-        pcl::toROSMsg(ccloud, output);
+        getHeaderInfo(file, info.original_id, info.stamp);
+        pcl::toROSMsg(*cloud, output);
         output.header.frame_id = "velodyne";
         pc_pub_.publish(output);
-        ros::Duration(1).sleep();
-        ccloud.points.clear();
+        ros::Duration(0.05).sleep();
+        assignSafety(info);
     }
 }
 
@@ -102,13 +124,13 @@ void PersonsPCDReader::readAllPCDFiles(){
         }
 
         PersonInfo info;
+        std::string file = entry.path().string();
         info = evaluateCloud(cloud);
-        std::cout << info << std::endl;
-
-        std::cout << "PUBLISHING "<<std::endl;
+        getHeaderInfo(file, info.original_id, info.stamp);
         pcl::toROSMsg(*cloud, output);
         output.header.frame_id = "velodyne";
         pc_pub_.publish(output);
-        ros::Duration(1).sleep();
+        ros::Duration(0.05).sleep();
+        assignSafety(info);
     }
 }
