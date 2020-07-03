@@ -12,6 +12,7 @@ find_package(catkin REQUIRED
         geometry_msgs
         safety_msgs
         jsk_recognition_msgs
+        common_detection_utils
         tf2
         tf2_ros
 )
@@ -37,6 +38,7 @@ catkin_package(
     geometry_msgs
     safety_msgs
     jsk_recognition_msgs
+    common_detection_utils
     tf2
     tf2_ros
   DEPENDS

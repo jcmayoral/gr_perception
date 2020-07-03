@@ -1,6 +1,6 @@
 <package>
   <name>persons_stuff</name>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
   <description>
 	  Stuff for person's pointcloud
   </description>
@@ -15,6 +15,8 @@
   <build_depend>geometry_msgs</build_depend>
   <build_depend>safety_msgs</build_depend>
   <build_depend>jsk_recognition_msgs</build_depend>
+  <build_depend>common_detection_utils</build_depend>
+
   <build_depend>tf2</build_depend>
   <build_depend>tf2_ros</build_depend>
 
@@ -23,6 +25,8 @@
   <run_depend>geometry_msgs</run_depend>
   <run_depend>safety_msgs</run_depend>
   <run_depend>jsk_recognition_msgs</run_depend>
+  <run_depend>common_detection_utils</run_depend>
+
   <run_depend>tf2</run_depend>
   <run_depend>tf2_ros</run_depend>
 
