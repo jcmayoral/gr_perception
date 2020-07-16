@@ -7,11 +7,16 @@ int main (int argc, char** argv){
     PersonsPCDReader* ppr = new PersonsPCDReader();
     //
     if (argc==1){
-        ppr->readAllPCDFiles();
+        std::cout << "at least ONE argument required" << std::endl;
+        return -1;
+    }
+
+    if (argc==2){
+        ppr->readAllPCDFiles(argv[1]);
         return 1;
     }
-    int cloudsnumber = std::stoi(argv[1]);
+    int cloudsnumber = std::stoi(argv[2]);
     std::cout << "Clouds number " << cloudsnumber << std::endl;
-    ppr->readBatchPCDFiles(cloudsnumber);
+    ppr->readBatchPCDFiles(cloudsnumber,argv[1]);
     return 0;
 }

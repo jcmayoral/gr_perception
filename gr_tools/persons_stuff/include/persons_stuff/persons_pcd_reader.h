@@ -38,21 +38,21 @@ namespace persons_stuff{
     };
 
     std::ostream& operator<<(std::ostream& os, const PersonInfo& pi){
-        return os<<pi.original_id << "," << pi.stamp << pi.labeled_id << "," << pi.mean_x << "," <<pi.mean_y << ","<< 
+        return os<<pi.original_id << "," << pi.stamp << "," << pi.labeled_id << "," << pi.mean_x << "," <<pi.mean_y << ","<< 
         pi.mean_z << "," << pi.mean_i << "," << pi.var_x << "," <<pi.var_y << "," << 
         pi.var_z << ", " << pi.var_i << ", " << pi.rangex << "," <<pi.rangey << "," << 
-        pi.rangez << ", " << pi.rangei  << '\n';
+        pi.rangez << ", " << pi.rangei << ", " << pi.safety_index  << '\n';
     }
 
     class PersonsPCDReader{
         public:
         PersonsPCDReader();
         ~PersonsPCDReader();
-        void readAllPCDFiles();
-        void readBatchPCDFiles(int batch_size);
+        void readAllPCDFiles(std::string folder_name);
+        void readBatchPCDFiles(int batch_size, std::string folder_name);
         void getHeaderInfo(const std::string stack, std::string& id, std::string& timestamp);
         PersonInfo evaluateCloud(const pcl::PointCloud<pcl::PointXYZI>::Ptr pc);
-        void assignSafety(PersonInfo& i);
+        bool assignSafety(PersonInfo& i);
         private:
         ros::NodeHandle nh_;
         ros::Publisher pc_pub_;

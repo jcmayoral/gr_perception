@@ -5,6 +5,7 @@ using namespace gr_detection;
 
 PersonsPCDReader::PersonsPCDReader(): nh_{}{
      pc_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/velodyne_points", 1);
+     ros::Duration(2).sleep();
      ros::spinOnce();
 }
 
@@ -47,7 +48,6 @@ PersonInfo PersonsPCDReader::evaluateCloud(const pcl::PointCloud<pcl::PointXYZI>
 
 void PersonsPCDReader::getHeaderInfo(const std::string stack, std::string& id, std::string& timestamp){
         std::string help = stack;
-        std::cout << help <<  std::endl;
         auto found = help.find_last_of("/");
 		if (found != std::string::npos) { //if a match was found
 			help.replace(help.begin(), help.begin()+found+1, "");            
@@ -62,26 +62,32 @@ void PersonsPCDReader::getHeaderInfo(const std::string stack, std::string& id, s
         auto found3 = help.find("*");
         id = help.substr(0,found3);
         timestamp = help.substr(found3+1);
-        std::cout << help <<  std::endl;
-        std::cout << id << ", " << timestamp << std::endl;
         //id = "id";
         //timestamp = "id";
 }
 
 
-void PersonsPCDReader::assignSafety(PersonInfo& i){
+bool PersonsPCDReader::assignSafety(PersonInfo& i){
+    //ROS_INFO("WAIT");
     safety_msgs::RiskIndexes msg = getOneMessage<safety_msgs::RiskIndexes>("/safety_indexes");
     ROS_INFO_STREAM(msg);
     std::cout << i.original_id << " , " << i.stamp << std::endl;
     //ID DOES NOT MATCH
-    i.labeled_id = msg.objects_id[0];
-    i.safety_index = msg.risk_indexes[0];
+
+    if (msg.objects.size() == 0){
+        std::cout << "SKIP";
+        return false;
+    }
+
+    i.labeled_id = msg.objects[0].object_id;
+    i.safety_index = msg.objects[0].risk_index;
+    return true;
 }
 
-void PersonsPCDReader::readBatchPCDFiles(int batch_size){
+void PersonsPCDReader::readBatchPCDFiles(int batch_size, std::string folder_name){
     //TODO not start from begin()
     sensor_msgs::PointCloud2 output;
-    fs::path p { "/media/datasets/persons_pcd/" };
+    fs::path p { "/media/datasets/persons_pcd/"+folder_name+"/" };
     auto it = fs::directory_iterator(p);
     //FOR HACK
     auto it2 = fs::directory_iterator();
@@ -90,6 +96,7 @@ void PersonsPCDReader::readBatchPCDFiles(int batch_size){
 
     //WITHOUT NEXT LINE CODE CRASHES
     it = fs::directory_iterator(p);
+    std::ofstream savefile("/media/persons_data"+ folder_name +".txt");
 
     for ( int i=0 ; i<batch_size ;i++){
         it++;
@@ -107,16 +114,22 @@ void PersonsPCDReader::readBatchPCDFiles(int batch_size){
         pcl::toROSMsg(*cloud, output);
         output.header.frame_id = "velodyne";
         pc_pub_.publish(output);
-        ros::Duration(0.05).sleep();
-        assignSafety(info);
+        //ros::Duration(0.05).sleep();
+        if (assignSafety(info)){
+            std::cout << info << std::endl;
+            savefile << info;
+        }
     }
+    savefile.close();
 }
 
-void PersonsPCDReader::readAllPCDFiles(){
+void PersonsPCDReader::readAllPCDFiles(std::string folder_name){
+    std::cout << "READ ALL" << std::endl;
     sensor_msgs::PointCloud2 output;
-    fs::path p { "/media/datasets/persons_pcd/" };
+    fs::path p { "/media/datasets/persons_pcd/"+folder_name+"/"};
+    std::cout << p.string() << std::endl;
+    std::ofstream savefile("/media/persons_data"+ folder_name +".txt");
     for (auto& entry : fs::directory_iterator(p)){
-        std::cout << entry << std::endl;
         pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
         if (pcl::io::loadPCDFile<pcl::PointXYZI> (entry.path().string(), *cloud) == -1){
             ROS_ERROR_STREAM("Couldn't read file " << entry);
@@ -125,12 +138,17 @@ void PersonsPCDReader::readAllPCDFiles(){
 
         PersonInfo info;
         std::string file = entry.path().string();
+        std::cout << file << std::endl;
         info = evaluateCloud(cloud);
         getHeaderInfo(file, info.original_id, info.stamp);
         pcl::toROSMsg(*cloud, output);
         output.header.frame_id = "velodyne";
         pc_pub_.publish(output);
-        ros::Duration(0.05).sleep();
-        assignSafety(info);
+        //ros::Duration(0.05).sleep();
+        if (assignSafety(info)){
+            std::cout << info << std::endl;
+            savefile << info;
+        }
     }
+    savefile.close();
 }
