@@ -3,7 +3,7 @@ from safety_msgs.msg import RiskIndexes
 import rospy
 import matplotlib.pyplot as plt
 import numpy as np
-from collections import deque
+from collections import deque, defaultdict, namedtuple
 
 
 plt.ion()
@@ -20,29 +20,30 @@ hl, = ax.plot([], [],'o')
 
 message_read = False
 
-xdata = deque(list(),10)
-ydata = deque(list(),10)
+PlotData = namedtuple('Point', ['x', 'y'])
+graphs = defaultdict(PlotData)
+#graphs = list()
 
 def callback(msg):
     #plt.clf()
     global message_read
-    #X = np.arange(-508, 510, 203.2)
-    #Y = np.arange(-508, 510, 203.2)
-    #X, Y = np.meshgrid(X, Y)
-    X = np.arange(10)*np.random.rand()
-    Y = np.arange(10)* np.random.rand()
-    xdata.append(X)
-    ydata.append(Y)
+    global graphs
+
+    for m in msg.objects:
+        if m.object_id not in graphs.keys():
+            graphs[m.object_id] = PlotData(deque(list(),100),deque(list(),100))
+        graphs[m.object_id].x.append(2)
+        graphs[m.object_id].y.append(m.risk_index)
     message_read = True
     #plot(X,Y)
 
 def plot():
     #plt.draw()
     #ax1.scatter(X, Y)
-    print ("plot")
-    print (len(xdata))
-    hl.set_xdata(xdata)
-    hl.set_ydata(ydata)
+    for g in graphs.keys():
+        print(type(hl))
+        hl.set_xdata(np.arange(len(graphs[g].y)))
+        hl.set_ydata(graphs[g].y)
     ax.relim()
     ax.autoscale_view()
     fig.canvas.draw()
