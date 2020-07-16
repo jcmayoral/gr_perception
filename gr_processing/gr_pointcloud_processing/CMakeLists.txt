@@ -19,7 +19,7 @@ find_package(catkin REQUIRED
         nodelet
 )
 
-find_package(PCL REQUIRED)
+find_package(PCL 1.9 REQUIRED)
 
 
 find_package(Boost REQUIRED COMPONENTS

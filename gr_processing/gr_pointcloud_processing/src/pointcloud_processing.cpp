@@ -321,7 +321,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           double var_x = calculateVariance<double>(x_vector);
           double var_y = calculateVariance<double>(y_vector);
           double var_z = calculateVariance<double>(z_vector);
-          double var_i = calculateVariance<double>(z_vector);
+          double var_i = calculateVariance<double>(i_vector);
 
           cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
@@ -376,11 +376,10 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
               //publish persons
               publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(*cloud_cluster);
-              auto timestamp = ros::Time::now().toNSec();
-              std::string filename("/media/datasets/persons_pcd/"+matchingid+"_"+std::to_string(timestamp)+"_"+".pcd");
-              pcl::io::savePCDFile(filename.c_str(), *cloud_cluster.get(),true);
-              ros::Duration(1).sleep();
-            }
+              //auto timestamp = ros::Time::now().toNSec();
+              //std::string filename("/media/datasets/persons_pcd/"+matchingid+"*"+std::to_string(timestamp)+"_"+".pcd");
+              //pcl::io::savePCDFile(filename.c_str(), *cloud_cluster.get(),true);
+                          }
             else{
               //ROS_WARN_STREAM("A new person has been found adding to the array");            
               //testing map array_person (memory)
