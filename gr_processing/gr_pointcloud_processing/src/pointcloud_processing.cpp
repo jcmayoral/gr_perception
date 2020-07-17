@@ -363,6 +363,8 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
                 object.pose.orientation = cluster_center.orientation;
+
+                object.is_dynamic = true;
               }
               else{
                 //Reuse orientation
