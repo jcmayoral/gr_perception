@@ -344,16 +344,16 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             auto range_x = getAbsoluteRange<double>(x_vector);
             auto range_y = getAbsoluteRange<double>(y_vector);
             auto range_z = getAbsoluteRange<double>(z_vector);
+
+            person.volume = range_x*range_y*range_z;
             
             //var_i seems to be more stable that bb volume
             //ON TESTING
             auto matchingid = matchDetection(person);
             object.object_id = matchingid;
-            std::cout << object.object_id << std::endl;
 
             if (!matchingid.empty() && matchingid.compare(gr_detection::NOPREVIOUSDETECTION) !=0){
               //GEt matched object
-              ROS_ERROR_STREAM("TRUE"<< matchingid);
               auto matched_object = GetObject(matchingid);
               auto nx = person.pose.position.x- matched_object.pose.position.x;
               auto ny = person.pose.position.y- matched_object.pose.position.y;
@@ -371,7 +371,6 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
                 object.speed.x = nx;
                 object.speed.y = ny;
                 object.speed.z = fabs(nyaw - oldyaw)*0,1;
-                std::cout << "ang acc " << object.speed.z << std::endl; 
                 object.is_dynamic = true;
               }
               else{
