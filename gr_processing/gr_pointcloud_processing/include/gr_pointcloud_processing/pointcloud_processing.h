@@ -93,6 +93,7 @@ namespace gr_pointcloud_processing{
     double dynamic_std_;
     double dynamic_std_z_;
     double distance_to_floor_;
+    float static_dynamic_classifier_;
 
     bool output_publish_;
     bool remove_ground_;

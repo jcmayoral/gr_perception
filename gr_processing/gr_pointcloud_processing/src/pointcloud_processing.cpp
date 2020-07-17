@@ -19,6 +19,7 @@ namespace gr_pointcloud_processing{
     sensor_frame_ = "velodyne";
     global_frame_ = "odom";
     distance_to_floor_ = 0.0;
+    static_dynamic_classifier_ = 1.0;
 
     //Node Handler from nodelet
     ros::NodeHandle nh("~");// =getMTPrivateNodeHandle();
@@ -33,7 +34,6 @@ namespace gr_pointcloud_processing{
     nh.getParam("roi", limit);
     nh.getParam("time_window", time_window);
     nh.getParam("global_frame", global_frame_);
-    std::cout << "WTF " << global_frame_ <<std::endl;
     nh.getParam("sensor_frame", sensor_frame_);
     nh.getParam("xy_scale", xy_scale);
     //Error passing char as param
@@ -122,6 +122,8 @@ void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloud
     if (config.timer_enable){
       timer_.start();
     }
+
+    static_dynamic_classifier_ = config.static_dynamic_classifier;
     ROS_ERROR("END reconfigure");
 
 };
@@ -358,15 +360,18 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               auto nz = person.pose.position.z- matched_object.pose.position.z;
 
               //IF the distance is bigger than 5? cm then compute orientation and update
-              if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
-                std::cout << "SPEED ? " << nx << " , " << ny << std::endl;
-                tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
+              if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){                
+                auto nyaw =  calculateYaw<double>(nx,ny,nz);
+                auto oldyaw =  calculateYaw<double>(object.speed.x, object.speed.y, object.speed.z);
+                tf2_quat.setRPY(0,0,nyaw);
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
                 object.pose.orientation = cluster_center.orientation;
 
                 object.speed.x = nx;
                 object.speed.y = ny;
+                object.speed.z = fabs(nyaw - oldyaw)*0,1;
+                std::cout << "ang acc " << object.speed.z << std::endl; 
                 object.is_dynamic = true;
               }
               else{
