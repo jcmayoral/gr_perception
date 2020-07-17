@@ -67,7 +67,7 @@ def plot():
     fig.canvas.draw()
     fig.canvas.flush_events()    #fig.canvas.draw()
     #plt.draw()
-    rospy.sleep(0.05)
+    #rospy.sleep(0.05)
 
 
 def clear():
@@ -75,7 +75,7 @@ def clear():
 
     tmpg = copy.deepcopy(graphs)
     for g in tmpg.keys():
-        if tic - tmpg[g].x >0.5:
+        if tic - tmpg[g].x >0.05:
             del graphs[g]
 
 
