@@ -49,7 +49,6 @@ def plot():
     #plt.draw()
     #ax1.scatter(X, Y)
     plt.cla()
-    print (len(graphs.keys()))
     for g in graphs.keys():
         #hl.set_xdata(np.arange(len(graphs[g].y)))
         #hl.set_ydata(graphs[g].y)
@@ -57,8 +56,8 @@ def plot():
         ydata = list(repeat(0,100 -len(graphs[g].y)))
         ydata.extend(list(graphs[g].y))
 
-        if len(ydata)>100:
-            print(ydata)
+        #if len(ydata)>100:
+        #    print(ydata)
         #ydata = graphs[g].y
         ax.plot(xdata,ydata, label=g)
     ax.relim()
