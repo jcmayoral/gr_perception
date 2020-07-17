@@ -336,7 +336,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           //FOR GRIDMAP
           object.pose.position = cluster_center.position;
 
-          if (cluster_std< dynamic_std_ && var_z  > dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
+          if (cluster_std< dynamic_std_ && var_z> dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
           //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
             //centroids for proximity policy
             auto range_x = getAbsoluteRange<double>(x_vector);
@@ -347,8 +347,11 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             //ON TESTING
             auto matchingid = matchDetection(person);
             object.object_id = matchingid;
-            if (!matchingid.empty()){
+            std::cout << object.object_id << std::endl;
+
+            if (!matchingid.empty() && matchingid.compare(gr_detection::NOPREVIOUSDETECTION) !=0){
               //GEt matched object
+              ROS_ERROR_STREAM("TRUE"<< matchingid);
               auto matched_object = GetObject(matchingid);
               auto nx = person.pose.position.x- matched_object.pose.position.x;
               auto ny = person.pose.position.y- matched_object.pose.position.y;
@@ -383,7 +386,9 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             else{
               //ROS_WARN_STREAM("A new person has been found adding to the array");            
               //testing map array_person (memory)
-              insertNewObject(person);
+              //if (matchingid.compare(gr_detection::NODETECTION) !=0){
+                insertNewObject(person);
+              //}
             }
             //Update for pose array
             clusters_msg.poses.push_back(cluster_center);   
