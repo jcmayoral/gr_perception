@@ -20,6 +20,7 @@ namespace gr_detection{
         geometry_msgs::Vector3 variance;
         int vari = 0;
         std::string id;
+        float volume;
     };
 
     typedef std::map<std::string, Person> CustomMap;

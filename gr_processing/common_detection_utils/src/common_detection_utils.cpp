@@ -5,7 +5,6 @@ using namespace gr_detection;
 boost::shared_ptr<CustomArray> FusionDetection::d_array_(new CustomArray);
 
 FusionDetection::FusionDetection(): time_break_{0.5}, minmatch_score_{2.0}{
-    std::cout << "constructor ";
     //DETECTIONSARRAY = new CustomArray();
 
 }
@@ -14,7 +13,6 @@ FusionDetection::~FusionDetection(){
 }
 
 FusionDetection::FusionDetection(const FusionDetection& other){
-    std::cout << "calling copy constructor"<< std::endl;
     time_break_ = other.time_break_;
     minmatch_score_ = other.minmatch_score_;
 }
@@ -58,7 +56,7 @@ void FusionDetection::cleanUpCycle(){
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end();  ){
         //if(it->second.age < 2){
         double elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
-        std::cout << "UPDATE AFTER " << elapsed_seconds << std::endl;
+
         if(elapsed_seconds>time_break_){
             it = d_array_->DETECTIONSARRAY.erase(it);
         }
@@ -112,6 +110,16 @@ std::string FusionDetection::matchDetection(Person new_cluster){
     }
 
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end(); it++){
+        /*
+        float score = 1.0;
+        score *= std::abs((it->second.pose.position.x - new_cluster.pose.position.x)/it->second.pose.position.x);
+        score *= std::abs((it->second.pose.position.y - new_cluster.pose.position.y)/it->second.pose.position.y);
+        score *= std::abs((it->second.variance.x - new_cluster.variance.x)/it->second.variance.x);
+        score *= std::abs((it->second.variance.y - new_cluster.variance.y)/it->second.variance.y);
+        score *= std::abs((it->second.variance.z - new_cluster.variance.z)/it->second.variance.z);
+        //score += std::abs((it->second.volume - new_cluster.volume)/it->second.volume);
+        */
+        
         float score = 0;
         score += std::abs(it->second.pose.position.x - new_cluster.pose.position.x);
         score += std::abs(it->second.pose.position.y - new_cluster.pose.position.y);
@@ -120,9 +128,7 @@ std::string FusionDetection::matchDetection(Person new_cluster){
         score += std::abs(it->second.variance.x - new_cluster.variance.x);
         score += std::abs(it->second.variance.y - new_cluster.variance.y);
         score += std::abs(it->second.variance.z - new_cluster.variance.z);
-        
 
-        std::cout << "Score " << score << ": " << it->second.vari - new_cluster.vari <<  std::endl;
         scores.push_back(score);
         ids.push_back(it->first);
     };

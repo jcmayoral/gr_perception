@@ -69,7 +69,6 @@ namespace gr_detection{
     template<typename T>
         double calculateYaw(T x, T y, T z){
             //Assuming axis with higher variance is on a persons_size
-            std::cout << x << " , " << y <<std::endl;
             return atan2(y,x);// + M_PI_4;
         }
 }
