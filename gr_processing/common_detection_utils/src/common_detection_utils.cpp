@@ -4,7 +4,7 @@ using namespace gr_detection;
 
 boost::shared_ptr<CustomArray> FusionDetection::d_array_(new CustomArray);
 
-FusionDetection::FusionDetection(): time_break_{0.5}, matching_mindistance_{1.0}{
+FusionDetection::FusionDetection(): time_break_{0.5}, minmatch_score_{2.0}{
     std::cout << "constructor ";
     //DETECTIONSARRAY = new CustomArray();
 
@@ -16,7 +16,7 @@ FusionDetection::~FusionDetection(){
 FusionDetection::FusionDetection(const FusionDetection& other){
     std::cout << "calling copy constructor"<< std::endl;
     time_break_ = other.time_break_;
-    matching_mindistance_ = other.matching_mindistance_;
+    minmatch_score_ = other.minmatch_score_;
 }
 
 int FusionDetection::getDetectionsNumber(){
@@ -59,11 +59,8 @@ void FusionDetection::cleanUpCycle(){
         //if(it->second.age < 2){
         double elapsed_seconds = double(curr_time - it->second.last_update) / CLOCKS_PER_SEC;
         std::cout << "UPDATE AFTER " << elapsed_seconds << std::endl;
-        //TODO parametrized 2 seconds
         if(elapsed_seconds>time_break_){
-            std::cout << "1 " <<std::endl;
             it = d_array_->DETECTIONSARRAY.erase(it);
-            std::cout << "2 " <<std::endl;
         }
         else{
             it->second.age--;
@@ -110,24 +107,33 @@ std::string FusionDetection::matchDetection(Person new_cluster){
     std::vector<std::string> ids;
 
     boost::mutex::scoped_lock lck(d_array_->mtx);{
+
+    if (d_array_->DETECTIONSARRAY.size() == 0){
+        return NOPREVIOUSDETECTION;
+    }
+
     for( auto it = d_array_->DETECTIONSARRAY.begin(); it != d_array_->DETECTIONSARRAY.end(); it++){
         float score = 0;
         score += std::abs(it->second.pose.position.x - new_cluster.pose.position.x);
         score += std::abs(it->second.pose.position.y - new_cluster.pose.position.y);
         score += std::abs(it->second.pose.position.z - new_cluster.pose.position.z);
+
+        score += std::abs(it->second.variance.x - new_cluster.variance.x);
+        score += std::abs(it->second.variance.y - new_cluster.variance.y);
+        score += std::abs(it->second.variance.z - new_cluster.variance.z);
+        
+
+        std::cout << "Score " << score << ": " << it->second.vari - new_cluster.vari <<  std::endl;
         scores.push_back(score);
         ids.push_back(it->first);
     };
     }
 
-    if (scores.size()==0){
-        return {};
-    }
-
     auto min_score = min_element(scores.begin(), scores.end());
     //FIND Proper threshold
     //research minimum social distance
-    if (*min_score < matching_mindistance_){
+    if (*min_score < minmatch_score_){
+        std::cout << "MIN SCORE " << *min_score << std::endl;
         int argmin = std::distance(scores.begin(), min_score);
         return ids[argmin];
     }

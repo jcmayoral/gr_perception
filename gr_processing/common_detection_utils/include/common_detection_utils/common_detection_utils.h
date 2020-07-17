@@ -11,6 +11,7 @@
 
 
 namespace gr_detection{
+    const std::string NOPREVIOUSDETECTION="ND";
 
     struct Person{
         int age = 10;
@@ -52,7 +53,7 @@ namespace gr_detection{
             geometry_msgs::PoseArray createPoseArray();
             static boost::shared_ptr<CustomArray> d_array_;
             float time_break_;
-            float matching_mindistance_;
+            float minmatch_score_;
     };
 };
 #endif
