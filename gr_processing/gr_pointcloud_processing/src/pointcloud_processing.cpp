@@ -359,11 +359,14 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
               //IF the distance is bigger than 5? cm then compute orientation and update
               if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
+                std::cout << "SPEED ? " << nx << " , " << ny << std::endl;
                 tf2_quat.setRPY(0,0, calculateYaw<double>(nx,ny,nz));
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
                 object.pose.orientation = cluster_center.orientation;
 
+                object.speed.x = nx;
+                object.speed.y = ny;
                 object.is_dynamic = true;
               }
               else{
