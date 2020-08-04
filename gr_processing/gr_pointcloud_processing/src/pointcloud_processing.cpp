@@ -370,7 +370,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
                 object.speed.x = nx;
                 object.speed.y = ny;
-                object.speed.z = fabs(nyaw - oldyaw)*0,1;
+                object.speed.z = fabs(nyaw - oldyaw);
                 object.is_dynamic = true;
               }
               else{
