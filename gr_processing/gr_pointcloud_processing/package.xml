@@ -1,6 +1,6 @@
 <package>
   <name>gr_pointcloud_processing</name>
-  <version>0.9.8</version>
+  <version>0.9.9</version>
   <description>
     Node for processing Velodyne LiDAR
   </description>
