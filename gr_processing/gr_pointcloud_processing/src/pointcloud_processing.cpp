@@ -363,13 +363,8 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){                
                 auto nyaw =  calculateYaw<double>(nx,ny,nz);
                 auto oldyaw =  calculateYaw<double>(object.speed.x, object.speed.y, object.speed.z);
-
-                if (std::fabs(nyaw -oldyaw) < 0.3){
-                  tf2_quat.setRPY(0,0,nyaw);
-                }
-                else{
-                  tf2_quat.setRPY(0,0,oldyaw);
-                }
+                
+                tf2_quat.setRPY(0,0,oldyaw+0.1*(nyaw*oldyaw));
 
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
