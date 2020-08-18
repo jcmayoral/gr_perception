@@ -367,7 +367,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
                 auto nyaw =  calculateYaw<double>(nx,ny,nz);
                 auto oldyaw =  calculateYaw<double>(matched_object.pose.position.x, matched_object.pose.position.y, matched_object.pose.position.z);
                 
-                tf2_quat.setRPY(0,0,oldyaw+(nyaw-oldyaw));
+                tf2_quat.setRPY(0,0,nyaw);
 
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
