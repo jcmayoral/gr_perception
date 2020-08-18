@@ -74,7 +74,7 @@ def clear():
 
     tmpg = copy.deepcopy(graphs)
     for g in tmpg.keys():
-        if tic - tmpg[g].x >0.05:
+        if tic - tmpg[g].x >3:
             del graphs[g]
 
 
