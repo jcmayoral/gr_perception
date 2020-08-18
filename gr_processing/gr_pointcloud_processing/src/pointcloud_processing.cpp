@@ -15,7 +15,7 @@ namespace gr_pointcloud_processing{
     is_processing_ = false;
     is_timer_enable_ = true;
     tf2_listener_ = new tf2_ros::TransformListener(tf_buffer_);
-    last_detection_ = ros::Time(0);
+    last_detection_ = ros::Time::now();
     sensor_frame_ = "velodyne";
     global_frame_ = "odom";
     distance_to_floor_ = 0.0;
@@ -224,7 +224,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
     tf2::doTransform(center, out, to_odom_transform);
 
     cluster_bb.header.frame_id = global_frame_; //this should be a param
-    cluster_bb.header.stamp = last_detection_;
+    cluster_bb.header.stamp = ros::Time::now();
     cluster_bb.pose.position.x = out.position.x;
     cluster_bb.pose.position.y = out.position.y;
     cluster_bb.pose.position.z = out.position.z;
@@ -362,10 +362,12 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
               //IF the distance is bigger than 5? cm then compute orientation and update
               if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){                
+                double dt = (ros::Time::now() - last_detection_).toSec();
+
                 auto nyaw =  calculateYaw<double>(nx,ny,nz);
-                auto oldyaw =  calculateYaw<double>(object.speed.x, object.speed.y, object.speed.z);
+                auto oldyaw =  calculateYaw<double>(matched_object.pose.position.x, matched_object.pose.position.y, matched_object.pose.position.z);
                 
-                tf2_quat.setRPY(0,0,nyaw);
+                tf2_quat.setRPY(0,0,oldyaw+(nyaw-oldyaw));
 
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
@@ -373,9 +375,11 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
 
                 //person is new reading
-                object.speed.x = 10*(nx - person.speed.x)/2;
-                object.speed.y = 10*(nx - person.speed.y)/2;
-                object.speed.z = nyaw - oldyaw;
+                std::cout << "dt " << dt << std::endl;
+
+                object.speed.x = nx/dt;
+                object.speed.y = ny/dt;
+                object.speed.z = (nyaw - oldyaw)/dt;
 
                 person.speed = object.speed;
                 object.is_dynamic = true;
@@ -426,6 +430,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
       if (output_publish_){
           publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(pointcloud_xyzi);
       }
+      last_detection_ = ros::Time::now();
       //ROS_ERROR_STREAM ("Clustering Time: " << (double)(clock() - tStart)/CLOCKS_PER_SEC);
   };
 };
