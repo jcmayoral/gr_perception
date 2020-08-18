@@ -18,6 +18,7 @@ namespace gr_detection{
         clock_t last_update = clock();
         geometry_msgs::Pose pose;
         geometry_msgs::Vector3 variance;
+        geometry_msgs::Vector3 speed;
         int vari = 0;
         std::string id;
         float volume;

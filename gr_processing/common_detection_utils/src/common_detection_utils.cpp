@@ -129,6 +129,13 @@ std::string FusionDetection::matchDetection(Person new_cluster){
         score += std::abs(it->second.variance.y - new_cluster.variance.y);
         score += std::abs(it->second.variance.z - new_cluster.variance.z);
 
+        /*
+        score += std::abs(it->second.speed.x - new_cluster.speed.x);
+        score += std::abs(it->second.speed.y - new_cluster.speed.y);
+        score += std::abs(it->second.speed.z - new_cluster.speed.z);
+        */
+
+
         scores.push_back(score);
         ids.push_back(it->first);
     };
@@ -136,9 +143,9 @@ std::string FusionDetection::matchDetection(Person new_cluster){
 
     auto min_score = min_element(scores.begin(), scores.end());
     //FIND Proper threshold
-    //research minimum social distance
+    std::cout << "MIN SCORE " << *min_score << std::endl;
+
     if (*min_score < minmatch_score_){
-        std::cout << "MIN SCORE " << *min_score << std::endl;
         int argmin = std::distance(scores.begin(), min_score);
         return ids[argmin];
     }
