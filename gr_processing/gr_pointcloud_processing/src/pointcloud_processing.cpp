@@ -330,6 +330,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           //FOR FUSION
           person.pose.position.x = cluster_center.position.x;
           person.pose.position.y =  cluster_center.position.y;
+          person.pose.orientation.w = 1.0;
           person.variance.x = var_x;
           person.variance.y = var_y;
           person.variance.z = var_z;
@@ -370,9 +371,13 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
                 cluster_center.orientation = person.pose.orientation;
                 object.pose.orientation = cluster_center.orientation;
 
-                object.speed.x = nx;
-                object.speed.y = ny;
+
+                //person is new reading
+                object.speed.x = 10*(nx - person.speed.x)/2;
+                object.speed.y = 10*(nx - person.speed.y)/2;
                 object.speed.z = nyaw - oldyaw;
+
+                person.speed = object.speed;
                 object.is_dynamic = true;
               }
               else{
