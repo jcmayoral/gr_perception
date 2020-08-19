@@ -328,8 +328,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
           //FOR FUSION
-          person.pose.position.x = cluster_center.position.x;
-          person.pose.position.y =  cluster_center.position.y;
+          person.pose.position = cluster_center.position;
           person.pose.orientation.w = 1.0;
           person.variance.x = var_x;
           person.variance.y = var_y;
@@ -360,34 +359,64 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               auto ny = person.pose.position.y- matched_object.pose.position.y;
               auto nz = person.pose.position.z- matched_object.pose.position.z;
 
+
+              //default value
+              person.pose.orientation = matched_object.pose.orientation;
+              object.pose.orientation = person.pose.orientation;
+
               //IF the distance is bigger than 5? cm then compute orientation and update
               if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){                
                 double dt = (ros::Time::now() - last_detection_).toSec();
 
                 auto nyaw =  calculateYaw<double>(nx,ny,nz);
-                auto oldyaw =  calculateYaw<double>(matched_object.pose.position.x, matched_object.pose.position.y, matched_object.pose.position.z);
                 
-                tf2_quat.setRPY(0,0,nyaw);
+                auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);       
+
+                //auto oldyaw =  calculateYaw<double>(matched_object.pose.position.x, matched_object.pose.position.y, matched_object.pose.position.z);
+                
+                //person is new reading
+                std::cout << "dt " << dt << std::endl;
+
+                object.speed.x = nx*dt;
+                object.speed.y = ny*dt;
+
+                auto oldvyaw = matched_object.speed.z;
+                auto m_vyaw = (nyaw - oldyaw)*dt;
+
+
+                /*  if(std::fabs(oldvyaw - m_vyaw)<0.1){
+                  object.speed.z = m_vyaw;f
+                }
+                else{
+                  object.speed.z = oldvyaw;
+                }*/
+
+
+                auto e_vyaw = oldvyaw + 0.1;
+                if (m_vyaw< 0){
+                  e_vyaw = oldvyaw -0.1;
+                }
+                
+                object.speed.z = (m_vyaw+e_vyaw)/2;
+
+                std::cout << "SPEED OLD " << oldvyaw << " : : " << " measured " << m_vyaw << " expected " << e_vyaw <<  std::endl;
+
+                auto m_yaw = oldyaw + m_vyaw*dt;
+                auto e_yaw = oldyaw + e_vyaw*dt;
+
+                std::cout << "OLD " << oldyaw << " : : " << " measured " << m_yaw << " e " << e_yaw << std::endl;
+
+                
+
+                tf2_quat.setRPY(0,0,(oldyaw + nyaw)/2);// dt*(m_yaw +e_yaw)/2);
 
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
                 object.pose.orientation = cluster_center.orientation;
 
 
-                //person is new reading
-                std::cout << "dt " << dt << std::endl;
-
-                object.speed.x = nx/dt;
-                object.speed.y = ny/dt;
-                object.speed.z = (nyaw - oldyaw)/dt;
-
                 person.speed = object.speed;
                 object.is_dynamic = true;
-              }
-              else{
-                //Reuse orientation
-                person.pose.orientation = matched_object.pose.orientation;
-                object.pose.orientation = person.pose.orientation;
               }
 
               //Updating
