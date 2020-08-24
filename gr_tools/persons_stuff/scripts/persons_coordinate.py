@@ -20,9 +20,20 @@ def callback(msg):
 
     main_msg = msg
 
+
+def get_cmap(n, name='hsv'):
+    '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct
+    RGB color; the keyword argument name must be a standard mpl colormap name.'''
+    return plt.cm.get_cmap(name, n)
+
+
+cmap = get_cmap(10,'hsv')
+cmapdyn = get_cmap(10,'spring')
+
 def plot():
     plt.cla()
     global main_msg
+    global cmap, cmapdyn
     #plt.cla()
 
     #N = 150
@@ -35,6 +46,7 @@ def plot():
     """
     #ax.relim()
     #ax.autoscale_view()
+    ncount = 1
 
     for p in main_msg.objects:
         nr = np.linalg.norm([p.pose.position.y, p.pose.position.x])
@@ -43,25 +55,26 @@ def plot():
         #area.append(narea)
         ntheta = np.arctan2(p.pose.position.y, p.pose.position.x)
         #theta.append(ntheta)
-        ncolor = 25*nr
         if p.is_dynamic:
-            #colors.append(128)
-            ncolor *=10
+            ncolor = cmapdyn(ncount)
+        else:
+            ncolor = cmap(ncount)
+        ncount = ncount + 1
         #else:
         #colors.append(ncolor)
         #    ncolor = 200
         #legens.append(p.object_id)
-        ax.scatter(ntheta, nr, c=ncolor, s=narea, cmap='hot', alpha=0.75, label=p.object_id)
+        ax.scatter(ntheta, nr, c=ncolor, s=narea, alpha=0.75, label=p.object_id)
 
     ax.set_ylim(-20,20)
     ax.set_yticks(np.arange(-20,20,5.0))
 
     #ax.scatter(theta, r, c=colors, s=area, cmap='hot', alpha=1.0)
 
-    ax.legend()
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     fig.canvas.draw()
+    rospy.sleep(0.1)
     fig.canvas.flush_events()    #fig.canvas.draw()
-    rospy.sleep(0.05)
     #plt.close()
 
 
