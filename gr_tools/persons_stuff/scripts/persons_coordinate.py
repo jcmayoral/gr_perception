@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import copy
+from tf.transformations import euler_from_quaternion
 
 plt.ion()
 #fig, ax = plt.subplots(1,1,subplot_kw=dict(polar=True))
@@ -36,6 +37,7 @@ cmap = get_cmap(20,'hot')
 cmapdyn = get_cmap(20,'hsv')
 
 def plot():
+    fig.canvas.flush_events()    #fig.canvas.draw()
     plt.cla()
     global main_msg, indexes
     global cmap, cmapdyn
@@ -60,7 +62,6 @@ def plot():
 
     for p in main_msg.objects:
         nr = np.linalg.norm([p.pose.position.y, p.pose.position.x])
-        print ("Radius ::: -> ", nr)
         #r.append(nr)
         narea = np.linalg.norm([p.speed.x, p.speed.y])*1000
         #area.append(narea)
@@ -76,20 +77,37 @@ def plot():
         #legens.append(p.object_id)
         risk = "UNKNOWN"
         if p.object_id in items.keys():
-            risk = "WITH RISK:" +  str(items[p.object_id])
-        ax.scatter(ntheta, nr, c=ncolor, cmap="coolwarm", s=narea, alpha=0.75, label=p.object_id+ risk)
+            risk = " RISK:" +  str(items[p.object_id])
+
+        riskmsg = "::UNKNOWN"
+        if p.object_id in items.keys():
+            riskmsg = "::DANGER" if items[p.object_id] > 0.8 else "::SAFE"
+
+        ax.scatter(ntheta, nr, c=ncolor, cmap="coolwarm", s=narea, alpha=0.75, label=p.object_id+ riskmsg)
+        #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
+
+        """
+        wrap = lambda x: x if x > 0 else 0
+        print ntheta, type(ntheta), wrap(ntheta), type(ntheta)
+
+        plt.annotate(p.object_id+riskmsg,
+                    xy=(wrap(ntheta), nr),      # theta, radius
+                    xytext=(0.05, 0.05),
+                    xycoords='polar',
+                    textcoords='polar',
+                    arrowprops=dict(facecolor='black', shrink=0.05),
+                    horizontalalignment='center',
+                    verticalalignment='center',
+                    clip_on=True)
+        """
         ncount1 = ncount1 + 1
 
-
-    ax.set_ylim(0,20)
+    ax.set_ylim(0,25)
     #ax.set_yticks(np.arange(-20,20,5.0))
 
-    #ax.scatter(theta, r, c=colors, s=area, cmap='hot', alpha=1.0)
-
-    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper center')
     fig.canvas.draw()
-    rospy.sleep(0.1)
-    fig.canvas.flush_events()    #fig.canvas.draw()
+    #rospy.sleep(0.05)
     #plt.close()
 
 
