@@ -82,8 +82,7 @@ def plot():
         riskmsg = "::UNKNOWN"
         if p.object_id in items.keys():
             riskmsg = "::DANGER" if items[p.object_id] > 0.8 else "::SAFE"
-
-        ax.scatter(ntheta, nr, c=ncolor, cmap="coolwarm", s=narea, alpha=0.75, label=p.object_id+ riskmsg)
+        ax.scatter(ntheta, nr, c=ncolor, cmap="hot", s=narea, alpha=0.75, label=p.object_id+ riskmsg)
         #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
 
         """
@@ -102,12 +101,19 @@ def plot():
         """
         ncount1 = ncount1 + 1
 
-    ax.set_ylim(0,25)
+    ax.set_ylim(0,15)
     #ax.set_yticks(np.arange(-20,20,5.0))
 
-    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper center')
+    legend = plt.legend(bbox_to_anchor=(1.05, 1), loc='upper center')
+    #legend = plt.legend()
+    for i in legend.get_texts():
+        if "DANGER" in i.get_text():
+            plt.setp(i, color='r')
+        if "SAFE" in i.get_text():
+            plt.setp(i, color='g')
+
     fig.canvas.draw()
-    #rospy.sleep(0.05)
+    rospy.sleep(0.1)
     #plt.close()
 
 
