@@ -5,7 +5,7 @@ from std_msgs.msg import Float32
 class CPUMonitor:
     def __init__(self):
         rospy.init_node("cpu_monitor")
-        self.cpu_pub = rospy.Publisher("/cpu_consumption", Float32)
+        self.cpu_pub = rospy.Publisher("/cpu_consumption", Float32, queue_size=10)
         self.rate = rospy.Rate(10) # 10hz
 
     def publish_cpu(self):

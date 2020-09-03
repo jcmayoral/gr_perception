@@ -3,7 +3,7 @@
 void MainMonitor::empty_cb(const std_msgs::EmptyConstPtr msg, int index){
     data_containers_[index].updateData(0,0);
     data_containers_[index].updateTime();
-    
+
 }
 
 void MainMonitor::float_cb(const std_msgs::Float64ConstPtr msg, int index){
@@ -15,13 +15,13 @@ void MainMonitor::twist_cb(const geometry_msgs::TwistConstPtr msg, int index){
     data_containers_[index].updateTime();
     data_containers_[index].updateData(msg->linear.x,0);
     data_containers_[index].updateData(msg->angular.z,1);
-}   
+}
 
 void MainMonitor::odom_cb(const nav_msgs::OdometryConstPtr msg, int index){
     data_containers_[index].updateTime();
     data_containers_[index].updateData(msg->twist.twist.linear.x,0);
     data_containers_[index].updateData(msg->twist.twist.angular.z,1);
-}    
+}
 
 void MainMonitor::map_cb(const nav_msgs::OccupancyGridConstPtr msg, int index){
     data_containers_[index].updateTime();
@@ -55,28 +55,28 @@ void MainMonitor::in_cb(const topic_tools::ShapeShifter::ConstPtr& msg, int inde
         main_subscriber_[index].shutdown();
         boost::function<void(const std_msgs::Empty::ConstPtr&) > callback;
         callback = boost::bind( &MainMonitor::empty_cb, this, _1, index) ;
-        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);            
+        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);
     }
-    
+
     if (datatype.compare("geometry_msgs/Twist") == 0){
         main_subscriber_[index].shutdown();
         boost::function<void(const geometry_msgs::Twist::ConstPtr&) > callback;
-        callback = boost::bind( &MainMonitor::twist_cb, this, _1, index) ;      
-        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);            
+        callback = boost::bind( &MainMonitor::twist_cb, this, _1, index) ;
+        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);
     }
 
     if (datatype.compare("nav_msgs/Odometry") == 0){
         main_subscriber_[index].shutdown();
         boost::function<void(const nav_msgs::Odometry::ConstPtr&) > callback;
         callback = boost::bind( &MainMonitor::odom_cb, this, _1, index) ;
-        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);            
+        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);
     }
 
     if (datatype.compare("nav_msgs/OccupancyGrid") == 0){
         main_subscriber_[index].shutdown();
         boost::function<void(const nav_msgs::OccupancyGrid::ConstPtr&) > callback;
         callback = boost::bind( &MainMonitor::map_cb, this, _1, index) ;
-        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);            
+        main_subscriber_[index] = node.subscribe(topic_name, 1, callback);
     }
 
     if (datatype.compare("sensor_msgs/Imu") == 0){
@@ -85,14 +85,14 @@ void MainMonitor::in_cb(const topic_tools::ShapeShifter::ConstPtr& msg, int inde
         callback = boost::bind( &MainMonitor::imu_cb, this, _1, index) ;
         main_subscriber_[index] = node.subscribe(topic_name, 1, callback);
     }
-    
+
     if (datatype.compare("sensor_msgs/JointState") == 0){
         main_subscriber_[index].shutdown();
         boost::function<void(const sensor_msgs::JointState::ConstPtr&) > callback;
         callback = boost::bind( &MainMonitor::joints_cb, this, _1, index) ;
         main_subscriber_[index] = node.subscribe(topic_name, 1, callback);
     }
-    
+
     if (datatype.compare("std_msgs/Float64") == 0){
         main_subscriber_[index].shutdown();
         boost::function<void(const std_msgs::Float64::ConstPtr&) > callback;
@@ -111,8 +111,14 @@ void MainMonitor::in_cb(const topic_tools::ShapeShifter::ConstPtr& msg, int inde
     //ROS_INFO_STREAM(main_subscriber_.size());
 }
 
-MainMonitor::MainMonitor(std::string config_file): cpu_monitor_(), fault_detected_(false) {
+MainMonitor::MainMonitor(std::string config_file): cpu_monitor_(), fault_detected_(false), seq(0) {
     ROS_INFO("Constructor Monitor");
+    ros::NodeHandle nh;
+    monitor_diagnostic_pub_ =nh.advertise<safety_msgs::DiagnosticArray>("diagnostics", 1);
+    monitor_status_pub_ = nh.advertise<std_msgs::Int8>("monitor_status", 1);
+    strategy_pub_ = nh.advertise<std_msgs::String>("commands", 1);
+    safety_fb_pub_ = nh.advertise<safety_msgs::SafetyState>("observer_2", 1);
+
     bool statistics_flags = true;
     config_file_ = config_file;
     std::string path = ros::package::getPath("gr_fdd");
@@ -120,11 +126,11 @@ MainMonitor::MainMonitor(std::string config_file): cpu_monitor_(), fault_detecte
     std::ifstream fin((path+"/"+config_file_).c_str());
     YAML::Parser parser(fin);
     YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_file_).c_str());
-    
+
     const YAML::Node& signals_ids = config_yaml["signals"];
     int id = 0;
-    //YAML::Node doc; 
- 
+    //YAML::Node doc;
+
     //for (int i=0; i< topic_names.size(); ++i){
     //while (parser.GetNextDocument(doc)){
     for (YAML::const_iterator a= signals_ids.begin(); a != signals_ids.end(); ++a){
@@ -155,12 +161,7 @@ MainMonitor::MainMonitor(std::string config_file): cpu_monitor_(), fault_detecte
     //}
     }
     recovery_executor_ = new gr_fdd::RecoveryExecutor(config_yaml["recovery"]);
-    ros::NodeHandle nh;
-    timer_ = nh.createTimer(ros::Duration(0.3), &MainMonitor::detect_faults,this);
-    monitor_status_pub_ = nh.advertise<std_msgs::Int8>("monitor_status", 10);
-    monitor_diagnostic_pub_ = nh.advertise<diagnostic_msgs::DiagnosticArray>("/diagnostics_agg", 10);
-    strategy_pub_ = nh.advertise<std_msgs::String>("/commands", 10);
-    safety_fb_pub_ = nh.advertise<safety_msgs::SafetyState>("/observer_2", 1);
+    timer_ = nh.createTimer(ros::Duration(5), &MainMonitor::detect_faults,this);
     ros::spin();
 }
 
@@ -173,10 +174,10 @@ std::string MainMonitor::isolate_components(std::list<std::string> error_topics)
     YAML::Node config_yaml = YAML::LoadFile((path+"/"+config_file_).c_str());
     const YAML::Node& faults = config_yaml["faults"];
     int counter = 0;
-    //YAML::Node doc; 
+    //YAML::Node doc;
     std::string error_description = "";
     ROS_INFO_STREAM(error_topics.size() << " Errors reported");
- 
+
     //while (parser.GetNextDocument(doc)){
     for (YAML::const_iterator fault= faults.begin(); fault != faults.end(); ++fault){
         std::string fault_id  = fault->first.as<std::string>();
@@ -192,7 +193,7 @@ std::string MainMonitor::isolate_components(std::list<std::string> error_topics)
                 }
             }
         }
-        
+
         if (counter == signals.size()){
             ROS_WARN_STREAM ("Suggested action: " << recovery_executor_->getRecoveryStrategy(fault_id));
             ROS_ERROR_STREAM("Error Message " << fault_id);
@@ -204,7 +205,7 @@ std::string MainMonitor::isolate_components(std::list<std::string> error_topics)
         }
    }
    //}
-    
+
     return error_description.empty() ? "Unknown error" : error_description;
 }
 
@@ -215,18 +216,20 @@ MainMonitor::~MainMonitor() {
 }
 
 void MainMonitor::detect_faults(const ros::TimerEvent&){
-    
-    diagnostic_msgs::DiagnosticArray diagnostic_msg;
+    std::cout << "DETECT"<<std::endl;
+    safety_msgs::DiagnosticArray diagnostic_msg;
+    diagnostic_msg.header.seq = seq;
+    seq++;
     diagnostic_msg.header.stamp = ros::Time::now();
     std::map<std::string, std::string> map_messages;
 
-    
-    diagnostic_msgs::DiagnosticStatus diagnostic_status;
-    diagnostic_status.level = diagnostic_msgs::DiagnosticStatus::OK;
+
+    safety_msgs::DiagnosticStatus diagnostic_status;
+    diagnostic_status.level = safety_msgs::DiagnosticStatus::OK;
     diagnostic_status.name = "navigation_components";
     diagnostic_status.message = "Expected Performance";
     diagnostic_status.hardware_id = "navigation_fdd";
-    
+
     std::list <std::string> detected_errors;
     std_msgs::Int8 status;
     status.data = 0;
@@ -240,35 +243,36 @@ void MainMonitor::detect_faults(const ros::TimerEvent&){
         if (it->check()){
             status.data = 100;
             detected_errors.push_back(it->getId());
-            diagnostic_status.level = diagnostic_msgs::DiagnosticStatus::WARN;
+            diagnostic_status.level = safety_msgs::DiagnosticStatus::WARN;
             //std::cout << it->getCurrentStatus() << map_messages[it->getCurrentStatus()] << std::endl;
             safety_fb_msgs.mode = safety_msgs::SafetyState::UNSAFE;
         }
 
         map_messages[it->getCurrentStatus()]+= it->getId();
-        
+
         //it->reset();
-        
-        //it->unlock();   
+
+        //it->unlock();
     }
 
     //Filling messages
-    diagnostic_msgs::KeyValue key_value;
-        
+    safety_msgs::KeyValue key_value;
+
     for (std::map<std::string, std::string>::iterator it=map_messages.begin(); it!=map_messages.end(); ++it){
         key_value.key = it->first;
         key_value.value = it->second;
         diagnostic_status.values.push_back(key_value);
     }
-    
+
     readStatsCPU();
     key_value.key = "CPU_usage";
     key_value.value = std::to_string(cpu_monitor_.getUsage());
     diagnostic_status.values.push_back(key_value);
 
     //bool error_detected = false;
- 
+
     if (detected_errors.size()>0 && !fault_detected_){
+          ROS_ERROR("Isolating");
            diagnostic_status.message = isolate_components(detected_errors);
            fault_detected_ = true;
            safety_fb_msgs.mode = safety_msgs::SafetyState::WARNING;
@@ -283,14 +287,20 @@ void MainMonitor::detect_faults(const ros::TimerEvent&){
             fault_detected_ = false;
         }
     }
-       
+
     diagnostic_msg.status.push_back(diagnostic_status);
     monitor_status_pub_.publish(status);
+
     monitor_diagnostic_pub_.publish(diagnostic_msg);
+    //monitor_diagnostic_pub_.publish(safety_msgs::DiagnosticArray());
+    ROS_ERROR_STREAM("Publish"<< monitor_diagnostic_pub_.getNumSubscribers ());
+    ROS_WARN_STREAM("Publish"<< monitor_status_pub_.getNumSubscribers ());
+
+
     safety_fb_pub_.publish(safety_fb_msgs);
-  
-    if (fault_detected_)
-        usleep(500); //just for visualization purposes
+
+    //if (fault_detected_)
+      //  usleep(500); //just for visualization purposes
 }
 
 double MainMonitor::readStatsCPU(){
@@ -298,7 +308,7 @@ double MainMonitor::readStatsCPU(){
     std::string line;
     bool flag;
     flag = true;
-    
+
     while(std::getline(fileStat, line)){
         // cpu stats line found
         if(!line.compare(0, 3, "cpu")){

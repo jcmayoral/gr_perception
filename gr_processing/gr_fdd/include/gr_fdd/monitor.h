@@ -9,7 +9,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
-#include <diagnostic_msgs/DiagnosticArray.h>
+#include <safety_msgs/DiagnosticArray.h>
 #include <std_msgs/Int8.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/String.h>
@@ -35,15 +35,15 @@ public:
                             void (MainMonitor::* handler) (int, const std::string&, const typename MessageType::ConstPtr&),
                             const int index,
                             const std::string& config_file,const std::string& topic,
-                            ::ros::NodeHandle* const node_handle, 
+                            ::ros::NodeHandle* const node_handle,
                             MainMonitor* const node) {
-        
+
             return node_handle->subscribe<MessageType>(
                                         topic, 5,
                                         boost::function<void(const typename MessageType::ConstPtr&)>(
-                                                    [node, handler, config_file,index, topic] (const typename MessageType::ConstPtr& msg) 
-                                                    {            
-                                                        (node->*handler)(msg, index); 
+                                                    [node, handler, config_file,index, topic] (const typename MessageType::ConstPtr& msg)
+                                                    {
+                                                        (node->*handler)(msg, index);
                                                     }));
     }
 
@@ -80,7 +80,7 @@ private:
     ros::Publisher safety_fb_pub_;
     gr_fdd::RecoveryExecutor* recovery_executor_;
     bool fault_detected_;
+    uint32_t seq;
 };
 
 #endif /* MAINMONITOR_H */
-
