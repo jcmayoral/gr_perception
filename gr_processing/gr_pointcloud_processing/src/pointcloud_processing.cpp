@@ -369,51 +369,20 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
                 double dt = (ros::Time::now() - last_detection_).toSec();
 
                 auto nyaw =  calculateYaw<double>(nx,ny,nz);
-                
-                auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);       
-
-                //auto oldyaw =  calculateYaw<double>(matched_object.pose.position.x, matched_object.pose.position.y, matched_object.pose.position.z);
-                
+                auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);                       
                 //person is new reading
                 std::cout << "dt " << dt << std::endl;
 
-                object.speed.x = nx*dt;
-                object.speed.y = ny*dt;
+                object.speed.x = nx/dt;
+                object.speed.y = ny/dt;
 
-                auto oldvyaw = matched_object.speed.z;
-                auto m_vyaw = (nyaw - oldyaw)*dt;
-
-
-                /*  if(std::fabs(oldvyaw - m_vyaw)<0.1){
-                  object.speed.z = m_vyaw;f
-                }
-                else{
-                  object.speed.z = oldvyaw;
-                }*/
-
-
-                auto e_vyaw = oldvyaw + 0.1;
-                if (m_vyaw< 0){
-                  e_vyaw = oldvyaw -0.1;
-                }
-                
-                object.speed.z = (m_vyaw+e_vyaw)/2;
-
-                std::cout << "SPEED OLD " << oldvyaw << " : : " << " measured " << m_vyaw << " expected " << e_vyaw <<  std::endl;
-
-                auto m_yaw = oldyaw + m_vyaw*dt;
-                auto e_yaw = oldyaw + e_vyaw*dt;
-
-                std::cout << "OLD " << oldyaw << " : : " << " measured " << m_yaw << " e " << e_yaw << std::endl;
-
-                
-
-                tf2_quat.setRPY(0,0,(oldyaw + nyaw)/2);// dt*(m_yaw +e_yaw)/2);
+                auto m_vyaw = (oldyaw-nyaw)*dt;
+                object.speed.z = m_vyaw;
+                tf2_quat.setRPY(0,0,nyaw);
 
                 person.pose.orientation = tf2::toMsg(tf2_quat);
                 cluster_center.orientation = person.pose.orientation;
                 object.pose.orientation = cluster_center.orientation;
-
 
                 person.speed = object.speed;
                 object.is_dynamic = true;
