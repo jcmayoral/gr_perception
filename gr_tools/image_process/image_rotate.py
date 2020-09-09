@@ -1,7 +1,7 @@
 #/usr/bin/python
 import rospy
 import cv2
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CompressedImage
 from cv_bridge import CvBridge, CvBridgeError
 
 global publisher
@@ -29,6 +29,6 @@ if __name__ == '__main__':
     bridge = CvBridge()
     rospy.init_node("rotate_image_node_for_testing")
     publisher = rospy.Publisher("rotated_image", Image, queue_size=1)
+    rospy.Subscriber("/phone/camera/image_raw", Image, msg_callback, queue_size=1)
     rospy.Subscriber("camera/color/image_raw", Image, msg_callback, queue_size=1)
     rospy.spin()
-    
