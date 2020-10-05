@@ -193,8 +193,6 @@ namespace gr_depth_processing
       objects_array_.header = out.header;
       //Copy centroid position
       object.pose = out.pose;
-      //copy class
-      objects_array_.objects.push_back(object);
 
       //THIS IS FOR THE COMMON_DETECTION_UTILS
       gr_detection::Person person;
@@ -231,6 +229,8 @@ namespace gr_depth_processing
         //Updating
         ROS_INFO_STREAM("Updating person with id: " << matchingid);
         UpdateObject(matchingid, person);
+      //copy class
+      objects_array_.objects.push_back(object);
       }
       else{
         ROS_WARN_STREAM("A new person has been found adding to the array");            
