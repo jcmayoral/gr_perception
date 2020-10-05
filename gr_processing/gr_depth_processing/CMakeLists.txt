@@ -19,7 +19,7 @@ find_package(catkin REQUIRED
         common_detection_utils
 )
 
-find_package(OpenCV 3 REQUIRED)
+find_package(OpenCV 3.4.9 EXACT REQUIRED)
 
 include_directories(
   include
