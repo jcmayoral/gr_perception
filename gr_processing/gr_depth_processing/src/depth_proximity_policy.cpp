@@ -179,6 +179,7 @@ namespace gr_depth_processing
         continue;
       }
 
+      std::cout << "transform " << global_frame_ << " to " << in.header.frame_id << std::endl;
       to_base_link_transform = tf_buffer_.lookupTransform(global_frame_, in.header.frame_id, ros::Time(0), ros::Duration(1.0) );
       tf2::doTransform(in, out, to_base_link_transform);
 
@@ -200,16 +201,21 @@ namespace gr_depth_processing
       //assuming global frame same of pointclouds
       person.pose = out.pose;
 
+
+      std::cout << "before match" << std::endl;
       auto matchingid = matchDetection(person);
       object.object_id = matchingid;
+      std::cout << "after match: " << matchingid << std::endl;
 
-      if (!matchingid.empty()){
+      if (!matchingid.empty() && matchingid.compare(gr_detection::NOPREVIOUSDETECTION)!=0){
         //GEt matched object
+	      std::cout << "!" << std::endl;
         auto matched_object = GetObject(matchingid);
         auto nx = person.pose.position.x- matched_object.pose.position.x;
         auto ny = person.pose.position.y- matched_object.pose.position.y;
         auto nz = person.pose.position.z- matched_object.pose.position.z;
 
+	      std::cout << "!!" << std::endl;
         tf2::Quaternion tf2_quat;
         //IF the distance is bigger than 5? cm then compute orientation and update
         if (std::abs(sqrt(nx*nx + ny*ny)) > 0.05 ){
@@ -223,11 +229,11 @@ namespace gr_depth_processing
 
         out.pose.orientation = person.pose.orientation;
         //Updating
-        //ROS_INFO_STREAM("Updating person with id: " << matchingid);
+        ROS_INFO_STREAM("Updating person with id: " << matchingid);
         UpdateObject(matchingid, person);
       }
       else{
-        //ROS_WARN_STREAM("A new person has been found adding to the array");            
+        ROS_WARN_STREAM("A new person has been found adding to the array");            
         //testing map array_person (memory)
         insertNewObject(person);
       }
@@ -237,7 +243,7 @@ namespace gr_depth_processing
       boundRect.push_back(cv::Rect(it->xmin, it->ymin, it->xmax - it->xmin, it->ymax - it->ymin));
     }
 
-    //ROS_INFO_STREAM("Detections read on camera");
+    ROS_INFO_STREAM("Detections read on camera");
     showCurrentDetections();
 
     //TO DRAW OUTPUT FRAME MAYBE WILL BE DELETED ON FUTURE VERSIONS
