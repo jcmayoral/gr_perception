@@ -4,7 +4,7 @@ using namespace gr_detection;
 
 boost::shared_ptr<CustomArray> FusionDetection::d_array_(new CustomArray);
 
-FusionDetection::FusionDetection(): time_break_{0.5}, minmatch_score_{2.0}{
+FusionDetection::FusionDetection(): time_break_{0.2}, minmatch_score_{2.0}{
     //DETECTIONSARRAY = new CustomArray();
 
 }
