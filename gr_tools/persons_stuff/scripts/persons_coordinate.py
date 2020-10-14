@@ -88,6 +88,9 @@ def plot():
             if items[p.object_id] < 0.2:
                 riskmsg = "::SAFE"
         ax.scatter(ntheta, nr, c=ncolor, cmap="hot", s=narea+10.0, alpha=0.75, label=p.object_id+ riskmsg)
+        ax.annotate('Front', xy=(0, 0),xytext=(0,20),             #draws an arrow from one set of coordinates to the other
+            arrowprops=dict(arrowstyle='<-'),              #sets style of arrow
+            annotation_clip=False)
         #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
 
         """
@@ -119,7 +122,8 @@ def plot():
         if "WARNING" in i.get_text():
             plt.setp(i, color='y')
     fig.canvas.draw()
-    rospy.sleep(0.1)
+    #rospy.sleep(0.1)
+    time.sleep(0.1)
     #plt.close()
 
 
