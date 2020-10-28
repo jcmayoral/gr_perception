@@ -10,7 +10,7 @@ add_definitions(-Wno-dev)
 #find_package(Eigen3)
 find_package(CUDA 10.0 REQUIRED)
 find_package(PCL 1.8 REQUIRED)
-find_package(OpenCV 3 REQUIRED)
+find_package(OpenCV 3.4 REQUIRED)
 #SET(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++11")
 #SET(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++11")
 

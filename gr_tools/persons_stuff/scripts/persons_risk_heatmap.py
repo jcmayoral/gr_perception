@@ -34,7 +34,7 @@ def get_cmap(n, name='hsv'):
     return plt.cm.get_cmap(name, n)
 
 
-cmap = get_cmap(20,'hot')
+cmap = get_cmap(20,'binary')
 cmapdyn = get_cmap(20,'hsv')
 
 def plot():
@@ -43,12 +43,19 @@ def plot():
     global main_msg, indexes
     global cmap, cmapdyn
     #rospy.logwarn(indexes.objects)
+    colors = dict()
+    colors["DANGER"] = 'k'
+    colors["WARNING"] = 'r'
+    colors["SAFE"] = 'g'
+    colors["UNKNOWN"] = 'y'
+
 
     items = dict()
     for k in indexes.objects:
         key,value = k.object_id, k.risk_index
         items[key] = value
 
+    narea=80
     #N = 150
     """
     r = list()
@@ -65,25 +72,28 @@ def plot():
         x = p.pose.position.x
         y = p.pose.position.y
 
-        if p.is_dynamic:
-            ncolor = cmapdyn(ncount1)
-        else:
-            ncolor = cmap(ncount1)
+        #if p.is_dynamic:
+        #    ncolor = cmapdyn(ncount1)
+        #else:
+        #    ncolor = cmap(ncount1)
 
         risk = "UNKNOWN"
-        if p.object_id in items.keys():
-            risk = " RISK:" +  str(items[p.object_id])
+        #if p.object_id in items.keys():
+        #   risk = " RISK:" +  str(items[p.object_id])
 
-        riskmsg = "::UNKNOWN"
+        riskmsg = "UNKNOWN"
+        if not p.object_id in items:
+            break
         if p.object_id in items.keys():
             if 0.2 < items[p.object_id] < 0.8:
-                riskmsg = "::WARNING"
+                riskmsg = "WARNING"
             if items[p.object_id] > 0.8:
-                riskmsg = "::DANGER"
+                riskmsg = "DANGER"
             if items[p.object_id] < 0.2:
-                riskmsg = "::SAFE"
-        print x,y
-        ax.scatter(x, y,s=100)#, cmap="hot", s=narea+10.0, alpha=0.75, label=p.object_id+ riskmsg)
+                riskmsg = "SAFE"
+        print x,y, riskmsg
+        ax.scatter(x, y,c=cmap(int(20*items[p.object_id])), s=narea+10.0, alpha=0.75)#, label=riskmsg)
+        #ax.scatter(x, y,cmap='viridis',  c=cmap(int(20*items[p.object_id])), s=narea+10.0, alpha=0.75)#, label=riskmsg)
         #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
         ncount1 = ncount1 + 1
 
@@ -99,8 +109,8 @@ def plot():
 
 if __name__ == '__main__':
     rospy.init_node("persons_status_plotter")
-    #subindexes = rospy.Subscriber("/safety_indexes", RiskIndexes,
-    #                        callback_indexes, queue_size =1)
+    subindexes = rospy.Subscriber("/safety_indexes", RiskIndexes,
+                            callback_indexes, queue_size =1)
     sub = rospy.Subscriber("/pointcloud_lidar_processing/found_object", FoundObjectsArray,
                             callback, queue_size =1)
     while not rospy.is_shutdown():
@@ -124,13 +134,14 @@ if __name__ == '__main__':
     ax.set_yticks(np.arange(-6, 6, 1))
     plt.xticks(fontsize=20, rotation=0)
     plt.yticks(fontsize=20, rotation=0)
+    #plt.colorbar()#cmap, ax)
 
     plt.grid(linestyle='-', linewidth=2)
     plt.xlabel("Coordinate X [m]", fontsize=30)
     plt.ylabel("Coordinate Y [m]", fontsize=30)
-    plt.title("Range of selected detection method")
-    plt.legend()
-    plt.savefig("range_of_data_risk_zones.png")
+    plt.title("Risk Evaluation Map")
+    #  plt.legend()
+    plt.savefig("range_of_data_risk_zones_safetyindex.png")
     print "END"
     #rospy.sleep(10)
     #ax.show()
