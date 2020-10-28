@@ -2,6 +2,7 @@
 from safety_msgs.msg import FoundObjectsArray, RiskIndexes, RiskObject
 import rospy
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import numpy as np
 import time
 import copy
@@ -82,7 +83,7 @@ def plot():
             if items[p.object_id] < 0.2:
                 riskmsg = "::SAFE"
         print x,y
-        ax.scatter(x, y)#, cmap="hot", s=narea+10.0, alpha=0.75, label=p.object_id+ riskmsg)
+        ax.scatter(x, y,s=100)#, cmap="hot", s=narea+10.0, alpha=0.75, label=p.object_id+ riskmsg)
         #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
         ncount1 = ncount1 + 1
 
@@ -107,12 +108,29 @@ if __name__ == '__main__':
     #rospy.spin()
     print "out"
     #plt.show()
-    ax.set_xticks(np.arange(-10, 10, 1))
-    ax.set_yticks(np.arange(-10, 10, 1))
+    plt.rc('font', size=20) 
+    plt.rc('axes', titlesize=40) 
+    plt.rc('axes', labelsize=20) 
+    rect = patches.Rectangle((-1,-0.75),1.8,1.5)
+    ax.add_patch(rect)
+    warnrect = np.array([[5.0,-5.0],[5.0,5.0],[-5.0,5.0],[-5.0,-5.0],[5.0,-5.0]])
+    plt.plot(warnrect[:,0], warnrect[:,1],linewidth=4,c='y',label="Warning Zone")
+    dangerrect = np.array([[0,-4.0],[4.0,-2.0],[4.0,2.0],[0,4.0],[-4.0,2.0],[-4.0,-2.0],[0.,-4.0]])
+    plt.plot(dangerrect[:,0], dangerrect[:,1],linewidth=4,c='r',label="Danger Zone")
+    lethalrect = np.array([[3.5,1.0],[3.5,-1],[-2.0,-1],[-2.0,1],[3.5,1.0]])
+    plt.plot(lethalrect[:,0], lethalrect[:,1],linewidth=4,c='k', label="Lethal Zone")
+    
+    ax.set_xticks(np.arange(-8, 8, 1))
+    ax.set_yticks(np.arange(-6, 6, 1))
+    plt.xticks(fontsize=20, rotation=0)
+    plt.yticks(fontsize=20, rotation=0)
+
     plt.grid(linestyle='-', linewidth=2)
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.title("All positions collected on recorded bags on sensor frame")
-    plt.savefig("heatmap_recordeddata.png")
-    rospy.sleep(10)
+    plt.xlabel("Coordinate X [m]", fontsize=30)
+    plt.ylabel("Coordinate Y [m]", fontsize=30)
+    plt.title("Range of selected detection method")
+    plt.legend()
+    plt.savefig("range_of_data_risk_zones.png")
+    print "END"
+    #rospy.sleep(10)
     #ax.show()
