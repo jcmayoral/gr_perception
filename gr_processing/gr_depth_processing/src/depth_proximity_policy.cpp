@@ -22,7 +22,7 @@ namespace gr_depth_processing
     depth_camera_info  = "/camera/depth/camera_info";
     depth_camera_frame = "/camera/depth/image_rect_raw";
     boundingboxes_topic = "/darknet_ros/bounding_boxes";
-    
+
     if (args.size() > 0){
       loadFromRemappings<std::string>(args,"color_info",color_camera_info);
       loadFromRemappings<std::string>(args,"depth_info",depth_camera_info);
@@ -145,19 +145,19 @@ namespace gr_depth_processing
     if (!convertROSImage2Mat(process_frame, depth_image)){
       return;
     }
-    
+
     cleanUpCycle();
-    
+
     detected_objects_.poses.clear();
     double dist;
-    
+
     //TODO THESE ARE CONSTANTS
     float center_x = camera_depth_info_.K[2];
     float center_y = camera_depth_info_.K[5];
     float constant_x = 1.0 /  camera_depth_info_.K[0];
     float constant_y = 1.0 /  camera_depth_info_.K[4];
 
-    geometry_msgs::TransformStamped to_base_link_transform; 
+    geometry_msgs::TransformStamped to_base_link_transform;
 
     objects_array_.objects.clear();
 
@@ -233,7 +233,7 @@ namespace gr_depth_processing
       objects_array_.objects.push_back(object);
       }
       else{
-        ROS_WARN_STREAM("A new person has been found adding to the array");            
+        ROS_WARN_STREAM("A new person has been found adding to the array");
         //testing map array_person (memory)
         insertNewObject(person);
       }
