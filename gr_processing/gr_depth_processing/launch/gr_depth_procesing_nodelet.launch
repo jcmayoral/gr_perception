@@ -2,7 +2,7 @@
   <arg name="global_frame" default="base_link" />
   <arg name="color_image" default="/camera/color/image_raw" />
   <arg name="color_info" default="/camera/color/camera_info" />
-  <arg name="depth_image" default="/camera/depth/image_rect_raw" />
+  <arg name="depth_image" default="/camera/depth/image_raw" />
   <arg name="depth_info" default="/camera/depth/camera_info" />
 
   <node pkg="nodelet" type="nodelet" name="depth_processing_nodelet"  args="manager" output="screen">
@@ -14,6 +14,6 @@
   </node>
   <node pkg="nodelet" type="nodelet" name="depth_nodelet" args="load gr_depth_processing/MyNodeletClass depth_processing_nodelet" output="screen"/>
 
- <node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera" args="0 0 0 0 0 0 base_link camera_link" />
- <node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera2" args="0 0 0 0 0 1.575 camera_link camera_depth_optical_frame" />
+ <!--node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera" args="0 0 0 0 0 0 base_link camera_link" />
+ <node pkg="tf2_ros" type="static_transform_publisher" name="tf_broadcaster_base_camera2" args="0 0 0 0 0 1.575 camera_link camera_depth_optical_frame" /-->
 </launch>

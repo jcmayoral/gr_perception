@@ -141,7 +141,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
 
     if(t.points.size() ==0 ){
       return;
-    } 
+    }
     sensor_msgs::PointCloud2 output_pointcloud_;
     pcl::toROSMsg(t, output_pointcloud_);
     output_pointcloud_.header.frame_id = sensor_frame_;
@@ -171,6 +171,11 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
     auto init_size = pc->points.size();
     int number_of_surfaces = 0;
     bool start = true;
+
+    if (pc->points.size()<3){
+      ROS_ERROR("ERROR");
+      return;
+    }
 
     do{
       segmentation_filter_.setInputCloud(pc);
@@ -302,7 +307,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
           geometry_msgs::Quaternion cluster_orientation;
           tf2::Quaternion tf2_quat;
           cluster_center.orientation.w = 1.0;
-          
+
 
           //Testing
           pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZI>);
@@ -346,7 +351,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
             auto range_z = getAbsoluteRange<double>(z_vector);
 
             person.volume = range_x*range_y*range_z;
-            
+
             //var_i seems to be more stable that bb volume
             //ON TESTING
             auto matchingid = matchDetection(person);
@@ -365,11 +370,11 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               object.pose.orientation = person.pose.orientation;
 
               //IF the distance is bigger than 5? cm then compute orientation and update
-              if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){                
+              if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){
                 double dt = (ros::Time::now() - last_detection_).toSec();
 
                 auto nyaw =  calculateYaw<double>(nx,ny,nz);
-                auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);                       
+                auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);
                 //person is new reading
                 std::cout << "dt " << dt << std::endl;
 
@@ -391,7 +396,7 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               //Updating
               //ROS_INFO_STREAM("Updating person with id: " << matchingid);
               UpdateObject(matchingid, person);
-              
+
               //just add if seen before
               // bounding boxes... TODO merge with persons_array (if approved by memory then add)
               addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
@@ -402,14 +407,14 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
               //pcl::io::savePCDFile(filename.c_str(), *cloud_cluster.get(),true);
                           }
             else{
-              //ROS_WARN_STREAM("A new person has been found adding to the array");            
+              //ROS_WARN_STREAM("A new person has been found adding to the array");
               //testing map array_person (memory)
               //if (matchingid.compare(gr_detection::NODETECTION) !=0){
                 insertNewObject(person);
               //}
             }
             //Update for pose array
-            clusters_msg.poses.push_back(cluster_center);   
+            clusters_msg.poses.push_back(cluster_center);
             //for gridmap
             safety_msg.objects.push_back(object);
           }
