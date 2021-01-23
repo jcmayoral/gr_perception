@@ -6,18 +6,16 @@ from geometry_msgs.msg import Vector3Stamped
 import rospy
 import actionlib
 
-class ImageSinAnimationLabeler:
+class ImageSinAnimationLabeler(object):
     def __init__(self):
-        rospy.init_node('image_sim_animation_label')
         self.client = actionlib.SimpleActionClient('/darknet_ros/check_for_objects', CheckForObjectsAction)
         self.client.wait_for_server()
-        rospy.loginfo("Server found")
+        rospy.loginfo("Darknet Server found")
         self.image = Image()
         image_sub = Subscriber("/camera/color/image_raw", Image, queue_size=10)
         pos_sub = Subscriber("/animated_human/location", Vector3Stamped, queue_size=10)
         self.ats = ApproximateTimeSynchronizer([image_sub, pos_sub], queue_size=10, slop=1.0, allow_headerless=False)
         self.ats.registerCallback(self.call)
-        rospy.spin()
 
     def call(self, image, position):
         goal = CheckForObjectsActionGoal()
@@ -25,14 +23,19 @@ class ImageSinAnimationLabeler:
         goal.goal.image = image
         self.image = image
         print ("Called")
+        self.position = position.vector
         self.client.send_goal(goal.goal,
                             active_cb=self.callback_active,
                             feedback_cb=self.callback_feedback,
                             done_cb=self.callback_done)
         self.client.wait_for_result(rospy.Duration.from_sec(120.0))
 
+    def get_current_result(self):
+         self.client.get_result()
+
     def callback_active(self):
-        rospy.loginfo("Goal has been sent to the action server.")
+        pass
+        #rospy.loginfo("Goal has been sent to the action server.")
 
     def callback_done(self,state, result):
         #rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
@@ -40,8 +43,10 @@ class ImageSinAnimationLabeler:
         #if result:
             #print (self.client.get_result())
 
-    def callback_feedback(feedback):
+    def callback_feedback(self,feedback):
         rospy.loginfo("Feedback:%s" % str(feedback))
 
 if __name__ == "__main__":
-    ImageSinAnimationLabeler()
+    rospy.init_node('image_sim_animation_label')
+    imasin = ImageSinAnimationLabeler()
+    rospy.spin()
