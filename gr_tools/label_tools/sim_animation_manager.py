@@ -36,9 +36,10 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             print("error in folder")
             sys.exit()
 
+    def create_folders(self, path):
         try:
             for f in self.folder_name:
-                os.mkdir(f)
+                os.mkdir(os.path.join(path,f))
         except:
             pass
 
@@ -58,9 +59,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
     #Overridehas_turned
     def pcallback_feedback(self,feedback):
         rospy.loginfo("New Feedback:%s" % str(feedback))
-        print (self.initialize)
         if not self.initialize:
-            print ("first")
             self.initialize = True
             return
         self.backward_motion =feedback.backward
@@ -68,9 +67,14 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
 
     def callback_done(self,state, result):
+        try:
+            os.mkdir(str(self.count))
+        except:
+            pass
         #rospy.logwarn("new image bounding boxes for %s " %str(self.backward_motion))
         #rospy.logwarn("person pose %s " %str(self.transform()))
-        filename = os.path.join(os.getcwd(),self.folder_name[int(self.backward_motion)], "image_"+ str(result.id)+".jpg")
+        self.create_folders(str(self.count))
+        filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(result.id)+".jpg")
         cv_image = self.bridge.imgmsg_to_cv2(self.image, desired_encoding='passthrough')
         cv2.imwrite(filename, cv_image)
 
@@ -78,7 +82,7 @@ if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
     manager = SimAnimationManager()
 
-    for i in range(2):
+    for i in range(15):
         rospy.logerr("image request " + str(i) )
         manager.run()
     #rospy.spin()
