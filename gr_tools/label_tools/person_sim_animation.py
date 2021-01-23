@@ -27,7 +27,7 @@ class PersonSimAnimation(object):
         goal.goal.linearspeed = 2.0
         goal.goal.startpose.header.frame_id = "odom"
         goal.goal.startpose.pose.position.x = self.select_uniform_random(2,5)
-        goal.goal.startpose.pose.position.y = self.select_uniform_random(-2,2)
+        goal.goal.startpose.pose.position.y = self.select_uniform_random(-4,4)
         goal.goal.startpose.pose.orientation.w = 1.0
 
         goal.goal.goalPose.header.frame_id = "odom"

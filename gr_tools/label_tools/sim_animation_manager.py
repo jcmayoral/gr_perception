@@ -24,6 +24,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.folder_name = ["Forward", "Backward"]
         self.bridge = CvBridge()
+        self.distance = 1.0
 
         try:
             os.mkdir("testdataset")
@@ -76,7 +77,31 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.create_folders(str(self.count))
         filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(result.id)+".jpg")
         cv_image = self.bridge.imgmsg_to_cv2(self.image, desired_encoding='passthrough')
+
+        transform_pose = self.transform()
+        #rows cols
+        cols = cv_image.shape[0]
+        rows = cv_image.shape[1]
+        #print (height, width)
         cv2.imwrite(filename, cv_image)
+
+        bbs = result.bounding_boxes
+        for bb in bbs.bounding_boxes:
+            data = str(int(transform_pose.vector.x/self.distance)) + " "
+            rx = float(bb.xmax -bb.xmin)/2
+            cx = (rx/2)/rows
+            ry = float(bb.ymax -bb.ymin)/2
+            cy = (ry/2)/cols
+            data += str(cx) + " "
+            data += str(cy) + " "
+            data += str(rx/rows) + " "
+            data += str(ry/rows) + " "
+            print data
+            label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(result.id)+".txt")
+
+            with open(label_filename, "w") as text_file:
+                text_file.write(data)
+
 
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
