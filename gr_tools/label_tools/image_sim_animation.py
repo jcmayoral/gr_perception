@@ -11,7 +11,10 @@ class ImageSinAnimationLabeler(object):
         self.client = actionlib.SimpleActionClient('/darknet_ros/check_for_objects', CheckForObjectsAction)
         self.client.wait_for_server()
         rospy.loginfo("Darknet Server found")
+        self.odom_frame = "odom"
         self.image = Image()
+        self.id = 0
+        self.person_pose = Vector3Stamped()
         image_sub = Subscriber("/camera/color/image_raw", Image, queue_size=10)
         pos_sub = Subscriber("/animated_human/location", Vector3Stamped, queue_size=10)
         self.ats = ApproximateTimeSynchronizer([image_sub, pos_sub], queue_size=10, slop=1.0, allow_headerless=False)
@@ -19,11 +22,12 @@ class ImageSinAnimationLabeler(object):
 
     def call(self, image, position):
         goal = CheckForObjectsActionGoal()
-        goal.goal.id = 1
+        goal.goal.id = self.id
+        self.id = self.id + 1
         goal.goal.image = image
         self.image = image
-        print ("Called")
-        self.position = position.vector
+        #print ("Called")
+        self.person_pose = position
         self.client.send_goal(goal.goal,
                             active_cb=self.callback_active,
                             feedback_cb=self.callback_feedback,

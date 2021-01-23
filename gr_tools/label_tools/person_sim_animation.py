@@ -36,21 +36,21 @@ class PersonSimAnimation(object):
         goal.goal.goalPose.pose.orientation.w = 1.0
         print ("Calling new motion")
         self.pclient.send_goal(goal.goal,
-                            active_cb=self.callback_active,
-                            feedback_cb=self.callback_feedback,
-                            done_cb=self.callback_done)
+                            active_cb=self.pcallback_active,
+                            feedback_cb=self.pcallback_feedback,
+                            done_cb=self.pcallback_done)
         self.pclient.wait_for_result(rospy.Duration.from_sec(120.0))
 
-    def callback_active(self):
+    def pcallback_active(self):
         rospy.loginfo("Goal has been sent to the action server.")
 
-    def callback_done(self,state, result):
+    def pcallback_done(self,state, result):
         #rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
         rospy.loginfo("This is the result state %d "% state)
         #if result:
             #print ()
 
-    def callback_feedback(self,feedback):
+    def pcallback_feedback(self,feedback):
         rospy.loginfo("Feedback:%s" % str(feedback))
 
 if __name__ == "__main__":
