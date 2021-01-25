@@ -28,12 +28,12 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.seq = 0
 
         try:
-            os.mkdir("testdataset")
+            os.mkdir("testdataset-2")
         except:
             pass
 
         try:
-            os.chdir("testdataset")
+            os.chdir("testdataset-2")
         except:
             print("error in folder")
             sys.exit()
@@ -85,13 +85,11 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         cols = cv_image.shape[0]
         rows = cv_image.shape[1]
         #print (height, width)
-        cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )
-        with open("files.txt", "a+") as text_file:
-            text_file.write(filename+"\n")
-
+        flag = False
 
         bbs = result.bounding_boxes
         for bb in bbs.bounding_boxes:
+            flag = True
             data = str(int(transform_pose.vector.x/self.distance)) + " "
             rx = float(bb.xmax -bb.xmin)/2
             cx = (rx/2)/rows
@@ -107,6 +105,10 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             with open(label_filename, "a+") as text_file:
                 text_file.write(data)
 
+        if flag:
+            cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )
+            with open("files.txt", "a+") as text_file:
+                text_file.write(filename+"\n")
         self.seq = self.seq + 1
 
 
