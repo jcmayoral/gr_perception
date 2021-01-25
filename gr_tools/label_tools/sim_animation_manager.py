@@ -25,6 +25,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.folder_name = ["Forward", "Backward"]
         self.bridge = CvBridge()
         self.distance = 1.0
+        self.seq = 0
 
         try:
             os.mkdir("testdataset")
@@ -47,6 +48,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
     def run(self):
         self.person_call()
         self.count = self.count + 1
+        self.seq = 0
         self.backward_motion = False
         self.initialize = False
 
@@ -75,7 +77,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         #rospy.logwarn("new image bounding boxes for %s " %str(self.backward_motion))
         #rospy.logwarn("person pose %s " %str(self.transform()))
         self.create_folders(str(self.count))
-        filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(result.id)+".jpg")
+        filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".jpg")
         cv_image = self.bridge.imgmsg_to_cv2(self.image, desired_encoding='passthrough')
 
         transform_pose = self.transform()
@@ -83,7 +85,10 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         cols = cv_image.shape[0]
         rows = cv_image.shape[1]
         #print (height, width)
-        cv2.imwrite(filename, cv_image)
+        cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )
+        with open("files.txt", "a+") as text_file:
+            text_file.write(filename+"\n")
+
 
         bbs = result.bounding_boxes
         for bb in bbs.bounding_boxes:
@@ -97,10 +102,13 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             data += str(rx/rows) + " "
             data += str(ry/rows) + " "
             print data
-            label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(result.id)+".txt")
+            label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".txt")
 
-            with open(label_filename, "w") as text_file:
+            with open(label_filename, "a+") as text_file:
                 text_file.write(data)
+
+        self.seq = self.seq + 1
+
 
 
 if __name__ == '__main__':
