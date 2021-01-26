@@ -24,16 +24,16 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.folder_name = ["Forward", "Backward"]
         self.bridge = CvBridge()
-        self.distance = 1.0
+        self.distance = 2.0
         self.seq = 0
 
         try:
-            os.mkdir("testdataset-2")
+            os.mkdir("testdataset")
         except:
             pass
 
         try:
-            os.chdir("testdataset-2")
+            os.chdir("testdataset")
         except:
             print("error in folder")
             sys.exit()
@@ -90,11 +90,12 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         bbs = result.bounding_boxes
         for bb in bbs.bounding_boxes:
             flag = True
-            data = str(int(transform_pose.vector.x/self.distance)) + " "
+            ring = min(3,int(transform_pose.vector.x/self.distance))
+            data = str(ring) + " "
             rx = float(bb.xmax -bb.xmin)/2
-            cx = (rx/2)/rows
+            cx = (rx/2+ bb.xmin)/rows
             ry = float(bb.ymax -bb.ymin)/2
-            cy = (ry/2)/cols
+            cy = (ry/2 + bb.ymin)/cols
             data += str(cx) + " "
             data += str(cy) + " "
             data += str(rx/rows) + " "
