@@ -97,8 +97,9 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             cy = float(ry/2 + bb.ymin)/height
             data += str(cx) + " "
             data += str(cy) + " "
-            data += str(float(rx)/width) + " "
-            data += str(float(ry)/height) + "\n"
+            data += str(float(ry)/height) + " "
+            data += str(float(rx)/width) + "\n"
+
             print data, rx, ry
             label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".txt")
 
