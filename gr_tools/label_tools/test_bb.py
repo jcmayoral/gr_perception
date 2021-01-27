@@ -13,7 +13,7 @@ while os.path.exists(filespath+".txt"):
     detections = f.readline().split(" ")
     img = cv2.imread(filespath+'.jpg')#, cv2.IMREAD_GRAYSCALE)
     print (detections)
-    height, width, channels = img.shape
+    width, height, channels = img.shape
     detections = [float(d) for d in detections]
     print (detections)
     cll, cx1, cy1, cwidth, cheight  = detections

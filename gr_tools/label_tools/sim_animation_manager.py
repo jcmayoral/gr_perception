@@ -92,9 +92,9 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             ring = min(3,int(transform_pose.vector.x/self.distance))
             data = str(ring) + " "
             rx = bb.xmax -bb.xmin
-            cx = float(rx/2+ bb.xmin)/width
+            cx = float(rx/2+ bb.xmin)/height
             ry = bb.ymax -bb.ymin
-            cy = float(ry/2 + bb.ymin)/height
+            cy = float(ry/2 + bb.ymin)/width
             data += str(cx) + " "
             data += str(cy) + " "
             data += str(float(ry)/height) + " "
