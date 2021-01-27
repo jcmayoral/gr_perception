@@ -88,13 +88,13 @@ from keras.applications import MobileNet, InceptionV3
 from .unet import unet
 
 def extend_with_depth(im_size, n_classes=4,activation = "relu", multiplier=2):
-    #input_layer = Input(shape=(im_size[0], im_size[1], 3))
+    input_layer = Input(shape=(im_size[0], im_size[1], 3))
     input_layer2 = Input(shape=(im_size[0], im_size[1], 1))
 
-    backbonemodel = MobileNet(input_shape=(im_size[0], im_size[1],  3), include_top=False, alpha=0.25)#, weights="imagenet")
+    #backbonemodel = MobileNet(input_shape=(im_size[0], im_size[1],  3), include_top=False, alpha=0.25)#, weights="imagenet")
     #backbonemodel = InceptionV3(input_shape=(im_size[0], im_size[1],  3), include_top=False)
     #backbonemodel = unet(pretrained_weights = None,input_size = (im_size[0], im_size[1],  3), neuron_factor=1, compile=False)
-    """
+
     model0 = create_convolution_sequence(input_layer,4*multiplier, kernel_size=(1,1), padding='same', activation=activation, pooling=True)
     model01 = create_convolution_sequence(model0,2*multiplier, kernel_size=(1,1), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
     model02 = create_convolution_sequence(model01,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
@@ -110,12 +110,13 @@ def extend_with_depth(im_size, n_classes=4,activation = "relu", multiplier=2):
     model3 = create_convolution_sequence(input_layer,4*multiplier, kernel_size=(7,7), padding='same', activation=activation, pooling=True)
     model31 = create_convolution_sequence(model3,2*multiplier, kernel_size=(7,7), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
     model32 = create_convolution_sequence(model31,5*multiplier, kernel_size=(3,3), scale_pool=(2,2), pooling=True, padding='same', activation=activation)
-    """
+
     x = create_convolution_sequence(input_layer2,10*multiplier, kernel_size=(3,3), scale_pool=(4,4), pooling=True, padding='same', activation=activation)
-    x = create_convolution_sequence(x,16*multiplier, kernel_size=(3,3), padding='same', scale_pool=(4,4), pooling=True, activation=activation)
-    x = create_convolution_sequence(x,256, kernel_size=(5,5), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
-    #concatenated = Concatenate()([model12, model22, model32, model_42])#, model4])#, model4])
-    concatenated = Concatenate()([backbonemodel.output, x])#, model4])#, model4])
+    x = create_convolution_sequence(x,16*multiplier, kernel_size=(3,3), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
+    x = create_convolution_sequence(x,8, kernel_size=(5,5), padding='same', scale_pool=(2,2), pooling=True, activation=activation)
+
+    concatenated = Concatenate()([model12, model22, model32, x])#, model4])#, model4])
+    #concatenated = Concatenate()([backbonemodel.output, x])#, model4])#, model4])
     #concatenated = create_convolution_sequence(concatenated,10*multiplier, kernel_size=(3,3), scale_pool=(4,4), pooling=True, padding='valid', activation=activation)
     #concatenated = create_convolution_sequence(concatenated,5*multiplier, kernel_size=(3,3), scale_pool=(4,4), pooling=True, padding='valid', activation=activation)
     #concatenated = create_convolution_sequence(concatenated,2*multiplier, kernel_size=(3,3), scale_pool=(4,4), pooling=True, padding='valid', activation=activation)
@@ -129,6 +130,8 @@ def extend_with_depth(im_size, n_classes=4,activation = "relu", multiplier=2):
     if n_classes == 1:
         o_activation = "sigmoid"
     output = Dense(n_classes,activation=o_activation)(flattened)
-    model = Model(inputs=[backbonemodel.input,input_layer2], outputs=output)
+    #model = Model(inputs=[backbonemodel.input,input_layer2], outputs=output)
+    model = Model(inputs=[input_layer,input_layer2], outputs=output)
+
     #model.summary()
     return model
