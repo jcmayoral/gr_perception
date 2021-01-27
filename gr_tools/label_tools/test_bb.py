@@ -4,9 +4,10 @@ import os
 import sys
 
 img_index = int(sys.argv[1])
+person_id = "2"
 print(img_index)
 image_id = "image_" + str(img_index)
-filespath = os.path.join("testdataset", "0","Forward",image_id)
+filespath = os.path.join("testdataset", person_id,"Forward",image_id)
 print(filespath)
 while os.path.exists(filespath+".txt"):
     f = open(filespath+".txt", "r")
@@ -30,5 +31,5 @@ while os.path.exists(filespath+".txt"):
     cv2.waitKey()
     img_index = img_index + 1
     image_id = "image_" + str(img_index)
-    filespath = os.path.join("testdataset", "0","Forward",image_id)
+    filespath = os.path.join("testdataset", person_id,"Forward",image_id)
     print(filespath)
