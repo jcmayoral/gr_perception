@@ -87,7 +87,8 @@ def all_gather(data):
     # serialized to a Tensor
     buffer = pickle.dumps(data)
     storage = torch.ByteStorage.from_buffer(buffer)
-    tensor = torch.ByteTensor(storage).to("cuda")
+    #tensor = torch.ByteTensor(storage).to("cuda")
+    tensor = torch.BoolTensor(storage).to("cuda")
 
     # obtain Tensor size of each rank
     local_size = torch.tensor([tensor.numel()], device="cuda")
