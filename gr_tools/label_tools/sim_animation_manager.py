@@ -82,8 +82,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
         transform_pose = self.transform()
         #rows cols
-        cols = cv_image.shape[0]
-        rows = cv_image.shape[1]
+        height, width, channels = cv_image.shape
         #print (height, width)
         flag = False
 
@@ -92,15 +91,15 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             flag = True
             ring = min(3,int(transform_pose.vector.x/self.distance))
             data = str(ring) + " "
-            rx = float(bb.xmax -bb.xmin)/2
-            cx = (rx/2+ bb.xmin)/rows
-            ry = float(bb.ymax -bb.ymin)/2
-            cy = (ry/2 + bb.ymin)/cols
+            rx = bb.xmax -bb.xmin
+            cx = float(rx/2+ bb.xmin)/width
+            ry = bb.ymax -bb.ymin
+            cy = float(ry/2 + bb.ymin)/height
             data += str(cx) + " "
             data += str(cy) + " "
-            data += str(rx/rows) + " "
-            data += str(ry/rows) + " "
-            print data
+            data += str(float(rx)/width) + " "
+            data += str(float(ry)/height) + " "
+            print data, rx, ry
             label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".txt")
 
             with open(label_filename, "a+") as text_file:
