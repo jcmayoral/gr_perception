@@ -92,13 +92,14 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             ring = min(3,int(transform_pose.vector.x/self.distance))
             data = str(ring) + " "
             rx = bb.xmax -bb.xmin
-            cx = float(rx/2+ bb.xmin)/height
+            cx = float(rx/2+ bb.xmin)/width
             ry = bb.ymax -bb.ymin
-            cy = float(ry/2 + bb.ymin)/width
+            print height, width
+            cy = float(ry/2 + bb.ymin)/height
             data += str(cx) + " "
             data += str(cy) + " "
-            data += str(float(ry)/height) + " "
-            data += str(float(rx)/width) + "\n"
+            data += str(float(rx)/width) + " "
+            data += str(float(ry)/height) + "\n"
 
             print data, rx, ry
             label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".txt")
