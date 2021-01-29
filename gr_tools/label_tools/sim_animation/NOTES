@@ -1,0 +1,2 @@
+shuf -n N input > output
+
