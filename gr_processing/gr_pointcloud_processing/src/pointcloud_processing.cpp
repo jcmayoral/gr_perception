@@ -86,6 +86,12 @@ namespace gr_pointcloud_processing{
 
   void PointCloudProcessor::executeCB(const gr_action_msgs::GRPCProcessGoalConstPtr &goal){
     ROS_INFO("action server called");
+    sensor_frame_ = goal->goal_pc.header.frame_id;
+    pcl::PointCloud<pcl::PointXYZI>::Ptr output (new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::fromROSMsg(goal->goal_pc, *output);
+    //ROS_INFO("PointCloud conversion succeded");
+    auto result = run_filter(output);
+    cluster();
     result_.found_objects = safety_msg_;
     as_->setSucceeded(result_);
   }
