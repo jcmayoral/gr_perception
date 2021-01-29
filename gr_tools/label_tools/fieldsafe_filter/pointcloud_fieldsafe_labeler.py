@@ -30,8 +30,9 @@ class PCFieldSafeLabeler:
         rospy.loginfo("Goal has been sent to the action server.")
 
     def callback_done(self,state, result):
-        rospy.loginfo("This is the result state %d "% state)
-        rospy.loginfo("This is the result result %s "% str(result))
+        pass
+        #rospy.loginfo("This is the result state %d "% state)
+        #rospy.loginfo("This is the result result %s "% str(result))
 
     def callback_feedback(self,feedback):
         rospy.loginfo("Feedback:%s" % str(feedback))
@@ -55,15 +56,20 @@ if __name__ == "__main__":
     pclabeler = PCFieldSafeLabeler()
     filename = ""
     for topic, msg, t in bag.read_messages(topics=['/velodyne_points']):
-        rospy.sleep(0.05)
+        #rospy.sleep(0.05)
         filename = str(msg.header.stamp.to_nsec())
         current_result = pclabeler.call(msg)
         with open(filename,'a') as f:
+            if len(current_result.found_objects.objects)> 0:
+                print(current_result)
+
             for detection in current_result.found_objects.objects:
-                f.write("%f %f %f "%(detection.pose.position.x, detection.pose.position.y, detection.pose.position.z))
-                f.write("%f %f %f %f "%(detection.pose.orientation.x, detection.pose.orientation.y, detection.pose.orientation.z,  detection.pose.orientation.w))
-                f.write("%f %f %f "%(detection.speed.x, detection.speed.y, detection.speed.z))
-                f.write("%f \n"%(detection.is_dynamic))
+                if detection.pose.position.x > 0:
+                    #x: -0.155390086843 FILTER the fucking car that it's detected all frmes
+                    f.write("%f %f %f "%(detection.pose.position.x, detection.pose.position.y, detection.pose.position.z))
+                    f.write("%f %f %f %f "%(detection.pose.orientation.x, detection.pose.orientation.y, detection.pose.orientation.z,  detection.pose.orientation.w))
+                    f.write("%f %f %f "%(detection.speed.x, detection.speed.y, detection.speed.z))
+                    f.write("%f \n"%(detection.is_dynamic))
 
     bag.close()
     #rospy.spin()
