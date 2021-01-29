@@ -59,6 +59,14 @@ if __name__ == "__main__":
     count = 0
 
     import numpy as np
+    import cv2
+    from cv_bridge import CvBridge, CvBridgeError
+
+    try:
+        bridge = CvBridge()
+    except CvBridgeError as e:
+        sys.exit()
+
     all_pcfiles = os.listdir(PC_PATH)
     all_timestamps = [np.double(d)/1000000000 for d in all_pcfiles]
 
@@ -74,18 +82,44 @@ if __name__ == "__main__":
             for detection in current_result.bounding_boxes.bounding_boxes:
                 if detection.Class != "person":
                     print "Ignoring " , detection.Class
+                    rospy.sleep(0.1)
                     continue
-                else:
-                    print "person found to be implemented"
-                    count += 1
+                #else:
+                    #print "person found to be implemented", detection.Class
+                    #count += 1
                     #continue
 
                 nfilename = np.double(filename)/1000000000
                 arg_min = np.argmin([np.fabs(nfilename-d) for d in all_timestamps])
+
+                flag = False
+                with open(PC_PATH+str(all_pcfiles[arg_min])) as f:
+                    lines = f.readlines()
+                    if not lines:
+                        print('FILE IS EMPTY')
+                        flag = True
+                    else:
+                        for line in lines:
+                            print(line)
+
+                if flag:
+                    print "no pc detected"
+                    continue
+
                 print "closer pointcloud ", all_pcfiles[arg_min]
                 print "Img " , nfilename
                 print "closest ", np.min([np.fabs(nfilename-d) for d in all_timestamps])
+
+                cv_image = bridge.imgmsg_to_cv2(msg, "bgr8")
+                height, width, channels = cv_image.shape
+                # Create a Rectangle patch
+                cv2.rectangle(cv_image, (detection.xmin, detection.ymin), (detection.xmax, detection.ymax), (255,0,0), 2)
+                cv2.imshow("test", cv_image)
+                #cv2.waitKey()
+                count = count + 1
                 continue
+
+
 
 
                 if detection.pose.position.x > 0:
