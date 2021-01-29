@@ -56,6 +56,10 @@
 //Save PCD
  #include <pcl/io/pcd_io.h>
 
+//ACTIONLIB
+#include <gr_action_msgs/GRPCProcessAction.h>
+#include <actionlib/server/simple_action_server.h>
+
 namespace gr_pointcloud_processing{
   
   template <typename T>
@@ -111,17 +115,24 @@ namespace gr_pointcloud_processing{
 
     //Testing
     //gr_detection::PersonArray persons_array_;
+    //ACTIONLIB
+    boost::shared_ptr<actionlib::SimpleActionServer<gr_action_msgs::GRPCProcessAction>> as_;
+    gr_action_msgs::GRPCProcessFeedback feedback_;
+    gr_action_msgs::GRPCProcessResult result_;
+    safety_msgs::FoundObjectsArray safety_msg_;
 
   public:
-      virtual void onInit();
-      void pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg);
-      int run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered);
-      template <class T> void publishPointCloud(T);
-      void timer_cb(const ros::TimerEvent&);
-      void cluster();
-      void publishBoundingBoxes();
-      void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label);
-      void dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level);
-      void removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc);
+    //ACTION LibCB
+    void executeCB(const gr_action_msgs::GRPCProcessGoalConstPtr &goal);
+    virtual void onInit();
+    void pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg);
+    int run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered);
+    template <class T> void publishPointCloud(T);
+    void timer_cb(const ros::TimerEvent&);
+    void cluster();
+    void publishBoundingBoxes();
+    void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label);
+    void dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level);
+    void removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc);
   };
 };
