@@ -31,6 +31,7 @@ class PCFieldSafeLabeler:
 
     def callback_done(self,state, result):
         rospy.loginfo("This is the result state %d "% state)
+        rospy.loginfo("This is the result result %s "% str(result))
 
     def callback_feedback(self,feedback):
         rospy.loginfo("Feedback:%s" % str(feedback))
