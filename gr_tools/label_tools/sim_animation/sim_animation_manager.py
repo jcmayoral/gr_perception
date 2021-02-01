@@ -144,14 +144,13 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
                 #cv2.waitKey()
                 cv2.imwrite(depth_filename, cv_image_norm)
         self.seq = self.seq + 1
-
-
+        rospy.sleep(10.0)
 
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
     manager = SimAnimationManager(depth=True)
 
-    for i in range(30):
+    for i in range(500):
         rospy.logerr("image request " + str(i) )
         manager.run()
     #rospy.spin()

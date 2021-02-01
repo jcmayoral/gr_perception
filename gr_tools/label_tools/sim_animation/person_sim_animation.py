@@ -24,7 +24,7 @@ class PersonSimAnimation(object):
         goal.goal.setstart = True
         goal.goal.is_motion = True
         goal.goal.is_infinite_motion = False
-        goal.goal.linearspeed = self.select_uniform_random(0.1,1.2)
+        goal.goal.linearspeed = self.select_uniform_random(0.5,1.2)
         goal.goal.startpose.header.frame_id = "odom"
         goal.goal.startpose.pose.position.x = self.select_uniform_random(0.5,5)
         goal.goal.startpose.pose.position.y = self.select_uniform_random(-2,2)
