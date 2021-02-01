@@ -34,7 +34,6 @@ class PersonSimAnimation(object):
         goal.goal.goalPose.pose.position.x = self.select_uniform_random(7,10)
         goal.goal.goalPose.pose.position.y = self.select_uniform_random(-2,2)
         goal.goal.goalPose.pose.orientation.w = 1.0
-        print ("Calling new motion")
         self.pclient.send_goal(goal.goal,
                             active_cb=self.pcallback_active,
                             feedback_cb=self.pcallback_feedback,

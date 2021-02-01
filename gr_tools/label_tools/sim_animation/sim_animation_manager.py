@@ -8,6 +8,7 @@ import os
 import sys
 from cv_bridge import CvBridge
 import cv2
+import numpy as np
 
 class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
     def __init__(self, depth = False):
@@ -86,10 +87,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".jpg")
         cv_image = self.bridge.imgmsg_to_cv2(self.image, desired_encoding='passthrough')
 
-        cv_depth_image = self.bridge.imgmsg_to_cv2(self.current_depth, desired_encoding='passthrough')
-        print cv_depth_image.shape
-        cv2.imshow("Depth", cv_depth_image)
-        cv2.waitKey()
+        #cv2.waitKey()
         transform_pose = self.transform()
         #rows cols
         height, width, channels = cv_image.shape
@@ -98,20 +96,22 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
         bbs = result.bounding_boxes
         for bb in bbs.bounding_boxes:
+            if bb.Class != "person":
+                print "Skipping " +bb.Class
+                continue
             flag = True
             ring = min(3,int(transform_pose.vector.x/self.distance))
             data = str(ring) + " "
             rx = bb.xmax -bb.xmin
             cx = float(rx/2+ bb.xmin)/width
             ry = bb.ymax -bb.ymin
-            print height, width
             cy = float(ry/2 + bb.ymin)/height
             data += str(cx) + " "
             data += str(cy) + " "
             data += str(float(rx)/width) + " "
             data += str(float(ry)/height) + "\n"
 
-            print data, rx, ry
+            #print data, rx, ry
             label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".txt")
 
             with open(label_filename, "a+") as text_file:
@@ -119,8 +119,30 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
         if flag:
             cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )
+            #append image to master file
             with open("files.txt", "a+") as text_file:
                 text_file.write(filename+"\n")
+            if self.depth:
+                depth_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "depthimage_"+ str(self.seq)+".jpg")
+                np_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "depthimage_"+ str(self.seq)+".npy")
+                cv_depth_image = self.bridge.imgmsg_to_cv2(self.current_depth, desired_encoding='passthrough')
+                #cv_depth_image = np.asarray(cv_depth_image, dtype=np.uint8)
+                #cv_image_norm = cv2.normalize(cv_depth_image, None, 0, 2, cv2.NORM_L1)
+                #cv_image_array = np.array(cv_depth_image, dtype = np.uint8)
+                #cv_image_norm = cv2.normalize(cv_image_array, cv_image_array, 0, 1, cv2.NORM_MINMAX)
+                #depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(cv_depth_image, alpha=0.03), cv2.COLORMAP_JET)
+                #print np.unique(cv_image_norm, return_counts=True)
+                #print cv_image_norm.shape
+                #print cv_image_norm.shape
+                #
+                #cv_image_norm = cv_image_norm.reshape(480,640,3)
+                depth_image = np.asanyarray(cv_depth_image)
+                cv_image_norm = cv2.normalize(depth_image, depth_image, 0, 255, cv2.NORM_MINMAX)
+                #cv2.imshow("Depth", cv_image_norm)
+                np.save(np_filename, depth_image)
+
+                #cv2.waitKey()
+                cv2.imwrite(depth_filename, cv_image_norm)
         self.seq = self.seq + 1
 
 
