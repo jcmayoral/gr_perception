@@ -7,7 +7,7 @@ import rospy
 import actionlib
 
 class ImageSinAnimationLabeler(object):
-    def __init__(self):
+    def __init__(self, depth = False):
         self.client = actionlib.SimpleActionClient('/darknet_ros/check_for_objects', CheckForObjectsAction)
         self.client.wait_for_server()
         rospy.loginfo("Darknet Server found")
@@ -16,9 +16,18 @@ class ImageSinAnimationLabeler(object):
         self.id = 0
         self.person_pose = Vector3Stamped()
         image_sub = Subscriber("/camera/color/image_raw", Image, queue_size=10)
+        depth_sub = Subscriber("/camera/depth/image_raw", Image, queue_size=10)
         pos_sub = Subscriber("/animated_human/location", Vector3Stamped, queue_size=10)
-        self.ats = ApproximateTimeSynchronizer([image_sub, pos_sub], queue_size=10, slop=1.0, allow_headerless=False)
-        self.ats.registerCallback(self.call)
+
+        self.depth = depth
+        self.current_depth = None
+
+        if depth:
+            self.ats = ApproximateTimeSynchronizer([image_sub, depth_sub, pos_sub], queue_size=10, slop=1.0, allow_headerless=False)
+            self.ats.registerCallback(self.depth_call)
+        else:
+            self.ats = ApproximateTimeSynchronizer([image_sub, pos_sub], queue_size=10, slop=1.0, allow_headerless=False)
+            self.ats.registerCallback(self.call)
 
     def call(self, image, position):
         goal = CheckForObjectsActionGoal()
@@ -34,8 +43,27 @@ class ImageSinAnimationLabeler(object):
                             done_cb=self.callback_done)
         self.client.wait_for_result(rospy.Duration.from_sec(120.0))
 
+    def depth_call(self, image, img_depth, position):
+        goal = CheckForObjectsActionGoal()
+        goal.goal.id = self.id
+        self.id = self.id + 1
+        goal.goal.image = image
+        self.current_depth = img_depth
+        self.image = image
+        #print ("Called")
+        self.person_pose = position
+        self.client.send_goal(goal.goal,
+                            active_cb=self.callback_active,
+                            feedback_cb=self.callback_feedback,
+                            done_cb=self.callback_done)
+        self.client.wait_for_result(rospy.Duration.from_sec(120.0))
+
+
     def get_current_result(self):
-         self.client.get_result()
+        return self.client.get_result()
+
+    def get_current_depth(self):
+        return self.current_depth
 
     def callback_active(self):
         pass

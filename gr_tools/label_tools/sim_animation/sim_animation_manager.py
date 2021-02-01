@@ -10,12 +10,12 @@ from cv_bridge import CvBridge
 import cv2
 
 class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
-    def __init__(self):
+    def __init__(self, depth = False):
         #super(ImageSinAnimationLabeler, self).__init__()
         #super(PersonSimAnimation, self).__init__()
         self.count = 0
         PersonSimAnimation.__init__(self)
-        ImageSinAnimationLabeler.__init__(self)
+        ImageSinAnimationLabeler.__init__(self,self)
         self.backward_motion = False
         self.initialize = False
         self.target_frame = "camera_link"
@@ -34,12 +34,12 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             sys.exit()
 
         try:
-            os.mkdir("testdataset")
+            os.mkdir("depth_testdataset")
         except:
             pass
 
         try:
-            os.chdir("testdataset")
+            os.chdir("depth_testdataset")
         except:
             print("error in folder")
             sys.exit()
@@ -86,6 +86,10 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".jpg")
         cv_image = self.bridge.imgmsg_to_cv2(self.image, desired_encoding='passthrough')
 
+        cv_depth_image = self.bridge.imgmsg_to_cv2(self.current_depth, desired_encoding='passthrough')
+        print cv_depth_image.shape
+        cv2.imshow("Depth", cv_depth_image)
+        cv2.waitKey()
         transform_pose = self.transform()
         #rows cols
         height, width, channels = cv_image.shape
@@ -123,7 +127,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
-    manager = SimAnimationManager()
+    manager = SimAnimationManager(depth=True)
 
     for i in range(30):
         rospy.logerr("image request " + str(i) )
