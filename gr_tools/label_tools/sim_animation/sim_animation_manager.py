@@ -9,12 +9,13 @@ import sys
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
+from test_bb import plot_bbs
 
 class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
-    def __init__(self, depth = False):
+    def __init__(self, dbpath, depth = False, version = 1000, start_count = 0):
         #super(ImageSinAnimationLabeler, self).__init__()
         #super(PersonSimAnimation, self).__init__()
-        self.count = 0
+        self.count = start_count
         PersonSimAnimation.__init__(self)
         ImageSinAnimationLabeler.__init__(self,self)
         self.backward_motion = False
@@ -29,18 +30,18 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.seq = 0
 
         try:
-            os.chdir("..")
+            os.chdir(dbpath)
         except:
-            print("error in folder")
+            print("error in folder" + dbpath)
             sys.exit()
 
         try:
-            os.mkdir("depth_testdataset")
+            os.mkdir("depth_testdataset_v"+ str(version))
         except:
             pass
 
         try:
-            os.chdir("depth_testdataset")
+            os.chdir("depth_testdataset_v"+str(version))
         except:
             print("error in folder")
             sys.exit()
@@ -95,6 +96,8 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         flag = False
 
         bbs = result.bounding_boxes
+        bbsx = []
+
         for bb in bbs.bounding_boxes:
             if bb.Class != "person":
                 print "Skipping " +bb.Class
@@ -110,6 +113,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             data += str(cy) + " "
             data += str(float(rx)/width) + " "
             data += str(float(ry)/height) + "\n"
+            bbsx =[1,cx,cy,float(rx)/width,float(ry)/height]
 
             #print data, rx, ry
             label_filename = os.path.join(os.getcwd(),str(self.count),self.folder_name[int(self.backward_motion)], "image_"+ str(self.seq)+".txt")
@@ -119,6 +123,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
         if flag:
             cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )
+            #plot_bbs(cv_image, bbsx, visualize=True)
             #append image to master file
             with open("files.txt", "a+") as text_file:
                 text_file.write(filename+"\n")
@@ -144,13 +149,15 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
                 #cv2.waitKey()
                 cv2.imwrite(depth_filename, cv_image_norm)
         self.seq = self.seq + 1
-        rospy.sleep(10.0)
+        self.is_processing = False
+        #rospy.sleep(1.0)
 
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
-    manager = SimAnimationManager(depth=True)
+    dbpath = "/media/datasets/simanimation/"
+    manager = SimAnimationManager(dbpath, depth=True, version = 3, start_count = 0)
 
-    for i in range(500):
+    for i in range(2):
         rospy.logerr("image request " + str(i) )
         manager.run()
     #rospy.spin()

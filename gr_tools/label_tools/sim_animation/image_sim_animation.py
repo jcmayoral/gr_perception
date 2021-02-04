@@ -5,6 +5,7 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import Vector3Stamped
 import rospy
 import actionlib
+import copy
 
 class ImageSinAnimationLabeler(object):
     def __init__(self, depth = False):
@@ -15,6 +16,7 @@ class ImageSinAnimationLabeler(object):
         self.image = Image()
         self.id = 0
         self.person_pose = Vector3Stamped()
+        self.is_processing = False
         image_sub = Subscriber("/camera/color/image_raw", Image, queue_size=10)
         depth_sub = Subscriber("/camera/depth/image_raw", Image, queue_size=10)
         pos_sub = Subscriber("/animated_human/location", Vector3Stamped, queue_size=10)
@@ -30,6 +32,9 @@ class ImageSinAnimationLabeler(object):
             self.ats.registerCallback(self.call)
 
     def call(self, image, position):
+        if self.is_processing:
+            print "skip"
+            return
         goal = CheckForObjectsActionGoal()
         goal.goal.id = self.id
         self.id = self.id + 1
@@ -44,6 +49,9 @@ class ImageSinAnimationLabeler(object):
         self.client.wait_for_result(rospy.Duration.from_sec(120.0))
 
     def depth_call(self, image, img_depth, position):
+        if self.is_processing:
+            print "skip"
+            return
         goal = CheckForObjectsActionGoal()
         goal.goal.id = self.id
         self.id = self.id + 1
