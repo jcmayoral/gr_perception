@@ -12,30 +12,44 @@ def plot_bbs(image, bbs, visualize=False):
     y1 = int(np.rint((cy1 - cheight/2)*height))
     x2 = int(np.rint((cx1 + cwidth/2)*width))
     y2 = int(np.rint((cy1 + cheight/2)*height))
-    print (x1,y1)
-    print (x2,y2)
+    #print (x1,y1)
+    #print (x2,y2)
+    #print (cll, type(cll))
     # Create a Rectangle patch
     cv2.rectangle(image, (x1, y1), (x2, y2), (255,0,0), 2)
+    cv2.putText(image, "RING_" +str(int(cll)), (int(cx1*width),int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
 
     if visualize:
         cv2.imshow("TEST",image)
-        cv2.waitKey()
+        cv2.waitKey(100)
 
 if __name__ == "__main__":
     filepath =  "/media/datasets/simanimation/depth_testdataset_v3/files.txt"
     print(filepath)
-    while os.path.exists(filepath):
+    counter = [0,0,0,0]
+    opencounter = 0
+    if os.path.exists(filepath):
+        print ("FILES_>",  sum(1 for line in open(filepath)))
         images = open(filepath,'r')
         for img_filename in images:
+            if opencounter%1000== 0:
+                print (opencounter, counter)
+                print (img_filename)
+            opencounter = opencounter+1
             label_filename = img_filename.replace(".jpg", ".txt").rstrip()
             fl = open(label_filename, "r")
             label = fl.readline().split(" ")
             fl.close()
-            print (label)
-            print (img_filename)
+
             img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
-            print (img.shape)
             detections = [float(d) for d in label]
+            
             plot_bbs(img, detections, visualize = True)
-            print("NEXT")
-        f.close()
+            cl_ = int(detections[0])
+            counter[cl_] = counter[cl_] + 1
+            #print ("counters ", counter) 
+            #print("NEXT")
+        print ("closing main file")
+        images.close()
+
+    print ("FINAL COUNT", counter)
