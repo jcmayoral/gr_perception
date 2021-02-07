@@ -10,7 +10,6 @@ from cv_bridge import CvBridge
 import cv2
 import numpy as np
 from test_bb import plot_bbs
-import tqdm
 
 class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
     def __init__(self, dbpath, depth = False, version = 1000, start_count = 0):
@@ -70,12 +69,12 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
     #Overridehas_turned
     def pcallback_feedback(self,feedback):
-        #rospy.loginfo("New Feedback:%s" % str(feedback))
+        rospy.loginfo("New Feedback:%s" % str(feedback))
         if not self.initialize:
             self.initialize = True
             return
         self.backward_motion =feedback.backward
-        #print (self.backward_motion)
+        print (self.backward_motion)
 
 
     def callback_done(self,state, result):
@@ -158,10 +157,9 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
     dbpath = "/media/datasets/simanimation/"
-    startcount=784
-    manager = SimAnimationManager(dbpath, depth=True, version = 3, start_count = startcount)
-    repeat = 1200 - startcount
-    for i in tqdm.tqdm(range(repeat)):
-        #rospy.logerr("image request " + str(i) )
+    manager = SimAnimationManager(dbpath, depth=True, version = 3, start_count = 0)
+
+    for i in range(100):
+        rospy.logerr("image request " + str(i) )
         manager.run()
     #rospy.spin()

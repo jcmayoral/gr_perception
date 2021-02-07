@@ -24,15 +24,15 @@ class PersonSimAnimation(object):
         goal.goal.setstart = True
         goal.goal.is_motion = True
         goal.goal.is_infinite_motion = False
-        goal.goal.linearspeed = self.select_uniform_random(0.2,1.2)
+        goal.goal.linearspeed = self.select_uniform_random(0.5,1.2)
         goal.goal.startpose.header.frame_id = "odom"
-        goal.goal.startpose.pose.position.x = self.select_uniform_random(0.2,2.0)
-        goal.goal.startpose.pose.position.y = self.select_uniform_random(-4,4)
+        goal.goal.startpose.pose.position.x = self.select_uniform_random(0.5,5)
+        goal.goal.startpose.pose.position.y = self.select_uniform_random(-2,2)
         goal.goal.startpose.pose.orientation.w = 1.0
 
         goal.goal.goalPose.header.frame_id = "odom"
-        goal.goal.goalPose.pose.position.x = self.select_uniform_random(4.0,7.0)
-        goal.goal.goalPose.pose.position.y = self.select_uniform_random(-4,4)
+        goal.goal.goalPose.pose.position.x = self.select_uniform_random(7,10)
+        goal.goal.goalPose.pose.position.y = self.select_uniform_random(-2,2)
         goal.goal.goalPose.pose.orientation.w = 1.0
         self.pclient.send_goal(goal.goal,
                             active_cb=self.pcallback_active,
@@ -45,7 +45,6 @@ class PersonSimAnimation(object):
         rospy.loginfo("Goal has been sent to the action server.")
 
     def pcallback_done(self,state, result):
-        pass
         #rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
         rospy.loginfo("This is the result state %d "% state)
         #if result:
