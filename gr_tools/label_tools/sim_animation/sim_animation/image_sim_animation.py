@@ -78,12 +78,14 @@ class ImageSinAnimationLabeler(object):
         #rospy.loginfo("Goal has been sent to the action server.")
 
     def callback_done(self,state, result):
+        pass
         #rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
-        rospy.loginfo("This is the result state %d "% state)
+        #rospy.loginfo("This is the result state %d "% state)
         #if result:
             #print (self.client.get_result())
 
     def callback_feedback(self,feedback):
+        pass
         rospy.loginfo("Feedback:%s" % str(feedback))
 
 if __name__ == "__main__":

@@ -42,16 +42,18 @@ class PersonSimAnimation(object):
 
     def pcallback_active(self):
         pass
-        rospy.loginfo("Goal has been sent to the action server.")
+        #rospy.loginfo("Goal has been sent to the action server.")
 
     def pcallback_done(self,state, result):
+        pass
         #rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
-        rospy.loginfo("This is the result state %d "% state)
+        #rospy.loginfo("This is the result state %d "% state)
         #if result:
             #print ()
 
     def pcallback_feedback(self,feedback):
-        rospy.loginfo("Feedback:%s" % str(feedback))
+        pass
+        #rospy.loginfo("Feedback:%s" % str(feedback))
 
 if __name__ == "__main__":
     rospy.init_node('person_sim_animation_label')

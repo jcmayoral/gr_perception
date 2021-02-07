@@ -101,7 +101,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
         for bb in bbs.bounding_boxes:
             if bb.Class != "person":
-                print "Skipping " +bb.Class
+                #print "Skipping " +bb.Class
                 continue
             flag = True
             ring = min(3,int(transform_pose.vector.x/self.distance))
@@ -158,7 +158,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
     dbpath = "/media/datasets/simanimation/"
-    startcount=784
+    startcount=798
     manager = SimAnimationManager(dbpath, depth=True, version = 3, start_count = startcount)
     repeat = 1200 - startcount
     for i in tqdm.tqdm(range(repeat)):
