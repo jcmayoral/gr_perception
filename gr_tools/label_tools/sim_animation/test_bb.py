@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import tqdm
 
-def plot_bbs(image, bbs, visualize=False):
+def plot_bbs(image, bbs, visualize=False, out=None):
     height, width, channels = image.shape
     cll, cx1, cy1, cwidth, cheight  = bbs
     #x->width y->height
@@ -24,12 +24,20 @@ def plot_bbs(image, bbs, visualize=False):
         cv2.imshow("TEST",image)
         cv2.waitKey(25)
 
+    if out is not None:
+        out.write(image)
+
+
 if __name__ == "__main__":
     filepath =  "/media/datasets/simanimation/depth_testdataset_v3/files.txt"
     print(filepath)
     counter = [0,0,0,0]
     opencounter = 0
     plot_fig = bool(int(sys.argv[1]))
+    if plot_fig:
+        #cap = cv2.VideoCapture('chaplin.mp4')
+        out = cv2.VideoWriter('dataset.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
+
     if os.path.exists(filepath):
         print ("FILES_>",  sum(1 for line in open(filepath)))
         images = open(filepath,'r')
@@ -46,7 +54,8 @@ if __name__ == "__main__":
 
             if plot_fig:
                 img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
-                plot_bbs(img, detections, visualize = True)
+                # out.write(img)
+                plot_bbs(img, detections, visualize = False, out=out)
             cl_ = int(detections[0])
             if cl_ < 0 or  cl_ > 3:
                 print (cl_, img_filename)
@@ -56,5 +65,8 @@ if __name__ == "__main__":
             #print("NEXT")
         print ("closing main file")
         images.close()
+
+    if plot_fig:
+        out.release()
 
     print ("FINAL COUNT", counter)
