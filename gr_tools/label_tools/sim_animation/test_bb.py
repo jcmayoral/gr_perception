@@ -3,6 +3,7 @@ import cv2
 import os
 import sys
 import numpy as np
+import tqdm
 
 def plot_bbs(image, bbs, visualize=False):
     height, width, channels = image.shape
@@ -21,31 +22,35 @@ def plot_bbs(image, bbs, visualize=False):
 
     if visualize:
         cv2.imshow("TEST",image)
-        cv2.waitKey(100)
+        cv2.waitKey(25)
 
 if __name__ == "__main__":
     filepath =  "/media/datasets/simanimation/depth_testdataset_v3/files.txt"
     print(filepath)
     counter = [0,0,0,0]
     opencounter = 0
+    plot_fig = bool(int(sys.argv[1]))
     if os.path.exists(filepath):
         print ("FILES_>",  sum(1 for line in open(filepath)))
         images = open(filepath,'r')
-        for img_filename in images:
-            if opencounter%1000== 0:
-                print (opencounter, counter)
-                print (img_filename)
+        for img_filename in tqdm.tqdm(images, ascii=True, desc="plot images"):
+            #if opencounter%1000== 0:
+            #    print (opencounter, counter)
+            #    print (img_filename)
             opencounter = opencounter+1
             label_filename = img_filename.replace(".jpg", ".txt").rstrip()
             fl = open(label_filename, "r")
             label = fl.readline().split(" ")
             fl.close()
-
-            img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
             detections = [float(d) for d in label]
-            
-            plot_bbs(img, detections, visualize = True)
+
+            if plot_fig:
+                img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
+                plot_bbs(img, detections, visualize = True)
             cl_ = int(detections[0])
+            if cl_ < 0 or  cl_ > 3:
+                print (cl_, img_filename)
+                continue
             counter[cl_] = counter[cl_] + 1
             #print ("counters ", counter) 
             #print("NEXT")
