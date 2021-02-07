@@ -18,21 +18,26 @@ class PersonSimAnimation(object):
         return random.uniform(minvalue, maxvalue)
 
     def person_call(self):
+        motion_types = ["walk", "stand_up", "sit_down", "stand_up", "talk_a", "talk_b"]
         #rospy.loginfo("calling SimMotionPlanner")
         goal = SimMotionPlannerActionGoal()
-        goal.goal.motion_type = "walk"
+        goal.goal.motion_type = motion_types[random.randint(0, 5)]
         goal.goal.setstart = True
         goal.goal.is_motion = True
         goal.goal.is_infinite_motion = False
-        goal.goal.linearspeed = self.select_uniform_random(0.2,1.2)
+
+        goal.goal.linearspeed = self.select_uniform_random(0.2,0.7)
+        zoffset = self.select_uniform_random(0.0,0.75)
         goal.goal.startpose.header.frame_id = "odom"
-        goal.goal.startpose.pose.position.x = self.select_uniform_random(0.2,1.5)
-        goal.goal.startpose.pose.position.y = self.select_uniform_random(-4,4)
+        goal.goal.startpose.pose.position.x = self.select_uniform_random(0.5,2.8)
+        goal.goal.startpose.pose.position.y = self.select_uniform_random(-4,0)
+        goal.goal.startpose.pose.position.z = -zoffset
         goal.goal.startpose.pose.orientation.w = 1.0
 
         goal.goal.goalPose.header.frame_id = "odom"
-        goal.goal.goalPose.pose.position.x = self.select_uniform_random(4.0,7.0)
-        goal.goal.goalPose.pose.position.y = self.select_uniform_random(-4,4)
+        goal.goal.goalPose.pose.position.x = self.select_uniform_random(3.0,9.5)
+        goal.goal.goalPose.pose.position.y = self.select_uniform_random(0,4)
+        goal.goal.goalPose.pose.position.z = -zoffset
         goal.goal.goalPose.pose.orientation.w = 1.0
         self.pclient.send_goal(goal.goal,
                             active_cb=self.pcallback_active,
