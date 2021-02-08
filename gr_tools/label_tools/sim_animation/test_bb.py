@@ -47,6 +47,8 @@ if __name__ == "__main__":
             #    print (img_filename)
             opencounter = opencounter+1
             label_filename = img_filename.replace(".jpg", ".txt").rstrip()
+            if not os.path.exists(label_filename):
+                continue
             fl = open(label_filename, "r")
             label = fl.readline().split(" ")
             fl.close()
