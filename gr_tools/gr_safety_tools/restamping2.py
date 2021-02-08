@@ -35,7 +35,7 @@ class ReStamper:
 
 import sys
 if sys.argv[1] == "color":
-    ReStamper("/camera/color/camera_info", "/camera/color/camera_info2", CameraInfoi, "color")
+    ReStamper("/camera/color/camera_info", "/camera/color/camera_info2", CameraInfo, "color")
 if sys.argv[1] == "depth":
     ReStamper("/camera/depth/camera_info", "/camera/depth/camera_info2", CameraInfo, "depth")
 if sys.argv[1] == "tf":
