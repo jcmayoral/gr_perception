@@ -1,5 +1,9 @@
 from sensor_msgs.msg import CameraInfo
 from collections import OrderedDict
+import cv_bridge
+import tqdm
+import numpy as np
+import cv2
 
 def match_timestamps(rgb_stamps, depth_stamps):
     if len(rgb_stamps) < len(depth_stamps):
@@ -63,3 +67,21 @@ def stamps_to_dict(data):
         seq, stamp, rt = i.rstrip().split(" ")
         mydict[int(seq)] = stamp
     return OrderedDict(sorted(mydict.items(), key=lambda t: t[0]))
+
+def save_images(rbag, info_topic, is_depth=False):
+    msg = None
+    bridge = cv_bridge.CvBridge()
+    for topic, msg,t in tqdm.tqdm(rbag.read_messages(info_topic)):
+        cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+        if is_depth:
+            filename = "depthimage_"+str(msg.header.seq)+".jpg"
+            np_filename = "depthimage_"+ str(msg.header.seq)+".npy"
+            depth_image = np.asanyarray(cv_image)
+            cv_image_norm = cv2.normalize(depth_image, depth_image, 0, 255, cv2.NORM_MINMAX)
+            #cv2.imshow("Depth", cv_image_norm)
+            np.save(np_filename, depth_image)
+            cv2.imwrite(filename, cv_image_norm)
+            #cv2.imwrite(filename, cv_image)
+        else:
+            filename = "image_"+str(msg.header.seq)+".jpg"
+            cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )

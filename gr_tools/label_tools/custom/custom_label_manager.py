@@ -1,7 +1,6 @@
 #! /usr/bin/python
 import rospy
 from image_sim_animation import ImageSinAnimationLabeler
-from person_sim_animation import PersonSimAnimation
 import tf2_ros
 import tf2_geometry_msgs
 import os
@@ -51,6 +50,15 @@ def match_stamps(file1="rgb_info.txt", file2="depth_info.txt"):
     matches = sorted(matches)
     save_matches(matches)
 
+def store_imgs(storepath, rgb_topic = "/camera/color/image_raw", depth_topic= "/camera/depth/image_rect_raw"):
+    if not os.path.exists(storepath):
+        print "path does not exists"
+    os.chdir(storepath)
+    bag =  rosbag.Bag(os.path.join(dbpath, "long_video" , "safecopy.bag"), 'r')
+    save_images(bag, depth_topic, True)
+    save_images(bag, rgb_topic, True)
+
+
 def execute(dbpath):
     depth_camera_info = extract_camera_info(os.path.join(dbpath, "camera" , "camera_info.bag"), "/camera/depth/camera_info")
 
@@ -58,6 +66,8 @@ def execute(dbpath):
 if __name__ == '__main__':
     rospy.init_node('image_custom_manager')
     dbpath = "/media/datasets/nibio_summer_2019/"
+    storepath = "./images"
+
     if len(sys.argv) == 1:
         print "use properly"
         sys.exit()
@@ -65,4 +75,6 @@ if __name__ == '__main__':
         create_stamps_files(dbpath)
     if sys.argv[1] == "match":
         match_stamps()
+    if sys.argv[1] == "store":
+        store_imgs(storepath)
     print "FINISH"
