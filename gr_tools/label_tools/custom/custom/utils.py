@@ -4,6 +4,7 @@ import cv_bridge
 import tqdm
 import numpy as np
 import cv2
+import rosbag
 
 def match_timestamps(rgb_stamps, depth_stamps):
     if len(rgb_stamps) < len(depth_stamps):

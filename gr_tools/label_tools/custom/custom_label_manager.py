@@ -1,6 +1,5 @@
 #! /usr/bin/python
 import rospy
-from image_sim_animation import ImageSinAnimationLabeler
 import tf2_ros
 import tf2_geometry_msgs
 import os
@@ -11,6 +10,7 @@ import rosbag
 import numpy as np
 from test_bb import plot_bbs
 from custom.utils import *
+from custom.image_processing import ImageProcessing
 import numpy as np
 
 def create_stamps_files(dbpath):
@@ -53,20 +53,26 @@ def match_stamps(file1="rgb_info.txt", file2="depth_info.txt"):
 def store_imgs(storepath, rgb_topic = "/camera/color/image_raw", depth_topic= "/camera/depth/image_rect_raw"):
     if not os.path.exists(storepath):
         print "path does not exists"
-    os.chdir(storepath)
-    bag =  rosbag.Bag(os.path.join(dbpath, "long_video" , "safecopy.bag"), 'r')
+    os.chdir(os.path.join(storepath, "images"))
+    bag =  rosbag.Bag(os.path.join(dbpath, "safecopy.bag"), 'r')
     save_images(bag, depth_topic, True)
-    save_images(bag, rgb_topic, True)
+    save_images(bag, rgb_topic, False)
 
 
-def execute(dbpath):
-    depth_camera_info = extract_camera_info(os.path.join(dbpath, "camera" , "camera_info.bag"), "/camera/depth/camera_info")
-
+def execute(storepath,matchfile="matches.txt"):
+    matches = open(matchfile, "r").readlines()
+    matches = [i.rstrip().split(" ") for i in matches]
+    depth_camera_info = extract_camera_info(os.path.join(storepath, "camera" , "camera_info.bag"), "/camera/depth/camera_info")
+    #matches = [[int(i), int(j)] for i,j in matches]
+    os.chdir(os.path.join(storepath, "images"))
+    proc = ImageProcessing(matches, depth_camera_info)
+    proc.run(matches)
 
 if __name__ == '__main__':
     rospy.init_node('image_custom_manager')
-    dbpath = "/media/datasets/nibio_summer_2019/"
-    storepath = "./images"
+    #This two (dbpath and storepath) are on two independent HDD
+    dbpath = "/media/datasets/real_iros2021/"
+    storepath = "/media/datasets/real_iros2021"
 
     if len(sys.argv) == 1:
         print "use properly"
@@ -77,4 +83,6 @@ if __name__ == '__main__':
         match_stamps()
     if sys.argv[1] == "store":
         store_imgs(storepath)
+    if sys.argv[1] == "execute":
+        execute(storepath)
     print "FINISH"
