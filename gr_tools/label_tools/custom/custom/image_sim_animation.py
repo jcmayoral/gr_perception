@@ -1,9 +1,7 @@
-#/usr/bin/python
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from darknet_ros_msgs.msg import CheckForObjectsAction, CheckForObjectsActionGoal, CheckForObjectsActionResult
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Vector3Stamped
-import rospy
 import actionlib
 import copy
 

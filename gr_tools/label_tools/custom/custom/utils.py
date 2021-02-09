@@ -1,5 +1,3 @@
-import rosbag
-import rospy
 from sensor_msgs.msg import CameraInfo
 from collections import OrderedDict
 
