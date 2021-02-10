@@ -5,6 +5,7 @@ import tqdm
 import numpy as np
 import cv2
 import rosbag
+from image_processing import rotateImage
 
 def match_timestamps(rgb_stamps, depth_stamps):
     if len(rgb_stamps) < len(depth_stamps):
@@ -73,16 +74,22 @@ def save_images(rbag, info_topic, is_depth=False):
     msg = None
     bridge = cv_bridge.CvBridge()
     for topic, msg,t in tqdm.tqdm(rbag.read_messages(info_topic)):
-        cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
         if is_depth:
+            cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+            cv_image = rotateImage(cv_image, 180)
             filename = "depthimage_"+str(msg.header.seq)+".jpg"
             np_filename = "depthimage_"+ str(msg.header.seq)+".npy"
-            depth_image = np.asanyarray(cv_image)
+            depth_image = np.asanyarray(cv_image, dtype=float)/(255)
+
             cv_image_norm = cv2.normalize(depth_image, depth_image, 0, 255, cv2.NORM_MINMAX)
+            #cv_image_norm = rotateImage(cv_image_norm, 180)
             #cv2.imshow("Depth", cv_image_norm)
-            np.save(np_filename, depth_image)
+            #print depth_image
+            np.save(np_filename, cv_image_norm)
             cv2.imwrite(filename, cv_image_norm)
             #cv2.imwrite(filename, cv_image)
         else:
+            cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+            cv_image = rotateImage(cv_image, 180)
             filename = "image_"+str(msg.header.seq)+".jpg"
             cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )
