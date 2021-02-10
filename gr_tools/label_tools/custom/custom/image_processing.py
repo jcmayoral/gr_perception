@@ -75,8 +75,17 @@ class ImageProcessing(object):
         depth_image.header.stamp = self.depth_camera_info.header.stamp = rospy.Time.now()
         depth_image.header.frame_id = self.depth_camera_info.header.frame_id = "camera_depth_optical_frame"
 
+        obbs = self.get_current_result().bounding_boxes.bounding_boxes
+
+        if len(obbs) == 0:
+            self.bbs = None
+            return
+
         #print "publishing"
         for i in range(5):
+            if self.bbs is not None:
+                if len(obbs) == len(self.bbs.bounding_boxes):
+                    break
             self.img_pub.publish(depth_image)
             self.depth_pub.publish(self.depth_camera_info)
             rospy.sleep(0.2)
@@ -84,13 +93,9 @@ class ImageProcessing(object):
         if self.bbs is None:
             return
 
-        obbs = self.get_current_result().bounding_boxes.bounding_boxes
-        if len(obbs) == 0:
-            print "person not in image"
-            return
-
         if len(obbs) != len(self.bbs.bounding_boxes):
             rospy.logwarn("error.. this will happen.. for now Skipping {} {}".format(len(obbs),len(self.bbs.bounding_boxes)))
+            self.bbs = None
             return
 
         for obb, bbs in zip(obbs, self.bbs.bounding_boxes):
@@ -121,10 +126,9 @@ class ImageProcessing(object):
             with open(label_filename, "a+") as text_file:
                 text_file.write(data)
 
-            files_filename = "files.txt"
-            with open(files_filename, "a+") as text_file:
-                text_file.write(os.path.join(os.getcwd(),"image_{}.jpg".format(index))+"\n")
-
+        files_filename = "files.txt"
+        with open(files_filename, "a+") as text_file:
+            text_file.write(os.path.join(os.getcwd(),"image_{}.jpg".format(index))+"\n")
 
 
         #rospy.loginfo("Index {} obbs {} bbs {}".format(index,str(self.get_current_result()), str(self.bbs)))

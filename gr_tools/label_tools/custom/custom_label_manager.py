@@ -53,8 +53,9 @@ def match_stamps(file1="rgb_info.txt", file2="depth_info.txt"):
 def store_imgs(storepath, rgb_topic = "/camera/color/image_raw", depth_topic= "/camera/depth/image_rect_raw"):
     if not os.path.exists(storepath):
         print "path does not exists"
-    os.chdir(os.path.join(storepath, "images"))
-    bag =  rosbag.Bag(os.path.join(dbpath, "safecopy.bag"), 'r')
+    os.chdir(os.path.join(storepath))
+    bag =  rosbag.Bag(os.path.join(storepath, "safecopy.bag"), 'r')
+    print storepath
     save_images(bag, depth_topic, True)
     save_images(bag, rgb_topic, False)
 
@@ -64,15 +65,15 @@ def execute(storepath,matchfile="matches.txt"):
     matches = [i.rstrip().split(" ") for i in matches]
     depth_camera_info = extract_camera_info(os.path.join(storepath, "camera" , "camera_info.bag"), "/camera/depth/camera_info")
     #matches = [[int(i), int(j)] for i,j in matches]
-    os.chdir(os.path.join(storepath, "images"))
+    os.chdir(storepath)
     proc = ImageProcessing(matches, depth_camera_info)
     proc.run(matches)
 
 if __name__ == '__main__':
     rospy.init_node('image_custom_manager')
     #This two (dbpath and storepath) are on two independent HDD
-    dbpath = "/media/datasets/real_iros2021/"
-    storepath = "/media/datasets/real_iros2021"
+    dbpath = "/home/jose/datasets/real_iros2021/"
+    storepath = "/home/jose/datasets/real_iros2021"
 
     if len(sys.argv) == 1:
         print "use properly"
