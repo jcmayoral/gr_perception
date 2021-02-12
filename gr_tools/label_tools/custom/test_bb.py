@@ -3,6 +3,7 @@ import cv2
 import os
 import sys
 import numpy as np
+from tqdm import tqdm
 
 def plot_bbs(image, bbs, visualize=False, out=None):
     height, width, channels = image.shape
@@ -27,24 +28,34 @@ def plot_bbs(image, bbs, visualize=False, out=None):
         out.write(image)
 
 if __name__ == "__main__":
-    filepath =  "/media/datasets/real_iros2021/images/files.txt"
+    filepath =  "/home/jose/datasets/real_iros2021/files.txt"
     out = cv2.VideoWriter('dataset.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
+    counter = [0,0,0,0]
 
     if os.path.exists(filepath):
         images = open(filepath,'r')
-        for img_filename in images:
+        for img_filename in tqdm(images):
             label_filename = img_filename.replace(".jpg", ".txt").rstrip()
             labels = []
+            if not os.path.exists(label_filename):
+                print "label file {} not exists".format(label_filename)
+                continue
 
             with open(label_filename, "r") as fl:
                 labels = [data.strip().split(" ") for data in fl]#)
-            print labels
             fl.close()
             #print (label)
             img = cv2.imread(img_filename.rstrip().replace("txt", "jpg"))#, cv2.IMREAD_GRAYSCALE)
 
             for l in labels:
                 detections = [float(d) for d in l]
-                plot_bbs(img, detections, visualize = True, out=out)
-            print("NEXT")
-        f.close()
+                plot_bbs(img, detections, visualize = False, out=out)
+                cl_ = int(detections[0])
+                if cl_ < 0 or  cl_ > 3:
+                    print "ERRROR.....",cl_, img_filename
+                    continue
+                counter[cl_] +=1
+            #print("NEXT")
+        #f.close()
+    out.release()
+    print "FINAL COUNTER", counter

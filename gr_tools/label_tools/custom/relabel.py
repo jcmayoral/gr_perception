@@ -5,7 +5,7 @@ import sys
 import numpy as np
 from tqdm import tqdm
 
-def plot_bbs(image, bbs):
+def plot_bbs(image, bbs, require_new):
     height, width, channels = image.shape
     cll, cx1, cy1, cwidth, cheight  = bbs
     #x->width y->height
@@ -21,16 +21,19 @@ def plot_bbs(image, bbs):
     cv2.putText(image, str(int(cll)), (int(cx1*width),int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
 
     cv2.imshow("TEST",image)
-    key = cv2.waitKey(0)
-    #if key == "32":
-    #print "OK LLLLLL " + str(key)
-    if key != 27 and key !=141:
+
+    if require_new:
+        #if key == "32":
+        #print "OK LLLLLL " + str(key)
+        #if key != 27 and key !=141:
         cv2.putText(image, "WAIT FOR NEW CLASS" +str(int(cll)), (int(cx1*width),int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (255,0,255),2)
         cv2.imshow("TEST",image)
+        key = cv2.waitKey(0)
         cv2.waitKey(1000)
-    cv2.waitKey(1000)
+        return key
+    cv2.waitKey(50)
 
-    return key
+    return None
 
 
 import fileinput
@@ -47,9 +50,11 @@ def replace_line(file_name, line_nums, texts):
 if __name__ == "__main__":
     filepath =  "/home/jose/datasets/dummy/dummy"
 
-    print "WAIT 3 seconds before start"
-    time.sleep(3)
+    print "WAIT 2 seconds before start"
+    time.sleep(2)
     print "OK"
+
+    order_index = [-1,-1,-1,-1]
 
     if os.path.exists(filepath):
         images = open(filepath,'r')
@@ -75,6 +80,8 @@ if __name__ == "__main__":
                 print "label file {} not exists".format(label_filename)
                 continue
 
+            lindx = 0
+
             with open(label_filename, "r") as fl:
             #for line in fileinput.input(label_filename, inplace=True):
                 #print line
@@ -84,19 +91,30 @@ if __name__ == "__main__":
                 for index, line in enumerate(fl):
                     img = cv2.imread(img_filename.rstrip())
                     label = [data for data in line.strip().split(" ")]#)
-                    print " FILE NAME ", label_filename
                     detections = [float(d) for d in label]
-                    key = plot_bbs(img, detections)
+                    print label_filename
 
-                    if key == 141:
+                    flag = False
+                    if int(detections[0]) != order_index[lindx]:
+                        flag = True
+                    lindx = lindx + 1
+
+
+                    key = plot_bbs(img, detections, flag)
+
+                    if key == None:
                         continue
                     if key == 27:
                         lastindex_file.close()
                         sys.exit()
 
                     label[0] = key - 176
+
+                    print "index  ", lindx, " Expected ", order_index[lindx-1], " GOTTEN ", detections[0], " NEW ", label[0]
+                    order_index[lindx-1] = label[0]
+
                     newlabel = ""
-                    newlabel = newlabel.join([str(c)+ " " for c in label])[:-1]
+                    newlabel = newlabel.join([str(c)+ " " for c in label])[:-1]+"\n"
 
                     replace_ind.append(index)
                     replace_data.append(newlabel)
@@ -106,6 +124,7 @@ if __name__ == "__main__":
                 lastindex_file.write(str(img_index))
                 #print "indeces", replace_ind
                 #print "data ", replace_data
+                #print "replace"
                 replace_line(label_filename,replace_ind,replace_data)
 
         lastindex_file.close()

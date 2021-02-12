@@ -75,7 +75,12 @@ class ImageProcessing(object):
         depth_image.header.stamp = self.depth_camera_info.header.stamp = rospy.Time.now()
         depth_image.header.frame_id = self.depth_camera_info.header.frame_id = "camera_depth_optical_frame"
 
-        obbs = self.get_current_result().bounding_boxes.bounding_boxes
+        obbs = self.get_current_result()
+
+        if obbs is None:
+            print "AAAAAAA"
+            return
+        obbs = obbs.bounding_boxes.bounding_boxes
 
         if len(obbs) == 0:
             self.bbs = None
