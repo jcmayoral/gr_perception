@@ -6,6 +6,7 @@ import numpy as np
 from tqdm import tqdm
 
 def plot_bbs(image, bbs, visualize=False):
+
     height, width, channels = image.shape
     cll, cx1, cy1, cwidth, cheight  = bbs
     #x->width y->height
@@ -23,6 +24,37 @@ def plot_bbs(image, bbs, visualize=False):
     if visualize:
         cv2.imshow("TEST",image)
         cv2.waitKey()
+
+def visualize(img_filepath, labels_filepath):
+    os.chdir(img_filepath)
+    classes = dict()
+    for root,dirs,files in os.walk("."):
+        print "LABEL ", root
+        print "DIRS", dirs
+        #print "FILES", files
+        for file in files:
+            labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
+            print labelfile
+            if not os.path.exists(labelfile):
+                continue
+            with open(labelfile, "r") as fl:
+                for line in fl:
+                    print line
+                    data = line.rstrip().split(" ")
+                    print data, data[0]
+                    if data[3] in classes.keys():
+                        classes[data[3]] = classes[data[3]] + 1
+                    else:
+                        classes[data[3]] = 1
+
+            img_file = os.path.join(root,file)
+            cv_img = cv2.imread(img_file)
+            cv2.imshow("visualize", cv_img)
+            cv2.waitKey(50)
+    print "classes summary"
+    for i, j in classes.iteritems():
+        print "class {}  count {}".format(i,j)
+
 
 def create_labels(store_path, labels_filepath):
     os.chdir(store_path)
@@ -51,7 +83,7 @@ def create_labels(store_path, labels_filepath):
                     #data = [float(d) for d in data
                     lfile = os.path.join(newfolder, img_id+".txt")
                     with open(lfile, "a") as lf:
-                        lf.write("".join(line+"\n"))
+                        lf.write("".join(line))
 
 if __name__ == "__main__":
     img_filepath =  "/home/jose/media/datasets/KITTI/data_tracking_image_2/training/image_02"
@@ -64,6 +96,9 @@ if __name__ == "__main__":
 
     if sys.argv[1] == "labels":
         create_labels(store_path, labels_filepath)
+
+    if sys.argv[1] == "visualize":
+        visualize(img_filepath, store_path)
     counter = [0,0,0,0]
     aaa
     for img_folders in tqdm(os.walk(img_filepath)):
