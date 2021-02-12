@@ -4,30 +4,22 @@ import os
 import sys
 import numpy as np
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+#plt.ion()
 
-def plot_bbs(image, bbs, visualize=False):
-
-    height, width, channels = image.shape
-    cll, cx1, cy1, cwidth, cheight  = bbs
-    #x->width y->height
-    x1 = int(np.rint((cx1 - cwidth/2)*width))
-    y1 = int(np.rint((cy1 - cheight/2)*height))
-    x2 = int(np.rint((cx1 + cwidth/2)*width))
-    y2 = int(np.rint((cy1 + cheight/2)*height))
-    #print (x1,y1)
-    #print (x2,y2)
-    #print (cll, type(cll))
-    # Create a Rectangle patch
+def plot_bbs(image,cll,dclass,x1,y1,x2,y2):
     cv2.rectangle(image, (x1, y1), (x2, y2), (255,0,0), 2)
-    cv2.putText(image, "RING_" +str(int(cll)), (int(cx1*width),int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
+    cv2.putText(image,"{}_{}".format(cll, dclass), (x1,y1), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
 
-    if visualize:
-        cv2.imshow("TEST",image)
-        cv2.waitKey()
+    #if visualize:
+    #    cv2.imshow("TEST",image)
+    #    cv2.waitKey()
 
-def visualize(img_filepath, labels_filepath):
+def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
     os.chdir(img_filepath)
     classes = dict()
+    x = list()
+
     for root,dirs,files in os.walk("."):
         print "LABEL ", root
         print "DIRS", dirs
@@ -37,26 +29,118 @@ def visualize(img_filepath, labels_filepath):
             print labelfile
             if not os.path.exists(labelfile):
                 continue
-            with open(labelfile, "r") as fl:
-                for line in fl:
-                    print line
-                    data = line.rstrip().split(" ")
-                    print data, data[0]
-                    if data[3] in classes.keys():
-                        classes[data[3]] = classes[data[3]] + 1
-                    else:
-                        classes[data[3]] = 1
 
             img_file = os.path.join(root,file)
             cv_img = cv2.imread(img_file)
+
+            with open(labelfile, "r") as fl:
+                for line in fl:
+                    #print line
+                    data = line.rstrip().split(" ")
+                    #print data, data[0]
+                    dclass = min(3, int(float(data[15])/ classification_distance))
+                    #dclass = data[15]
+                    if float(data[15]) < 0:
+                        continue
+
+                    if data[2] in classes.keys():
+                        classes[data[2]][dclass] = classes[data[2]][dclass]+ 1
+                    else:
+                        classes[data[2]] = [0,0,0,0]
+                        classes[data[2]][dclass] = classes[data[2]][dclass] + 1
+
+                    x.append(float(data[15]))
+                    bbs = [int(float(bb)) for bb in data[6:10]]
+                    plot_bbs(cv_img, data[2],dclass, *bbs)
+
+                    #if dclass == 0:
+                    #    print data[2], dclass, float(data[15])
+                    #    cv2.waitKey(0)
+
             cv2.imshow("visualize", cv_img)
-            cv2.waitKey(50)
+            cv2.waitKey(25)
+    plt.figure()
+    plt.hist(x, bins=40, cumulative=False)
+    #plt.plot(np.arange(10), np.arange(10))
+    plt.show()
     print "classes summary"
     for i, j in classes.iteritems():
         print "class {}  count {}".format(i,j)
 
 
-def create_labels(store_path, labels_filepath):
+def create_labels(img_filepath, labels_filepath, classification_distance = 15.0):
+    os.chdir(img_filepath)
+    classes = dict()
+    x = list()
+
+    for root,dirs,files in os.walk("."):
+        print "LABEL ", root
+        print "DIRS", dirs
+        #print "FILES", files
+        for file in files:
+            labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
+            print labelfile
+            if not os.path.exists(labelfile):
+                continue
+
+            img_file = os.path.join(root,file)
+            newlabel_file = img_file.replace("png", "txt")
+            cv_img = cv2.imread(img_file)
+
+            with open(labelfile, "r") as fl:
+                for line in fl:
+                    #print line
+                    data = line.rstrip().split(" ")
+                    #print data, data[0]
+                    dclass = min(3, int(float(data[15])/ classification_distance))
+                    #dclass = data[15]
+                    if float(data[15]) < 0:
+                        continue
+
+                    if data[2] in classes.keys():
+                        classes[data[2]][dclass] = classes[data[2]][dclass]+ 1
+                    else:
+                        classes[data[2]] = [0,0,0,0]
+                        classes[data[2]][dclass] = classes[data[2]][dclass] + 1
+
+                    x.append(float(data[15]))
+                    bbs = [int(float(bb)) for bb in data[6:10]]
+                    #plot_bbs(cv_img, data[2],dclass, *bbs)
+                    create_label(newlabel_file, str(dclass), cv_img.shape, *bbs)
+
+                    #if dclass == 0:
+                    #    print data[2], dclass, float(data[15])
+                    #    cv2.waitKey(0)
+
+            cv2.imshow("visualize", cv_img)
+            cv2.waitKey(25)
+    plt.figure()
+    plt.hist(x, bins=40, cumulative=False)
+    #plt.plot(np.arange(10), np.arange(10))
+    plt.show()
+    print "classes summary"
+    for i, j in classes.iteritems():
+        print "class {}  count {}".format(i,j)
+
+
+def create_label(nlf, dclass,img_shape, x1,y1,x2,y2):
+    height, width, channels = img_shape
+    ring = dclass
+    data = str(ring) + " "
+    rx = int(x2-x1)
+    cx = float(rx/2+ x1)/width
+    ry = int(y2 -y1)
+    cy = float(ry/2 + y1)/height
+    data += str(cx) + " "
+    data += str(cy) + " "
+    data += str(float(rx)/width) + " "
+    data += str(float(ry)/height) + "\n"
+    bbsx =[1,cx,cy,float(rx)/width,float(ry)/height]
+
+    with open(nlf, "a+") as text_file:
+        text_file.write(data)
+
+def split_labels(store_path, labels_filepath):
     os.chdir(store_path)
 
     for root,dirs,files in os.walk(labels_filepath):
@@ -94,45 +178,11 @@ if __name__ == "__main__":
         print "missing instruction"
         sys.exit(0)
 
-    if sys.argv[1] == "labels":
-        create_labels(store_path, labels_filepath)
+    if sys.argv[1] == "split":
+        split_labels(store_path, labels_filepath)
 
     if sys.argv[1] == "visualize":
         visualize(img_filepath, store_path)
-    counter = [0,0,0,0]
-    aaa
-    for img_folders in tqdm(os.walk(img_filepath)):
-        print "A" , img_folders[1]
-        for img_folder in img_folders[1]:
-            print "B ", img_folder
-            for img_file in img_folder:
-                print "C", img_file
 
-
-            print "AAA", os.path.file(img_folder[0])
-            mages = open(filepath,'r')
-            aaa
-
-            label_filename = img_filename.replace(".jpg", ".txt").rstrip()
-            labels = []
-            if not os.path.exists(label_filename):
-                print "label file {} not exists".format(label_filename)
-                continue
-
-            with open(label_filename, "r") as fl:
-                labels = [data.strip().split(" ") for data in fl]#)
-            fl.close()
-            #print (label)
-            img = cv2.imread(img_filename.rstrip().replace("txt", "jpg"))#, cv2.IMREAD_GRAYSCALE)
-
-            for l in labels:
-                detections = [float(d) for d in l]
-                plot_bbs(img, detections, visualize = False, out=out)
-                cl_ = int(detections[0])
-                if cl_ < 0 or  cl_ > 3:
-                    print "ERRROR.....",cl_, img_filename
-                    continue
-                counter[cl_] +=1
-            #print("NEXT")
-        #f.close()
-        print "FINAL COUNTER", counter
+    if sys.argv[1] == "create":
+        visualize(img_filepath, store_path)
