@@ -185,4 +185,4 @@ if __name__ == "__main__":
         visualize(img_filepath, store_path)
 
     if sys.argv[1] == "create":
-        visualize(img_filepath, store_path)
+        create_labels(img_filepath, store_path)
