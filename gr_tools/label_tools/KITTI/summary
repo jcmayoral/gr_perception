@@ -1,0 +1,11 @@
+FOR DISTANCE = 15.0 M
+
+class Cyclist  count [742, 932, 201, 63]
+class Van  count [522, 1082, 785, 909]
+class Person  count [584, 92, 0, 0]
+class Tram  count [29, 310, 160, 95]
+class Car  count [5854, 9714, 6840, 4891]
+class Misc  count [218, 205, 153, 216]
+class Pedestrian  count [6887, 4054, 469, 60]
+class Truck  count [80, 270, 381, 449]
+

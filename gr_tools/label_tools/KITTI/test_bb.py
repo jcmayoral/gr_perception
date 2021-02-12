@@ -70,22 +70,26 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
 
 def create_labels(img_filepath, labels_filepath, classification_distance = 15.0):
     os.chdir(img_filepath)
+    main_file = "images_collection.txt"
     classes = dict()
     x = list()
 
     for root,dirs,files in os.walk("."):
-        print "LABEL ", root
-        print "DIRS", dirs
+        #print "LABEL ", root
+        #print "DIRS", dirs
         #print "FILES", files
         for file in files:
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
-            print labelfile
+            #print labelfile
             if not os.path.exists(labelfile):
                 continue
 
             img_file = os.path.join(root,file)
             newlabel_file = img_file.replace("png", "txt")
             cv_img = cv2.imread(img_file)
+
+            with open(main_file, "a+") as mfile:
+                mfile.write(img_file+"\n")
 
             with open(labelfile, "r") as fl:
                 for line in fl:
@@ -112,8 +116,8 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0)
                     #    print data[2], dclass, float(data[15])
                     #    cv2.waitKey(0)
 
-            cv2.imshow("visualize", cv_img)
-            cv2.waitKey(25)
+            #cv2.imshow("visualize", cv_img)
+            #cv2.waitKey(25)
     plt.figure()
     plt.hist(x, bins=40, cumulative=False)
     #plt.plot(np.arange(10), np.arange(10))
