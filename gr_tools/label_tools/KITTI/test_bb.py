@@ -24,12 +24,8 @@ def plot_bbs(image, bbs, visualize=False):
         cv2.imshow("TEST",image)
         cv2.waitKey()
 
-if __name__ == "__main__":
-    img_filepath =  "/home/jose/media/datasets/KITTI/data_tracking_image_2/training/image_02"
-    labels_filepath = "/home/jose/media/datasets/KITTI/data_tracking_label_2/training/label_02"
-    store_path = "/home/jose/media/datasets/new_kitti_labels"
+def create_labels(store_path, labels_filepath):
     os.chdir(store_path)
-    print "jere"
 
     for root,dirs,files in os.walk(labels_filepath):
         print "LABEL ", root
@@ -43,7 +39,8 @@ if __name__ == "__main__":
             try:
                 os.mkdir(newfolder)
             except:
-                pass
+                print "Some abels exists delete or check them"
+                sys.exit()
 
             with open(label_filepath, "r") as f:
                 for line in f:
@@ -55,7 +52,18 @@ if __name__ == "__main__":
                     lfile = os.path.join(newfolder, img_id+".txt")
                     with open(lfile, "a") as lf:
                         lf.write("".join(line+"\n"))
-    aaa
+
+if __name__ == "__main__":
+    img_filepath =  "/home/jose/media/datasets/KITTI/data_tracking_image_2/training/image_02"
+    labels_filepath = "/home/jose/media/datasets/KITTI/data_tracking_label_2/training/label_02"
+    store_path = "/home/jose/media/datasets/new_kitti_labels"
+
+    if len(sys.argv) == 1:
+        print "missing instruction"
+        sys.exit(0)
+
+    if sys.argv[1] == "labels":
+        create_labels(store_path, labels_filepath)
     counter = [0,0,0,0]
     aaa
     for img_folders in tqdm(os.walk(img_filepath)):
