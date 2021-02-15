@@ -68,17 +68,26 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
         print "class {}  count {}".format(i,j)
 
 
-def create_labels(img_filepath, labels_filepath, classification_distance = 15.0):
+def create_labels(img_filepath, labels_filepath, classification_distance = 15.0, v2=False):
+    masterfile_name = "v2_images_collection.txt"
+    if not v2:
+        masterfile_name = "images_collection.txt"
+
+    main_file = os.path.join(img_filepath,masterfile_name)
     os.chdir(img_filepath)
-    main_file = "images_collection.txt"
     classes = dict()
     x = list()
 
-    for root,dirs,files in os.walk("."):
+    if v2:
+        offsets_ = {"Person":0, "Pedestrian": 0, "Cyclist":0, "Van": 1, "Tram":1, "Car": 1, "Truck":1}
+
+    for root,dirs,files in tqdm(os.walk(".")):
         #print "LABEL ", root
         #print "DIRS", dirs
         #print "FILES", files
-        for file in files:
+        for file in tqdm(files):
+            if not "png" in file:
+                continue
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
             #print labelfile
             if not os.path.exists(labelfile):
@@ -86,10 +95,10 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0)
 
             img_file = os.path.join(root,file)
             newlabel_file = img_file.replace("png", "txt")
+            #if v2:
+            #    newlabel_file+="v2"
             cv_img = cv2.imread(img_file)
-
-            with open(main_file, "a+") as mfile:
-                mfile.write(img_file+"\n")
+            flag = False
 
             with open(labelfile, "r") as fl:
                 for line in fl:
@@ -101,10 +110,16 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0)
                     if float(data[15]) < 0:
                         continue
 
+                    flag = True
+                    if v2 and data[2] in offsets_.keys():
+                        dclass = dclass + offsets_[data[2]]*4
+                    if dclass>3:
+                        print dclass, data[2]
+
                     if data[2] in classes.keys():
                         classes[data[2]][dclass] = classes[data[2]][dclass]+ 1
                     else:
-                        classes[data[2]] = [0,0,0,0]
+                        classes[data[2]] = [0,0,0,0,0,0,0,0,0,0]
                         classes[data[2]][dclass] = classes[data[2]][dclass] + 1
 
                     x.append(float(data[15]))
@@ -115,6 +130,9 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0)
                     #if dclass == 0:
                     #    print data[2], dclass, float(data[15])
                     #    cv2.waitKey(0)
+            if flag:
+                with open(main_file, "a+") as mfile:
+                    mfile.write( os.path.join(img_filepath,root[2:], file)+"\n")
 
             #cv2.imshow("visualize", cv_img)
             #cv2.waitKey(25)
@@ -190,3 +208,6 @@ if __name__ == "__main__":
 
     if sys.argv[1] == "create":
         create_labels(img_filepath, store_path)
+
+    if sys.argv[1] == "new_labels":
+        create_labels(img_filepath, store_path, v2=True)
