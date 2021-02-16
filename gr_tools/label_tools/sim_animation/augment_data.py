@@ -54,6 +54,8 @@ class DatasetAugmenter:
 
     def clean_image(self,oimage):
         image = np.zeros(oimage.shape)
+        background =cv2.imread("/home/jose/Pictures/field_test.jpg")
+        background = cv2.resize(background,(oimage.shape[1], oimage.shape[0]))
         #cielo
         #mask = cv2.inRange(oimage, (0, 100, 80), (255, 255, 200))
         #whiteImage = np.zeros_like(mask)
@@ -61,18 +63,17 @@ class DatasetAugmenter:
 
         #playera
         mask = cv2.inRange(oimage, (6,0., 9), (15, 50, 15))
-        whiteImage = np.zeros_like(mask)
-        image[np.where(mask)] = [0,0,255]
+        background[np.where(mask)] = oimage[np.where(mask)]
 
         #piel
         mask = cv2.inRange(oimage, (10, 8, 80), (60, 355, 200))
-        image[np.where(mask)] = [0,0,255]
+        background[np.where(mask)] = oimage[np.where(mask)]#[0,0,255]
 
 
         #pantalon
         mask = cv2.inRange(oimage, (30, 0, 0), (50, 50, 80))
         #whiteImage = np.zeros_like(mask)
-        image[np.where(mask)] = [0,0,255]
+        background[np.where(mask)] = oimage[np.where(mask)]#[0,0,255]
 
 
         #pasto
@@ -88,10 +89,9 @@ class DatasetAugmenter:
         #image[np.where(mask)] = [0,0,255]
 
 
-
-        #whiteMask = cv2.bitwise_and(whiteImage, mask) #created white mask
+        #whiteMask = cv2.bitwise_and(img2, mask) #created white mask
         #np.copyto(newImage, whiteMask)
-        return image # cv2.cvtColor(newImage, cv2.COLOR_GRAY2BGR)
+        return background # cv2.cvtColor(newImage, cv2.COLOR_GRAY2BGR)
 
     def run(self):
         with open("files.txt", "r") as text_file:
