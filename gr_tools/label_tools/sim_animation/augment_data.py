@@ -106,13 +106,44 @@ class DatasetAugmenter:
         return newImage # cv2.cvtColor(newImage, cv2.COLOR_GRAY2BGR)
 
     def run(self):
-        print os.getcwd()
+        lines = list()
         with open("files.txt", "r") as text_file:
-            for file in tqdm.tqdm(text_file):
+            lines = text_file.readlines()
+        with tqdm.tqdm(total=len(lines)) as pbar:
+            for file in lines:
                 self.img =cv2.imread(file.rstrip())
                 self.img = self.clean_image(self.img)
+
+                label_filename = file.replace(".jpg", ".txt").rstrip()
+                if not os.path.exists(label_filename):
+                    continue
+                fl = open(label_filename, "r")
+                label = fl.readline().split(" ")
+                fl.close()
+                detections = [float(d) for d in label]
+
+                self.plot_bbs(self.img, detections)
                 cv2.imshow("test", self.img)
-                cv2.waitKey(500)
+                cv2.waitKey(50)
+                pbar.update(1)
+
+    def plot_bbs(self,image, bbs):
+        height, width, channels = image.shape
+        cll, cx1, cy1, cwidth, cheight  = bbs
+        #x->width y->height
+        x1 = int(np.rint((cx1 - cwidth/2)*width))
+        y1 = int(np.rint((cy1 - cheight/2)*height))
+        x2 = int(np.rint((cx1 + cwidth/2)*width))
+        y2 = int(np.rint((cy1 + cheight/2)*height))
+        #print (x1,y1)
+        #print (x2,y2)
+        #print (cll, type(cll))
+        # Create a Rectangle patch
+        cv2.rectangle(image, (x1, y1), (x2, y2), (255,0,0), 2)
+        cv2.putText(image, "RING_" +str(int(cll)), (int(cx1*width),int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
+        return image
+
+
 
 if __name__ == '__main__':
     dbpath = "/media/datasets/simanimation/"
