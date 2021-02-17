@@ -24,6 +24,7 @@ class DatasetAugmenter:
         self.bridge = CvBridge()
         self.distance = 2.0
         self.seq = 0
+        #self.substractor = cv2.createBackgroundSubtractorMOG2(0,3.0, False)
 
         try:
             os.chdir(dbpath)
@@ -53,45 +54,55 @@ class DatasetAugmenter:
             print("Coordinates of pixel: X: ",x,"Y: ",y)
 
     def clean_image(self,oimage):
-        image = np.zeros(oimage.shape)
-        background =cv2.imread("/home/jose/Pictures/field_test.jpg")
-        background = cv2.resize(background,(oimage.shape[1], oimage.shape[0]))
-        #cielo
-        #mask = cv2.inRange(oimage, (0, 100, 80), (255, 255, 200))
-        #whiteImage = np.zeros_like(mask)
-        #image[np.where(mask)] = [255,255,255]
+        gray_image = cv2.cvtColor(oimage, cv2.COLOR_BGR2GRAY)
+        newImage =cv2.imread("/home/jose/Pictures/field_test.jpg")
+        onewImage =cv2.imread("/home/jose/Pictures/field_test.jpg")
+        background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
+        gray_backgroud = cv2.cvtColor(background, cv2.COLOR_BGR2GRAY)
+        newImage = cv2.resize(newImage,(oimage.shape[1], oimage.shape[0]))
+        onewImage = cv2.resize(onewImage,(oimage.shape[1], oimage.shape[0]))
+        #background = cv2.resize(background,(oimage.shape[1], oimage.shape[0]))
+
+        nmask = cv2.subtract(gray_backgroud, gray_image) >5
+        newImage[np.where(nmask)] = oimage[np.where(nmask)]
+
+        #newImage = self.substractor.apply(oimage)
+        print newImage.shape
+
 
         #playera
-        mask = cv2.inRange(oimage, (6,0., 9), (15, 50, 15))
-        background[np.where(mask)] = oimage[np.where(mask)]
+        #mask = cv2.inRange(oimage, (6,0., 9), (15, 50, 15))
+        #print np.unique(mask)
+        #newImage[np.where(mask)] = oimage[np.where(mask)]
 
         #piel
-        mask = cv2.inRange(oimage, (10, 8, 80), (60, 355, 200))
-        background[np.where(mask)] = oimage[np.where(mask)]#[0,0,255]
+        #mask = cv2.inRange(newImage, (10, 8, 80), (60, 355, 200))
+        #newImage[np.where(mask)] = onewImage[np.where(mask)]#[0,0,255]
 
 
-        #pantalon
-        mask = cv2.inRange(oimage, (30, 0, 0), (50, 50, 80))
-        #whiteImage = np.zeros_like(mask)
-        background[np.where(mask)] = oimage[np.where(mask)]#[0,0,255]
+
+
+        #cielo
+        #mask = cv2.inRange(newImage, (0, 100, 80), (255, 255, 200))
+        #newImage[np.where(mask)] = onewImage[np.where(mask)]
 
 
         #pasto
-        #mask = cv2.inRange(oimage, (0,50, 0), (20,90, 100))
-        #whiteImage = np.zeros_like(mask)
-        #image[np.where(mask)] = [255,255,255]
+        #mask = cv2.inRange(oimage, (0,10, 0), (20,90, 100))
+        #newImage[np.where(mask)] = onewImage[np.where(mask)]
 
-
+        #pantalon
+        mask = cv2.inRange(oimage, (26, 0, 0), (50, 30, 80))
+        newImage[np.where(mask)] = [0,0,255]
 
         #playera
-        #mask = cv2.inRange(image, (6, 26, 9), (11, 32, 15))
-        #whiteImage = np.zeros_like(mask)
-        #image[np.where(mask)] = [0,0,255]
+        mask = cv2.inRange(newImage, (4, 20, 0), (15, 50, 25))
+        newImage[np.where(mask)] = [0,255,255]
 
 
         #whiteMask = cv2.bitwise_and(img2, mask) #created white mask
         #np.copyto(newImage, whiteMask)
-        return background # cv2.cvtColor(newImage, cv2.COLOR_GRAY2BGR)
+        return newImage # cv2.cvtColor(newImage, cv2.COLOR_GRAY2BGR)
 
     def run(self):
         with open("files.txt", "r") as text_file:
