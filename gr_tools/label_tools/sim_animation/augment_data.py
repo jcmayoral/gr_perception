@@ -55,7 +55,7 @@ class DatasetAugmenter:
 
     def clean_image(self,oimage):
         gray_image = cv2.cvtColor(oimage, cv2.COLOR_BGR2GRAY)
-        bg_index = np.random.randint(1,10)
+        bg_index = np.random.randint(1,12)
         newImage =cv2.imread("/home/jose/Pictures/fields/field_test{}.jpg".format(bg_index))
         onewImage = newImage.copy()#cv2.imread("/home/jose/Pictures/field_test{}.jpg".format(bg_index))
         background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
