@@ -55,8 +55,9 @@ class DatasetAugmenter:
 
     def clean_image(self,oimage):
         gray_image = cv2.cvtColor(oimage, cv2.COLOR_BGR2GRAY)
-        newImage =cv2.imread("/home/jose/Pictures/field_test.jpg")
-        onewImage =cv2.imread("/home/jose/Pictures/field_test.jpg")
+        bg_index = np.random.randint(1,10)
+        newImage =cv2.imread("/home/jose/Pictures/fields/field_test{}.jpg".format(bg_index))
+        onewImage = newImage.copy()#cv2.imread("/home/jose/Pictures/field_test{}.jpg".format(bg_index))
         background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
         gray_backgroud = cv2.cvtColor(background, cv2.COLOR_BGR2GRAY)
         newImage = cv2.resize(newImage,(oimage.shape[1], oimage.shape[0]))
@@ -67,8 +68,6 @@ class DatasetAugmenter:
         newImage[np.where(nmask)] = oimage[np.where(nmask)]
 
         #newImage = self.substractor.apply(oimage)
-        print newImage.shape
-
 
         #playera
         #mask = cv2.inRange(oimage, (6,0., 9), (15, 50, 15))
@@ -76,8 +75,9 @@ class DatasetAugmenter:
         #newImage[np.where(mask)] = oimage[np.where(mask)]
 
         #piel
-        #mask = cv2.inRange(newImage, (10, 8, 80), (60, 355, 200))
-        #newImage[np.where(mask)] = onewImage[np.where(mask)]#[0,0,255]
+        skincolors = [[140,133,197],[188,180,236],[163,164,209],[102,94,161],[51,53,80],[47,42,89]]
+        mask = cv2.inRange(oimage, (10, 8, 80), (60, 355, 200))
+        newImage[np.where(mask)] = skincolors[np.random.randint(0,5)]#onewImage[np.where(mask)]#[0,0,255]
 
 
 
@@ -86,18 +86,19 @@ class DatasetAugmenter:
         #mask = cv2.inRange(newImage, (0, 100, 80), (255, 255, 200))
         #newImage[np.where(mask)] = onewImage[np.where(mask)]
 
-
-        #pasto
+        #pasto, newImage
         #mask = cv2.inRange(oimage, (0,10, 0), (20,90, 100))
         #newImage[np.where(mask)] = onewImage[np.where(mask)]
 
         #pantalon
         mask = cv2.inRange(oimage, (26, 0, 0), (50, 30, 80))
-        newImage[np.where(mask)] = [0,0,255]
+        newImage[np.where(mask)] = [np.random.randint(0,255) for i in range(3)]
 
         #playera
         mask = cv2.inRange(newImage, (4, 20, 0), (15, 50, 25))
-        newImage[np.where(mask)] = [0,255,255]
+        newImage[np.where(mask)] = [np.random.randint(0,255) for i in range(3)]
+
+        #newImage = cv2.colorChange(newImage, mask, newImage)
 
 
         #whiteMask = cv2.bitwise_and(img2, mask) #created white mask
@@ -105,9 +106,9 @@ class DatasetAugmenter:
         return newImage # cv2.cvtColor(newImage, cv2.COLOR_GRAY2BGR)
 
     def run(self):
+        print os.getcwd()
         with open("files.txt", "r") as text_file:
             for file in tqdm.tqdm(text_file):
-                #print file
                 self.img =cv2.imread(file.rstrip())
                 self.img = self.clean_image(self.img)
                 cv2.imshow("test", self.img)
