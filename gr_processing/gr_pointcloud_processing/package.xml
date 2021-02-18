@@ -1,6 +1,6 @@
 <package>
   <name>gr_pointcloud_processing</name>
-  <version>0.11.1</version>
+  <version>0.12.2</version>
   <description>
     Node for processing Velodyne LiDAR
   </description>
@@ -11,6 +11,8 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>roscpp</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>gr_action_msgs</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>safety_msgs</build_depend>
@@ -22,6 +24,8 @@
   <build_depend>nodelet</build_depend>
 
   <run_depend>roscpp</run_depend>
+  <run_depend>actionlib</run_depend>
+  <run_depend>gr_action_msgs</run_depend>
   <run_depend>pcl_conversions</run_depend>
   <run_depend>geometry_msgs</run_depend>
   <run_depend>safety_msgs</run_depend>

@@ -1,0 +1,30 @@
+<launch>
+  <arg name="color_image" default="/camera/color/image_raw" />
+  <arg name="color_info" default="/camera/color/camera_info2" />
+  <arg name="depth_image" default="/camera/depth/image_rect_raw2" />
+  <arg name="depth_info" default="/camera/depth/camera_info2" />
+
+  <node pkg="nodelet" type="nodelet" name="pc_nodelet"  args="manager" output="screen"/>
+  <!--node pkg="nodelet" type="nodelet" name="pc_nodelet" args="load depth_image_proc/point_cloud_xyzrgb pc_processing_nodelet" output="screen">
+    <remap from="rgb/image_rect_color" to="$(arg color_image)"/>
+    <remap from="rgb/camera_info" to="$(arg color_info)"/>
+    <remap from="depth_registered/image_rect" to="$(arg depth_image)"/>
+  </node-->
+
+  <!--node pkg="nodelet" type="nodelet" name="depth_register_nodelet" args="load depth_image_proc/register pc_processing_nodelet" output="screen">
+    <remap from="depth/image_rect" to="$(arg color_image)"/>
+    <remap from="rgb/camera_info" to="$(arg color_info)"/>
+    <remap from="depth/camera_info" to="$(arg depth_info)"/>
+  </node-->
+
+  <node pkg="nodelet" type="nodelet" name="cloudify_nodelet" args="load depth_image_proc/point_cloud_xyz pc_nodelet --no-bond" output="screen">
+    <remap from="image_rect" to="$(arg depth_image)"/>
+    <remap from="camera_info" to="$(arg depth_info)"/>
+    <!--remap from="depth_registered/image_rect" to="$(arg depth_image)"-->
+  </node>
+
+  <!--node pkg="depth_image_proc" type="point_cloud_xyz" name="point_cloud_xyz">
+    <remap from="image_rect" to="$(arg depth_image)"/>
+    <remap from="camera_info" to="$(arg depth_info)"/>
+  </node-->
+</launch>

@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-im_size = (128,128)
+im_size = (256,256)
 batch_size = 10
 
 data_loader = DataLoader2(dataset_name="dummy",
@@ -19,7 +19,7 @@ data_loader = DataLoader2(dataset_name="dummy",
                           thermal_dataset_folder="/home/jose/ros_ws/src/gr_perception/feature_generation/bag_2_images/depth",
                           path_timestamp_matching="/home/jose/ros_ws/src/gr_perception/feature_generation/rgb_2_thermal/depthmatching",
                           match_by_timestamps = True,
-                          thermal_threshold=100, data_percentage = 10, rgb_ext="png", thermal_ext="npz", batch_size=batch_size)
+                          thermal_threshold=100, data_percentage = 2, rgb_ext="png", thermal_ext="npz", batch_size=batch_size)
 """
 (rgb, depth), labels = data_loader.load_samples()
 plt.figure()

@@ -10,4 +10,16 @@ saved_models/
 current_results/
 results/
 files/
+depthfiles/
 matching/
+depthmatching/
+*dataset*/
+.ipynb_checkpoints/
+yolov3/
+vision/
+checkpoints/
+output/
+pypcd_hack/
+CATKIN_IGNORE
+resources/
+images/

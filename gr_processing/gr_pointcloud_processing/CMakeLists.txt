@@ -7,6 +7,8 @@ add_definitions(-Wno-dev)
 
 find_package(catkin REQUIRED
         COMPONENTS
+	gr_action_msgs
+	actionlib
         roscpp
         pcl_conversions
         geometry_msgs
@@ -42,6 +44,8 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
+    gr_action_msgs
+    actionlib
     roscpp
     pcl_conversions
     geometry_msgs

@@ -37,7 +37,7 @@ class DataLoader2():
         self.thermal_ext = thermal_ext
         self.n_classes = len(classes)
         self.classes_dict = {"0": 0, "1": 1, "2": 2, "3": 3}
-        self.flip_images = True
+        self.flip_images = False
 
         if match_by_timestamps:
             self.match_thermalfunction= self.match_by_timestamp

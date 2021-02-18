@@ -6,7 +6,6 @@ PLUGINLIB_EXPORT_CLASS(gr_pointcloud_processing::PointCloudProcessor, nodelet::N
 using namespace gr_detection;
 
 namespace gr_pointcloud_processing{
-
   void PointCloudProcessor::onInit(){
     dynamic_std_ = 0.1;
     output_publish_ = false;
@@ -78,11 +77,27 @@ namespace gr_pointcloud_processing{
     safety_pub_ = nh.advertise<safety_msgs::FoundObjectsArray>("found_object",1);
 
     bb_pub_ = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("/detection/bounding_boxes", 1);
-    ROS_INFO("Setup Done ready to work");
 
+    //ACTIONLIB
+    as_= boost::make_shared<actionlib::SimpleActionServer<gr_action_msgs::GRPCProcessAction>>(nh, "gr_pointcloud/process", boost::bind(&PointCloudProcessor::executeCB, this, _1), false);
+    as_->start();
+    ROS_INFO("Setup Done ready to work");
 };
 
-void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level){
+  void PointCloudProcessor::executeCB(const gr_action_msgs::GRPCProcessGoalConstPtr &goal){
+    ROS_INFO("action server called");
+    sensor_frame_ = goal->goal_pc.header.frame_id;
+    pcl::PointCloud<pcl::PointXYZI>::Ptr output (new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::fromROSMsg(goal->goal_pc, *output);
+    //ROS_INFO("PointCloud conversion succeded");
+    auto result = run_filter(output);
+    cluster();
+    result_.found_objects = safety_msg_;
+    as_->setSucceeded(result_);
+  }
+
+  void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level){
+
     boost::mutex::scoped_lock lock(mutex_);
     main_cloud_.points.clear();
     ROS_ERROR("RECONFIGURING");
@@ -125,20 +140,18 @@ void PointCloudProcessor::dyn_reconfigureCB(gr_pointcloud_processing::PointCloud
 
     static_dynamic_classifier_ = config.static_dynamic_classifier;
     ROS_ERROR("END reconfigure");
+  };
 
-};
-
-void PointCloudProcessor::timer_cb(const ros::TimerEvent&){
+  void PointCloudProcessor::timer_cb(const ros::TimerEvent&){
     //boost::mutex::scoped_lock lock(mutex_);
     //  ROS_ERROR("timer ");
     tStart = clock();
     cluster();
     main_cloud_.points.clear();
-}
+  }
 
 
-template <class T> void PointCloudProcessor::publishPointCloud(T t){
-
+  template <class T> void PointCloudProcessor::publishPointCloud(T t){
     if(t.points.size() ==0 ){
       return;
     }
@@ -149,7 +162,6 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
     // Publish the data
     pc_pub_.publish(output_pointcloud_);
   }
-
 
   void PointCloudProcessor::pointcloud_cb(const sensor_msgs::PointCloud2ConstPtr msg){
     //run_filter(*msg);
@@ -252,172 +264,172 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
   }
 
   void PointCloudProcessor::cluster(){
-      boost::mutex::scoped_lock lock(mutex_);
-      //Cluster implementation requires XYZ ... If you have a lot of time maybe worth it to modifyied it
-      boost::shared_ptr <pcl::PointCloud<pcl::PointXYZ>> pointcloud_xyz = boost::make_shared<pcl::PointCloud<pcl::PointXYZ>>();
-      pcl::copyPointCloud(main_cloud_,*pointcloud_xyz.get());
+    boost::mutex::scoped_lock lock(mutex_);
+    //Cluster implementation requires XYZ ... If you have a lot of time maybe worth it to modifyied it
+    boost::shared_ptr <pcl::PointCloud<pcl::PointXYZ>> pointcloud_xyz = boost::make_shared<pcl::PointCloud<pcl::PointXYZ>>();
+    pcl::copyPointCloud(main_cloud_,*pointcloud_xyz.get());
 
 
-      to_odom_transform = tf_buffer_.lookupTransform(global_frame_, sensor_frame_, last_detection_, ros::Duration(0.5) );
+    to_odom_transform = tf_buffer_.lookupTransform(global_frame_, sensor_frame_, last_detection_, ros::Duration(0.5) );
 
-      if (pointcloud_xyz->points.size() == 0 ){
-        ROS_ERROR("Cluster empty");
-        return;
-      }
+    if (pointcloud_xyz->points.size() == 0 ){
+      ROS_ERROR("Cluster empty");
+      return;
+    }
 
-      cloud_device.upload(pointcloud_xyz->points);
-      pcl::gpu::Octree::Ptr octree_device (new pcl::gpu::Octree);
-      octree_device->setCloud(cloud_device);
-      octree_device->build();
-      std::vector<pcl::PointIndices> cluster_indices_gpu;
-      gec.setSearchMethod (octree_device);
+    cloud_device.upload(pointcloud_xyz->points);
+    pcl::gpu::Octree::Ptr octree_device (new pcl::gpu::Octree);
+    octree_device->setCloud(cloud_device);
+    octree_device->build();
+    std::vector<pcl::PointIndices> cluster_indices_gpu;
+    gec.setSearchMethod (octree_device);
 
-      gec.setHostCloud(pointcloud_xyz);
-      gec.extract (cluster_indices_gpu);
+    gec.setHostCloud(pointcloud_xyz);
+    gec.extract (cluster_indices_gpu);
 
-      geometry_msgs::PoseArray clusters_msg;
-      safety_msgs::FoundObjectsArray safety_msg;
+    geometry_msgs::PoseArray clusters_msg;
+    safety_msg_.objects.clear();
 
-      std::vector<double> x_vector;
-      std::vector<double> y_vector;
-      std::vector<double> z_vector;
-      std::vector<double> i_vector;
+    std::vector<double> x_vector;
+    std::vector<double> y_vector;
+    std::vector<double> z_vector;
+    std::vector<double> i_vector;
 
-      //TODO Test
-      pcl::PointCloud<PointXYZI> pointcloud_xyzi;
-      pcl::copyPointCloud(*pointcloud_xyz.get(),pointcloud_xyzi);
+    //TODO Test
+    pcl::PointCloud<PointXYZI> pointcloud_xyzi;
+    pcl::copyPointCloud(*pointcloud_xyz.get(),pointcloud_xyzi);
 
-      //Clean
-      //REST AGE PARAM TO ALL the memory files DELETE IN NOT FOUND
-      //TODO to it timewise
-      cleanUpCycle();
+    //Clean
+    //REST AGE PARAM TO ALL the memory files DELETE IN NOT FOUND
+    //TODO to it timewise
+    cleanUpCycle();
 
-      double cluster_std;
+    double cluster_std;
 
-      Person person;
-      safety_msgs::Object object;
+    Person person;
+    safety_msgs::Object object;
 
-      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
-          //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
-          x_vector.clear();
-          y_vector.clear();
-          z_vector.clear();
-          geometry_msgs::Pose cluster_center;
-          //NEW FEATURE
-          geometry_msgs::Quaternion cluster_orientation;
-          tf2::Quaternion tf2_quat;
-          cluster_center.orientation.w = 1.0;
-
-
-          //Testing
-          pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZI>);
-
-          for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit){
-              cluster_center.position.x += main_cloud_.points[*pit].x/it->indices.size();
-              cluster_center.position.y += main_cloud_.points[*pit].y/it->indices.size();
-              cluster_center.position.z += main_cloud_.points[*pit].z/it->indices.size();
-              //not so sure if this makes sense now.
-              pointcloud_xyzi.points[*pit].intensity = main_cloud_.points[*pit].intensity;
-              x_vector.push_back(main_cloud_.points[*pit].x);
-              y_vector.push_back(main_cloud_.points[*pit].y);
-              z_vector.push_back(main_cloud_.points[*pit].z);
-              i_vector.push_back(main_cloud_.points[*pit].intensity);
-              cloud_cluster->points.push_back (main_cloud_.points[*pit]);
-          }
-
-          double var_x = calculateVariance<double>(x_vector);
-          double var_y = calculateVariance<double>(y_vector);
-          double var_z = calculateVariance<double>(z_vector);
-          double var_i = calculateVariance<double>(i_vector);
-
-          cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
-
-          //FOR FUSION
-          person.pose.position = cluster_center.position;
-          person.pose.orientation.w = 1.0;
-          person.variance.x = var_x;
-          person.variance.y = var_y;
-          person.variance.z = var_z;
-          person.vari = var_i;
-
-          //FOR GRIDMAP
-          object.pose.position = cluster_center.position;
-
-          if (cluster_std< dynamic_std_ && var_z> dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
-          //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
-            //centroids for proximity policy
-            auto range_x = getAbsoluteRange<double>(x_vector);
-            auto range_y = getAbsoluteRange<double>(y_vector);
-            auto range_z = getAbsoluteRange<double>(z_vector);
-
-            person.volume = range_x*range_y*range_z;
-
-            //var_i seems to be more stable that bb volume
-            //ON TESTING
-            auto matchingid = matchDetection(person);
-            object.object_id = matchingid;
-
-            if (!matchingid.empty() && matchingid.compare(gr_detection::NOPREVIOUSDETECTION) !=0){
-              //GEt matched object
-              auto matched_object = GetObject(matchingid);
-              auto nx = person.pose.position.x- matched_object.pose.position.x;
-              auto ny = person.pose.position.y- matched_object.pose.position.y;
-              auto nz = person.pose.position.z- matched_object.pose.position.z;
+    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices_gpu.begin (); it != cluster_indices_gpu.end (); ++it){
+        //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
+        x_vector.clear();
+        y_vector.clear();
+        z_vector.clear();
+        geometry_msgs::Pose cluster_center;
+        //NEW FEATURE
+        geometry_msgs::Quaternion cluster_orientation;
+        tf2::Quaternion tf2_quat;
+        cluster_center.orientation.w = 1.0;
 
 
-              //default value
-              person.pose.orientation = matched_object.pose.orientation;
-              object.pose.orientation = person.pose.orientation;
+        //Testing
+        pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZI>);
 
-              //IF the distance is bigger than 5? cm then compute orientation and update
-              if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){
-                double dt = (ros::Time::now() - last_detection_).toSec();
+        for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit){
+            cluster_center.position.x += main_cloud_.points[*pit].x/it->indices.size();
+            cluster_center.position.y += main_cloud_.points[*pit].y/it->indices.size();
+            cluster_center.position.z += main_cloud_.points[*pit].z/it->indices.size();
+            //not so sure if this makes sense now.
+            pointcloud_xyzi.points[*pit].intensity = main_cloud_.points[*pit].intensity;
+            x_vector.push_back(main_cloud_.points[*pit].x);
+            y_vector.push_back(main_cloud_.points[*pit].y);
+            z_vector.push_back(main_cloud_.points[*pit].z);
+            i_vector.push_back(main_cloud_.points[*pit].intensity);
+            cloud_cluster->points.push_back (main_cloud_.points[*pit]);
+        }
 
-                auto nyaw =  calculateYaw<double>(nx,ny,nz);
-                auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);
-                //person is new reading
-                std::cout << "dt " << dt << std::endl;
+        double var_x = calculateVariance<double>(x_vector);
+        double var_y = calculateVariance<double>(y_vector);
+        double var_z = calculateVariance<double>(z_vector);
+        double var_i = calculateVariance<double>(i_vector);
 
-                object.speed.x = nx/dt;
-                object.speed.y = ny/dt;
+        cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
-                auto m_vyaw = (oldyaw-nyaw)*dt;
-                object.speed.z = m_vyaw;
-                tf2_quat.setRPY(0,0,nyaw);
+        //FOR FUSION
+        person.pose.position = cluster_center.position;
+        person.pose.orientation.w = 1.0;
+        person.variance.x = var_x;
+        person.variance.y = var_y;
+        person.variance.z = var_z;
+        person.vari = var_i;
 
-                person.pose.orientation = tf2::toMsg(tf2_quat);
-                cluster_center.orientation = person.pose.orientation;
-                object.pose.orientation = cluster_center.orientation;
+        //FOR GRIDMAP
+        object.pose.position = cluster_center.position;
 
-                person.speed = object.speed;
-                object.is_dynamic = true;
-              }
+        if (cluster_std< dynamic_std_ && var_z> dynamic_std_z_ && fabs(cluster_center.position.z) < distance_to_floor_){
+        //if (cluster_std< dynamic_std_ && range_z  > dynamic_std_z_){
+          //centroids for proximity policy
+          auto range_x = getAbsoluteRange<double>(x_vector);
+          auto range_y = getAbsoluteRange<double>(y_vector);
+          auto range_z = getAbsoluteRange<double>(z_vector);
 
-              //Updating
-              //ROS_INFO_STREAM("Updating person with id: " << matchingid);
-              UpdateObject(matchingid, person);
+          person.volume = range_x*range_y*range_z;
 
-              //just add if seen before
-              // bounding boxes... TODO merge with persons_array (if approved by memory then add)
-              addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
-              //publish persons
-              publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(*cloud_cluster);
-              //auto timestamp = ros::Time::now().toNSec();
-              //std::string filename("/media/datasets/persons_pcd/"+matchingid+"*"+std::to_string(timestamp)+"_"+".pcd");
-              //pcl::io::savePCDFile(filename.c_str(), *cloud_cluster.get(),true);
-                          }
-            else{
-              //ROS_WARN_STREAM("A new person has been found adding to the array");
-              //testing map array_person (memory)
-              //if (matchingid.compare(gr_detection::NODETECTION) !=0){
-                insertNewObject(person);
-              //}
+          //var_i seems to be more stable that bb volume
+          //ON TESTING
+          auto matchingid = matchDetection(person);
+          object.object_id = matchingid;
+
+          if (!matchingid.empty() && matchingid.compare(gr_detection::NOPREVIOUSDETECTION) !=0){
+            //GEt matched object
+            auto matched_object = GetObject(matchingid);
+            auto nx = person.pose.position.x- matched_object.pose.position.x;
+            auto ny = person.pose.position.y- matched_object.pose.position.y;
+            auto nz = person.pose.position.z- matched_object.pose.position.z;
+
+
+            //default value
+            person.pose.orientation = matched_object.pose.orientation;
+            object.pose.orientation = person.pose.orientation;
+
+            //IF the distance is bigger than 5? cm then compute orientation and update
+            if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){
+              double dt = (ros::Time::now() - last_detection_).toSec();
+
+              auto nyaw =  calculateYaw<double>(nx,ny,nz);
+              auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);
+              //person is new reading
+              std::cout << "dt " << dt << std::endl;
+
+              object.speed.x = nx/dt;
+              object.speed.y = ny/dt;
+
+              auto m_vyaw = (oldyaw-nyaw)*dt;
+              object.speed.z = m_vyaw;
+              tf2_quat.setRPY(0,0,nyaw);
+
+              person.pose.orientation = tf2::toMsg(tf2_quat);
+              cluster_center.orientation = person.pose.orientation;
+              object.pose.orientation = cluster_center.orientation;
+
+              person.speed = object.speed;
+              object.is_dynamic = true;
             }
-            //Update for pose array
-            clusters_msg.poses.push_back(cluster_center);
-            //for gridmap
-            safety_msg.objects.push_back(object);
+
+            //Updating
+            //ROS_INFO_STREAM("Updating person with id: " << matchingid);
+            UpdateObject(matchingid, person);
+
+            //just add if seen before
+            // bounding boxes... TODO merge with persons_array (if approved by memory then add)
+            addBoundingBox(cluster_center, range_x, range_y, range_z, var_i, var_i);
+            //publish persons
+            publishPointCloud<pcl::PointCloud <pcl::PointXYZI>>(*cloud_cluster);
+            //auto timestamp = ros::Time::now().toNSec();
+            //std::string filename("/media/datasets/persons_pcd/"+matchingid+"*"+std::to_string(timestamp)+"_"+".pcd");
+            //pcl::io::savePCDFile(filename.c_str(), *cloud_cluster.get(),true);
+                        }
+          else{
+            //ROS_WARN_STREAM("A new person has been found adding to the array");
+            //testing map array_person (memory)
+            //if (matchingid.compare(gr_detection::NODETECTION) !=0){
+              insertNewObject(person);
+            //}
           }
+          //Update for pose array
+          clusters_msg.poses.push_back(cluster_center);
+          //for gridmap
+          safety_msg_.objects.push_back(object);
+        }
       }
 
       ROS_INFO("Detection on PC");
@@ -426,8 +438,8 @@ template <class T> void PointCloudProcessor::publishPointCloud(T t){
       clusters_msg.header.stamp = ros::Time::now();
       cluster_pub_.publish(clusters_msg);
 
-      safety_msg.header = clusters_msg.header;
-      safety_pub_.publish(safety_msg);
+      safety_msg_.header = clusters_msg.header;
+      safety_pub_.publish(safety_msg_);
       publishBoundingBoxes();
 
       if (output_publish_){
