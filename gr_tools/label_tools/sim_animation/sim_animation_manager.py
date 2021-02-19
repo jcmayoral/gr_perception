@@ -18,7 +18,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         #super(PersonSimAnimation, self).__init__()
         self.count = start_count
         PersonSimAnimation.__init__(self)
-        ImageSinAnimationLabeler.__init__(self,self)
+        ImageSinAnimationLabeler.__init__(self, depth)
         self.backward_motion = False
         self.initialize = False
         self.target_frame = "camera_link"
@@ -37,12 +37,12 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             sys.exit()
 
         try:
-            os.mkdir("depth_testdataset_v"+ str(version))
+            os.mkdir("v"+ str(version))
         except:
             pass
 
         try:
-            os.chdir("depth_testdataset_v"+str(version))
+            os.chdir("v"+str(version))
         except:
             print("error in folder")
             sys.exit()
@@ -157,11 +157,11 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
-    dbpath = "/media/datasets/simanimation/"
-    startcount=920
-    manager = SimAnimationManager(dbpath, depth=True, version = 3, start_count = startcount)
-    repeat = 1200 - startcount
-    for i in tqdm.tqdm(range(repeat)):
+    dbpath = "/home/jose/datasets/simanimation_white/"
+    startcount=0
+    manager = SimAnimationManager(dbpath, depth=False, version = 4, start_count = startcount)
+    endcount = 1200
+    for i in tqdm.tqdm(range(startcount,endcount)):
         #rospy.logerr("image request " + str(i) )
         manager.run()
     #rospy.spin()

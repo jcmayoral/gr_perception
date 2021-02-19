@@ -34,7 +34,7 @@ class DatasetAugmenter:
             sys.exit()
 
         try:
-            os.chdir("depth_testdataset_v"+str(version))
+            os.chdir("v"+str(version))
         except:
             print("error in folder")
             sys.exit()
@@ -52,21 +52,21 @@ class DatasetAugmenter:
             print("Green: ",colorsG)
             print("Blue: ",colorsB)
             print("BRG Format: ",colors)
-            print("Coordinates of pixel: X: ",x,"Y: ",y)
+            print("Coordinates of pixel: X: ",x,"Y: ",)
 
     def clean_image(self,oimage):
         gray_image = cv2.cvtColor(oimage, cv2.COLOR_BGR2GRAY)
         bg_index = np.random.randint(1,12)
         newImage =cv2.imread("/home/jose/Pictures/fields/field_test{}.jpg".format(bg_index))
         onewImage = newImage.copy()#cv2.imread("/home/jose/Pictures/field_test{}.jpg".format(bg_index))
-        background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
-        gray_backgroud = cv2.cvtColor(background, cv2.COLOR_BGR2GRAY)
+        #background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
+        #gray_backgroud = cv2.cvtColor(background, cv2.COLOR_BGR2GRAY)
         newImage = cv2.resize(newImage,(oimage.shape[1], oimage.shape[0]))
         onewImage = cv2.resize(onewImage,(oimage.shape[1], oimage.shape[0]))
         #background = cv2.resize(background,(oimage.shape[1], oimage.shape[0]))
-
-        nmask = cv2.subtract(gray_backgroud, gray_image) >5
+        nmask =  gray_image<250#cv2.subtract(gray_backgroud, gray_image) >5
         newImage[np.where(nmask)] = oimage[np.where(nmask)]
+
 
         #newImage = self.substractor.apply(oimage)
 
@@ -77,7 +77,8 @@ class DatasetAugmenter:
 
         #piel
         skincolors = [[140,133,197],[188,180,236],[163,164,209],[102,94,161],[51,53,80],[47,42,89]]
-        mask = cv2.inRange(oimage, (10, 8, 80), (60, 355, 200))
+        mask = cv2.inRange(oimage, (40, 40, 80), (160, 180, 240))
+        print np.unique(mask, return_counts=True)
         newImage[np.where(mask)] = skincolors[np.random.randint(0,5)]#onewImage[np.where(mask)]#[0,0,255]
 
 
@@ -90,11 +91,11 @@ class DatasetAugmenter:
         #newImage[np.where(mask)] = onewImage[np.where(mask)]
 
         #pantalon
-        mask = cv2.inRange(oimage, (26, 0, 0), (50, 30, 80))
+        mask = cv2.inRange(oimage, (80, 20, 0), (200, 150, 100))
         newImage[np.where(mask)] = [np.random.randint(0,255) for i in range(3)]
 
         #playera
-        mask = cv2.inRange(newImage, (4, 20, 0), (15, 50, 25))
+        mask = cv2.inRange(oimage, (0, 40, 0), (30, 80, 150))
         newImage[np.where(mask)] = [np.random.randint(0,255) for i in range(3)]
 
         #newImage = cv2.colorChange(newImage, mask, newImage)
@@ -117,23 +118,20 @@ class DatasetAugmenter:
                 cv2.imwrite(store_file, self.img)#, cv2.COLOR_BGR2RGB) )
                 original_label_filename = file.replace(".jpg", ".txt").rstrip()
                 if not os.path.exists(original_label_filename):
-                    continue                
+                    continue
                 final_label_filename = original_label_filename.replace("image", "augmented_image").rstrip()
-                #print final_label_filename
                 shutil.copy2(original_label_filename, final_label_filename)
 
-                """
-                if not os.path.exists(label_filename):
-                    continue
-                fl = open(label_filename, "r")
+                #if not os.path.exists(label_filename):
+                #    continue
+                fl = open(original_label_filename, "r")
                 label = fl.readline().split(" ")
                 fl.close()
                 detections = [float(d) for d in label]
 
                 self.plot_bbs(self.img, detections)
                 cv2.imshow("test", self.img)
-                cv2.waitKey(50)
-                """
+                cv2.waitKey(500)
                 pbar.update(1)
 
     def plot_bbs(self,image, bbs):
@@ -155,9 +153,9 @@ class DatasetAugmenter:
 
 
 if __name__ == '__main__':
-    dbpath = "/media/datasets/simanimation/"
+    dbpath = "/home/jose/datasets/simanimation_white/"
     startcount=920
-    manager = DatasetAugmenter(dbpath, depth=True, version = 3, start_count = startcount)
+    manager = DatasetAugmenter(dbpath, depth=False, version = 4, start_count = startcount)
     #rospy.logerr("image request " + str(i) )
     manager.run()
     #rospy.spin()
