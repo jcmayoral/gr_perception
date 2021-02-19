@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 from test_bb import plot_bbs
 import tqdm
+import shutil
 
 class DatasetAugmenter:
     def __init__(self, dbpath, depth = False, version = 1000, start_count = 0):
@@ -80,8 +81,6 @@ class DatasetAugmenter:
         newImage[np.where(mask)] = skincolors[np.random.randint(0,5)]#onewImage[np.where(mask)]#[0,0,255]
 
 
-
-
         #cielo
         #mask = cv2.inRange(newImage, (0, 100, 80), (255, 255, 200))
         #newImage[np.where(mask)] = onewImage[np.where(mask)]
@@ -114,7 +113,16 @@ class DatasetAugmenter:
                 self.img =cv2.imread(file.rstrip())
                 self.img = self.clean_image(self.img)
 
-                label_filename = file.replace(".jpg", ".txt").rstrip()
+                store_file = file.replace("image", "augmented_image").rstrip()
+                cv2.imwrite(store_file, self.img)#, cv2.COLOR_BGR2RGB) )
+                original_label_filename = file.replace(".jpg", ".txt").rstrip()
+                if not os.path.exists(original_label_filename):
+                    continue                
+                final_label_filename = original_label_filename.replace("image", "augmented_image").rstrip()
+                #print final_label_filename
+                shutil.copy2(original_label_filename, final_label_filename)
+
+                """
                 if not os.path.exists(label_filename):
                     continue
                 fl = open(label_filename, "r")
@@ -125,6 +133,7 @@ class DatasetAugmenter:
                 self.plot_bbs(self.img, detections)
                 cv2.imshow("test", self.img)
                 cv2.waitKey(50)
+                """
                 pbar.update(1)
 
     def plot_bbs(self,image, bbs):

@@ -25,6 +25,7 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
         print "DIRS", dirs
         #print "FILES", files
         for file in files:
+            print labels_filepath, root, file
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
             print labelfile
             if not os.path.exists(labelfile):
@@ -113,8 +114,9 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0,
                     flag = True
                     if v2 and data[2] in offsets_.keys():
                         dclass = dclass + offsets_[data[2]]*4
-                    if dclass>3:
+                    if v2 and dclass>7:
                         print dclass, data[2]
+                        sys.exit()
 
                     if data[2] in classes.keys():
                         classes[data[2]][dclass] = classes[data[2]][dclass]+ 1

@@ -47,6 +47,22 @@ def replace_line(file_name, line_nums, texts):
     out.writelines(lines)
     out.close()
 
+def get_closest(detections,ccs):
+    scores = []
+    for cc in ccs:
+        scores.append(np.sqrt(np.power(cc[0]-detections[1],2)+np.power(cc[1]-detections[2],2)))
+    print "SCORES::::", scores
+    if np.min(scores)> 0.1:
+        return -1
+    return np.argmin(scores)
+
+def get_scores(detections,ccs):
+    scores = []
+    for cc in ccs:
+        scores.append(np.sqrt(np.power(cc[0]-detections[1],2)+np.power(cc[1]-detections[2],2)))
+    return scores
+
+
 if __name__ == "__main__":
     filepath =  "/home/jose/datasets/dummy/dummy"
 
@@ -55,6 +71,7 @@ if __name__ == "__main__":
     print "OK"
 
     order_index = [-1,-1,-1,-1]
+    cc = [[0.5,0.5],[0.5,0.5],[0.5,0.5],[0.5,0.5]]
 
     if os.path.exists(filepath):
         images = open(filepath,'r')
@@ -92,17 +109,27 @@ if __name__ == "__main__":
                     img = cv2.imread(img_filename.rstrip())
                     label = [data for data in line.strip().split(" ")]#)
                     detections = [float(d) for d in label]
-                    print label_filename
 
                     flag = False
+
+                    lindx = get_closest(detections, cc)
+                    print get_scores(detections,cc)
+                    print cc
+                    #print [np.fabs(detected_area - x) for x in areas]
+                    print "INDEX ", str(lindx)+"\n"
+                    print "index  ", lindx, " Expected ", order_index[lindx], " GOTTEN ", detections[0]
+                    print order_index
+
                     if int(detections[0]) != order_index[lindx]:
                         flag = True
-                    lindx = lindx + 1
+                    #lindx = lindx + 1
 
 
                     key = plot_bbs(img, detections, flag)
 
                     if key == None:
+                        order_index[lindx] = label[0]
+                        cc[lindx] = [detections[1], detections[2]]
                         continue
                     if key == 27:
                         lastindex_file.close()
@@ -110,8 +137,8 @@ if __name__ == "__main__":
 
                     label[0] = key - 176
 
-                    print "index  ", lindx, " Expected ", order_index[lindx-1], " GOTTEN ", detections[0], " NEW ", label[0]
-                    order_index[lindx-1] = label[0]
+                    order_index[lindx] = label[0]
+                    cc[lindx] = [detections[1], detections[2]]
 
                     newlabel = ""
                     newlabel = newlabel.join([str(c)+ " " for c in label])[:-1]+"\n"

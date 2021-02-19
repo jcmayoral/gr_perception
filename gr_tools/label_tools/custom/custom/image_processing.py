@@ -103,7 +103,7 @@ class ImageProcessing(object):
             self.bbs = None
             return
 
-        for obb, bbs in zip(obbs, self.bbs.bounding_boxes):
+        for obb, bbs in zip(sorted(obbs), sorted(self.bbs.bounding_boxes)):
             if obb.Class != "person":
                 #print "Skipping " +bb.Class
                 continue
