@@ -27,7 +27,6 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
         for file in files:
             print labels_filepath, root, file
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
-            print labelfile
             if not os.path.exists(labelfile):
                 continue
 
@@ -80,7 +79,7 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0,
     x = list()
 
     if v2:
-        offsets_ = {"Person":0, "Pedestrian": 0, "Cyclist":0, "Van": 1, "Tram":1, "Car": 1, "Truck":1}
+        offsets_ = {"Person":0, "Pedestrian": 0, "Cyclist":2, "Van": 1, "Tram":1, "Car": 1, "Truck":1}
 
     for root,dirs,files in tqdm(os.walk(".")):
         #print "LABEL ", root
