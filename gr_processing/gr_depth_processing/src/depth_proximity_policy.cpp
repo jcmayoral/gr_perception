@@ -10,11 +10,13 @@ namespace gr_depth_processing
   void MyNodeletClass::onInit(){
 
     //Local NodeHandle
-    ros::NodeHandle local_nh = getMTPrivateNodeHandle();
+    ros::NodeHandle local_nh("~");// = getMTPrivateNodeHandle();
     local_nh.param<std::string>("global_frame", global_frame_, "base_link");
 
     bool run_action_server;
     local_nh.param<bool>("run_action_server", run_action_server, false);
+    ROS_WARN_STREAM("Run action server " << run_action_server);
+    ROS_WARN_STREAM("Global frame " << global_frame_);
 
     //MEGA HACK
     std::string color_camera_info, depth_camera_info, color_camera_frame, depth_camera_frame, boundingboxes_topic;

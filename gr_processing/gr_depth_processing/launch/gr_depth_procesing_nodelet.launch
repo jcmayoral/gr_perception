@@ -4,10 +4,10 @@
   <arg name="color_info" default="/camera/color/camera_info" />
   <arg name="depth_image" default="/camera/depth/image_raw" />
   <arg name="depth_info" default="/camera/depth/camera_info" />
-  <arg name="action_server" default="false" />
+  <arg name="run_action_server" default="true" />
 
   <node pkg="nodelet" type="nodelet" name="depth_processing_nodelet"  args="manager" output="screen">
-    <param name="action_server" value="$(arg action_server)" />
+    <param name="run_action_server" type="bool" value="$(arg run_action_server)" />
     <param name="global_frame" value="$(arg global_frame)" />
     <remap from="/camera/color/image_raw" to="$(arg color_image)"/>
     <remap from="/camera/color/camera_info" to="$(arg color_info)"/>
