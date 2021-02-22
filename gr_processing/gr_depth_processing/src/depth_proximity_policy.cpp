@@ -197,7 +197,8 @@ namespace gr_depth_processing
 
       if (dist<0.1 || dist > max_range_){
         ROS_WARN_STREAM("Object out of range"<< dist);
-        continue;
+        dist = gr_detection::OUT_OF_RANGE;
+        //continue;
       }
 
       std::cout << "transform " << global_frame_ << " to " << in.header.frame_id << std::endl;
@@ -220,6 +221,7 @@ namespace gr_depth_processing
       //assuming global frame same of pointclouds
       person.pose = out.pose;
 
+      std::cout << "Distance: " << dist <<  std::endl;
 
       std::cout << "before match" << std::endl;
       auto matchingid = matchDetection(person);
@@ -251,13 +253,15 @@ namespace gr_depth_processing
         ROS_INFO_STREAM("Updating person with id: " << matchingid);
         UpdateObject(matchingid, person);
       //copy class
-      objects_array_.objects.push_back(object);
+      //objects_array_.objects.push_back(object);
       }
       else{
         ROS_WARN_STREAM("A new person has been found adding to the array");
         //testing map array_person (memory)
         insertNewObject(person);
       }
+      //PUSH BACK FOR THE ACTION SERVER
+      objects_array_.objects.push_back(object);
       //UPDATE ARRAY TO PROXIMITY RINGS
       detected_objects_.poses.push_back(out.pose);
       distance_to_objects.push_back(it->Class + std::to_string(dist));
