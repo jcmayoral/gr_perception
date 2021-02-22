@@ -14,9 +14,13 @@ namespace gr_depth_processing
     local_nh.param<std::string>("global_frame", global_frame_, "base_link");
 
     bool run_action_server;
+    std::string modal;
     local_nh.param<bool>("run_action_server", run_action_server, false);
+    local_nh.param<std::string>("modal", modal, "median");
+
     ROS_WARN_STREAM("Run action server " << run_action_server);
     ROS_WARN_STREAM("Global frame " << global_frame_);
+    ROS_WARN_STREAM("Selected modality " << modal);
 
     //MEGA HACK
     std::string color_camera_info, depth_camera_info, color_camera_frame, depth_camera_frame, boundingboxes_topic;
@@ -40,9 +44,13 @@ namespace gr_depth_processing
 
     //Select filters
     filterImage = &cv_filter;
-    //registerImage = &register_pointclouds;
+    if (modal == "full"){
+      registerImage = &register_pointclouds;
+    }
     //registerImage = &register_ransac_pointclouds;
-    registerImage = &register_median_pointclouds;
+    if (modal == "median"){
+      registerImage = &register_median_pointclouds;
+    }
     //registerImage = &cuda_register_median_pointclouds;
 
     ros::NodeHandle nh = getMTNodeHandle();

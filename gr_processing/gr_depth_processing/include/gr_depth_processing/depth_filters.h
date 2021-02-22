@@ -67,29 +67,43 @@ void cv_detectPeople(cv::Mat& frame_gray){
 }
 
 double register_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, cv::Mat& depth_image, sensor_msgs::CameraInfo camera_info){
-    uint16_t depth = 0.0;
+    float depth = 0;
     int pixel_number = 0;//(bounding_box.xmax - bounding_box.xmin) * (bounding_box.ymax - bounding_box.ymin);
-    float mean_depth = 0;
-    int mean_index = (bounding_box.xmax - bounding_box.xmin)/2 + depth_image.rows* (bounding_box.ymax - bounding_box.ymin)/2;
+    double mean_depth = 0;
+    //int mean_index = (bounding_box.xmax - bounding_box.xmin)/2 + depth_image.rows* (bounding_box.ymax - bounding_box.ymin)/2;
 
-    for (auto i = bounding_box.xmin; i<=bounding_box.xmax; ++i){
-        for (auto j = bounding_box.ymin; j<=bounding_box.ymax; ++j){
+    // Setup a rectangle to define your region of interest
+    cv::Rect myROI(bounding_box.xmin,bounding_box.ymin,bounding_box.xmax -bounding_box.xmin , bounding_box.ymax-bounding_box.ymin);
+
+    // Crop the full image to that image contained by the rectangle myROI
+    // Note that this doesn't copy the data
+    cv::Mat croppedImage = depth_image(myROI);
+
+    for(auto i =0; i<croppedImage.cols;++i){
+        for(auto j =0; j<croppedImage.rows;++j){
+    //for (auto i = bounding_box.xmin; i<=bounding_box.xmax; ++i){
+    //    for (auto j = bounding_box.ymin; j<=bounding_box.ymax; ++j){
             //Assume rgb and depth are same size
             //TODO conversion between depth and rgb
-            depth= depth_image.at<uint16_t>(i+j*depth_image.rows); //realsense
+            depth = croppedImage.at<uint16_t>(j,i)*0.001f;
+            //`depth= depth_image.at<ushort>(i+j*depth_image.rows); //realsense
             //depth= depth_image.at<float>(i+j*depth_image.rows); //ZED
 
             //depth_image.at<float>(cv::Point(i, j)) = 255;
             //cv::circle(depth_image,cv::Point(i, j),1,cv::Scalar(255,255,255));
             //depth_image.at<uint16_t>(j,i) = 0xffff;
 
-            if (std::isfinite(depth)){
+            if (depth!=0){
                 mean_depth+= depth;
                 pixel_number++;
             }
 
         }
     }
+
+    std::cout << "PX NUMBER " << pixel_number << std::endl;
+    std::cout << "Mean depth " << mean_depth << std::endl;
+
     if (pixel_number == 0){
         return -1;
     }
@@ -102,7 +116,7 @@ double register_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, cv::Mat&
     float constant_x = 1.0 / camera_info.K[0];
     float constant_y = 1.0 / camera_info.K[4];
 
-    return (mean_depth/pixel_number)*0.001; //ROS_DEPTH_SCALE
+    return (mean_depth/pixel_number); //ROS_DEPTH_SCALE
 }
 
 /*
