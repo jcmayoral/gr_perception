@@ -67,6 +67,13 @@ namespace gr_depth_processing
       registered_syncronizer_ = new message_filters::Synchronizer<RegisteredSyncPolicy>(RegisteredSyncPolicy(2), *depth_image_sub_,*bounding_boxes_sub_);
       registered_syncronizer_->registerCallback(boost::bind(&MyNodeletClass::register_CB,this,_1,_2));
     }
+
+
+    aserver_ = boost::make_shared<actionlib::SimpleActionServer<gr_action_msgs::GRDepthProcessAction>>(nh, "gr_depth_process",
+                                  boost::bind(&MyNodeletClass::execute_CB, this, _1), false);
+    aserver_->start();
+
+
     ROS_INFO("Depth Processing initialized");
   }
 
@@ -259,6 +266,17 @@ namespace gr_depth_processing
     }
     publishOutput(process_frame, false);
   }
+
+
+  void MyNodeletClass::execute_CB(const gr_action_msgs::GRDepthProcessGoalConstPtr &goal){
+    gr_action_msgs::GRDepthProcessResult result;
+    boost::shared_ptr<sensor_msgs::Image const> dimg = boost::make_shared<sensor_msgs::Image>(goal->depth_image);
+    boost::shared_ptr<darknet_ros_msgs::BoundingBoxes const> bbs = boost::make_shared<darknet_ros_msgs::BoundingBoxes>(goal->bounding_boxes);
+    register_CB(dimg, bbs);
+    result.found_objects = objects_array_;
+    aserver_->setSucceeded(result);
+  }
+
 
 
 }

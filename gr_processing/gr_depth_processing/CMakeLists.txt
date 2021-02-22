@@ -17,6 +17,8 @@ find_package(catkin REQUIRED
         tf2
         tf2_ros
         common_detection_utils
+        gr_action_msgs
+        actionlib
 )
 
 find_package(OpenCV 3.4.9 EXACT REQUIRED)
@@ -44,6 +46,8 @@ catkin_package(
         tf2
         tf2_ros
         common_detection_utils
+        gr_action_msgs
+        actionlib
 )
 
 file(GLOB SOURCES src/*.cpp)

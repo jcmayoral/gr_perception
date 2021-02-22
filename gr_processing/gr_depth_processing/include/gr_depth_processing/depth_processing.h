@@ -36,7 +36,9 @@
 #include <common_detection_utils/common_detection_utils.h>
 #include <common_detection_utils/math_functions.hpp>
 
-
+//actionlib
+#include <actionlib/server/simple_action_server.h>
+#include <gr_action_msgs/GRDepthProcessAction.h>
 //gr_detection::DetectionArray gr_detection::FusionDetection::DETECTIONSARRAY = gr_detection::DetectionArray();
 
 namespace gr_depth_processing
@@ -71,6 +73,8 @@ namespace gr_depth_processing
       boost::function<void(cv::Mat&)> filterImage;
       boost::function<double(darknet_ros_msgs::BoundingBox, cv::Mat&, sensor_msgs::CameraInfo)> registerImage;
 
+      void execute_CB(const gr_action_msgs::GRDepthProcessGoalConstPtr &goal);
+
     protected:
       bool convertROSImage2Mat(cv::Mat& frame,  const sensor_msgs::ImageConstPtr& ros_image);
       void publishOutput(cv::Mat frame, bool rotate = true);
@@ -100,6 +104,7 @@ namespace gr_depth_processing
       boost::recursive_mutex mutex;
       double max_range_;
       std::string global_frame_;
+      boost::shared_ptr<actionlib::SimpleActionServer<gr_action_msgs::GRDepthProcessAction>> aserver_;
   };
 
 };
