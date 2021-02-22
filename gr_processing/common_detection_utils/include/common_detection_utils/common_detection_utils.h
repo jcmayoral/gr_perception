@@ -12,6 +12,7 @@
 
 namespace gr_detection{
     const std::string NOPREVIOUSDETECTION="ND";
+    const float OUT_OF_RANGE=-1.0;
 
     struct Person{
         int age = 10;

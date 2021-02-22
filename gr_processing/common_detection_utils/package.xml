@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>common_detection_utils</name>
-  <version>0.5.3</version>
+  <version>0.5.4</version>
   <description>This package provide a common static member to fuse several detectors</description>
   <maintainer email="jose.carlos.mayoral.banos@nmbu.no">Jose Mayoral</maintainer>
 
