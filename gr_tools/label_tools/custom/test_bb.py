@@ -22,7 +22,7 @@ def plot_bbs(image, bbs, visualize=False, out=None):
 
     if visualize:
         cv2.imshow("TEST",image)
-        cv2.waitKey(100)
+        cv2.waitKey(50)
 
     if out is not None:
         out.write(image)

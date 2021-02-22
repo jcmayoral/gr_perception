@@ -109,7 +109,6 @@ class ImageProcessing(object):
             rospy.sleep(0.2)
         """
         gr_goal = GRDepthProcessActionGoal()
-        print type(obbs)
         gr_goal.goal.depth_image = depth_image
         gr_goal.goal.bounding_boxes = darknet_bbs.bounding_boxes
         gr_goal.goal.depth_info = self.depth_camera_info
@@ -144,8 +143,10 @@ class ImageProcessing(object):
             height, width, channels = desired_shape
             ring = int(object_pose.position.z/self.distance)
 
-            if ring > 3 or ring <0:
+            if object_pose.position.z > 10 or ring <0:
                 ring = "ERROR"
+            else:
+                ring = min(3,ring)
             data = str(ring) + " "
             rx = obb.xmax - obb.xmin
             cx = float(rx/2+ obb.xmin)/width
