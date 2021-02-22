@@ -18,7 +18,7 @@ def plot_bbs(image, bbs, visualize=False, out=None):
     #print (cll, type(cll))
     # Create a Rectangle patch
     cv2.rectangle(image, (x1, y1), (x2, y2), (255,0,0), 2)
-    cv2.putText(image, "R" +str(int(cll)), (x1,int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
+    cv2.putText(image, "R" +str(cll), (x1,int(cy1*height)), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
 
     if visualize:
         cv2.imshow("TEST",image)
@@ -30,7 +30,7 @@ def plot_bbs(image, bbs, visualize=False, out=None):
 if __name__ == "__main__":
     filepath =  "/home/jose/datasets/real_iros2021/files.txt"
     out = cv2.VideoWriter('dataset_v2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
-    counter = [0,0,0,0]
+    counter = [0,0,0,0,0]
 
     if os.path.exists(filepath):
         images = open(filepath,'r').readlines()
@@ -49,8 +49,12 @@ if __name__ == "__main__":
                 img = cv2.imread(img_filename.rstrip().replace("txt", "jpg"))#, cv2.IMREAD_GRAYSCALE)
 
                 for l in labels:
-                    detections = [float(d) for d in l]
+                    detections = [d for d in l]
+                    detections[1:] = [float(s) for s in detections[1:]]
                     plot_bbs(img, detections, visualize = True, out=out)
+                    if detections[0] == "ERROR":
+                     counter[-1] += 1
+                     continue
                     cl_ = int(detections[0])
                     if cl_ < 0 or  cl_ > 3:
                         print "ERRROR.....",cl_, img_filename

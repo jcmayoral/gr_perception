@@ -119,7 +119,7 @@ class ImageProcessing(object):
             print "ERROR"
             return
         self.bbs = self.gr_client.get_result()
-        print "NEW BBS ", self.bbs, type(self.bbs)
+        #print "NEW BBS ", self.bbs, type(self.bbs)
         if self.bbs is None:
             return
 
@@ -142,7 +142,7 @@ class ImageProcessing(object):
             object_pose = f_object.pose
             #print "Z DISTANCE ", object_pose.position.z
             height, width, channels = desired_shape
-            ring = min(3,int(object_pose.position.z/self.distance))
+            ring = int(object_pose.position.z/self.distance)
 
             if ring > 3 or ring <0:
                 ring = "ERROR"
