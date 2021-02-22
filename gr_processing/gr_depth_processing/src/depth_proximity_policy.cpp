@@ -13,6 +13,9 @@ namespace gr_depth_processing
     ros::NodeHandle local_nh = getMTPrivateNodeHandle();
     local_nh.param<std::string>("global_frame", global_frame_, "base_link");
 
+    bool run_action_server;
+    local_nh.param<bool>("run_action_server", run_action_server, false);
+
     //MEGA HACK
     std::string color_camera_info, depth_camera_info, color_camera_frame, depth_camera_frame, boundingboxes_topic;
     auto args = getRemappingArgs();
@@ -42,10 +45,6 @@ namespace gr_depth_processing
 
     ros::NodeHandle nh = getMTNodeHandle();
     max_range_ = 8.0;
-    ROS_INFO_STREAM("Waiting for rgb and depth camera info: " << color_camera_info<<" " << depth_camera_info);
-    camera_color_info_ = getOneMessage<sensor_msgs::CameraInfo>(color_camera_info);
-    camera_depth_info_ = getOneMessage<sensor_msgs::CameraInfo>(depth_camera_info);
-    ROS_INFO("Camera info received");
 
     //Publisher to Proximity Monitor
     obstacle_pub_ = nh.advertise<geometry_msgs::PoseArray>("detected_objects",1);
@@ -54,11 +53,22 @@ namespace gr_depth_processing
     //Publish FoundObjectArray using for training Models
     safety_pub_ = nh.advertise<safety_msgs::FoundObjectsArray>("found_object",1);
 
-    color_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, color_camera_frame, 2);
-    depth_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, depth_camera_frame, 2);
-    bounding_boxes_sub_ = new message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes>(nh,boundingboxes_topic, 2);
+
+    if (!run_action_server){
+      ROS_INFO_STREAM("Waiting for rgb and depth camera info: " << color_camera_info<<" " << depth_camera_info);
+      camera_color_info_ = getOneMessage<sensor_msgs::CameraInfo>(color_camera_info);
+      camera_depth_info_ = getOneMessage<sensor_msgs::CameraInfo>(depth_camera_info);
+      ROS_INFO("Camera info received");
+      color_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, color_camera_frame, 2);
+      depth_image_sub_ = new message_filters::Subscriber<sensor_msgs::Image>(nh, depth_camera_frame, 2);
+      bounding_boxes_sub_ = new message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes>(nh,boundingboxes_topic, 2);
+      registered_syncronizer_ = new message_filters::Synchronizer<RegisteredSyncPolicy>(RegisteredSyncPolicy(2), *depth_image_sub_,*bounding_boxes_sub_);
+      registered_syncronizer_->registerCallback(boost::bind(&MyNodeletClass::register_CB,this,_1,_2));
+    }
 
 
+
+    /*
     if(false){
       images_syncronizer_ = new message_filters::Synchronizer<ImagesSyncPolicy>(ImagesSyncPolicy(2), *color_image_sub_,*depth_image_sub_);
       images_syncronizer_->registerCallback(boost::bind(&MyNodeletClass::images_CB,this,_1,_2));
@@ -67,11 +77,13 @@ namespace gr_depth_processing
       registered_syncronizer_ = new message_filters::Synchronizer<RegisteredSyncPolicy>(RegisteredSyncPolicy(2), *depth_image_sub_,*bounding_boxes_sub_);
       registered_syncronizer_->registerCallback(boost::bind(&MyNodeletClass::register_CB,this,_1,_2));
     }
-
-
-    aserver_ = boost::make_shared<actionlib::SimpleActionServer<gr_action_msgs::GRDepthProcessAction>>(nh, "gr_depth_process",
+    */
+    else{
+      aserver_ = boost::make_shared<actionlib::SimpleActionServer<gr_action_msgs::GRDepthProcessAction>>(nh, "gr_depth_process",
                                   boost::bind(&MyNodeletClass::execute_CB, this, _1), false);
-    aserver_->start();
+                                  aserver_->start();
+      ROS_INFO_STREAM("Run action server");
+    }
 
 
     ROS_INFO("Depth Processing initialized");
@@ -269,6 +281,7 @@ namespace gr_depth_processing
 
 
   void MyNodeletClass::execute_CB(const gr_action_msgs::GRDepthProcessGoalConstPtr &goal){
+    camera_depth_info_ = goal->depth_info;
     gr_action_msgs::GRDepthProcessResult result;
     boost::shared_ptr<sensor_msgs::Image const> dimg = boost::make_shared<sensor_msgs::Image>(goal->depth_image);
     boost::shared_ptr<darknet_ros_msgs::BoundingBoxes const> bbs = boost::make_shared<darknet_ros_msgs::BoundingBoxes>(goal->bounding_boxes);
