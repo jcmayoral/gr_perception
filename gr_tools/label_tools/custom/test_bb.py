@@ -55,7 +55,8 @@ if __name__ == "__main__":
                     if detections[0] == "ERROR":
                      counter[-1] += 1
                      continue
-                    cl_ = int(detections[0])
+                    print float(detections[0])
+                    cl_ = int(float(detections[0]))
                     if cl_ < 0 or  cl_ > 3:
                         print "ERRROR.....",cl_, img_filename
                         continue

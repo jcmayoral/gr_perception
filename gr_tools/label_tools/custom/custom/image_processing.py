@@ -113,10 +113,10 @@ class ImageProcessing(object):
         gr_goal.goal.bounding_boxes = darknet_bbs.bounding_boxes
         gr_goal.goal.depth_info = self.depth_camera_info
         self.gr_client.send_goal(gr_goal.goal)
-        success = self.gr_client.wait_for_result(rospy.Duration.from_sec(1.0))
-        if not success:
-            print "ERROR"
-            return
+        success = self.gr_client.wait_for_result(rospy.Duration.from_sec(5.0))
+        #if not success:
+        #    print "ERROR"
+        #    return
         self.bbs = self.gr_client.get_result()
         #print "NEW BBS ", self.bbs, type(self.bbs)
         if self.bbs is None:
@@ -132,6 +132,8 @@ class ImageProcessing(object):
             self.bbs = None
             return
         """
+        if len(obbs)!= len(self.bbs.found_objects.objects):
+            print blabla
 
         for obb, f_object in zip(obbs, self.bbs.found_objects.objects):
             #print o_index, f_object

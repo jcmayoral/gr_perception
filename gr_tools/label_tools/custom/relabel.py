@@ -24,7 +24,7 @@ def plot_bbs(image, bbs, require_new):
         key = cv2.waitKey(0)
         cv2.waitKey(1000)
         return key
-    cv2.waitKey(50)
+    #cv2.waitKey(50)
 
     return None
 
@@ -36,8 +36,14 @@ def replace_line(file_name, line_nums, texts):
     lines = open(file_name, 'r').readlines()
     out = open(file_name, 'w')
     for line_nums, texts in zip(line_nums, texts):
-        lines[line_nums] = texts
+        lines[line_nums] = texts[0]
     out.writelines(lines)
+    out.close()
+
+def replace_file(file_name, texts):
+    out = open(file_name, 'w')
+    for t in texts:
+        out.write(t)
     out.close()
 
 def get_closest_v2(detections, ccs,fl):
@@ -73,16 +79,18 @@ def get_scores(detections,ccs):
     return scores
 
 def get_score(detections,cc):
+    score = [a-b for a,b in zip(detections,cc)]
+    score = np.sum(score)
+    print "SCORE " ,score
     return np.sqrt(np.power(cc[0]-detections[1],2)+np.power(cc[1]-detections[2],2))
 
 if __name__ == "__main__":
-    filepath =  "/home/jose/datasets/dummy/dummy"
+    filepath =  "/home/jose/datasets/real_iros2021/files.txt"
 
     print "WAIT 2 seconds before start"
     time.sleep(2)
     print "OK"
 
-    order_index = [-1,-1,-1,-1]
     cc = [[1000,1000],[1000,1000],[1000,1000],[1000,1000]]
 
     if os.path.exists(filepath):
@@ -99,77 +107,82 @@ if __name__ == "__main__":
         lastindex_file = open("lastindex.txt","w")
         skipped = open("skipped.txt","a")
 
-        nflags = []
-
         for img_index, img_filename in tqdm(enumerate(images)):
             if img_index <= start_index:
                 continue
 
             label_filename = img_filename.replace(".jpg", ".txt").rstrip()
             labels = []
+
             if not os.path.exists(label_filename):
-                print "label file {} not exists".format(label_filename)
                 continue
 
             lindx = 0
-
-            #with  as fl:
-            #for line in fileinput.input(label_filename, inplace=True):
-            #print line
             replace_ind = []
             replace_data = []
-            labels = open(label_filename, "r").readlines()
 
-            for index, line in enumerate(labels):
+            labels = open(label_filename, "r").readlines()
+            order_labels = list()
+
+            for i in labels:
+                label = [data for data in i.strip().split(" ")]#)
+                if label[0] == "ERROR":
+                    label[0] = 100
+                newlabel = [float(d) for d in label]
+                order_labels.append(newlabel)
+
+            sorted(order_labels)
+
+            for index, line in enumerate(order_labels):
                 img = cv2.imread(img_filename.rstrip())
-                label = [data for data in line.strip().split(" ")]#)
-                detections = [float(d) for d in label]
+                #label = [data for data in line.strip().split(" ")]#)
+                detections = [float(d) for d in line]
 
                 flag = False
                 lindx = index
 
-                #if len(labels)>1:
-                #    lindx = get_closest_v2(detections, cc, nflags)
-                if lindx not in nflags:
-                    nflags.append(lindx)
-                #print "\n" + "NFLAGS", nflags
-                #print "\n" + "CCS ", cc
-                #print "\n" + "order ", order_index
-                #print "INDEX ", str(lindx)+"\n"
-                #print "index  ", lindx, " Expected ", order_index[lindx], " GOTTEN ", detections[0]
-
-                if np.fabs(int(detections[0]) - order_index[lindx])>0 and get_score(detections, cc[lindx])>0.1:
+                if int(detections[0]) >3: #!= order_index[lindx]:## and get_score(detections, cc[lindx])>0.1:
                     flag = True
 
-                #print detections[0]
-                #print "INDEX ", order_index
+                """
+                print "NOW"
+                if cv2.waitKey(2000) == 27:
+                    flag = True
+                    print 'KEY PRSSED'
+                    time.sleep(3)
+                """
+                #flag = True
 
 
                 key = plot_bbs(img, detections, flag)
 
                 if key == None:
-                    order_index[lindx] = int(label[0])
-                    cc[lindx] = [float(detections[3]), float(detections[4])]
+                    #rder_index[lindx] = int(label[0])
+                    #cc[lindx] = [float(detections[3]), float(detections[4])]
+                    newlabel = ""
+                    newlabel = newlabel.join([str(c)+ " " for c in detections])[:-1]+"\n"
+                    replace_data.append(newlabel)
                     #lindx = lindx + 1
                     continue
                 if key == 27:
                     lastindex_file.close()
                     sys.exit()
 
-                label[0] = key - 176
+                detections[0] = int(key - 176)
 
-                order_index[lindx] = int(label[0])
                 cc[lindx] = [float(detections[3]), float(detections[4])]
 
                 newlabel = ""
-                newlabel = newlabel.join([str(c)+ " " for c in label])[:-1]+"\n"
+                newlabel = newlabel.join([str(c)+ " " for c in detections])[:-1]+"\n"
 
-                replace_ind.append(index)
                 replace_data.append(newlabel)
 
                 lastindex_file.seek(0)
                 lastindex_file.write(str(img_index))
 
-                #replace_line(label_filename,replace_ind,replace_data)
+            cv2.waitKey(50)
+            #print "REPLACE DATA: ", replace_data
+            #replace_line(label_filename,replace_ind,replace_data)
+            replace_file(label_filename,replace_data)
 
         lastindex_file.close()
