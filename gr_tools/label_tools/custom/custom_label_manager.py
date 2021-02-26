@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     stamps_parser = sub_parsers.add_parser('stamps')
     stamps_parser.add_argument("-matchfile_path", action="store", help="path to dataset folder", required = True)
-    store_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
+    stamps_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
 
     match_parser = sub_parsers.add_parser('match')
     match_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
