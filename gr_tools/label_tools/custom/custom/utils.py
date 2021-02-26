@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 import rosbag
 from image_processing import rotateImage
+import os
 
 def match_timestamps(rgb_stamps, depth_stamps):
     if len(rgb_stamps) < len(depth_stamps):
@@ -58,8 +59,8 @@ def extract_timestamps(bagfile, info_topic):
             stamps.append(m[1].header.stamp.to_sec()-start_time)
     return stamps
 
-def save_matches(matches):
-    with open("matches.txt", "w") as f:
+def save_matches(storepath, matches):
+    with open(os.path.join(storepath,"matches.txt"), "w") as f:
         for m in matches:
             f.write("{} {} \n".format(m[0],m[1]))
 
@@ -76,7 +77,7 @@ def save_images(rbag, info_topic, is_depth=False):
     for topic, msg,t in tqdm.tqdm(rbag.read_messages(info_topic)):
         if is_depth:
             cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-            cv_image = rotateImage(cv_image, 180)
+            #cv_image = rotateImage(cv_image, 180)
             filename = "depthimage_"+str(msg.header.seq)+".jpg"
             np_filename = "depthimage_"+ str(msg.header.seq)+".npy"
             depth_image = np.asanyarray(cv_image, dtype=float)/(255)
@@ -90,6 +91,6 @@ def save_images(rbag, info_topic, is_depth=False):
             #cv2.imwrite(filename, cv_image)
         else:
             cv_image = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-            cv_image = rotateImage(cv_image, 180)
+            #cv_image = rotateImage(cv_image, 180)
             filename = "image_"+str(msg.header.seq)+".jpg"
             cv2.imwrite(filename, cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB) )

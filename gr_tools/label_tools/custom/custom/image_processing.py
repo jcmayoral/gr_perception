@@ -41,7 +41,7 @@ class ImageProcessing(object):
         self.odom_frame = "odom"
         self.image = Image()
         self.bbs = None
-        self.img_pub = rospy.Publisher("/camera/depth/image_rect_raw2", Image, queue_size=1)
+        self.img_pub = rospy.Publisher("/camera/depth/image_rect_raw", Image, queue_size=1)
         self.depth_pub = rospy.Publisher("/camera/depth/camera_info", CameraInfo, queue_size=1)
         #self.bb_sub = rospy.Subscriber("/darknet_ros_3d/bounding_boxes", BoundingBoxes3d, self.bbs_cb)
         self.cv_bridge = CvBridge()
