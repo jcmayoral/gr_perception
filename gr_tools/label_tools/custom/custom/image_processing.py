@@ -71,7 +71,7 @@ class ImageProcessing(object):
     def call(self, image, depth_image, index, desired_shape):
         #print "Calling"
         goal = CheckForObjectsActionGoal()
-        goal.goal.id = index
+        goal.goal.id = 1
         goal.goal.image = image
         #print ("Called")
         self.client.send_goal(goal.goal,
@@ -202,3 +202,4 @@ if __name__ == "__main__":
     rospy.init_node('image_processing_label')
     imasin = ImageProcessing()
     rospy.spin()
+2
