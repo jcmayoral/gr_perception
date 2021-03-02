@@ -85,7 +85,11 @@ def get_score(detections,cc):
     return np.sqrt(np.power(cc[0]-detections[1],2)+np.power(cc[1]-detections[2],2))
 
 if __name__ == "__main__":
-    filepath =  "/home/jose/datasets/real_iros2021/files.txt"
+    if len(sys.argv) < 2:
+        print "add path to files.txt"
+        sys.exit()
+    filepath =  sys.argv[1]
+    #"/home/jose/datasets/real_iros2021/files.txt"
 
     print "WAIT 2 seconds before start"
     time.sleep(2)

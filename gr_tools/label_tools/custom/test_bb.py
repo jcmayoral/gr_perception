@@ -28,8 +28,9 @@ def plot_bbs(image, bbs, visualize=False, out=None):
         out.write(image)
 
 if __name__ == "__main__":
-    filepath =  "/home/jose/datasets/real_iros2021/files.txt"
-    out = cv2.VideoWriter('dataset_v2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
+    filepath =  "/home/jose/datasets/house_dataset/registration/images_bag3/files.txt"
+    #"/home/jose/datasets/real_iros2021/files.txt"
+    out = cv2.VideoWriter('house_dataset_v3.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
     counter = [0,0,0,0,0]
 
     if os.path.exists(filepath):
