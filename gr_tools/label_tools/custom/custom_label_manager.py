@@ -45,8 +45,10 @@ def match_stamps(storepath, file1="rgb_info.txt", file2="depth_info.txt"):
                 val_minimum = time_diff
                 min_index = key2
         #print val_minimum
-        if min_index >0:
+        if min_index >0 and val_minimum < 2.0:
             matches.append([key, min_index])
+        else:
+            print time_diff
 
     matches = sorted(matches)
     save_matches(storepath,matches)
