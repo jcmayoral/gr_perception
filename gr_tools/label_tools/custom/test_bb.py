@@ -28,13 +28,20 @@ def plot_bbs(image, bbs, visualize=False, out=None):
         out.write(image)
 
 if __name__ == "__main__":
-    filepath =  "/home/jose/datasets/house_dataset/registration/images_bag3/files.txt"
+    if len(sys.argv) <3:
+        print "error"
+        sys.exit()
+    filepath =  sys.argv[1]
+    #"/home/jose/datasets/house_dataset/registration/images_bag3/files.txt"
     #"/home/jose/datasets/real_iros2021/files.txt"
-    out = cv2.VideoWriter('house_dataset_v3.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
+    video_name = sys.argv[2]
+    out = cv2.VideoWriter(video_name,cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
     counter = [0,0,0,0,0]
 
     if os.path.exists(filepath):
+        print "path exists", filepath
         images = open(filepath,'r').readlines()
+        print "number of files {}".format(len(images))
         with tqdm(total=len(images)) as pbar:
             for img_filename in images:
                 label_filename = img_filename.replace(".jpg", ".txt").rstrip()
