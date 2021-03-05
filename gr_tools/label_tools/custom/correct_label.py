@@ -24,7 +24,7 @@ def replace_file(file_name, texts):
 
 
 if __name__ == "__main__":
-    filepath =  "/home/jose/datasets/real_iros2021/files.txt"
+    filepath = sys.argv[1] #"/home/jose/datasets/real_iros2021/files.txt"
 
     if os.path.exists(filepath):
         images = open(filepath,'r')
