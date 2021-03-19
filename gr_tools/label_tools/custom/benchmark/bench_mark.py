@@ -60,6 +60,8 @@ if __name__ == "__main__":
     if sys.argv[2] == "bayes":
         model = GaussianNB()
     model_name = sys.argv[2]
+    savename = sys.argv[3]
+
     model.fit(X_train,y_train)
     print "train score ", model.score(X_train, y_train)
     print "valid score ", model.score(X_valid, y_valid)
@@ -77,7 +79,7 @@ if __name__ == "__main__":
     for i in range(4):
         for j in range(4):
             ax.text(j, i, cm[i, j], ha='center', va='center', size=20, color="white" if  cm[i, j] > thresh else "black")
-    plt.savefig("confussion_matrix_benchmark_{}.jpg".format(model_name))
+    plt.savefig("confussion_matrix_benchmark_{}.jpg".format(savename))
     plt.show()
 
     print(classification_report(y_valid, model.predict(X_valid)))

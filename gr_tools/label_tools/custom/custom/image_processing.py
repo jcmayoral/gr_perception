@@ -202,4 +202,3 @@ if __name__ == "__main__":
     rospy.init_node('image_processing_label')
     imasin = ImageProcessing()
     rospy.spin()
-2
