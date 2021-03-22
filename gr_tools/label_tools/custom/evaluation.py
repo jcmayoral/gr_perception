@@ -7,7 +7,6 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
     height, width, channels = image_shape
     map_classes = {'Lethal':0, 'Danger': 1, 'Warning':2, 'Safe', 3}
     normalize_darknet = []
-    sort(darknet_bbs)
     for dbb in darknet_bbs:
         template_bb = [0,0,0,0,0]
         #Class goes init
@@ -92,8 +91,14 @@ if __name__ == "__main__":
                 #call darknet
                 darknet_results = proc.darket_call(img)
                 measured_labels = darknet_results.bounding_boxes.bounding_boxes
+                sort(measured_labels)
                 #tuple of indexes [darknet, gt]
                 matches = match_bounding_boxes(gt_labels, measured_labels, img.shape)
+
+                for match in matches:
+                    a = measured_labels[match[0]][0]
+                    b = gt_labels[match[1]][0]
+                    print "detected {} groud truth{}".format(a,b)
                 pbar.update(1)
 
 
