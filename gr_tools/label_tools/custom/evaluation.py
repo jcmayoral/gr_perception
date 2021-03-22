@@ -38,13 +38,15 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
         features[2] = bb[2] #cy
 
         matching_scores = []
+        original_indexes =  []
         gfeatures=[0,0,0]
         #iterate in all gts
-        for gbb in gts:
+        for j,gbb in enumerate(gts):
             gfeatures[0] = gbb[3]*gbb[4]#area
             gfeatures[1] = gbb[1] #cx
             gfeatures[2] = gbb[2] #cy
             #calculate minimum score
+            original_indexes.append(j)
             matching_scores.append(sum([abs(ca-cb) for ca,cb in zip(features,gfeatures)]))
 
         match_index = None
@@ -54,12 +56,13 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
             #get best score indez
             match_index = np.argmin(matching_scores)
             #if index has not been assigned
-            if match_index not in indexes_not_available:
-                pair_matches.append([i, match_index])
-                indexes_not_available.append(match_index)
+            if original_indexes[match_index[] not in indexes_not_available:
+                pair_matches.append([i, original_indexes[match_index]])
+                indexes_not_available.append(original_indexes[match_index])
                 flag = False
             else:
                 matching_scores.remove(np.min(matching_scores))
+                del original_indexes[match_index]
                 match_index = None
 
     return pair_matches
