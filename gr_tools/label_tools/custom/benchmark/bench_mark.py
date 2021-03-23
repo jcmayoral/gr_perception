@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import fileinput
 import time
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, mean_absolute_error
 from sklearn.naive_bayes import GaussianNB
 
 def parse_file(filepath):
@@ -42,6 +42,14 @@ def read_docs(filepath):
         y = np.asarray(y)
         return X,y
 
+def special_metric(y_valid, y_pred):
+    assert len(y_valid) == len(y_pred)
+    counter = 0
+    for a,b in zip(y_valid, y_pred):
+        if np.fabs(a-b)>1:
+            counter +=1.0
+    print "special metric ", counter/len(y_valid)
+
 if __name__ == "__main__":
     rootpath = sys.argv[1]
     #train_filepath = os.path.join(rootpath, "files_train.txt")
@@ -60,12 +68,17 @@ if __name__ == "__main__":
     if sys.argv[2] == "bayes":
         model = GaussianNB()
     model_name = sys.argv[2]
-    savename = sys.argv[3]
+    #savename = sys.argv[3]
 
     model.fit(X_train,y_train)
     print "train score ", model.score(X_train, y_train)
     print "valid score ", model.score(X_valid, y_valid)
+    y_pred = model.predict(X_valid)
+    print len(y_pred)
+    print "mean absolute_error: ", mean_absolute_error(y_valid, y_pred)
+    special_metric(y_valid, y_pred)
 
+    sys.exit()
     cm = confusion_matrix(y_valid, model.predict(X_valid))
     fig, ax = plt.subplots(figsize=(8, 8))
     ax.imshow(cm, cmap = plt.cm.Blues)
