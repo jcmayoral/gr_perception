@@ -79,9 +79,13 @@ if __name__ == "__main__":
     valid_filepath = os.path.join(rootpath, "files_valid.txt")
 
     proc = ImageEvaluator()
+    mean_absolute_error = 0
+    fatal_misclassifications = 0
+    total_images = 0
 
     if os.path.exists(valid_filepath):
         images = open(valid_filepath,'r').readlines()
+        total_images = len(images)
         print "number of files {}".format(len(images))
         with tqdm(total=len(images)) as pbar:
             for img_filename in images:
@@ -106,11 +110,13 @@ if __name__ == "__main__":
                 matches = match_bounding_boxes(gt_labels, measured_labels, img.shape)
 
                 for match in matches:
-                    print type(match)
                     a = measured_labels[match[0]]
                     b = gt_labels[match[1]]
                     print "detected {} groud truth{}".format(a,b)
+                    mean_absolute_error += abs(a-b)
+                    if (abs(a-b)>1):
+                        fatal_misclassifications+= 1
                 pbar.update(1)
 
-
-    print "FINAL COUNTER", counter
+    print "MAE ", mean_absolute_error/total_images
+    print "Percentual Fatal Misclassifications ", fatal_misclassifications/total_images
