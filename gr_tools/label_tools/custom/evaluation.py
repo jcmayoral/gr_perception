@@ -1,11 +1,16 @@
 #!/usr/bin/python
-from custom.image_processing import ImageEvaluator
+from custom.evaluator import ImageEvaluator
 import numpy as np
+import rospy
+import sys
+import os
+from tqdm import tqdm
+import cv2
 
 def match_bounding_boxes(gts, darknet_bbs,img_shape):
     #normalize measured
-    height, width, channels = image_shape
-    map_classes = {'Lethal':0, 'Danger': 1, 'Warning':2, 'Safe', 3}
+    height, width, channels = img_shape
+    map_classes = {'lethal':0, 'danger': 1, 'warning':2, 'safe': 3}
     normalize_darknet = []
     for dbb in darknet_bbs:
         template_bb = [0,0,0,0,0]
@@ -16,13 +21,13 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
         #xcenter
         cx = float(rx/2+ dbb.xmin)/width
         #yrange
-        ry = obb.ymax - dbb.ymin
+        ry = dbb.ymax - dbb.ymin
         #ycenter
         cy = float(ry/2 + dbb.ymin)/height
         #update
         template_bb[1] = float(cx)
         template_bb[2] = float(cy)
-        template_bb[3[ = float(rx)/width
+        template_bb[3] = float(rx)/width
         template_bb[4] = float(ry)/height
         normalize_darknet.append(template_bb)
 
@@ -33,18 +38,18 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
 
     for i,bb in enumerate(normalize_darknet):
         features = [0,0,0]
-        features[0] = bb[3]*bb[4]#area
-        features[1] = bb[1] #cx
-        features[2] = bb[2] #cy
+        features[0] = float(bb[3])*float(bb[4])#area
+        features[1] = float(bb[1]) #cx
+        features[2] = float(bb[2]) #cy
 
         matching_scores = []
         original_indexes =  []
         gfeatures=[0,0,0]
         #iterate in all gts
         for j,gbb in enumerate(gts):
-            gfeatures[0] = gbb[3]*gbb[4]#area
-            gfeatures[1] = gbb[1] #cx
-            gfeatures[2] = gbb[2] #cy
+            gfeatures[0] = float(gbb[3])*float(gbb[4])#area
+            gfeatures[1] = float(gbb[1]) #cx
+            gfeatures[2] = float(gbb[2]) #cy
             #calculate minimum score
             original_indexes.append(j)
             matching_scores.append(sum([abs(ca-cb) for ca,cb in zip(features,gfeatures)]))
@@ -56,7 +61,7 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
             #get best score indez
             match_index = np.argmin(matching_scores)
             #if index has not been assigned
-            if original_indexes[match_index[] not in indexes_not_available:
+            if original_indexes[match_index] not in indexes_not_available:
                 pair_matches.append([i, original_indexes[match_index]])
                 indexes_not_available.append(original_indexes[match_index])
                 flag = False
@@ -68,11 +73,12 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
     return pair_matches
 
 if __name__ == "__main__":
+    rospy.init_node('evaluator')
     rootpath = sys.argv[1]
     train_filepath = os.path.join(rootpath, "files_train.txt")
     valid_filepath = os.path.join(rootpath, "files_valid.txt")
 
-    proc = ImageEvaluator(matches, depth_camera_info)
+    proc = ImageEvaluator()
 
     if os.path.exists(valid_filepath):
         images = open(valid_filepath,'r').readlines()
@@ -84,23 +90,25 @@ if __name__ == "__main__":
                     print "label file {} not exists".format(label_filename)
                     continue
 
-                gr_labels = []
+                gt_labels = []
                 with open(label_filename, "r") as fl:
                     labels = [data.strip().split(" ") for data in fl]#)
-                    gr_labels.append(labels[0])
+                    gt_labels.append(labels[0])
                 fl.close()
                 #print (label)
                 img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
+                print type(img)
                 #call darknet
                 darknet_results = proc.darket_call(img)
                 measured_labels = darknet_results.bounding_boxes.bounding_boxes
-                sort(measured_labels)
+                sorted(measured_labels)
                 #tuple of indexes [darknet, gt]
                 matches = match_bounding_boxes(gt_labels, measured_labels, img.shape)
 
                 for match in matches:
-                    a = measured_labels[match[0]][0]
-                    b = gt_labels[match[1]][0]
+                    print type(match)
+                    a = measured_labels[match[0]]
+                    b = gt_labels[match[1]]
                     print "detected {} groud truth{}".format(a,b)
                 pbar.update(1)
 

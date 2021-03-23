@@ -26,17 +26,18 @@ class ImageEvaluator(object):
         #THIS IS DARKNET CLIENT
         self.client = actionlib.SimpleActionClient('/darknet_ros/check_for_objects', CheckForObjectsAction)
         self.client.wait_for_server()
+        self.bridge = CvBridge()
         rospy.loginfo("Darknet Server found")
 
     def darket_call(self, image):
+        print type(image)
         #print "Calling"
+        ros_image = self.bridge.cv2_to_imgmsg(image, encoding="bgr8")
         goal = CheckForObjectsActionGoal()
         goal.goal.id = 1
-        goal.goal.image = image
+        goal.goal.image = ros_image
         #print ("Called")
-        self.client.send_goal(goal.goal,
-                            active_cb=self.callback_active,
-                            feedback_cb=self.callback_feedback,
-                            done_cb=self.callback_done)
-        self.client.wait_for_result(rospy.Duration.from_sec(1.0))
-        return darknet_bbs = self.client.get_result()
+        self.client.send_goal(goal.goal)
+        flag = self.client.wait_for_result(rospy.Duration.from_sec(1.0))
+        print self.client.get_result(), flag
+        return self.client.get_result()
