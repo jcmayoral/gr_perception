@@ -30,7 +30,6 @@ class ImageEvaluator(object):
         rospy.loginfo("Darknet Server found")
 
     def darket_call(self, image):
-        print type(image)
         #print "Calling"
         ros_image = self.bridge.cv2_to_imgmsg(image, encoding="bgr8")
         goal = CheckForObjectsActionGoal()
@@ -39,5 +38,4 @@ class ImageEvaluator(object):
         #print ("Called")
         self.client.send_goal(goal.goal)
         flag = self.client.wait_for_result(rospy.Duration.from_sec(1.0))
-        print self.client.get_result(), flag
         return self.client.get_result()

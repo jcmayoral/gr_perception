@@ -7,10 +7,11 @@ import os
 from tqdm import tqdm
 import cv2
 
+map_classes = {'lethal':0, 'danger': 1, 'warning':2, 'safe': 3}
+
 def match_bounding_boxes(gts, darknet_bbs,img_shape):
     #normalize measured
     height, width, channels = img_shape
-    map_classes = {'lethal':0, 'danger': 1, 'warning':2, 'safe': 3}
     normalize_darknet = []
     for dbb in darknet_bbs:
         template_bb = [0,0,0,0,0]
@@ -30,6 +31,9 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
         template_bb[3] = float(rx)/width
         template_bb[4] = float(ry)/height
         normalize_darknet.append(template_bb)
+
+    #print "normalized ", normalize_darknet
+    #print "groudn truths ", gts
 
     #match best normalize_darknet to gt ..
     #assuming erros in classification
@@ -54,6 +58,8 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
             original_indexes.append(j)
             matching_scores.append(sum([abs(ca-cb) for ca,cb in zip(features,gfeatures)]))
 
+        #print "Matching scores" , matching_scores
+
         match_index = None
         #while check if indexes_not_available is less that the gts size
         flag = True
@@ -70,6 +76,7 @@ def match_bounding_boxes(gts, darknet_bbs,img_shape):
                 del original_indexes[match_index]
                 match_index = None
 
+    #print "pair_matches", pair_matches
     return pair_matches
 
 if __name__ == "__main__":
@@ -101,7 +108,6 @@ if __name__ == "__main__":
                 fl.close()
                 #print (label)
                 img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
-                print type(img)
                 #call darknet
                 darknet_results = proc.darket_call(img)
                 measured_labels = darknet_results.bounding_boxes.bounding_boxes
@@ -110,9 +116,9 @@ if __name__ == "__main__":
                 matches = match_bounding_boxes(gt_labels, measured_labels, img.shape)
 
                 for match in matches:
-                    a = measured_labels[match[0]]
-                    b = gt_labels[match[1]]
-                    print "detected {} groud truth{}".format(a,b)
+                    a = map_classes[measured_labels[match[0]].Class]
+                    b = float(gt_labels[match[1]][0])
+                    #print "detected {} groud truth{}".format(a,b)
                     mean_absolute_error += abs(a-b)
                     if (abs(a-b)>1):
                         fatal_misclassifications+= 1
