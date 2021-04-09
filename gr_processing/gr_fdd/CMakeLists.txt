@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(gr_fdd)
 
 add_compile_options(-std=c++11)
@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 #find_package(YAML-CPP 0.3.0 REQUIRED)
-find_package(YAML-CPP 0.5.2 EXACT REQUIRED)
+find_package(YAML-CPP 0.6.2 EXACT REQUIRED)
 
 catkin_python_setup()
 

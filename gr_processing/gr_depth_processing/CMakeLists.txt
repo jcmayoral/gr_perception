@@ -21,7 +21,7 @@ find_package(catkin REQUIRED
         actionlib
 )
 
-find_package(OpenCV 3.4.9 EXACT REQUIRED)
+find_package(OpenCV 4 REQUIRED)
 
 include_directories(
   include

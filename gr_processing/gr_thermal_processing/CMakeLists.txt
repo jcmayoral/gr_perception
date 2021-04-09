@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(gr_thermal_processing)
 add_definitions(-std=c++11)
 
@@ -16,7 +16,7 @@ find_package(catkin REQUIRED
         dynamic_reconfigure
 )
 
-find_package(OpenCV 3 REQUIRED)
+find_package(OpenCV 4 REQUIRED)
 
 generate_dynamic_reconfigure_options(
   cfg/Thermal.cfg

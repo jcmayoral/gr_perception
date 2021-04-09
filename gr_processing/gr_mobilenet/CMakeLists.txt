@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(gr_mobilenet)
 add_definitions(-std=c++11)
 
@@ -52,7 +52,7 @@ add_executable(${PROJECT_NAME}_node  ${SOURCES})
 
 
 add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} pcl_cuda_tools)
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 ### INSTALLS
