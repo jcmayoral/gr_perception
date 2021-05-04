@@ -83,7 +83,7 @@ if __name__ == "__main__":
     rospy.init_node('evaluator')
     rootpath = sys.argv[1]
     train_filepath = os.path.join(rootpath, "files_train.txt")
-    valid_filepath = os.path.join(rootpath, "files_valid.txt")
+    valid_filepath = os.path.join(rootpath, "augmented_files_valid.txt")
 
     proc = ImageEvaluator()
     mean_absolute_error = 0
@@ -121,7 +121,7 @@ if __name__ == "__main__":
                     #print "detected {} groud truth{}".format(a,b)
                     mean_absolute_error += abs(a-b)
                     if (abs(a-b)>1):
-                        fatal_misclassifications+= 1
+                        fatal_misclassifications+= 1.0
                 pbar.update(1)
 
     print "MAE ", mean_absolute_error/total_images

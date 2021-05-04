@@ -78,7 +78,7 @@ class DatasetAugmenter:
         #piel
         skincolors = [[140,133,197],[188,180,236],[163,164,209],[102,94,161],[51,53,80],[47,42,89]]
         mask = cv2.inRange(oimage, (40, 40, 80), (160, 180, 240))
-        print np.unique(mask, return_counts=True)
+        #print np.unique(mask, return_counts=True)
         newImage[np.where(mask)] = skincolors[np.random.randint(0,5)]#onewImage[np.where(mask)]#[0,0,255]
 
 
@@ -131,7 +131,7 @@ class DatasetAugmenter:
 
                 self.plot_bbs(self.img, detections)
                 cv2.imshow("test", self.img)
-                cv2.waitKey(500)
+                cv2.waitKey(25)
                 pbar.update(1)
 
     def plot_bbs(self,image, bbs):
