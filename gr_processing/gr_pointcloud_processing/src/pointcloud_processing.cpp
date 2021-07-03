@@ -341,12 +341,13 @@ namespace gr_pointcloud_processing{
         double var_y = calculateVariance<double>(y_vector);
         double var_z = calculateVariance<double>(z_vector);
         double var_i = calculateVariance<double>(i_vector);
+        std::cout << "VX "<< var_x << " "  << " " << "VY "<< var_y << " " << "VZ "<< var_z << " " << "VI "<< var_i << " " << std::endl;
 
         cluster_std = var_x * var_y;// * calculateStd<double>(z_vector);
 
         //FOR FUSION
         person.pose.position = cluster_center.position;
-        person.pose.orientation.w = 1.0;
+        person.pose.orientation.y = person.pose.orientation.w = 0.7071068;
         person.variance.x = var_x;
         person.variance.y = var_y;
         person.variance.z = var_z;
@@ -380,26 +381,45 @@ namespace gr_pointcloud_processing{
             //default value
             person.pose.orientation = matched_object.pose.orientation;
             object.pose.orientation = person.pose.orientation;
+            std::cout << "static " << std::abs(sqrt(nx*nx + ny*ny)) << std::endl;
 
             //IF the distance is bigger than 5? cm then compute orientation and update
             if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){
               double dt = (ros::Time::now() - last_detection_).toSec();
 
-              auto nyaw =  calculateYaw<double>(nx,ny,nz);
               auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);
+              auto nyaw =  calculateYaw<double>(nx,ny,nz);
+
               //person is new reading
-              std::cout << "dt " << dt << std::endl;
+              //std::cout << "dt " << dt << std::endl;
 
-              object.speed.x = nx/dt;
-              object.speed.y = ny/dt;
+              float update_ration = (1+object.speed.x)/(nx/dt);
 
-              auto m_vyaw = (oldyaw-nyaw)*dt;
-              object.speed.z = m_vyaw;
-              tf2_quat.setRPY(0,0,nyaw);
+              //if (fabs(update_ration) > 0.10){
+                object.speed.x -= (nx/dt)/2;
+                object.speed.y -= (ny/dt)/2;
+                
+
+                auto m_vyaw = ((oldyaw-nyaw));
+                //UNfeasible angular speed;
+                if (fabs(m_vyaw) < 0.2){
+                   object.speed.z = m_vyaw;
+                }
+                object.speed.z = 0.2;
+                tf2_quat.setRPY(0,0,oldyaw + (nyaw)*var_z);
+                std::cout << "yaws " << oldyaw << "::: "<< oldyaw + (nyaw)*var_z << std::endl;
+
+
+                //tf2_quat.setRPY(0,0, calculateYaw<double>(object.speed.x,object.speed.y,0));
+
+              //}
+              //else{
+                //tf2_quat.setRPY(0,0,oldyaw);
+              //}
 
               person.pose.orientation = tf2::toMsg(tf2_quat);
-              cluster_center.orientation = person.pose.orientation;
-              object.pose.orientation = cluster_center.orientation;
+              object.pose.orientation = person.pose.orientation;
+              cluster_center.orientation = object.pose.orientation;
 
               person.speed = object.speed;
               object.is_dynamic = true;
@@ -421,7 +441,7 @@ namespace gr_pointcloud_processing{
           else{
             //ROS_WARN_STREAM("A new person has been found adding to the array");
             //testing map array_person (memory)
-            //if (matchingid.compare(gr_detection::NODETECTION) !=0){
+            //if (matchingid.compare(gr_detection::NOcluster_ceDETECTION) !=0){
               insertNewObject(person);
             //}
           }
