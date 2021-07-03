@@ -47,7 +47,7 @@ namespace gr_detection{
             FusionDetection(const FusionDetection& other);
             int getDetectionsNumber();
             std::string randomString();
-            void UpdateOrientation(geometry_msgs::Quaternion q, std::string id);
+            void UpdateOrientation(std::string id, Person p);
             void UpdateObject(std::string id, Person p);
             void cleanUpCycle();
             void showCurrentDetections();
