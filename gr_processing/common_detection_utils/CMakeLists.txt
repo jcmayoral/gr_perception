@@ -7,6 +7,8 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   geometry_msgs
+  tf2
+  tf2_geometry_msgs
 )
 
 #TODO create config gile of "magic thresholds"
@@ -23,6 +25,8 @@ catkin_package(
   CATKIN_DEPENDS
   roscpp
   geometry_msgs
+  tf2
+  tf2_geometry_msgs
 )
 
 ###########

@@ -8,6 +8,7 @@
 #include <ctime>
 #include <boost/thread/mutex.hpp>
 #include <geometry_msgs/PoseArray.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 
 namespace gr_detection{
@@ -54,6 +55,8 @@ namespace gr_detection{
             Person GetObject(std::string id);
             std::string matchDetection(Person new_cluster);
             geometry_msgs::PoseArray createPoseArray();
+            geometry_msgs::Quaternion getDifferenceQuaternion(geometry_msgs::Quaternion a, geometry_msgs::Quaternion b);
+            
             static boost::shared_ptr<CustomArray> d_array_;
             float time_break_;
             float minmatch_score_;

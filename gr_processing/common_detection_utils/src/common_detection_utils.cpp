@@ -40,11 +40,18 @@ void FusionDetection::UpdateOrientation(geometry_msgs::Quaternion q, std::string
     boost::mutex::scoped_lock lck(d_array_->mtx);
     d_array_->DETECTIONSARRAY.at(id).last_update = clock();
     d_array_->DETECTIONSARRAY.at(id).pose.orientation = q;
+    std::cout << "IpdateOrientation" << std::endl;
+
 }
 
 void FusionDetection::UpdateObject(std::string id, Person p){
     boost::mutex::scoped_lock lck(d_array_->mtx);
-    d_array_->DETECTIONSARRAY.at(id) = p;
+    d_array_->DETECTIONSARRAY.at(id).pose.position.x += (d_array_->DETECTIONSARRAY.at(id).pose.position.x - p.pose.position.x);
+    d_array_->DETECTIONSARRAY.at(id).pose.position.y += (d_array_->DETECTIONSARRAY.at(id).pose.position.y - p.pose.position.y);
+
+    d_array_->DETECTIONSARRAY.at(id).pose.orientation = getDifferenceQuaternion(d_array_->DETECTIONSARRAY.at(id).pose.orientation, p.pose.orientation);
+
+    std::cout << "UPDATEOBJECT" << std::endl;
     d_array_->DETECTIONSARRAY.at(id).age = 5;
     d_array_->DETECTIONSARRAY.at(id).last_update = clock();
 }
@@ -66,6 +73,16 @@ void FusionDetection::cleanUpCycle(){
         }
     }
 }
+
+geometry_msgs::Quaternion FusionDetection::getDifferenceQuaternion(geometry_msgs::Quaternion a, geometry_msgs::Quaternion b){
+    tf2::Quaternion quat_tf, quat_tf2;
+    tf2::fromMsg(a, quat_tf);
+    tf2::fromMsg(a, quat_tf2);
+    
+    return tf2::toMsg(quat_tf);
+
+}
+
 
 void FusionDetection::showCurrentDetections(){
     boost::mutex::scoped_lock lck(d_array_->mtx);
@@ -143,7 +160,7 @@ std::string FusionDetection::matchDetection(Person new_cluster){
 
     auto min_score = min_element(scores.begin(), scores.end());
     //FIND Proper threshold
-    std::cout << "MIN SCORE " << *min_score << std::endl;
+    //std::cout << "MIN SCORE " << *min_score << std::endl;
 
     if (*min_score < minmatch_score_){
         int argmin = std::distance(scores.begin(), min_score);
