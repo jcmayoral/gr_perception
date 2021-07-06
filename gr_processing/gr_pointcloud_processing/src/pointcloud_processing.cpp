@@ -318,7 +318,7 @@ namespace gr_pointcloud_processing{
         //NEW FEATURE
         geometry_msgs::Quaternion cluster_orientation;
         tf2::Quaternion tf2_quat;
-        cluster_center.orientation.w = cluster_center.orientation.z =  0.707;
+        cluster_center.orientation.w = cluster_center.orientation.y =  0.707;
 
 
         //Testing
