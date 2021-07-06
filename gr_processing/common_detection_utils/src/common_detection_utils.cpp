@@ -40,19 +40,21 @@ void FusionDetection::UpdateOrientation(std::string id, Person p){
     //boost::mutex::scoped_lock lck(d_array_->mtx);
     d_array_->DETECTIONSARRAY.at(id).last_update = clock();
     d_array_->DETECTIONSARRAY.at(id).pose.orientation = p.pose.orientation;
-    std::cout << "IpdateOrientation" << std::endl;
+    //std::cout << "IpdateOrientation" << std::endl;
 
 }
 
 void FusionDetection::UpdateObject(std::string id, Person p){
     boost::mutex::scoped_lock lck(d_array_->mtx);
-    d_array_->DETECTIONSARRAY.at(id).pose.position.x += (d_array_->DETECTIONSARRAY.at(id).pose.position.x - p.pose.position.x);
-    d_array_->DETECTIONSARRAY.at(id).pose.position.y += (d_array_->DETECTIONSARRAY.at(id).pose.position.y - p.pose.position.y);
 
+    d_array_->DETECTIONSARRAY.at(id).pose.position.x = p.pose.position.x;
+    d_array_->DETECTIONSARRAY.at(id).pose.position.y = p.pose.position.y;
+    d_array_->DETECTIONSARRAY.at(id).speed = p.speed;
+    
     d_array_->DETECTIONSARRAY.at(id).pose.orientation = getDifferenceQuaternion(d_array_->DETECTIONSARRAY.at(id).pose.orientation, p.pose.orientation);
 
-    std::cout << "UPDATEOBJECT" << std::endl;
-    UpdateOrientation(id, p);
+    // std::cout << "UPDATEOBJECT" << std::endl;
+    //UpdateOrientation(id, p);
     d_array_->DETECTIONSARRAY.at(id).age = 5;
     d_array_->DETECTIONSARRAY.at(id).last_update = clock();
 }
@@ -80,19 +82,19 @@ geometry_msgs::Quaternion FusionDetection::getDifferenceQuaternion(geometry_msgs
     tf2::fromMsg(a, quat_tf);
     tf2::fromMsg(b, quat_tf2);
     auto p_angle = quat_tf.getAngle();
-    std::cout << a.x << " " << a.y << " " << a.z << " " << a.w << std::endl;
-    std::cout << b.x << " " << b.y << " " << b.z << " " << b.w << std::endl;
-    std::cout << "O_ANGLE " << p_angle <<std::endl;
+    //std::cout << a.x << " " << a.y << " " << a.z << " " << a.w << std::endl;
+    //std::cout << b.x << " " << b.y << " " << b.z << " " << b.w << std::endl;
+    //std::cout << "O_ANGLE " << p_angle <<std::endl;
     float factor = 1.0;
-    if (p_angle > 0.1){
-        std::cout << "ANGLE " << (quat_tf - quat_tf2).getAngle()/p_angle << std::endl;
-    }
+    //if (p_angle > 0.1){
+    //    std::cout << "ANGLE " << (quat_tf - quat_tf2).getAngle()/p_angle << std::endl;
+    ///}
     double roll, pitch, oyaw, uyaw;
     tf2::Matrix3x3(quat_tf).getRPY(roll, pitch, oyaw);
     tf2::Matrix3x3(quat_tf2).getRPY(roll, pitch, uyaw);
-    std::cout << "YAW " << oyaw << std::endl;
-    std::cout << "YAW " << uyaw << std::endl;
-    std::cout << (uyaw-oyaw)/uyaw << std::endl;
+    //std::cout << "YAW " << oyaw << std::endl;
+    //std::cout << "YAW " << uyaw << std::endl;
+    //std::cout << (uyaw-oyaw)/uyaw << std::endl;
 
     return tf2::toMsg(quat_tf + (quat_tf2 - quat_tf)/10);
 }
