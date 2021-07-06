@@ -318,7 +318,7 @@ namespace gr_pointcloud_processing{
         //NEW FEATURE
         geometry_msgs::Quaternion cluster_orientation;
         tf2::Quaternion tf2_quat;
-        cluster_center.orientation.w = 1.0;
+        cluster_center.orientation.w = cluster_center.orientation.z =  0.707;
 
 
         //Testing
@@ -346,7 +346,7 @@ namespace gr_pointcloud_processing{
 
         //FOR FUSION
         person.pose.position = cluster_center.position;
-        person.pose.orientation.w = 1.0;
+        //person.pose.orientation.w = 1.0;
         person.variance.x = var_x;
         person.variance.y = var_y;
         person.variance.z = var_z;
@@ -362,7 +362,6 @@ namespace gr_pointcloud_processing{
           auto range_y = getAbsoluteRange<double>(y_vector);
           auto range_z = getAbsoluteRange<double>(z_vector);
 
-          person.volume = range_x*range_y*range_z;
 
           //var_i seems to be more stable that bb volume
           //ON TESTING
@@ -378,23 +377,34 @@ namespace gr_pointcloud_processing{
 
 
             //default value
-            person.pose.orientation = matched_object.pose.orientation;
+            person = matched_object;
+            person.volume = range_x*range_y*range_z;
+
             object.pose.orientation = person.pose.orientation;
 
+
+            float location_diff = std::abs(sqrt(nx*nx + ny*ny));
+            float expected_change = std::abs(sqrt(matched_object.speed.x*matched_object.speed.x + matched_object.speed.y*matched_object.speed.y));
+
+
             //IF the distance is bigger than 5? cm then compute orientation and update
-            if (std::abs(sqrt(nx*nx + ny*ny)) > static_dynamic_classifier_ ){
+            if ((location_diff- expected_change) > static_dynamic_classifier_ ){
+              ROS_ERROR_STREAM("Moving person " << matchingid);
               double dt = (ros::Time::now() - last_detection_).toSec();
 
               auto nyaw =  calculateYaw<double>(nx,ny,nz);
               auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);
               //person is new reading
-              std::cout << "dt " << dt << std::endl;
+              //std::cout << "dt " << dt << std::endl;
 
-              object.speed.x = nx/dt;
-              object.speed.y = ny/dt;
+              object.speed.x =  (nx*dt);
+              object.speed.y =  (ny*dt);
+              expected_change = std::abs(sqrt(object.speed.x*object.speed.x + object.speed.y*object.speed.y));
+              //ROS_ERROR_STREAM(" new  expected "<< expected_change << " sx "<< object.speed.x << " sy " << object.speed.y << "dt "<< dt << " nxdt "<< nx*dt);
+
 
               auto m_vyaw = (oldyaw-nyaw)*dt;
-              object.speed.z = m_vyaw;
+              object.speed.z =  matched_object.speed.z + m_vyaw/10;
               tf2_quat.setRPY(0,0,nyaw);
 
               person.pose.orientation = tf2::toMsg(tf2_quat);
@@ -403,6 +413,10 @@ namespace gr_pointcloud_processing{
 
               person.speed = object.speed;
               object.is_dynamic = true;
+            }
+            else{
+              ROS_WARN_STREAM("static person " << matchingid);
+              ROS_ERROR_STREAM(" location diff "<< location_diff << " expected "<< expected_change );
             }
 
             //Updating
@@ -432,8 +446,8 @@ namespace gr_pointcloud_processing{
         }
       }
 
-      ROS_INFO("Detection on PC");
-      showCurrentDetections();
+      //ROS_INFO("Detection on PC");
+      //showCurrentDetections();
       clusters_msg.header.frame_id = "velodyne";
       clusters_msg.header.stamp = ros::Time::now();
       cluster_pub_.publish(clusters_msg);
