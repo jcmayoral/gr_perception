@@ -1,0 +1,2 @@
+convert /home/jose/ros_ws/src/gr_perception/gr_ml/idea_2/my_data/fake_data.ods -> /home/jose/ros_ws/src/gr_perception/gr_ml/idea_2/my_data/fake_data.csv using filter : Text - txt - csv (StarCalc)
+Overwriting: /home/jose/ros_ws/src/gr_perception/gr_ml/idea_2/my_data/fake_data.csv
