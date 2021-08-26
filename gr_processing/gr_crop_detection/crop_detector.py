@@ -24,12 +24,12 @@ data = {
         "v_crop_min":{
             "minval": 0,
             "maxval": 100,
-            "default": 45
+            "default": 18
         },
         "v_crop_max":{
             "minval": 0,
             "maxval": 100,
-            "default": 100
+            "default": 50
         },
         "h_crop_min":{
             "minval": 0,
@@ -70,6 +70,16 @@ data = {
             "minval": 1,
             "maxval": 100,
             "default": 10
+        },
+        "erosion_shape":{
+            "minval": 0,
+            "maxval": 2 ,
+            "default": 1
+        },
+        "erosion_size":{
+            "minval": 1,
+            "maxval": 3,
+            "default": 2
         }
 }
 
@@ -97,12 +107,13 @@ class CropDetector:
         # perform gaussian blur
         gf = 3##self.params["gauss_filter"].get_value()
         img_blur = cv2.GaussianBlur(img_gray, (gf, gf), 0)
+        img_erode = self.erosion(img_blur   )
 
         # perform edge detection
         min_canny = self.params["min_canny"].get_value()
         max_canny = self.params["max_canny"].get_value()
 
-        img_edge = cv2.Canny(img_blur, threshold1=min_canny, threshold2=max_canny)
+        img_edge = cv2.Canny(img_erode, threshold1=min_canny, threshold2=max_canny)
 
         # perform hough transform
 
@@ -144,6 +155,21 @@ class CropDetector:
             cv2.createTrackbar(i, "process", j["minval"], j["maxval"],self.params[i].on_change)
             cv2.setTrackbarPos(i, "process", self.params[i].get_value())
 
+    def morph_shape(self, val):
+        if val == 0:
+            return cv2.MORPH_RECT
+        elif val == 1:
+            return cv2.MORPH_CROSS
+        elif val == 2:
+            return cv2.MORPH_ELLIPSE
+
+    def erosion(self, image):
+
+        erosion_size = self.morph_shape(self.params["erosion_size"].get_value())
+        erosion_shape = self.morph_shape(self.params["erosion_shape"].get_value())
+        element = cv2.getStructuringElement(erosion_shape, (2 * erosion_size + 1, 2 * erosion_size + 1),
+                                       (erosion_size, erosion_size))
+        return cv2.erode(image, element)
 
 
     def process_img(self, msg):
