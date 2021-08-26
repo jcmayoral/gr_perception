@@ -21,10 +21,30 @@ data = {
         #    "maxval": 9,
         #    "default": 3
         #},
+        "v_crop_min":{
+            "minval": 0,
+            "maxval": 100,
+            "default": 45
+        },
+        "v_crop_max":{
+            "minval": 0,
+            "maxval": 100,
+            "default": 100
+        },
+        "h_crop_min":{
+            "minval": 0,
+            "maxval": 100,
+            "default": 20
+        },
+        "h_crop_max":{
+            "minval": 0,
+            "maxval": 100,
+            "default": 80
+        },
         "min_canny":{
             "minval": 0,
             "maxval": 255,
-            "default": 50
+            "default": 80
         },
         "max_canny":{
             "minval": 0,
@@ -32,9 +52,9 @@ data = {
             "default": 150
         },
         "rho":{
-            "minval": 1,
+            "minval": 2,
             "maxval": 10,
-            "default": 5
+            "default": 4
         },
         "hough_threshold":{
             "minval": 1,
@@ -44,7 +64,7 @@ data = {
         "hough_min_len":{
             "minval": 1,
             "maxval": 200,
-            "default": 20
+            "default": 90
         },
         "hough_gap":{
             "minval": 1,
@@ -98,15 +118,22 @@ class CropDetector:
                                                min_line_len=hough_min_line_len,
                                                max_line_gap=hough_gap)
 
-        mask=color_image.copy()
+        mask=img_gray.copy()
+        if detected_lines.shape[0] > 0:
+            coordinates = np.zeros((detected_lines.shape[0], 4))
+            print "COORD ", coordinates.shape
 
-        if detected_lines is not None:
-            for line in detected_lines:
-                for x1,y1,x2,y2 in line:
-                    cv2.line(mask,(x1,y1),(x2,y2),255,1)
+            if detected_lines is not None:
+                for index,line in enumerate(detected_lines):
+                    print index, np.array(line).shape, coordinates[index].shape
+                    for x1,y1,x2,y2 in line:
+                        cv2.line(mask,(x1,y1),(x2,y2),255,1)
+                    coordinates[index] = np.asarray(line[0])
+            avg_line = np.mean(coordinates,axis=0, dtype=np.uint)
+            cv2.line(mask,(avg_line[0],avg_line[1]),(avg_line[2],avg_line[3]),255,10)
 
         #print(img_edge.shape, mask.shape)
-        return img_edge#mask
+        return cv2.hconcat([img_gray, img_edge, mask])#mask
 
     def create_window(self):
         cv2.namedWindow("process")
@@ -123,7 +150,14 @@ class CropDetector:
         #TODO CAMERA CALIBRATION
         original_image = self.cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         h,w,c = original_image.shape
-        out_image = original_image[h/2:h,w/2-200:w/2+200,:]
+        v_crop_min = self.params["v_crop_min"].get_value()*w/100
+        v_crop_max = self.params["v_crop_max"].get_value()*w/100
+        h_crop_min = self.params["h_crop_min"].get_value()*w/100
+        h_crop_max = self.params["h_crop_max"].get_value()*w/100
+
+
+        out_image = original_image[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
+        print out_image.shape
         out_image = self.get_lane_lines(out_image)
         cv2.imshow("process", out_image)
         cv2.waitKey(100)
