@@ -12,7 +12,7 @@ find_package(catkin REQUIRED
         nodelet
 )
 
-find_package(PCL 1.9 REQUIRED)
+find_package(PCL 1.8 REQUIRED)
 
 find_package(YAML-CPP 0.6 REQUIRED)
 
