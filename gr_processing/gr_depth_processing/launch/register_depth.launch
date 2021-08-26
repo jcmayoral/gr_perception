@@ -1,0 +1,15 @@
+<launch>
+  <arg name="color_image" default="/camera/color/image_raw" />
+  <arg name="color_info" default="/camera/color/camera_info" />
+  <arg name="depth_image" default="/camera/depth/image_rect_raw" />
+  <arg name="depth_info" default="/camera/depth/camera_info" />
+
+  <node pkg="nodelet" type="nodelet" name="depth_nodelet"  args="manager" output="screen"/>
+
+  <node pkg="nodelet" type="nodelet" name="depth_register_nodelet" args="load depth_image_proc/register depth_nodelet" output="screen">
+    <remap from="depth/image_rect" to="$(arg depth_image)"/>
+    <remap from="rgb/camera_info" to="$(arg color_info)"/>
+    <remap from="depth/camera_info" to="$(arg depth_info)"/>
+  </node>
+
+</launch>
