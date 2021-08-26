@@ -143,6 +143,25 @@ class CropDetector:
             avg_line = np.mean(coordinates,axis=0, dtype=np.uint)
             cv2.line(mask,(avg_line[0],avg_line[1]),(avg_line[2],avg_line[3]),255,10)
 
+
+        #TEST
+        # Find contours
+        cnts = cv2.findContours(img_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        # Iterate thorugh contours and draw rectangles around contours
+        mean_cnts = list()
+        for c in cnts:
+            x,y,w,h = cv2.boundingRect(c)
+            mean_cnts.append([x,y,w,h])
+        avg_cnts = np.mean(mean_cnts, axis=0, dtype=np.uint)
+        max_cnts = np.max(mean_cnts, axis=0)
+        min_cnts = np.min(mean_cnts, axis=0)
+        range_cnts =  max_cnts - min_cnts
+
+        print "PLEAASE", avg_cnts
+
+        cv2.rectangle(mask,( min_cnts[0], 0), (min_cnts[0] + range_cnts[0], mask.shape[1]), 255, 2)
+
         #print(img_edge.shape, mask.shape)
         return cv2.hconcat([img_gray, img_edge, mask])#mask
 
