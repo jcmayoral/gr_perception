@@ -7,6 +7,7 @@ import numpy as np
 import tf
 import image_geometry
 
+
 class MyParam:
     def __init__(self, default=0):
         self.value = default
@@ -102,8 +103,8 @@ class CropDetector:
         self.caminfo = CameraInfo()
         self.msgready = False
         self.cammodel = image_geometry.PinholeCameraModel()
-        rospy.Subscriber("/zed/zed_node/rgb/camera_info", CameraInfo, self.info_cb)
-        rospy.Subscriber("/zed/zed_node/rgb/image_rect_color", Image, self.process_img)
+        rospy.Subscriber("/zed/zed_node/left/camera_info", CameraInfo, self.info_cb)
+        rospy.Subscriber("/zed/zed_node/left/image_rect_color", Image, self.process_img)
         rospy.spin()
 
     def hough_lines_detection(self, img, rho, theta, threshold, min_line_len, max_line_gap):
@@ -119,34 +120,41 @@ class CropDetector:
     def transform_and_mark_poses(self,img):
         coords = list()
 
-        if self.tf_listener_.frameExists("base_link") and self.tf_listener_.frameExists("zed_left_camera_optical_frame"):
+        if self.tf_listener_.frameExists("zed_left_camera_frame") and self.tf_listener_.frameExists("zed_left_camera_optical_frame"):
             rospy.logerr("WORKING")
-            for i in range(5):
-                t = self.tf_listener_.getLatestCommonTime("base_link", "zed_left_camera_optical_frame") #TODO REPLACE PROPER LINKS
+            for i in range(1,10):
+                t = self.tf_listener_.getLatestCommonTime("zed_left_camera_frame", "zed_left_camera_optical_frame") #TODO REPLACE PROPER LINKS
                 p1 = PoseStamped()
-                p1.header.frame_id = "base_link"
+                p1.header.frame_id = "zed_left_camera_frame"
                 p1.pose.position.x = 1.0*i
-                p1.pose.position.z = 1.0
+                p1.pose.position.y = 0
+                p1.pose.position.z = -1.0
                 #p1.pose.position.y = -1.0*i
                 p1.pose.orientation.w = 1.0    # Neutral orientation
                 #transform = tf.StampedTransform()
-                position, rotation = self.tf_listener_.lookupTransform("zed_left_camera_optical_frame", "base_link", t);
+                position, rotation = self.tf_listener_.lookupTransform("zed_left_camera_optical_frame", "zed_left_camera_frame", t);
                 p_in_base = self.tf_listener_.transformPose("zed_left_camera_optical_frame", p1)
                 if self.msgready:
                     #rospy.logerr(self.cammodel.intrinsicMatrix())
-                    #a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
-                    a = self.cammodel.project3dToPixel([1.0,0.0+1*i,-10-(i*2.0)])
-
-                    print a
+                    a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
+                    #a = self.cammodel.project3dToPixel([1.0,0.0+1*i,-10-(i*2.0)])
+                    #print( p_in_base)
                     coords.append((int(a[0]), int(a[1])))
-                    #cv2.circle(img,(int(p_in_base.pose.position.x), int(p_in_base.pose.position.y)), 10,255,4)
+                    cv2.circle(img,(int(a[0]), int(a[1])), 10,255-i*20,4)
 
+        """
+        colors = [0,0,0]
+        s = 0
         for i in range(1,len(coords)-1):
-            print "LINE ", coords[i], " to " , coords[i+1]
-            cv2.line(img, coords[i], coords[i+1], (255,0,0), 10)
+            print( "LINE ", coords[i], " to " , coords[i+1])
+            colors[s] = 255
+            s = s +1
+            if s >2:
+                s =0
+            cv2.line(img, coords[i], coords[i+1], tuple(colors), 10)
 
-        print img.shape
-
+        print( img.shape)
+        """
 
         return img
 
@@ -154,11 +162,11 @@ class CropDetector:
         if self.center_coords[0] is None:
             self.center_coords[0] = mx
             self.center_coords[1] = my
-        print "UPDATED COORDS B ", self.center_coords, mx,my,  self.center_coords[0] - float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx
+        print( "UPDATED COORDS B ", self.center_coords, mx,my,  self.center_coords[0] - float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx)
         #self.center_coords[0]= (0.2*(self.center_coords[0] + float(mx)/self.center_coords[0]))
         self.center_coords[0] = self.center_coords[0] - 0.1*float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx
         self.center_coords[1]= self.center_coords[1] - 0.1*float(np.fabs(self.center_coords[1] - float(my))/img.shape[1])* my
-        print "UPDATED COORDS ", self.center_coords, mx,my
+        print( "UPDATED COORDS ", self.center_coords, mx,my)
         cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 20,0,10)
 
 
@@ -195,22 +203,21 @@ class CropDetector:
                                                max_line_gap=hough_gap)
 
         mask=img_gray.copy()
-        img_erode = self.transform_and_mark_poses(color_image)
+        img_erode = self.transform_and_mark_poses(img_erode)
         #FOR # DEBUG:
-        print "return"
-        return img_erode
+        #return img_erode
 
         if detected_lines is None:
-            print "ERROR "
+            print( "ERROR ")
             return cv2.hconcat([img_erode, img_edge, mask])#mask
 
         if detected_lines.shape[0] > 0:
             coordinates = np.zeros((detected_lines.shape[0], 4))
-            print "COORD ", coordinates.shape
+            print( "COORD ", coordinates.shape)
 
             if detected_lines is not None:
                 for index,line in enumerate(detected_lines):
-                    print index, np.array(line)#.shape, coordinates[index].shape
+                    print( index, np.array(line))
                     for x1,y1,x2,y2 in line:
                         cv2.line(mask,(x1,y1),(x2,y2),255,1)
                         cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,125,10)
@@ -220,16 +227,16 @@ class CropDetector:
                     coordinates[index] = np.asarray(line[0])
 
             avg_line = np.mean(coordinates,axis=0, dtype=np.uint)
-            print "AVGS", avg_line
+            print( "AVGS", avg_line)
             minx = min(avg_line[0], avg_line[2])
             maxx = max(avg_line[0], avg_line[2])
             miny = min(avg_line[1], avg_line[3])
             maxy = max(avg_line[1], avg_line[3])
             mx = int(minx+(maxx - minx)/2)
             my = int(miny+(maxy - miny)/2)
-            print "MS", mx,my
+            print( "MS", mx,my)
             if mx < 0 or my < 0:
-                print "less than 0"
+                print( "less than 0")
                 return
             self.update_and_draw_center(mask,mx,my)
             #cv2.line(mask,(avg_line[0],0),(avg_line[2],mask.shape[1]),255,10)
@@ -249,10 +256,10 @@ class CropDetector:
         min_cnts = np.min(mean_cnts, axis=0)
         range_cnts =  max_cnts - min_cnts
 
-        #print "MIN : ", min_cnts
-        #print "MAX : ", max_cnts
-        #print "AVG : ", avg_cnts
-        #print "RANGE : ", range_cnts
+        #print( "MIN : ", min_cnts)
+        #print( "MAX : ", max_cnts)
+        #print( "AVG : ", avg_cnts)
+        #print( "RANGE : ", range_cnts)
         cv2.circle(mask,(min_cnts[0]+min_cnts[2],min_cnts[1]+min_cnts[3]), 20,255,10)
         cv2.circle(mask,(max_cnts[0]+max_cnts[2],max_cnts[1]+max_cnts[3]), 20,255,10)
 
@@ -298,7 +305,7 @@ class CropDetector:
 
 
         out_image = original_image[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
-        print out_image.shape
+        print( out_image.shape)
         out_image = self.get_lane_lines(out_image)
         cv2.imshow("process", out_image)
         cv2.waitKey(100)
