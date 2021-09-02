@@ -28,27 +28,26 @@ data = {
         "v_crop_min":{
             "minval": 0,
             "maxval": 100,
-            "default": 0
-
-#            "default": 18
+#            "default": 0
+            "default": 18
         },
         "v_crop_max":{
             "minval": 0,
             "maxval": 100,
-            #"default": 50
-            "default": 100
+            "default": 50
+#            "default": 100
         },
         "h_crop_min":{
             "minval": 0,
             "maxval": 100,
-            #"default":30
-            "default": 0
+            "default":30
+#            "default": 0
         },
         "h_crop_max":{
             "minval": 0,
             "maxval": 100,
-            #"default": 80
-            "default": 100
+            "default": 80
+#            "default": 100
         },
         "min_canny":{
             "minval": 0,
@@ -103,8 +102,8 @@ class CropDetector:
         self.caminfo = CameraInfo()
         self.msgready = False
         self.cammodel = image_geometry.PinholeCameraModel()
-        rospy.Subscriber("/zed/zed_node/left/camera_info", CameraInfo, self.info_cb)
-        rospy.Subscriber("/zed/zed_node/left/image_rect_color", Image, self.process_img)
+        rospy.Subscriber("/camera/color/camera_info", CameraInfo, self.info_cb)
+        rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
         rospy.spin()
 
     def hough_lines_detection(self, img, rho, theta, threshold, min_line_len, max_line_gap):
@@ -119,28 +118,38 @@ class CropDetector:
 
     def transform_and_mark_poses(self,img):
         coords = list()
+        h,w,c = img.shape
 
-        if self.tf_listener_.frameExists("zed_left_camera_frame") and self.tf_listener_.frameExists("zed_left_camera_optical_frame"):
+        v_crop_min = self.params["v_crop_min"].get_value()*w/100
+        v_crop_max = self.params["v_crop_max"].get_value()*w/100
+        h_crop_min = self.params["h_crop_min"].get_value()*h/100
+        h_crop_max = self.params["h_crop_max"].get_value()*h/100
+
+
+        if self.tf_listener_.frameExists("camera_link") and self.tf_listener_.frameExists("base_link"):
             rospy.logerr("WORKING")
             for i in range(1,10):
-                t = self.tf_listener_.getLatestCommonTime("zed_left_camera_frame", "zed_left_camera_optical_frame") #TODO REPLACE PROPER LINKS
+                t = self.tf_listener_.getLatestCommonTime("camera_depth_link", "base_link") #TODO REPLACE PROPER LINKS
                 p1 = PoseStamped()
-                p1.header.frame_id = "zed_left_camera_frame"
+                p1.header.frame_id = "base_link"
                 p1.pose.position.x = 1.0*i
                 p1.pose.position.y = 0
                 p1.pose.position.z = -1.0
                 #p1.pose.position.y = -1.0*i
                 p1.pose.orientation.w = 1.0    # Neutral orientation
                 #transform = tf.StampedTransform()
-                position, rotation = self.tf_listener_.lookupTransform("zed_left_camera_optical_frame", "zed_left_camera_frame", t);
-                p_in_base = self.tf_listener_.transformPose("zed_left_camera_optical_frame", p1)
+                position, rotation = self.tf_listener_.lookupTransform("base_link", "camera_depth_link", t);
+                p_in_base = self.tf_listener_.transformPose("camera_depth_link", p1)
                 if self.msgready:
                     #rospy.logerr(self.cammodel.intrinsicMatrix())
                     a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
                     #a = self.cammodel.project3dToPixel([1.0,0.0+1*i,-10-(i*2.0)])
                     #print( p_in_base)
+                    print (int(v_crop_min + a[0]), int(h_crop_min + a[1]))
+                    print (int(h_crop_min + a[0]), int(v_crop_min + a[1]))
                     coords.append((int(a[0]), int(a[1])))
-                    cv2.circle(img,(int(a[0]), int(a[1])), 10,255-i*20,4)
+                    cv2.circle(img,(int(a[0]), int(a[1])), 10,255,4)
+                    #cv2.circle(img,(int(v_crop_min + a[0]), int(h_crop_min + a[1])), 10,255,4)
 
         """
         colors = [0,0,0]
@@ -170,7 +179,16 @@ class CropDetector:
         cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 20,0,10)
 
 
-    def get_lane_lines(self,color_image):
+    def get_lane_lines(self,original_img):
+
+        h,w,c = original_img.shape
+        v_crop_min = self.params["v_crop_min"].get_value()*w/100
+        v_crop_max = self.params["v_crop_max"].get_value()*w/100
+        h_crop_min = self.params["h_crop_min"].get_value()*h/100
+        h_crop_max = self.params["h_crop_max"].get_value()*h/100
+
+        color_image = original_img.copy()[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
+
         interm_image = cv2.cvtColor(color_image,cv2.COLOR_RGB2HSV)
         interm_image[:,:,2] = 0
 
@@ -202,14 +220,14 @@ class CropDetector:
                                                min_line_len=hough_min_line_len,
                                                max_line_gap=hough_gap)
 
-        mask=img_gray.copy()
-        img_erode = self.transform_and_mark_poses(img_erode)
+        mask=img_edge.copy()
+        output_image = self.transform_and_mark_poses(original_img.copy())
         #FOR # DEBUG:
         #return img_erode
 
         if detected_lines is None:
             print( "ERROR ")
-            return cv2.hconcat([img_erode, img_edge, mask])#mask
+            return output_image#cv2.hconcat([img_erode, mask])#mask
 
         if detected_lines.shape[0] > 0:
             coordinates = np.zeros((detected_lines.shape[0], 4))
@@ -221,6 +239,7 @@ class CropDetector:
                     for x1,y1,x2,y2 in line:
                         cv2.line(mask,(x1,y1),(x2,y2),255,1)
                         cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,125,10)
+                        cv2.circle(output_image,(  h_crop_min + x1+(x2-x1)/2,  v_crop_min + y1+(y2-y1)/2), 10,125,10)
 
                         #cv2.line(mask,(0,y1),(img_gray.shape[0],y2),255,1)
                         #cv2.line(mask,(x1,0),(x2, img_gray.shape[0]),255,1)
@@ -238,7 +257,7 @@ class CropDetector:
             if mx < 0 or my < 0:
                 print( "less than 0")
                 return
-            self.update_and_draw_center(mask,mx,my)
+            self.update_and_draw_center(output_image,h_crop_min + mx, v_crop_min + my)
             #cv2.line(mask,(avg_line[0],0),(avg_line[2],mask.shape[1]),255,10)
 
 
@@ -266,7 +285,7 @@ class CropDetector:
         cv2.rectangle(mask,( min_cnts[0], 0), (max_cnts[0]+ max_cnts[2], max_cnts[3]), 255, 2)
 
         #print(img_edge.shape, mask.shape)
-        return cv2.hconcat([img_erode, img_edge, mask])#mask
+        return output_image #cv2.hconcat([img_erode, img_edge, mask])#mask
 
     def create_window(self):
         cv2.namedWindow("process")
@@ -297,15 +316,6 @@ class CropDetector:
     def process_img(self, msg):
         #TODO CAMERA CALIBRATION
         original_image = self.cv_bridge.imgmsg_to_cv2(msg, "bgr8")
-        h,w,c = original_image.shape
-        v_crop_min = self.params["v_crop_min"].get_value()*w/100
-        v_crop_max = self.params["v_crop_max"].get_value()*w/100
-        h_crop_min = self.params["h_crop_min"].get_value()*w/100
-        h_crop_max = self.params["h_crop_max"].get_value()*w/100
-
-
-        out_image = original_image[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
-        print( out_image.shape)
-        out_image = self.get_lane_lines(out_image)
+        out_image = self.get_lane_lines(original_image)
         cv2.imshow("process", out_image)
         cv2.waitKey(100)
