@@ -27,22 +27,27 @@ data = {
         "v_crop_min":{
             "minval": 0,
             "maxval": 100,
-            "default": 18
+            "default": 0
+
+#            "default": 18
         },
         "v_crop_max":{
             "minval": 0,
             "maxval": 100,
-            "default": 50
+            #"default": 50
+            "default": 100
         },
         "h_crop_min":{
             "minval": 0,
             "maxval": 100,
-            "default":30
+            #"default":30
+            "default": 0
         },
         "h_crop_max":{
             "minval": 0,
             "maxval": 100,
-            "default": 80
+            #"default": 80
+            "default": 100
         },
         "min_canny":{
             "minval": 0,
@@ -97,8 +102,8 @@ class CropDetector:
         self.caminfo = CameraInfo()
         self.msgready = False
         self.cammodel = image_geometry.PinholeCameraModel()
-        rospy.Subscriber("/camera/color/camera_info", Image, self.info_cb)
-        rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
+        rospy.Subscriber("/zed/zed_node/rgb/camera_info", CameraInfo, self.info_cb)
+        rospy.Subscriber("/zed/zed_node/rgb/image_rect_color", Image, self.process_img)
         rospy.spin()
 
     def hough_lines_detection(self, img, rho, theta, threshold, min_line_len, max_line_gap):
@@ -108,29 +113,42 @@ class CropDetector:
 
     def info_cb(self,msg):
         self.caminfo = msg
-        self.cammodel.fromCameraInfo()
+        self.cammodel.fromCameraInfo(msg)
         self.msgready = True
 
     def transform_and_mark_poses(self,img):
-        rospy.logerr("INFUNCTION")
-        print self.tf_listener_.frameExists("base_link") , self.tf_listener_.frameExists("camera_depth_link")
+        coords = list()
 
-        if self.tf_listener_.frameExists("base_link") and self.tf_listener_.frameExists("camera_depth_link"):
+        if self.tf_listener_.frameExists("base_link") and self.tf_listener_.frameExists("zed_left_camera_optical_frame"):
             rospy.logerr("WORKING")
             for i in range(5):
-                t = self.tf_listener_.getLatestCommonTime("base_link", "camera_depth_link") #TODO REPLACE PROPER LINKS
+                t = self.tf_listener_.getLatestCommonTime("base_link", "zed_left_camera_optical_frame") #TODO REPLACE PROPER LINKS
                 p1 = PoseStamped()
                 p1.header.frame_id = "base_link"
                 p1.pose.position.x = 1.0*i
+                p1.pose.position.z = 1.0
+                #p1.pose.position.y = -1.0*i
                 p1.pose.orientation.w = 1.0    # Neutral orientation
                 #transform = tf.StampedTransform()
-                position, rotation = self.tf_listener_.lookupTransform("camera_depth_link", "base_link", t);
-                p_in_base = self.tf_listener_.transformPose("camera_depth_link", p1)
+                position, rotation = self.tf_listener_.lookupTransform("zed_left_camera_optical_frame", "base_link", t);
+                p_in_base = self.tf_listener_.transformPose("zed_left_camera_optical_frame", p1)
                 if self.msgready:
-                    a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
-                    print a, type(a)
-                    cv2.circle(img,(int(p_in_base.pose.position.x), int(p_in_base.pose.position.y)), 20,255,10)
-            return img
+                    #rospy.logerr(self.cammodel.intrinsicMatrix())
+                    #a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
+                    a = self.cammodel.project3dToPixel([1.0,0.0+1*i,-10-(i*2.0)])
+
+                    print a
+                    coords.append((int(a[0]), int(a[1])))
+                    #cv2.circle(img,(int(p_in_base.pose.position.x), int(p_in_base.pose.position.y)), 10,255,4)
+
+        for i in range(1,len(coords)-1):
+            print "LINE ", coords[i], " to " , coords[i+1]
+            cv2.line(img, coords[i], coords[i+1], (255,0,0), 10)
+
+        print img.shape
+
+
+        return img
 
     def update_and_draw_center(self, img, mx,my):
         if self.center_coords[0] is None:
@@ -177,7 +195,10 @@ class CropDetector:
                                                max_line_gap=hough_gap)
 
         mask=img_gray.copy()
-        self.transform_and_mark_poses(mask)
+        img_erode = self.transform_and_mark_poses(color_image)
+        #FOR # DEBUG:
+        print "return"
+        return img_erode
 
         if detected_lines is None:
             print "ERROR "
