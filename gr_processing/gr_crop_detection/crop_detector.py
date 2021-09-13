@@ -168,16 +168,55 @@ class CropDetector:
 
         return img
 
-    def update_and_draw_center(self, img, mx,my):
-        if self.center_coords[0] is None:
+    def update_and_draw_center(self, img, mx,my, color=(255,255,0)):
+        if True:#self.center_coords[0] is None:
             self.center_coords[0] = mx
             self.center_coords[1] = my
         #print( "UPDATED COORDS B ", self.center_coords, mx,my,  self.center_coords[0] - float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx)
         #self.center_coords[0]= (0.2*(self.center_coords[0] + float(mx)/self.center_coords[0]))
-        self.center_coords[0] = self.center_coords[0] - 0.1*float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx
-        self.center_coords[1]= self.center_coords[1] - 0.1*float(np.fabs(self.center_coords[1] - float(my))/img.shape[1])* my
+        self.center_coords[0] += 0.1*float(np.fabs(self.center_coords[0] - float(mx))/mx)* mx
+        self.center_coords[1] += 0.1*float(np.fabs(self.center_coords[1] - float(my))/mx)* my
         #print( "UPDATED COORDS ", self.center_coords, mx,my)
-        #cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 20,0,10)
+        cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 10,color,10)
+
+    def draw_line(self, img, line, slope, h_min, v_min):
+        print( "AVGS", line)
+        minx = min(line[0], line[2])
+        maxx = max(line[0], line[2])
+        miny = min(line[1], line[3])
+        maxy = max(line[1], line[3])
+        mx = int(minx+(maxx - minx)/2)
+        my = int(miny+(maxy - miny)/2)
+
+        if mx < 0 or my < 0:
+            print( "less than 0")
+            return
+
+
+        print("M " , mx + h_min , my + v_min)
+        start_y = int(my + v_min)
+        #slope = float(maxx-minx)/(maxy-miny)
+        start_x = -int(slope*start_y) + int(maxx)# = int(h_min)
+        print(start_x, start_y)
+
+
+        h,w,c = img.shape
+
+        py= int(miny) #int(minx)
+        px=int((py)*slope) + int(minx)
+        ##ending point
+        #qx=w
+        #qy=-(x2-w)*m+y2
+
+
+        end_y = int(maxy)
+        end_x = int(slope*end_y) + int(maxx)
+        print (end_x, end_y, px,py)
+        print("SLOPE ", slope)
+
+        cv2.line(img, (end_x + h_min, end_y+v_min), (px + h_min, py + v_min), (127,0,255), 10)
+
+        self.update_and_draw_center(img,h_min + mx, v_min + my, color=(0,0,255))
 
 
     def get_lane_lines(self,original_img):
@@ -230,6 +269,11 @@ class CropDetector:
             print( "ERROR ")
             return output_image#cv2.hconcat([img_erode, mask])#mask
 
+        left_slopes = list()
+        right_slopes = list()
+        r_mean_slope = list()
+        l_mean_slope = list()
+
         if detected_lines.shape[0] > 0:
             coordinates = np.zeros((detected_lines.shape[0], 4))
             #print( "COORD ", coordinates.shape)
@@ -241,25 +285,26 @@ class CropDetector:
                         cv2.line(mask,(x1,y1),(x2,y2),255,1)
                         cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,125,10)
                         cv2.circle(output_image,(  h_crop_min + x1+(x2-x1)/2,  v_crop_min + y1+(y2-y1)/2), 10,125,10)
-
+                        slope = float(x2-x1)/(y2-y1)
+                        if slope >0:
+                            print ("right index {} slope{}".format(index,slope))
+                            r_mean_slope += [slope]
+                            right_slopes.append(line[0])
+                        else:
+                            print ("left index {} slope{}".format(index,slope))
+                            l_mean_slope += [slope]
+                            left_slopes.append(line[0])
                         #cv2.line(mask,(0,y1),(img_gray.shape[0],y2),255,1)
                         #cv2.line(mask,(x1,0),(x2, img_gray.shape[0]),255,1)
                     coordinates[index] = np.asarray(line[0])
 
             avg_line = np.mean(coordinates,axis=0, dtype=np.uint)
-            #print( "AVGS", avg_line)
-            minx = min(avg_line[0], avg_line[2])
-            maxx = max(avg_line[0], avg_line[2])
-            miny = min(avg_line[1], avg_line[3])
-            maxy = max(avg_line[1], avg_line[3])
-            mx = int(minx+(maxx - minx)/2)
-            my = int(miny+(maxy - miny)/2)
-            #print( "MS", mx,my)
-            if mx < 0 or my < 0:
-                print( "less than 0")
-                return
-            self.update_and_draw_center(output_image,h_crop_min + mx, v_crop_min + my)
-            #cv2.line(mask,(avg_line[0],0),(avg_line[2],mask.shape[1]),255,10)
+
+            l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
+            r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
+
+            self.draw_line(output_image, r_avg_line, np.mean(r_mean_slope), h_crop_min, v_crop_min)
+            self.draw_line(output_image, l_avg_line,  np.mean(l_mean_slope), h_crop_min, v_crop_min)
 
 
         #TEST
