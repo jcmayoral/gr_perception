@@ -299,8 +299,8 @@ class CropDetector:
         full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,1] = mask
         full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,2] = mask
 
-        return cv2.hconcat([output_image, full_mask])#mask
-        return cv2.bitwise_and(output_image, full_mask)#cv2.hconcat([output_image, img_edge, mask])#mask
+        #return cv2.hconcat([output_image, full_mask])#mask
+        return cv2.bitwise_or(output_image, full_mask)#cv2.hconcat([output_image, img_edge, mask])#mask
         return cv2.bitwise_and(mask, img_edge)#cv2.hconcat([output_image, img_edge, mask])#mask
 
     def create_window(self):
