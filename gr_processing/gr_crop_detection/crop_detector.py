@@ -2,10 +2,13 @@ import rospy
 import cv2
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import PoseStamped
+from nav_msgs.msg import Path
 from cv_bridge import CvBridge
 import numpy as np
 import tf
 import image_geometry
+import tf2_ros
+import tf2_geometry_msgs
 
 
 class MyParam:
@@ -98,10 +101,15 @@ class CropDetector:
         self.cv_bridge = CvBridge()
         self.initalized = True
         self.center_coords = [None,None]
-        self.tf_listener_ = tf.TransformListener()
+
+        self.tfBuffer = tf2_ros.Buffer()
+        self.listener = tf2_ros.TransformListener(self.tfBuffer)
+        #self.tf_listener_ = tf.TransformListener()
         self.caminfo = CameraInfo()
         self.msgready = False
         self.cammodel = image_geometry.PinholeCameraModel()
+        self.local_path = Path()
+        rospy.Subscriber("/move_base_flex/diff/global_plan", Path, self.path_cb)
         rospy.Subscriber("/camera/color/camera_info", CameraInfo, self.info_cb)
         rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
         rospy.spin()
@@ -110,6 +118,9 @@ class CropDetector:
         lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len,
                             maxLineGap=max_line_gap)
         return lines
+
+    def path_cb(self, path):
+        self.local_path = path
 
     def info_cb(self,msg):
         self.caminfo = msg
@@ -125,30 +136,35 @@ class CropDetector:
         h_crop_min = self.params["h_crop_min"].get_value()*h/100
         h_crop_max = self.params["h_crop_max"].get_value()*h/100
 
+        print("NOT WORKING", str(len(self.local_path.poses)))
 
-        if self.tf_listener_.frameExists("camera_link") and self.tf_listener_.frameExists("base_link"):
-            rospy.logerr("WORKING")
-            for i in range(1,10):
-                t = self.tf_listener_.getLatestCommonTime("camera_depth_link", "base_link") #TODO REPLACE PROPER LINKS
-                p1 = PoseStamped()
-                p1.header.frame_id = "base_link"
-                p1.pose.position.x = 1.0*i
-                p1.pose.position.y = 0
-                p1.pose.position.z = -1.0
-                #p1.pose.position.y = -1.0*i
-                p1.pose.orientation.w = 1.0    # Neutral orientation
-                #transform = tf.StampedTransform()
-                position, rotation = self.tf_listener_.lookupTransform("base_link", "camera_depth_link", t);
-                p_in_base = self.tf_listener_.transformPose("camera_depth_link", p1)
+        if True:# self.tf_listener_.frameExists("camera_depth_link") and self.tf_listener_.frameExists("map"):
+            #t = self.tf_listener_.getLatestCommonTime("camera_depth_link", "map") #TODO REPLACE PROPER LINKS
+
+            for p in self.local_path.poses:
+                p1 = p
+                #t = rospy.Time.now()
+                print p.header.stamp
+                #self.tf_listener_.waitForTransform("camera_depth_link", "map", rospy.Time(0), rospy.Duration(0))
+
+                #position, rotation = self.tf_listener_.lookupTransform(p.header.frame_id, "camera_depth_link", p.header.stamp);
+                transform = self.tfBuffer.lookup_transform('camera_depth_link',p.header.frame_id, rospy.Time())
+                p_in_base = tf2_geometry_msgs.do_transform_pose(p, transform)
+
+                #p_in_base = self.tf_listener_.transformPose("camera_depth_link", p1)
                 if self.msgready:
                     #rospy.logerr(self.cammodel.intrinsicMatrix())
                     a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
                     #a = self.cammodel.project3dToPixel([1.0,0.0+1*i,-10-(i*2.0)])
                     #print( p_in_base)
-                    print (int(v_crop_min + a[0]), int(h_crop_min + a[1]))
-                    print (int(h_crop_min + a[0]), int(v_crop_min + a[1]))
+                    #print (int(v_crop_min + a[0]), int(h_crop_min + a[1]))
+                    #print (int(h_crop_min + a[0]), int(v_crop_min + a[1]))
+                    if any(a) < 0:
+                        print ("SKip point of path")
+                        pass
+
                     coords.append((int(a[0]), int(a[1])))
-                    cv2.circle(img,(int(a[0]), int(a[1])), 10,255,4)
+                    cv2.circle(img,(int(a[0]), int(a[1])), 10,127,4)
                     #cv2.circle(img,(int(v_crop_min + a[0]), int(h_crop_min + a[1])), 10,255,4)
 
         """
@@ -171,11 +187,11 @@ class CropDetector:
         if self.center_coords[0] is None:
             self.center_coords[0] = mx
             self.center_coords[1] = my
-        print( "UPDATED COORDS B ", self.center_coords, mx,my,  self.center_coords[0] - float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx)
+        #print( "UPDATED COORDS B ", self.center_coords, mx,my,  self.center_coords[0] - float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx)
         #self.center_coords[0]= (0.2*(self.center_coords[0] + float(mx)/self.center_coords[0]))
         self.center_coords[0] = self.center_coords[0] - 0.1*float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx
         self.center_coords[1]= self.center_coords[1] - 0.1*float(np.fabs(self.center_coords[1] - float(my))/img.shape[1])* my
-        print( "UPDATED COORDS ", self.center_coords, mx,my)
+        #print( "UPDATED COORDS ", self.center_coords, mx,my)
         cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 20,0,10)
 
 
@@ -223,7 +239,7 @@ class CropDetector:
         mask=img_edge.copy()
         output_image = self.transform_and_mark_poses(original_img.copy())
         #FOR # DEBUG:
-        #return img_erode
+        return output_image
 
         if detected_lines is None:
             print( "ERROR ")
@@ -231,11 +247,11 @@ class CropDetector:
 
         if detected_lines.shape[0] > 0:
             coordinates = np.zeros((detected_lines.shape[0], 4))
-            print( "COORD ", coordinates.shape)
+            #print( "COORD ", coordinates.shape)
 
             if detected_lines is not None:
                 for index,line in enumerate(detected_lines):
-                    print( index, np.array(line))
+                    #print( index, np.array(line))
                     for x1,y1,x2,y2 in line:
                         cv2.line(mask,(x1,y1),(x2,y2),255,1)
                         cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,125,10)
@@ -246,14 +262,14 @@ class CropDetector:
                     coordinates[index] = np.asarray(line[0])
 
             avg_line = np.mean(coordinates,axis=0, dtype=np.uint)
-            print( "AVGS", avg_line)
+            #print( "AVGS", avg_line)
             minx = min(avg_line[0], avg_line[2])
             maxx = max(avg_line[0], avg_line[2])
             miny = min(avg_line[1], avg_line[3])
             maxy = max(avg_line[1], avg_line[3])
             mx = int(minx+(maxx - minx)/2)
             my = int(miny+(maxy - miny)/2)
-            print( "MS", mx,my)
+            #print( "MS", mx,my)
             if mx < 0 or my < 0:
                 print( "less than 0")
                 return
@@ -291,7 +307,7 @@ class CropDetector:
         cv2.namedWindow("process")
         self.params =  dict()
         for i,j in data.items():
-            print ("track", i)
+            #print ("track", i)
             self.params[i] = MyParam(j["default"])
             cv2.createTrackbar(i, "process", j["minval"], j["maxval"],self.params[i].on_change)
             cv2.setTrackbarPos(i, "process", self.params[i].get_value())
