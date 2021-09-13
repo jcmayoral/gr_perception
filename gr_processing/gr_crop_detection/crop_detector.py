@@ -136,36 +136,21 @@ class CropDetector:
         h_crop_min = self.params["h_crop_min"].get_value()*h/100
         h_crop_max = self.params["h_crop_max"].get_value()*h/100
 
-        print("NOT WORKING", str(len(self.local_path.poses)))
+        for p in self.local_path.poses:
+            p1 = p
 
-        if True:# self.tf_listener_.frameExists("camera_depth_link") and self.tf_listener_.frameExists("map"):
-            #t = self.tf_listener_.getLatestCommonTime("camera_depth_link", "map") #TODO REPLACE PROPER LINKS
+            transform = self.tfBuffer.lookup_transform('camera_depth_link',p.header.frame_id, rospy.Time())
+            p_in_base = tf2_geometry_msgs.do_transform_pose(p, transform)
 
-            for p in self.local_path.poses:
-                p1 = p
-                #t = rospy.Time.now()
-                print p.header.stamp
-                #self.tf_listener_.waitForTransform("camera_depth_link", "map", rospy.Time(0), rospy.Duration(0))
+            if self.msgready:
+                a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
+                if any(a) < 0:
+                    print ("SKip point of path")
+                    pass
 
-                #position, rotation = self.tf_listener_.lookupTransform(p.header.frame_id, "camera_depth_link", p.header.stamp);
-                transform = self.tfBuffer.lookup_transform('camera_depth_link',p.header.frame_id, rospy.Time())
-                p_in_base = tf2_geometry_msgs.do_transform_pose(p, transform)
-
-                #p_in_base = self.tf_listener_.transformPose("camera_depth_link", p1)
-                if self.msgready:
-                    #rospy.logerr(self.cammodel.intrinsicMatrix())
-                    a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
-                    #a = self.cammodel.project3dToPixel([1.0,0.0+1*i,-10-(i*2.0)])
-                    #print( p_in_base)
-                    #print (int(v_crop_min + a[0]), int(h_crop_min + a[1]))
-                    #print (int(h_crop_min + a[0]), int(v_crop_min + a[1]))
-                    if any(a) < 0:
-                        print ("SKip point of path")
-                        pass
-
-                    coords.append((int(a[0]), int(a[1])))
-                    cv2.circle(img,(int(a[0]), int(a[1])), 10,127,4)
-                    #cv2.circle(img,(int(v_crop_min + a[0]), int(h_crop_min + a[1])), 10,255,4)
+                coords.append((int(a[0]), int(a[1])))
+                cv2.circle(img,(int(a[0]), int(a[1])), 10,127,4)
+                #cv2.circle(img,(int(v_crop_min + a[0]), int(h_crop_min + a[1])), 10,255,4)
 
         """
         colors = [0,0,0]
