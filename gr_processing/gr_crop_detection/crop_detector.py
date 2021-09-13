@@ -43,13 +43,13 @@ data = {
         "h_crop_min":{
             "minval": 0,
             "maxval": 100,
-            "default":30
+            "default":40
 #            "default": 0
         },
         "h_crop_max":{
             "minval": 0,
             "maxval": 100,
-            "default": 80
+            "default": 90
 #            "default": 100
         },
         "min_canny":{
@@ -177,7 +177,7 @@ class CropDetector:
         self.center_coords[0] = self.center_coords[0] - 0.1*float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx
         self.center_coords[1]= self.center_coords[1] - 0.1*float(np.fabs(self.center_coords[1] - float(my))/img.shape[1])* my
         #print( "UPDATED COORDS ", self.center_coords, mx,my)
-        cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 20,0,10)
+        #cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 20,0,10)
 
 
     def get_lane_lines(self,original_img):
@@ -224,7 +224,7 @@ class CropDetector:
         mask=img_edge.copy()
         output_image = self.transform_and_mark_poses(original_img.copy())
         #FOR # DEBUG:
-        return output_image
+        #return output_image
 
         if detected_lines is None:
             print( "ERROR ")
@@ -285,8 +285,23 @@ class CropDetector:
 
         cv2.rectangle(mask,( min_cnts[0], 0), (max_cnts[0]+ max_cnts[2], max_cnts[3]), 255, 2)
 
-        #print(img_edge.shape, mask.shape)
-        return output_image #cv2.hconcat([img_erode, img_edge, mask])#mask
+        full_mask = np.zeros(output_image.shape, dtype=np.uint8)
+        print(img_edge.shape, mask.shape, output_image.shape)
+        """
+        v_crop_min = self.params["v_crop_min"].get_value()*w/100
+        v_crop_max = self.params["v_crop_max"].get_value()*w/100
+        h_crop_min = self.params["h_crop_min"].get_value()*h/100
+        h_crop_max = self.params["h_crop_max"].get_value()*h/100
+
+        color_image = original_img.copy()[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
+        """
+        full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,0] = mask
+        full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,1] = mask
+        full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,2] = mask
+
+        return cv2.hconcat([output_image, full_mask])#mask
+        return cv2.bitwise_and(output_image, full_mask)#cv2.hconcat([output_image, img_edge, mask])#mask
+        return cv2.bitwise_and(mask, img_edge)#cv2.hconcat([output_image, img_edge, mask])#mask
 
     def create_window(self):
         cv2.namedWindow("process")
