@@ -43,13 +43,13 @@ data = {
         "h_crop_min":{
             "minval": 0,
             "maxval": 100,
-            "default":40
+            "default":50
 #            "default": 0
         },
         "h_crop_max":{
             "minval": 0,
             "maxval": 100,
-            "default": 90
+            "default": 85
 #            "default": 100
         },
         "min_canny":{
@@ -70,12 +70,12 @@ data = {
         "hough_threshold":{
             "minval": 1,
             "maxval": 100,
-            "default": 3
+            "default": 1
         },
         "hough_min_len":{
             "minval": 1,
             "maxval": 200,
-            "default": 90
+            "default": 20
         },
         "hough_gap":{
             "minval": 1,
@@ -159,23 +159,35 @@ class CropDetector:
         return img
 
     def draw_line(self, img, line, slope, h_min, v_min):
-        print( "AVGS", line.shape, line)
-        if line.shape[-1] < 2:
+
+        if line.shape[0] < 2:
             print("NO line detected")
             return
 
         x = line[:,0]
         y = line[:,1]
+        rospy.logwarn(line.shape)
         polyline = np.polyfit(y, x, 2)#, full=True)
         y0 = 0
         x0 = int(np.polyval(polyline,y0))
 
-        print (x0,y0)
+        print (img.shape, "AAA")
 
-        y1 = 100
+        y1 = img.shape[0]
         x1 = int(np.polyval(polyline,y1))
 
         cv2.line(img, (x0 + h_min, y0+v_min), (x1 + h_min, y1 + v_min), (127,0,255), 10)
+
+    def roi(self,img):
+        myROI = np.array([[200, 200], [450, 200],
+                            [500, 500], [150, 500]])  # (x, y)
+        channel_count = 1#img.shape[2]
+        ignore_mask_color = (255,) * channel_count
+        mask = np.zeros(img.shape, dtype=np.uint8)
+        cv2.fillPoly(mask,  np.int32([myROI]), ignore_mask_color)
+
+        # returning the image only where mask pixels are nonzero
+        return cv2.bitwise_and(img, mask)
 
     def get_lane_lines(self,original_img):
 
@@ -185,7 +197,8 @@ class CropDetector:
         h_crop_min = self.params["h_crop_min"].get_value()*h/100
         h_crop_max = self.params["h_crop_max"].get_value()*h/100
 
-        color_image = original_img.copy()[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
+        #TEST
+        color_image = original_img.copy()#[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
 
         interm_image = cv2.cvtColor(color_image,cv2.COLOR_RGB2HSV)
         interm_image[:,:,2] = 0
@@ -203,6 +216,7 @@ class CropDetector:
         max_canny = self.params["max_canny"].get_value()
 
         img_edge = cv2.Canny(img_erode, threshold1=min_canny, threshold2=max_canny)
+        img_edge = self.roi(img_edge)
 
         # perform hough transform
 
@@ -218,8 +232,9 @@ class CropDetector:
                                                min_line_len=hough_min_line_len,
                                                max_line_gap=hough_gap)
 
-        mask=np.zeros(img_edge.shape)#fimg_edge.copy()
-        output_image = self.transform_and_mark_poses(original_img.copy())
+        #mask=np.zeros(img_edge.shape)#fimg_edge.copy()
+
+        output_image = self.transform_and_mark_poses(color_image.copy())
         #FOR # DEBUG:
         #return output_image
 
@@ -240,8 +255,10 @@ class CropDetector:
                 for index,line in enumerate(detected_lines):
                     #print( index, np.array(line))
                     for x1,y1,x2,y2 in line:
-                        cv2.line(mask,(x1,y1),(x2,y2),(255,0,127),4)
-                        cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,255,10)
+                        cv2.line(output_image,(x1,y1),(x2,y2),(255,0,127),4)
+                        cv2.circle(output_image,(x1,y1), 10,255,10)
+                        cv2.circle(output_image,(x2,y2), 10,255,10)
+
                         #cv2.circle(output_image,(  h_crop_min + x1+(x2-x1)/2,  v_crop_min + y1+(y2-y1)/2), 10,125,10)
                         slope = float(x2-x1)/(y2-y1)
                         if slope >0:
@@ -264,24 +281,31 @@ class CropDetector:
             l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
             r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
 
-            self.draw_line(output_image, np.asarray(right_slopes), np.mean(r_mean_slope), h_crop_min, v_crop_min)
-            self.draw_line(output_image, np.asarray(left_slopes),  np.mean(l_mean_slope), h_crop_min, v_crop_min)
+            self.draw_line(output_image, np.asarray(right_slopes), np.mean(r_mean_slope), 0, 0)
+            self.draw_line(output_image, np.asarray(left_slopes),  np.mean(l_mean_slope), 0, 0)
 
 
         #TEST
         # Find contours
         im2, cnts, hierarchy = cv2.findContours(img_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(mask, cnts,-1, 127,5)
+        cv2.drawContours(output_image, cnts,-1, 127,5)
 
 
-        full_mask = np.zeros(output_image.shape, dtype=np.uint8)
+        #full_mask = np.zeros(output_image.shape, dtype=np.uint8)
 
-        full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,0] = mask
-        full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,1] = mask
-        full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,2] = mask
+        #full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,0] = mask
+        #full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,1] = mask
+        #full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,2] = mask
 
         #return cv2.hconcat([output_image, full_mask])#mask
-        return cv2.bitwise_or(output_image, full_mask)#cv2.hconcat([output_image, img_edge, mask])#mask
+        # Create mask that defines the polygon of points
+        #mask2 = mask.copy()
+        # Create output image (untranslated)
+        #out = np.zeros_like(output_image)
+        #out[mask] = output_image[mask]
+        #return out
+        return output_image
+        return cv2.bitwise_and(output_image, color_image)#cv2.hconcat([output_image, img_edge, mask])#mask
         return cv2.bitwise_and(mask, img_edge)#cv2.hconcat([output_image, img_edge, mask])#mask
 
     def create_window(self):
