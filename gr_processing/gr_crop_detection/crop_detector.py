@@ -68,24 +68,43 @@ class CropDetector:
         self.msgready = True
 
     def transform_and_mark_poses(self,img):
-        coords = list()
+        indeces =  np.linspace(0,len(self.local_path.poses)-1,10, dtype=np.uint16)
 
-        for p in self.local_path.poses:
-            p1 = p
+        if len(self.local_path.poses) < 3:
+            return img
+        #for p in self.local_path.poses:
+        for ind,ind2 in zip(indeces[:-2],indeces[1:-3]):
+            print ind, ind2, len(self.local_path.poses)
+            frame = self.local_path.poses[ind].header.frame_id
+            p1 = self.local_path.poses[ind]
+            p2 = self.local_path.poses[ind2]
 
-            transform = self.tfBuffer.lookup_transform('camera_depth_link',p.header.frame_id, rospy.Time())
-            p_in_base = tf2_geometry_msgs.do_transform_pose(p, transform)
-
-            if self.msgready:
-                a = self.cammodel.project3dToPixel([p_in_base.pose.position.x, p_in_base.pose.position.y, p_in_base.pose.position.z])
-                if any(a) < 0:
-                    print ("SKip point of path")
-                    pass
-
-                coords.append((int(a[0]), int(a[1])))
-                cv2.circle(img,(int(a[0]), int(a[1])), 10,127,1)
+            self.transform_point(img,p1,p2)
 
         return img
+
+    def transform_point(self,img, p1, p2, frame="map"):
+        transform = self.tfBuffer.lookup_transform('camera_depth_link',frame, rospy.Time())
+        p_base1 = tf2_geometry_msgs.do_transform_pose(p1, transform).pose.position
+        p_base2 = tf2_geometry_msgs.do_transform_pose(p2, transform).pose.position
+
+        if self.msgready:
+            self.mark_path(img,[p_base1.x, p_base1.y, p_base1.z], [p_base2.x, p_base2.y, p_base2.z] )
+
+
+    def mark_path(self,img, pix1, pix2):
+        coords1 = self.cammodel.project3dToPixel(pix1)
+        coords2 = self.cammodel.project3dToPixel(pix2)
+
+        if any(coords1) < 0 or any(coords2) < 0:
+            print ("SKip point of path")
+            return
+
+        print (coords1, coords2)
+        cv2.line(img, (int(coords1[0]) ,int(coords1[1])), (int(coords2[0]), int(coords2[1])), 255, 10)
+
+        cv2.circle(img,(int(coords1[0]), int(coords1[1])), 10,127,1)
+
 
     def draw_line(self, img, line, color =(0,0,0)):
 
@@ -184,13 +203,13 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
-                        if slope >0:
+                        if slope >0.1:
                             print ("right index {} slope{}".format(index,slope))
                             r_mean_slope += [slope]
                             right_slopes.append([x1,y1])
                             right_slopes.append([x2,y2])
 
-                        else:
+                        elif slope <0.1:
                             print ("left index {} slope{}".format(index,slope))
                             l_mean_slope += [slope]
                             left_slopes.append([x1,y1])
