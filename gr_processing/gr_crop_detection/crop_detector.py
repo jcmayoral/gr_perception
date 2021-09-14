@@ -91,6 +91,11 @@ data = {
             "minval": 1,
             "maxval": 3,
             "default": 2
+        },
+        "erosion_enable":{
+            "minval": 0,
+            "maxval": 1,
+            "default": 0
         }
 }
 
@@ -149,35 +154,9 @@ class CropDetector:
                     pass
 
                 coords.append((int(a[0]), int(a[1])))
-                cv2.circle(img,(int(a[0]), int(a[1])), 10,127,4)
-                #cv2.circle(img,(int(v_crop_min + a[0]), int(h_crop_min + a[1])), 10,255,4)
-
-        """
-        colors = [0,0,0]
-        s = 0
-        for i in range(1,len(coords)-1):
-            print( "LINE ", coords[i], " to " , coords[i+1])
-            colors[s] = 255
-            s = s +1
-            if s >2:
-                s =0
-            cv2.line(img, coords[i], coords[i+1], tuple(colors), 10)
-
-        print( img.shape)
-        """
+                cv2.circle(img,(int(a[0]), int(a[1])), 10,127,1)
 
         return img
-
-    def update_and_draw_center(self, img, mx,my, color=(255,255,0)):
-        if True:#self.center_coords[0] is None:
-            self.center_coords[0] = mx
-            self.center_coords[1] = my
-        #print( "UPDATED COORDS B ", self.center_coords, mx,my,  self.center_coords[0] - float(np.fabs(self.center_coords[0] - float(mx))/img.shape[0])* mx)
-        #self.center_coords[0]= (0.2*(self.center_coords[0] + float(mx)/self.center_coords[0]))
-        self.center_coords[0] += 0.1*float(np.fabs(self.center_coords[0] - float(mx))/mx)* mx
-        self.center_coords[1] += 0.1*float(np.fabs(self.center_coords[1] - float(my))/mx)* my
-        #print( "UPDATED COORDS ", self.center_coords, mx,my)
-        cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 10,color,10)
 
     def draw_line(self, img, line, slope, h_min, v_min):
         print( "AVGS", line.shape, line)
@@ -196,51 +175,7 @@ class CropDetector:
         y1 = 100
         x1 = int(np.polyval(polyline,y1))
 
-
-
         cv2.line(img, (x0 + h_min, y0+v_min), (x1 + h_min, y1 + v_min), (127,0,255), 10)
-
-
-        return
-
-
-        minx = min(line[0], line[2])
-        maxx = max(line[0], line[2])
-        miny = min(line[1], line[3])
-        maxy = max(line[1], line[3])
-        mx = int(minx+(maxx - minx)/2)
-        my = int(miny+(maxy - miny)/2)
-
-        if mx < 0 or my < 0:
-            print( "less than 0")
-            return
-
-
-        print("M " , mx + h_min , my + v_min)
-        start_y = int(my + v_min)
-        #slope = float(maxx-minx)/(maxy-miny)
-        start_x = -int(slope*start_y) + int(maxx)# = int(h_min)
-        print(start_x, start_y)
-
-
-        h,w,c = img.shape
-
-        py= int(miny) #int(minx)
-        px=int((py)*slope) + int(minx)
-        ##ending point
-        #qx=w
-        #qy=-(x2-w)*m+y2
-
-
-        end_y = int(maxy)
-        end_x = int(slope*end_y) + int(maxx)
-        print (end_x, end_y, px,py)
-        print("SLOPE ", slope)
-
-        #cv2.line(img, (end_x + h_min, end_y+v_min), (px + h_min, py + v_min), (127,0,255), 10)
-
-        self.update_and_draw_center(img,h_min + mx, v_min + my, color=(0,0,255))
-
 
     def get_lane_lines(self,original_img):
 
@@ -283,7 +218,7 @@ class CropDetector:
                                                min_line_len=hough_min_line_len,
                                                max_line_gap=hough_gap)
 
-        mask=img_edge.copy()
+        mask=np.zeros(img_edge.shape)#fimg_edge.copy()
         output_image = self.transform_and_mark_poses(original_img.copy())
         #FOR # DEBUG:
         #return output_image
@@ -305,9 +240,9 @@ class CropDetector:
                 for index,line in enumerate(detected_lines):
                     #print( index, np.array(line))
                     for x1,y1,x2,y2 in line:
-                        cv2.line(mask,(x1,y1),(x2,y2),255,1)
-                        cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,125,10)
-                        cv2.circle(output_image,(  h_crop_min + x1+(x2-x1)/2,  v_crop_min + y1+(y2-y1)/2), 10,125,10)
+                        cv2.line(mask,(x1,y1),(x2,y2),(255,0,127),4)
+                        cv2.circle(mask,(x1+(x2-x1)/2,y1+(y2-y1)/2), 10,255,10)
+                        #cv2.circle(output_image,(  h_crop_min + x1+(x2-x1)/2,  v_crop_min + y1+(y2-y1)/2), 10,125,10)
                         slope = float(x2-x1)/(y2-y1)
                         if slope >0:
                             print ("right index {} slope{}".format(index,slope))
@@ -335,37 +270,12 @@ class CropDetector:
 
         #TEST
         # Find contours
-        cnts = cv2.findContours(img_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-        # Iterate thorugh contours and draw rectangles around contours
-        mean_cnts = list()
-        for c in cnts:
-            x,y,w,h = cv2.boundingRect(c)
-            mean_cnts.append([x,y,w,h])
-        avg_cnts = np.mean(mean_cnts, axis=0, dtype=np.uint)
-        max_cnts = np.max(mean_cnts, axis=0)
-        min_cnts = np.min(mean_cnts, axis=0)
-        range_cnts =  max_cnts - min_cnts
+        im2, cnts, hierarchy = cv2.findContours(img_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cv2.drawContours(mask, cnts,-1, 127,5)
 
-        #print( "MIN : ", min_cnts)
-        #print( "MAX : ", max_cnts)
-        #print( "AVG : ", avg_cnts)
-        #print( "RANGE : ", range_cnts)
-        cv2.circle(mask,(min_cnts[0]+min_cnts[2],min_cnts[1]+min_cnts[3]), 20,255,10)
-        cv2.circle(mask,(max_cnts[0]+max_cnts[2],max_cnts[1]+max_cnts[3]), 20,255,10)
-
-        cv2.rectangle(mask,( min_cnts[0], 0), (max_cnts[0]+ max_cnts[2], max_cnts[3]), 255, 2)
 
         full_mask = np.zeros(output_image.shape, dtype=np.uint8)
-        print(img_edge.shape, mask.shape, output_image.shape)
-        """
-        v_crop_min = self.params["v_crop_min"].get_value()*w/100
-        v_crop_max = self.params["v_crop_max"].get_value()*w/100
-        h_crop_min = self.params["h_crop_min"].get_value()*h/100
-        h_crop_max = self.params["h_crop_max"].get_value()*h/100
 
-        color_image = original_img.copy()[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
-        """
         full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,0] = mask
         full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,1] = mask
         full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,2] = mask
@@ -392,6 +302,11 @@ class CropDetector:
             return cv2.MORPH_ELLIPSE
 
     def erosion(self, image):
+
+        enable = self.params["erosion_enable"].get_value()
+        if enable != 1:
+            print ("Erosion is disable")
+            return image
 
         erosion_size = self.morph_shape(self.params["erosion_size"].get_value())
         erosion_shape = self.morph_shape(self.params["erosion_shape"].get_value())
