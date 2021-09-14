@@ -180,7 +180,30 @@ class CropDetector:
         cv2.circle(img,(int(self.center_coords[0]), int(self.center_coords[1])), 10,color,10)
 
     def draw_line(self, img, line, slope, h_min, v_min):
-        print( "AVGS", line)
+        print( "AVGS", line.shape, line)
+        if line.shape[-1] < 2:
+            print("NO line detected")
+            return
+
+        x = line[:,0]
+        y = line[:,1]
+        polyline = np.polyfit(y, x, 2)#, full=True)
+        y0 = 0
+        x0 = int(np.polyval(polyline,y0))
+
+        print (x0,y0)
+
+        y1 = 100
+        x1 = int(np.polyval(polyline,y1))
+
+
+
+        cv2.line(img, (x0 + h_min, y0+v_min), (x1 + h_min, y1 + v_min), (127,0,255), 10)
+
+
+        return
+
+
         minx = min(line[0], line[2])
         maxx = max(line[0], line[2])
         miny = min(line[1], line[3])
@@ -214,7 +237,7 @@ class CropDetector:
         print (end_x, end_y, px,py)
         print("SLOPE ", slope)
 
-        cv2.line(img, (end_x + h_min, end_y+v_min), (px + h_min, py + v_min), (127,0,255), 10)
+        #cv2.line(img, (end_x + h_min, end_y+v_min), (px + h_min, py + v_min), (127,0,255), 10)
 
         self.update_and_draw_center(img,h_min + mx, v_min + my, color=(0,0,255))
 
@@ -289,11 +312,14 @@ class CropDetector:
                         if slope >0:
                             print ("right index {} slope{}".format(index,slope))
                             r_mean_slope += [slope]
-                            right_slopes.append(line[0])
+                            right_slopes.append([x1,y1])
+                            right_slopes.append([x2,y2])
+
                         else:
                             print ("left index {} slope{}".format(index,slope))
                             l_mean_slope += [slope]
-                            left_slopes.append(line[0])
+                            left_slopes.append([x1,y1])
+                            left_slopes.append([x2,y2])
                         #cv2.line(mask,(0,y1),(img_gray.shape[0],y2),255,1)
                         #cv2.line(mask,(x1,0),(x2, img_gray.shape[0]),255,1)
                     coordinates[index] = np.asarray(line[0])
@@ -303,8 +329,8 @@ class CropDetector:
             l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
             r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
 
-            self.draw_line(output_image, r_avg_line, np.mean(r_mean_slope), h_crop_min, v_crop_min)
-            self.draw_line(output_image, l_avg_line,  np.mean(l_mean_slope), h_crop_min, v_crop_min)
+            self.draw_line(output_image, np.asarray(right_slopes), np.mean(r_mean_slope), h_crop_min, v_crop_min)
+            self.draw_line(output_image, np.asarray(left_slopes),  np.mean(l_mean_slope), h_crop_min, v_crop_min)
 
 
         #TEST
