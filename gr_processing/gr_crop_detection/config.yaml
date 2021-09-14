@@ -1,0 +1,41 @@
+min_canny:
+  minval: 0
+  maxval: 255
+  default: 80
+max_canny:
+  minval: 0
+  maxval: 255
+  default: 150
+rho:
+  minval: 1
+  maxval: 10
+  default: 1
+hough_threshold:
+  minval: 1
+  maxval: 100
+  default: 1
+hough_min_len:
+  minval: 1
+  maxval: 200
+  default: 20
+hough_gap:
+  minval: 1
+  maxval: 100
+  default: 10
+erosion_shape:
+  minval: 0
+  maxval: 2
+  default: 1
+erosion_size:
+  minval: 1
+  maxval: 3
+  default: 2
+erosion_enable:
+  minval: 0
+  maxval: 1
+  default: 0
+roi_points:
+  x0: [200, 200]
+  x1: [450, 200]
+  x2: [500, 500]
+  x3: [150, 500]

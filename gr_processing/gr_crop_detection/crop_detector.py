@@ -21,83 +21,9 @@ class MyParam:
     def get_value(self):
         return self.value
 
+import yaml
 
-data = {
-        #"gauss_filter":{
-        #    "minval": 1,
-        #    "maxval": 9,
-        #    "default": 3
-        #},
-        "v_crop_min":{
-            "minval": 0,
-            "maxval": 100,
-#            "default": 0
-            "default": 18
-        },
-        "v_crop_max":{
-            "minval": 0,
-            "maxval": 100,
-            "default": 50
-#            "default": 100
-        },
-        "h_crop_min":{
-            "minval": 0,
-            "maxval": 100,
-            "default":50
-#            "default": 0
-        },
-        "h_crop_max":{
-            "minval": 0,
-            "maxval": 100,
-            "default": 85
-#            "default": 100
-        },
-        "min_canny":{
-            "minval": 0,
-            "maxval": 255,
-            "default": 80
-        },
-        "max_canny":{
-            "minval": 0,
-            "maxval": 255,
-            "default": 150
-        },
-        "rho":{
-            "minval": 1,
-            "maxval": 10,
-            "default": 1
-        },
-        "hough_threshold":{
-            "minval": 1,
-            "maxval": 100,
-            "default": 1
-        },
-        "hough_min_len":{
-            "minval": 1,
-            "maxval": 200,
-            "default": 20
-        },
-        "hough_gap":{
-            "minval": 1,
-            "maxval": 100,
-            "default": 10
-        },
-        "erosion_shape":{
-            "minval": 0,
-            "maxval": 2 ,
-            "default": 1
-        },
-        "erosion_size":{
-            "minval": 1,
-            "maxval": 3,
-            "default": 2
-        },
-        "erosion_enable":{
-            "minval": 0,
-            "maxval": 1,
-            "default": 0
-        }
-}
+data = yaml.load(open("config.yaml"), Loader=yaml.Loader)
 
 class CropDetector:
     def __init__(self):
@@ -114,10 +40,19 @@ class CropDetector:
         self.msgready = False
         self.cammodel = image_geometry.PinholeCameraModel()
         self.local_path = Path()
+        self.load_roipoints()
         rospy.Subscriber("/move_base_flex/diff/global_plan", Path, self.path_cb)
         rospy.Subscriber("/camera/color/camera_info", CameraInfo, self.info_cb)
         rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
         rospy.spin()
+
+    def load_roipoints(self):
+        myroi = list()
+        #TODO FIND A BETTER WAY TO STANDARDIZE
+        for i, j in data['roi_points'].items():
+            myroi.append([j[0],j[1]])
+        self.myROI = np.array(myroi)
+
 
     def hough_lines_detection(self, img, rho, theta, threshold, min_line_len, max_line_gap):
         lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len,
@@ -134,12 +69,6 @@ class CropDetector:
 
     def transform_and_mark_poses(self,img):
         coords = list()
-        h,w,c = img.shape
-
-        v_crop_min = self.params["v_crop_min"].get_value()*w/100
-        v_crop_max = self.params["v_crop_max"].get_value()*w/100
-        h_crop_min = self.params["h_crop_min"].get_value()*h/100
-        h_crop_max = self.params["h_crop_max"].get_value()*h/100
 
         for p in self.local_path.poses:
             p1 = p
@@ -158,33 +87,35 @@ class CropDetector:
 
         return img
 
-    def draw_line(self, img, line, slope, h_min, v_min):
+    def draw_line(self, img, line, color =(0,0,0)):
 
+        #If we dont receive at least to points polyfit will fail
         if line.shape[0] < 2:
             print("NO line detected")
             return
 
+        #split values
         x = line[:,0]
         y = line[:,1]
-        rospy.logwarn(line.shape)
-        polyline = np.polyfit(y, x, 2)#, full=True)
-        y0 = 0
+
+        #Fitting line
+        polyline = np.polyfit(y, x, 3)#, full=True)
+        #First point
+        #If set to zeros intersection point
+        y0 = 200
+        #evaluate
         x0 = int(np.polyval(polyline,y0))
 
-        print (img.shape, "AAA")
-
+        #last point down
         y1 = img.shape[0]
+        #evaluate
         x1 = int(np.polyval(polyline,y1))
 
-        cv2.line(img, (x0 + h_min, y0+v_min), (x1 + h_min, y1 + v_min), (127,0,255), 10)
+        cv2.line(img, (x0 ,y0), (x1, y1), color, 10)
 
     def roi(self,img):
-        myROI = np.array([[200, 200], [450, 200],
-                            [500, 500], [150, 500]])  # (x, y)
-        channel_count = 1#img.shape[2]
-        ignore_mask_color = (255,) * channel_count
         mask = np.zeros(img.shape, dtype=np.uint8)
-        cv2.fillPoly(mask,  np.int32([myROI]), ignore_mask_color)
+        cv2.fillPoly(mask,  np.int32([self.myROI]), 255)
 
         # returning the image only where mask pixels are nonzero
         return cv2.bitwise_and(img, mask)
@@ -192,14 +123,9 @@ class CropDetector:
     def get_lane_lines(self,original_img):
 
         h,w,c = original_img.shape
-        v_crop_min = self.params["v_crop_min"].get_value()*w/100
-        v_crop_max = self.params["v_crop_max"].get_value()*w/100
-        h_crop_min = self.params["h_crop_min"].get_value()*h/100
-        h_crop_max = self.params["h_crop_max"].get_value()*h/100
 
-        #TEST
-        color_image = original_img.copy()#[v_crop_min:v_crop_max,h_crop_min:h_crop_max,:]
-
+        color_image = original_img.copy()
+        #Set value to 0 in HSV
         interm_image = cv2.cvtColor(color_image,cv2.COLOR_RGB2HSV)
         interm_image[:,:,2] = 0
 
@@ -249,17 +175,14 @@ class CropDetector:
 
         if detected_lines.shape[0] > 0:
             coordinates = np.zeros((detected_lines.shape[0], 4))
-            #print( "COORD ", coordinates.shape)
 
             if detected_lines is not None:
                 for index,line in enumerate(detected_lines):
-                    #print( index, np.array(line))
                     for x1,y1,x2,y2 in line:
                         cv2.line(output_image,(x1,y1),(x2,y2),(255,0,127),4)
                         cv2.circle(output_image,(x1,y1), 10,255,10)
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
-                        #cv2.circle(output_image,(  h_crop_min + x1+(x2-x1)/2,  v_crop_min + y1+(y2-y1)/2), 10,125,10)
                         slope = float(x2-x1)/(y2-y1)
                         if slope >0:
                             print ("right index {} slope{}".format(index,slope))
@@ -281,8 +204,8 @@ class CropDetector:
             l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
             r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
 
-            self.draw_line(output_image, np.asarray(right_slopes), np.mean(r_mean_slope), 0, 0)
-            self.draw_line(output_image, np.asarray(left_slopes),  np.mean(l_mean_slope), 0, 0)
+            self.draw_line(output_image, np.asarray(right_slopes), (255,0,255))
+            self.draw_line(output_image, np.asarray(left_slopes),  (0,255,0))
 
 
         #TEST
@@ -291,28 +214,16 @@ class CropDetector:
         cv2.drawContours(output_image, cnts,-1, 127,5)
 
 
-        #full_mask = np.zeros(output_image.shape, dtype=np.uint8)
-
-        #full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,0] = mask
-        #full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,1] = mask
-        #full_mask[v_crop_min:v_crop_max,h_crop_min:h_crop_max,2] = mask
-
-        #return cv2.hconcat([output_image, full_mask])#mask
-        # Create mask that defines the polygon of points
-        #mask2 = mask.copy()
-        # Create output image (untranslated)
-        #out = np.zeros_like(output_image)
-        #out[mask] = output_image[mask]
-        #return out
         return output_image
-        return cv2.bitwise_and(output_image, color_image)#cv2.hconcat([output_image, img_edge, mask])#mask
-        return cv2.bitwise_and(mask, img_edge)#cv2.hconcat([output_image, img_edge, mask])#mask
 
     def create_window(self):
         cv2.namedWindow("process")
         self.params =  dict()
         for i,j in data.items():
-            #print ("track", i)
+            #Avoid ROI TODO find a better way
+            print i
+            if "roi" in i:
+                continue
             self.params[i] = MyParam(j["default"])
             cv2.createTrackbar(i, "process", j["minval"], j["maxval"],self.params[i].on_change)
             cv2.setTrackbarPos(i, "process", self.params[i].get_value())
