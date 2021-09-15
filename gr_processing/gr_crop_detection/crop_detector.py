@@ -48,8 +48,11 @@ class CropDetector:
         self.load_roipoints()
         rospy.Subscriber("/move_base_flex/diff/global_plan", Path, self.path_cb)
         rospy.Subscriber("/camera/color/camera_info", CameraInfo, self.info_cb)
-        rospy.Subscriber("/darknet_ros/bounding_boxes",BoundingBoxes, self.people_cb )
-        rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
+
+        #TODO SORT OUT problem with timestamps
+        #rospy.Subscriber("/darknet_ros/bounding_boxes",BoundingBoxes, self.people_cb )
+        #rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
+        rospy.Subscriber("/darknet_ros/detection_image", Image, self.process_img)
         rospy.spin()
 
     def people_cb(self, bbs):
@@ -173,7 +176,7 @@ class CropDetector:
         min_canny = self.params["min_canny"].get_value()
         max_canny = self.params["max_canny"].get_value()
 
-        img_edge = cv2.Canny(img_erode, threshold1=img_gray, threshold2=max_canny)
+        img_edge = cv2.Canny(img_erode, threshold1=min_canny, threshold2=max_canny)
         img_edge = self.roi(img_edge)
 
         # perform hough transform
@@ -193,7 +196,7 @@ class CropDetector:
         #mask=np.zeros(img_edge.shape)#fimg_edge.copy()
 
         output_image = self.transform_and_mark_poses(color_image.copy())
-        output_image = color_image.copy()
+        #output_image = color_image.copy()
         #FOR # DEBUG:
         #return output_image
 
@@ -218,7 +221,12 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
-                        if slope >parallel_threshold:
+                        print slope
+                        #0.01 ignore horizontal
+                        if slope == float('inf'):
+                            print ("horizontal line")
+                            continue
+                        elif slope >parallel_threshold:
                             #print ("right index {} slope{}".format(index,slope))
                             r_mean_slope += [slope]
                             right_slopes.append([x1,y1])

@@ -13,11 +13,11 @@ rho:
 hough_threshold:
   minval: 1
   maxval: 100
-  default: 1
+  default: 10
 hough_min_len:
   minval: 1
   maxval: 200
-  default: 20
+  default: 25
 hough_gap:
   minval: 1
   maxval: 100
@@ -40,6 +40,6 @@ parallel_threshold:
   default: 450
 roi_points:
   x0: [280, 200]
-  x1: [390, 200]
+  x1: [400, 200]
   x2: [500, 500]
   x3: [150, 500]
