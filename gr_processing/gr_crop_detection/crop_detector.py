@@ -35,6 +35,8 @@ class CropDetector:
         self.initalized = True
         self.center_coords = [None,None]
         self.stamp_header = None
+        self.left_line = None
+        self.right_line = None
         self.min_match = 10000
 
         self.tfBuffer = tf2_ros.Buffer()
@@ -87,7 +89,6 @@ class CropDetector:
 
     def transform_and_mark_poses(self,img):
         indeces =  np.linspace(0,len(self.local_path.poses)-1,10, dtype=np.uint16)
-
         if len(self.local_path.poses) < 3:
             return img
         #for p in self.local_path.poses:
@@ -122,19 +123,25 @@ class CropDetector:
         cv2.circle(img,(int(coords1[0]), int(coords1[1])), 10,127,1)
 
 
-    def draw_line(self, img, line, color =(0,0,0)):
+    def draw_line(self, img, line, color =(0,0,0), is_left = True):
 
         #If we dont receive at least to points polyfit will fail
-        if line.shape[0] < 2:
-            print("NO line detected")
-            return
-
-        #split values
-        x = line[:,0]
-        y = line[:,1]
-
-        #Fitting line
-        polyline = np.polyfit(y, x, 3)#, full=True)
+        if line.shape[0] < 3:
+            if is_left and self.left_line is not None:
+                rospy.logwarn("BACKUP LEFT LINE")
+                polyline = self.left_line
+            elif not is_left and self.right_line is not None:
+                rospy.logwarn("BACKUP RIGHT LINE")
+                polyline = self.right_line
+            else:
+                rospy.logwarn("NO line detected")
+                return
+        else:
+            #split values
+            x = line[:,0]
+            y = line[:,1]
+            #Fitting line
+            polyline = np.polyfit(y, x, 3)#, full=True)
         #First point
         #If set to zeros intersection point
         y0 = 200
@@ -147,6 +154,7 @@ class CropDetector:
         x1 = int(np.polyval(polyline,y1))
 
         cv2.line(img, (x0 ,y0), (x1, y1), color, 10)
+        return polyline
 
     def roi(self,img):
         mask = np.zeros(img.shape, dtype=np.uint8)
@@ -221,7 +229,6 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
-                        print slope
                         #0.01 ignore horizontal
                         if slope == float('inf'):
                             print ("horizontal line")
@@ -246,8 +253,8 @@ class CropDetector:
             l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
             r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
 
-            self.draw_line(output_image, np.asarray(right_slopes), (255,0,255))
-            self.draw_line(output_image, np.asarray(left_slopes),  (0,255,0))
+            self.left_line = self.draw_line(output_image, np.asarray(right_slopes), (255,0,255))
+            self.right_line = self.draw_line(output_image, np.asarray(left_slopes),  (0,255,0), is_left = False)
 
 
         #TEST
