@@ -34,8 +34,12 @@ erosion_enable:
   minval: 0
   maxval: 1
   default: 0
+parallel_threshold:
+  minval: 0
+  maxval: 31416
+  default: 450
 roi_points:
-  x0: [200, 200]
-  x1: [450, 200]
+  x0: [280, 200]
+  x1: [390, 200]
   x2: [500, 500]
   x3: [150, 500]

@@ -1,6 +1,7 @@
 import rospy
 import cv2
 from sensor_msgs.msg import Image, CameraInfo
+from std_msgs.msg import Header
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
 from cv_bridge import CvBridge
@@ -9,6 +10,7 @@ import tf
 import image_geometry
 import tf2_ros
 import tf2_geometry_msgs
+from darknet_ros_msgs.msg import BoundingBoxes
 
 
 class MyParam:
@@ -32,6 +34,8 @@ class CropDetector:
         self.cv_bridge = CvBridge()
         self.initalized = True
         self.center_coords = [None,None]
+        self.stamp_header = None
+        self.min_match = 10000
 
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
@@ -40,11 +44,22 @@ class CropDetector:
         self.msgready = False
         self.cammodel = image_geometry.PinholeCameraModel()
         self.local_path = Path()
+        self.people_bbs = None
         self.load_roipoints()
         rospy.Subscriber("/move_base_flex/diff/global_plan", Path, self.path_cb)
         rospy.Subscriber("/camera/color/camera_info", CameraInfo, self.info_cb)
+        rospy.Subscriber("/darknet_ros/bounding_boxes",BoundingBoxes, self.people_cb )
         rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
         rospy.spin()
+
+    def people_cb(self, bbs):
+        if self.people_bbs is not None and self.header is None:
+            return
+
+        if np.fabs(bbs.header.stamp.to_sec() - self.header.stamp.to_sec()) > self.min_match:
+            return
+        self.min_match = np.fabs(bbs.header.stamp.to_sec() - self.header.stamp.to_sec())
+        self.people_bbs = bbs
 
     def load_roipoints(self):
         myroi = list()
@@ -74,7 +89,6 @@ class CropDetector:
             return img
         #for p in self.local_path.poses:
         for ind,ind2 in zip(indeces[:-2],indeces[1:-3]):
-            print ind, ind2, len(self.local_path.poses)
             frame = self.local_path.poses[ind].header.frame_id
             p1 = self.local_path.poses[ind]
             p2 = self.local_path.poses[ind2]
@@ -100,8 +114,7 @@ class CropDetector:
             print ("SKip point of path")
             return
 
-        print (coords1, coords2)
-        cv2.line(img, (int(coords1[0]) ,int(coords1[1])), (int(coords2[0]), int(coords2[1])), 255, 10)
+        #cv2.line(img, (int(coords1[0]) ,int(coords1[1])), (int(coords2[0]), int(coords2[1])), 255, 10)
 
         cv2.circle(img,(int(coords1[0]), int(coords1[1])), 10,127,1)
 
@@ -140,7 +153,6 @@ class CropDetector:
         return cv2.bitwise_and(img, mask)
 
     def get_lane_lines(self,original_img):
-
         h,w,c = original_img.shape
 
         color_image = original_img.copy()
@@ -152,6 +164,7 @@ class CropDetector:
         img_gray = cv2.cvtColor(interm_image, cv2.COLOR_BGR2GRAY)
 
         # perform gaussian blur
+
         gf = 3##self.params["gauss_filter"].get_value()
         img_blur = cv2.GaussianBlur(img_gray, (gf, gf), 0)
         img_erode = self.erosion(img_blur)
@@ -160,7 +173,7 @@ class CropDetector:
         min_canny = self.params["min_canny"].get_value()
         max_canny = self.params["max_canny"].get_value()
 
-        img_edge = cv2.Canny(img_erode, threshold1=min_canny, threshold2=max_canny)
+        img_edge = cv2.Canny(img_erode, threshold1=img_gray, threshold2=max_canny)
         img_edge = self.roi(img_edge)
 
         # perform hough transform
@@ -180,6 +193,7 @@ class CropDetector:
         #mask=np.zeros(img_edge.shape)#fimg_edge.copy()
 
         output_image = self.transform_and_mark_poses(color_image.copy())
+        output_image = color_image.copy()
         #FOR # DEBUG:
         #return output_image
 
@@ -193,6 +207,7 @@ class CropDetector:
         l_mean_slope = list()
 
         if detected_lines.shape[0] > 0:
+            parallel_threshold = self.params["parallel_threshold"].get_value()/1000
             coordinates = np.zeros((detected_lines.shape[0], 4))
 
             if detected_lines is not None:
@@ -203,14 +218,14 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
-                        if slope >0.1:
-                            print ("right index {} slope{}".format(index,slope))
+                        if slope >parallel_threshold:
+                            #print ("right index {} slope{}".format(index,slope))
                             r_mean_slope += [slope]
                             right_slopes.append([x1,y1])
                             right_slopes.append([x2,y2])
 
-                        elif slope <0.1:
-                            print ("left index {} slope{}".format(index,slope))
+                        elif slope <-parallel_threshold:
+                            #print ("left index {} slope{}".format(index,slope))
                             l_mean_slope += [slope]
                             left_slopes.append([x1,y1])
                             left_slopes.append([x2,y2])
@@ -232,15 +247,25 @@ class CropDetector:
         im2, cnts, hierarchy = cv2.findContours(img_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(output_image, cnts,-1, 127,5)
 
+        self.process_bbs(output_image)
 
         return output_image
+
+    def process_bbs(self, image):
+        if self.people_bbs is None:
+            return
+
+        for bb in self.people_bbs.bounding_boxes:
+            cv2.rectangle(image, (bb.xmin, bb.ymin), (bb.xmax,bb.ymax), (255,0,0), 10)
+
+        self.min_match = 10000
+        self.people_bbs = None
 
     def create_window(self):
         cv2.namedWindow("process")
         self.params =  dict()
         for i,j in data.items():
             #Avoid ROI TODO find a better way
-            print i
             if "roi" in i:
                 continue
             self.params[i] = MyParam(j["default"])
@@ -259,7 +284,6 @@ class CropDetector:
 
         enable = self.params["erosion_enable"].get_value()
         if enable != 1:
-            print ("Erosion is disable")
             return image
 
         erosion_size = self.morph_shape(self.params["erosion_size"].get_value())
@@ -271,6 +295,7 @@ class CropDetector:
 
     def process_img(self, msg):
         #TODO CAMERA CALIBRATION
+        self.header = msg.header
         original_image = self.cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         out_image = self.get_lane_lines(original_image)
         cv2.imshow("process", out_image)
