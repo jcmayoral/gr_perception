@@ -278,7 +278,9 @@ class CropDetector:
             return
 
         for bb in self.people_bbs.bounding_boxes:
+            text_center = (int(bb.xmin + (bb.xmax - bb.xmin)/2), int(bb.ymin + (bb.ymax - bb.ymin)/2))
             cv2.rectangle(image, (bb.xmin, bb.ymin), (bb.xmax,bb.ymax), (255,0,0), 10)
+            cv2.putText(image, bb.Class, text_center, cv2.FONT_HERSHEY_SIMPLEX,1, (255,255,255), 1 , cv2.LINE_AA)
 
         self.min_match = 10000
         self.people_bbs = None
