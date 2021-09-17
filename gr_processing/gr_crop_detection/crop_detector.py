@@ -225,7 +225,7 @@ class CropDetector:
         l_mean_slope = list()
 
         if detected_lines.shape[0] > 0:
-            parallel_threshold = self.params["parallel_threshold"].get_value()/1000
+            parallel_threshold = self.params["parallel_threshold"].get_value()/10000
             coordinates = np.zeros((detected_lines.shape[0], 4))
 
             if detected_lines is not None:
