@@ -1,3 +1,7 @@
+min_points:
+  minval: 0
+  maxval: 20
+  default: 5
 min_canny:
   minval: 0
   maxval: 255

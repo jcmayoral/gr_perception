@@ -133,7 +133,7 @@ class CropDetector:
     def draw_line(self, img, line, color =(0,0,0), is_left = True):
 
         #If we dont receive at least to points polyfit will fail
-        if line.shape[0] < 3:
+        if line.shape[0] < self.params["min_points"].get_value() :
             if is_left and self.left_line is not None:
                 rospy.logwarn("BACKUP LEFT LINE")
                 polyline = self.left_line
