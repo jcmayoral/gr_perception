@@ -8,7 +8,7 @@ from cv_bridge import CvBridge
 import cv2
 import rosbag
 import numpy as np
-from test_bb import plot_bbs
+from utils.test_bb import plot_bbs
 from custom.utils import *
 from custom.image_processing import ImageProcessing
 import numpy as np
