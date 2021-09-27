@@ -3,6 +3,7 @@ from PIL import Image
 import cv2
 import sys
 import os
+import numpy as np
 
 files_path = sys.argv[1]
 
@@ -16,10 +17,16 @@ with open("files_" + sys.argv[2] + ".txt", "a") as f2:
             continue
         print ("FILE FOUND {}".format(filepath))
         depthpath = filepath.replace("image", "depthimage")
-        print ("Depth FILE FOUND {}".format(depthpath))
+        depthpath = depthpath.replace("jpg", "npy")
+        print(depthpath, "   AAA")
+        #first try npy
         if not os.path.isfile(depthpath):
-            print ("DEPTH FILE NOT FOUND {}".format(depthpath))
-            continue
+            print ("NOT FOUND ???")
+            depthpath = filepath.replace("npy", "jpg")
+            if not os.path.isfile(depthpath):
+                #if not try jpg as worst case
+                print ("DEPTH FILE NOT FOUND {}".format(depthpath))
+                continue
 
         common_path = "/".join(filepath.split("/")[:-1])+"v2"
         print ("COMMON PATH", common_path)
@@ -32,12 +39,20 @@ with open("files_" + sys.argv[2] + ".txt", "a") as f2:
 
         original_shape = rgb_image.size
         print("s ", original_shape)
+        print (depthpath)
         #b = Image.new('L', s, color=0)
-        depth_image = Image.open(depthpath)
+        if "npy" in depthpath:
+            print ("OK")
+            depth_image = np.load(depthpath)
+            depth_image = Image.fromarray(depth_image).convert('L')
+            #sys.exit()
+        else:
+            depth_image = Image.open(depthpath)
         rgb_image.putalpha(depth_image)
-        print ("s1", rgb_image.size)
-        rgb_image.save(os.path.join(common_path, newfilename))
-        f2.write(os.path.join(common_path, newfilename)+ "\n")
+        finalpath = os.path.join(common_path, newfilename)
+        print ("final shape {} to {}".format(rgb_image.size, finalpath))
+        rgb_image.save(finalpath)
+        f2.write(finalpath + "\n")
 
         #i1 = cv2.imread(filepath,cv2.IMREAD_UNCHANGED)
         #i2 = cv2.imread("test.png",cv2.IMREAD_UNCHANGED)

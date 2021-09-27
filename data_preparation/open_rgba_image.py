@@ -36,6 +36,7 @@ for line in f:
     #cv2.imshow("r",i2[:,:,0])
     #cv2.imshow("g",i2[:,:,1])
     rgbd = np.hstack((i2[:,:,:3],depth_3chanels))
+    print (i2.dtype, rgbd.dtype)
     cv2.imshow("rgbd", rgbd)
 
     #cv2.imshow("depth?",i2[:,:,-1])
