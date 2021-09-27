@@ -7,6 +7,7 @@ import os
 files_path = sys.argv[1]
 
 f = open(files_path)
+
 for line in f:
     filepath = line.rstrip()
     if not os.path.isfile(filepath):
