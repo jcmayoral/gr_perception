@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from PIL import Image
+import numpy as np
 import cv2
 import sys
 import os
@@ -30,14 +30,15 @@ for line in f:
     #rgbd_image.show()
     #i1 = cv2.imread(filepath,cv2.IMREAD_UNCHANGED)
     i2 = cv2.imread(os.path.join(common_path, newfilename),cv2.IMREAD_UNCHANGED)
-
+    depth_3chanels = cv2.cvtColor(i2[:,:,-1], cv2.COLOR_GRAY2BGR)
     #cv2.imshow("4channels",i2)
     #cv2.imshow("r",i2[:,:,0])
     #cv2.imshow("g",i2[:,:,1])
-    cv2.imshow("rgb",i2[:,:,:2])
+    rgbd = np.hstack((i2[:,:,:3],depth_3chanels))
+    cv2.imshow("rgbd", rgbd)
 
-    cv2.imshow("depth?",i2[:,:,-1])
-    cv2.waitKey()
+    #cv2.imshow("depth?",i2[:,:,-1])
+    cv2.waitKey(100)
     #print (i1.shape,i2.shape)
     #output_image = Image.open("test.png")
     #output_image.show()
