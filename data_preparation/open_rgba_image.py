@@ -25,24 +25,19 @@ for line in f:
     newfilename = filepath.split("/")[-1].split(".")[0] + ".png"
     print("filename " , newfilename)
 
-    rgb_image = Image.open(filepath).convert('RGB')
-    #rgb_image.show()
-
-    original_shape = rgb_image.size
-    print("s ", original_shape)
-    #b = Image.new('L', s, color=0)
-    depth_image = Image.open(depthpath)
-    rgb_image.putalpha(depth_image)
-    print ("s1", rgb_image.size)
-    rgb_image.save(os.path.join(common_path, newfilename))
-
+    #rgbd_image = Image.open(os.path.join(common_path, newfilename))
+    #.convert('RGB')
+    #rgbd_image.show()
     #i1 = cv2.imread(filepath,cv2.IMREAD_UNCHANGED)
-    #i2 = cv2.imread("test.png",cv2.IMREAD_UNCHANGED)
+    i2 = cv2.imread(os.path.join(common_path, newfilename),cv2.IMREAD_UNCHANGED)
 
     #cv2.imshow("4channels",i2)
-    #cv2.imshow("3channels",i1)
-    #cv2.imshow("depth?",i2[:,:,-1])
-    #cv2.waitKey()
+    #cv2.imshow("r",i2[:,:,0])
+    #cv2.imshow("g",i2[:,:,1])
+    cv2.imshow("rgb",i2[:,:,:2])
+
+    cv2.imshow("depth?",i2[:,:,-1])
+    cv2.waitKey()
     #print (i1.shape,i2.shape)
     #output_image = Image.open("test.png")
     #output_image.show()
