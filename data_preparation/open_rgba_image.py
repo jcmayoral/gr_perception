@@ -14,13 +14,13 @@ for line in f:
         print ("FILE NOT FOUND {}".format(filepath))
         continue
     print ("FILE FOUND {}".format(filepath))
-    depthpath = filepath.replace("image", "depthimage")
-    print ("Depth FILE FOUND {}".format(depthpath))
-    if not os.path.isfile(depthpath):
-        print ("DEPTH FILE NOT FOUND {}".format(depthpath))
-        continue
+    #depthpath = filepath.replace("image", "depthimage")
+    #print ("Depth FILE FOUND {}".format(depthpath))
+    #if not os.path.isfile(depthpath):
+    #    print ("DEPTH FILE NOT FOUND {}".format(depthpath))
+    #    continue
 
-    common_path = "/".join(filepath.split("/")[:-1])+"v2"
+    common_path = "/".join(filepath.split("/")[:-1])
     print ("COMMON PATH", common_path)
     #Rename all files to png
     newfilename = filepath.split("/")[-1].split(".")[0] + ".png"
@@ -30,7 +30,10 @@ for line in f:
     #.convert('RGB')
     #rgbd_image.show()
     #i1 = cv2.imread(filepath,cv2.IMREAD_UNCHANGED)
-    i2 = cv2.imread(os.path.join(common_path, newfilename),cv2.IMREAD_UNCHANGED)
+    rgbd_path = os.path.join(common_path, newfilename)
+    print (rgbd_path)
+    i2 = cv2.imread(rgbd_path,cv2.IMREAD_UNCHANGED)
+    print (i2.shape)
     depth_3chanels = cv2.cvtColor(i2[:,:,-1], cv2.COLOR_GRAY2BGR)
     #cv2.imshow("4channels",i2)
     #cv2.imshow("r",i2[:,:,0])

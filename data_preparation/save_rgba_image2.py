@@ -7,19 +7,27 @@ import numpy as np
 
 files_path = sys.argv[1]
 
+images_path = "/".join(files_path.split("/")[:-1])
+depth_img_template = os.path.join(images_path, "depthimage_{}.jpg")
+rgb_template = os.path.join(images_path, "image_{}.jpg")
+
+
 f = open(files_path)
 
 with open("files_" + sys.argv[2] + ".txt", "a") as f2:
-    for line in f:
-        filepath = line.rstrip()
+    for match in f:
+        rgb_index, depth_index = match.rstrip().split(" ")
+        print (rgb_index, depth_index)
+        filepath = rgb_template.format(rgb_index)
         if not os.path.isfile(filepath):
             print ("FILE NOT FOUND {}".format(filepath))
             continue
         print ("FILE FOUND {}".format(filepath))
-        depthpath = filepath.replace("image", "depthimage")
+        depthpath = depth_img_template.format(depth_index)
         depthpath = depthpath.replace("jpg", "npy")
         print(depthpath, "   AAA")
-        #first try npy
+
+        #first try npysave_rgba_image
         if not os.path.isfile(depthpath):
             print ("NOT FOUND ???" , depthpath)
             depthpath = depthpath.replace("npy", "jpg")
