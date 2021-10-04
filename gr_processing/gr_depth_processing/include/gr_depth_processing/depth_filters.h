@@ -360,9 +360,18 @@ double register_ransac_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, c
 
 double register_median_pointclouds(darknet_ros_msgs::BoundingBox bounding_box, cv::Mat& depth_image, sensor_msgs::CameraInfo camera_info){
     try{
+        std::cout << "AAAAAA" << 120+bounding_box.xmin << " " <<
+                       50 +bounding_box.ymin << " "<<
+                       50+bounding_box.xmax << " "<<
+                       50 + bounding_box.ymax<< std::endl;
+        std::cout << " NNN " << depth_image.cols << 
+                    " " << depth_image.rows << std::endl;
 
         // Setup a rectangle to define your region of interest
-        cv::Rect myROI(bounding_box.xmin,bounding_box.ymin,bounding_box.xmax -bounding_box.xmin , bounding_box.ymax-bounding_box.ymin);
+        cv::Rect myROI(bounding_box.xmin,
+                       bounding_box.ymin, 
+                       bounding_box.xmax, 
+                       bounding_box.ymax);
 
         // Crop the full image to that image contained by the rectangle myROI
         // Note that this doesn't copy the data
