@@ -91,7 +91,7 @@ def plot():
                 riskmsg = "DANGER"
             if items[p.object_id] < 0.2:
                 riskmsg = "SAFE"
-        print x,y, riskmsg
+        #print x,y, riskmsg
         ax.scatter(x, y,c=cmap(int(20*items[p.object_id])), s=narea+10.0, alpha=0.75)#, label=riskmsg)
         #ax.scatter(x, y,cmap='viridis',  c=cmap(int(20*items[p.object_id])), s=narea+10.0, alpha=0.75)#, label=riskmsg)
         #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
@@ -130,8 +130,8 @@ if __name__ == '__main__':
     lethalrect = np.array([[3.5,1.0],[3.5,-1],[-2.0,-1],[-2.0,1],[3.5,1.0]])
     plt.plot(lethalrect[:,0], lethalrect[:,1],linewidth=4,c='k', label="Lethal Zone")
     
-    ax.set_xticks(np.arange(-8, 8, 1))
-    ax.set_yticks(np.arange(-6, 6, 1))
+    #ax.set_xticks(np.arange(-8, 8, 1))
+    #ax.set_yticks(np.arange(-6, 6, 1))
     plt.xticks(fontsize=20, rotation=0)
     plt.yticks(fontsize=20, rotation=0)
     #plt.colorbar()#cmap, ax)
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     plt.ylabel("Coordinate Y [m]", fontsize=30)
     plt.title("Risk Evaluation Map")
     #  plt.legend()
-    plt.savefig("range_of_data_risk_zones_safetyindex.png")
+    plt.savefig("new_range_of_data_risk_zones_safetyindex.png")
     print "END"
     #rospy.sleep(10)
     #ax.show()
