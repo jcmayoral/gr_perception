@@ -5,6 +5,8 @@ import sys
 import os
 import numpy as np
 
+
+#INPUT IS A FILE WITH MATCHING INDECES
 files_path = sys.argv[1]
 
 images_path = "/".join(files_path.split("/")[:-1])
@@ -50,8 +52,9 @@ with open("files_" + sys.argv[2] + ".txt", "a") as f2:
         print (depthpath)
         #b = Image.new('L', s, color=0)
         if "npy" in depthpath:
-            print ("OK")
+            print ("Numpy file")
             depth_image = np.load(depthpath)
+            print ("DATA SHAPE ", depth_image.shape)
             depth_image = Image.fromarray(depth_image).convert('L')
             #sys.exit()
         else:

@@ -5,6 +5,8 @@ import sys
 import os
 import numpy as np
 
+#INPUT IS A FILE WITH ALL IMAGES 
+#DEPTH AND IMAGE MUST HAVE MATCHING NAMES
 files_path = sys.argv[1]
 
 f = open(files_path)
