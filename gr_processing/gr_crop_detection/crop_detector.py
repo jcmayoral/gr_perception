@@ -1,6 +1,6 @@
 import rospy
 import cv2
-from sensor_msgs.msg import Image, CameraInfo
+from sensor_msgs.msg import Image, CameraInfo, CompressedImage
 from std_msgs.msg import Header
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
@@ -62,6 +62,7 @@ class CropDetector:
 
         #TODO SORT OUT problem with timestamps
         #rospy.Subscriber("/darknet_ros/bounding_boxes",BoundingBoxes, self.people_cb )
+        self.image_publiser = rospy.Publisher("/nav_processed_image", CompressedImage, queue_size =1)
         rospy.Subscriber("/camera/color/image_raw", Image, self.process_img)
         #rospy.Subscriber("/darknet_ros/detection_image", Image, self.process_img)
         rospy.spin()
@@ -341,3 +342,9 @@ class CropDetector:
 
         cv2.imshow("process", out_image)
         cv2.waitKey(100)
+
+        compress_image = CompressedImage()
+        compress_image.header.stamp = rospy.Time.now()
+        compress_image.format = "jpeg"
+        compress_image.data = np.array(cv2.imencode('.jpg', out_image)[1]).tostring()
+        self.image_publiser.publish(compress_image)
