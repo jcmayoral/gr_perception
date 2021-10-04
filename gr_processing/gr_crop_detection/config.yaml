@@ -21,11 +21,11 @@ hough_threshold:
 hough_min_len:
   minval: 1
   maxval: 200
-  default: 25
+  default: 15
 hough_gap:
   minval: 1
   maxval: 100
-  default: 10
+  default: 5
 erosion_shape:
   minval: 0
   maxval: 2
@@ -37,7 +37,7 @@ erosion_size:
 erosion_enable:
   minval: 0
   maxval: 1
-  default: 0
+  default: 1
 parallel_threshold:
   minval: 0
   maxval: 31416
