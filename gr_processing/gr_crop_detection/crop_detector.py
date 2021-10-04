@@ -151,6 +151,7 @@ class CropDetector:
             x = line[:,0]
             y = line[:,1]
             #Fitting line
+            rospy.loginfo("PROCESSING POLYLINE")
             polyline = np.polyfit(y, x, 3)#, full=True)
         #First point
         #If set to zeros intersection point
@@ -263,8 +264,8 @@ class CropDetector:
             l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
             r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
 
-            self.left_line = self.draw_line(output_image, np.asarray(right_slopes), (255,0,255))
-            self.right_line = self.draw_line(output_image, np.asarray(left_slopes),  (0,255,0), is_left = False)
+            self.left_line = self.draw_line(output_image, np.asarray(left_slopes), (255,0,255))
+            self.right_line = self.draw_line(output_image, np.asarray(right_slopes),  (0,255,0), is_left = False)
 
 
         #TEST
