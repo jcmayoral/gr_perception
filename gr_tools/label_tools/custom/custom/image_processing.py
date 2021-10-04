@@ -33,8 +33,10 @@ class ImageProcessing(object):
         #THIS IS gr_depth_process client
         self.gr_client = actionlib.SimpleActionClient('/gr_depth_process', GRDepthProcessAction)
 
+        rospy.loginfo("Wait for Darknet Server")
         self.client.wait_for_server()
         rospy.loginfo("Darknet Server found")
+        rospy.loginfo("Wait for GRDepthProcess Server")
         self.gr_client.wait_for_server()
         rospy.loginfo("GRDepthProcess Server found")
 
@@ -53,14 +55,23 @@ class ImageProcessing(object):
     def run(self, matches):
         for rgbindex, depthindex in tqdm.tqdm(matches):
             #rgb_img = rotateImage(cv2.imread("image_{}.jpg".format(rgbindex)), 180)
-            rgb_img = cv2.imread("image_{}.jpg".format(rgbindex))
-            img_shape = rgb_img.shape
-            rgb_img= self.cv_bridge.cv2_to_imgmsg(rgb_img,encoding="bgr8")
+            print "image_{}.jpg".format(rgbindex)
+            print "AAAAAAAAA"
+
+            rgb_cv = cv2.imread("image_{}.jpg".format(rgbindex))
+            if rgb_cv is None:
+                print "ERROR ", "image_{}.jpg".format(rgbindex) , "/n"
+                continue
+            img_shape = rgb_cv.shape
+            rgb_img= self.cv_bridge.cv2_to_imgmsg(rgb_cv,encoding="bgr8")
             #depth_img = rotateImage(cv2.imread("depthimage_{}.jpg".format(depthindex)), 180)
             #depth_img= self.cv_bridge.cv2_to_imgmsg(depth_img[:,:,2].reshape((480, 640,1)), encoding = "passthrough")
             depth_arr = np.load("depthimage_{}.npy".format(depthindex))
             depth_arr = np.asanyarray(depth_arr, dtype=np.uint16)*(255)
+            depth_arr = cv2.resize(depth_arr, (img_shape[1] ,img_shape[0]),  interpolation = cv2.INTER_NEAREST) 
             depth_img= self.cv_bridge.cv2_to_imgmsg(depth_arr)
+            print img_shape
+            print depth_arr.shape , "TODO"
             #depth_img= self.cv_bridge.cv2_to_imgmsg(rotateImage(depth_arr,180))
             #print depth_img.encoding
             #print np.unique(depth_arr)
@@ -88,7 +99,7 @@ class ImageProcessing(object):
         darknet_bbs = self.client.get_result()
 
         if darknet_bbs is None:
-            #print "AAAAAAA"
+            print ("No bounding_boxes received")
             return
 
         #obbs means original bounding boxes coming from detector
@@ -120,6 +131,7 @@ class ImageProcessing(object):
         self.bbs = self.gr_client.get_result()
         #print "NEW BBS ", self.bbs, type(self.bbs)
         if self.bbs is None:
+            print ("no depth position received")
             return
 
 
@@ -133,7 +145,7 @@ class ImageProcessing(object):
             return
         """
         if len(obbs)!= len(self.bbs.found_objects.objects):
-            print blabla
+            print "the number of detections do not match"
 
         for obb, f_object in zip(obbs, self.bbs.found_objects.objects):
             #print o_index, f_object
@@ -167,7 +179,7 @@ class ImageProcessing(object):
             #pass
 
             label_filename = "image_{}.txt".format(index)
-            print "data: ", data
+            #print "data: ", data
 
             with open(label_filename, "a+") as text_file:
                 text_file.write(data)

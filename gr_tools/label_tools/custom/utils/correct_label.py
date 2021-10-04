@@ -32,7 +32,7 @@ if __name__ == "__main__":
         start_index = 0
 
         for img_index, img_filename in tqdm(enumerate(images)):
-            label_filename = img_filename.replace(".jpg", ".txt").rstrip()
+            label_filename = img_filename.replace(".png", ".txt").rstrip()
             labels = []
 
             if not os.path.exists(label_filename):
@@ -42,14 +42,18 @@ if __name__ == "__main__":
             replace_ind = []
             replace_data = []
 
+            print "label file", label_filename
             labels = open(label_filename, "r").readlines()
-            print label_filename
-            print labels
             newtexts = []
 
             for d,i in enumerate(labels):
                 label = [data for data in i.strip().split(" ")]#)
-                label[0] = int(float(label[0]))
+                try:
+                    label[0] = int(float(label[0]))
+                    print data
+                except:
+                    print label_filename
+                    label[0] = -1
                 newlabel = ""
                 newlabel = newlabel.join([str(c)+ " " for c in label])[:-1]+"\n"
                 newtexts.append(newlabel)

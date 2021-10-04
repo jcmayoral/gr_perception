@@ -45,7 +45,7 @@ def match_stamps(storepath, file1="rgb_info.txt", file2="depth_info.txt"):
                 val_minimum = time_diff
                 min_index = key2
         #print val_minimum
-        if min_index >0 and val_minimum < 2.0:
+        if min_index >0 and val_minimum < 1.0:
             matches.append([key, min_index])
         else:
             print time_diff
@@ -68,7 +68,7 @@ def execute(bagfile, storepath,matchfile="matches.txt", depth_info_topic="/camer
     matches = open(matchfile, "r").readlines()
     matches = [i.rstrip().split(" ") for i in matches]
     depth_camera_info = extract_camera_info(bagfile, depth_info_topic)
-    #print depth_camera_info
+    print "DEPTH CAMERA INFO", depth_camera_info
     #matches = [[int(i), int(j)] for i,j in matches]
     os.chdir(storepath)
     proc = ImageProcessing(matches, depth_camera_info)
@@ -132,6 +132,7 @@ if __name__ == '__main__':
         store_imgs(storepath, bagfile, rgb_topic, depth_topic)
     if action == "execute":
         rospy.init_node('image_custom_manager')
+        print "preparing all"
         #macthes the timestamps of the match_file between depth and rgb
         storepath = args.storepath#"/home/jose/datasets/real_iros2021"
         bagfile = args.bagfile
