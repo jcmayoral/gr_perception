@@ -29,7 +29,7 @@ import yaml
 data = yaml.load(open("config.yaml"), Loader=yaml.Loader)
 
 class CropDetector:
-    def __init__(self):
+    def __init__(self, run_action_client=False):
         rospy.init_node("gr_crop_detector")
         self.create_window()
         self.cv_bridge = CvBridge()
@@ -51,11 +51,13 @@ class CropDetector:
         self.load_roipoints()
         rospy.Subscriber("/move_base_flex/diff/global_plan", Path, self.path_cb)
         rospy.Subscriber("/camera/color/camera_info", CameraInfo, self.info_cb)
+        self.action_client_required = run_action_client
 
         #Match Solution Proposal 1
-        rospy.loginfo("wait service")
-        self.client = actionlib.SimpleActionClient('/darknet_ros/check_for_objects', CheckForObjectsAction)
-        self.client.wait_for_server()
+        if run_action_client:
+            rospy.loginfo("wait service")
+            self.client = actionlib.SimpleActionClient('/darknet_ros/check_for_objects', CheckForObjectsAction)
+            self.client.wait_for_server()
         rospy.loginfo("done")
 
         #TODO SORT OUT problem with timestamps
@@ -324,18 +326,18 @@ class CropDetector:
         out_image = self.get_lane_lines(original_image)
 
         #Get BBs from darknet_ros
-        goal = CheckForObjectsActionGoal()
-        goal.goal.id = 1
-        goal.goal.image = msg
-        self.client.send_goal(goal.goal)
-        self.client.wait_for_result(rospy.Duration.from_sec(1.0))
-        darknet_bbs = self.client.get_result()
-
-        if darknet_bbs is not None:
-            self.people_bbs = darknet_bbs.bounding_boxes
-            self.process_bbs(out_image)
-        else:
-            self.people_bbs = None
+        if self.action_client_required:
+            goal = CheckForObjectsActionGoal()
+            goal.goal.id = 1
+            goal.goal.image = msg
+            self.client.send_goal(goal.goal)
+            self.client.wait_for_result(rospy.Duration.from_sec(1.0))
+            darknet_bbs = self.client.get_result()
+            if darknet_bbs is not None:
+                self.people_bbs = darknet_bbs.bounding_boxes
+                self.process_bbs(out_image)
+            else:
+                self.people_bbs = None
 
         cv2.imshow("process", out_image)
         cv2.waitKey(100)
