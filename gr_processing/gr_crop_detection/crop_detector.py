@@ -179,11 +179,24 @@ class CropDetector:
 
         color_image = original_img.copy()
         #Set value to 0 in HSV
-        interm_image = cv2.cvtColor(color_image,cv2.COLOR_RGB2HSV)
-        interm_image[:,:,2] = 0
+        hsv_image = cv2.cvtColor(color_image,cv2.COLOR_RGB2HSV)
 
+        """
+        # Threshold of blue in HSV space
+        lower_blue = np.array([self.params["hue_min"].get_value(), self.params["saturation_min"].get_value(), self.params["value_min"].get_value()])
+        upper_blue = np.array([self.params["hue_max"].get_value(), self.params["saturation_max"].get_value(), self.params["value_max"].get_value()])
+        # preparing the mask to overlay
+        mask = cv2.inRange(hsv_image, lower_blue, upper_blue)
+        # The black region in the mask has the value of 0,
+        # so when multiplied with original image removes all non-blue regions
+        result_image = cv2.bitwise_and(color_image, color_image, mask = mask)
+        """
+        result_image = hsv_image.copy()
+        result_image[:,:,2] = 0
         # convert to grayscale
-        img_gray = cv2.cvtColor(interm_image, cv2.COLOR_BGR2GRAY)
+        img_gray = cv2.cvtColor(result_image, cv2.COLOR_BGR2GRAY)
+        #proc_img = self.erosion(img_gray)
+
 
         # perform gaussian blur
 
@@ -195,8 +208,20 @@ class CropDetector:
         min_canny = self.params["min_canny"].get_value()
         max_canny = self.params["max_canny"].get_value()
 
+
+        """
+
+        v = np.median(crop_img)
+        sigma = 0.33
+        #---- apply optimal Canny edge detection using the computed median----
+        min_canny = int(max(0, (1.0 - sigma) * v))
+        max_canny = int(min(255, (1.0 + sigma) * v))
+        """
+        #print (np.unique(img_erode))
         img_edge = cv2.Canny(img_erode, threshold1=min_canny, threshold2=max_canny)
         img_edge = self.roi(img_edge)
+
+        #return roi_img
 
         # perform hough transform
 
@@ -274,7 +299,6 @@ class CropDetector:
         cv2.drawContours(output_image, cnts,-1, 127,5)
 
         #self.process_bbs(output_image)
-
         return output_image
 
     def process_bbs(self, image):
@@ -291,14 +315,17 @@ class CropDetector:
 
     def create_window(self):
         cv2.namedWindow("process")
+        cv2.namedWindow("config")
+
         self.params =  dict()
         for i,j in data.items():
             #Avoid ROI TODO find a better way
             if "roi" in i:
                 continue
             self.params[i] = MyParam(j["default"])
-            cv2.createTrackbar(i, "process", j["minval"], j["maxval"],self.params[i].on_change)
-            cv2.setTrackbarPos(i, "process", self.params[i].get_value())
+            cv2.createTrackbar(i, "config", j["minval"], j["maxval"],self.params[i].on_change)
+            cv2.setTrackbarPos(i, "config", self.params[i].get_value())
+
 
     def morph_shape(self, val):
         if val == 0:
@@ -309,16 +336,27 @@ class CropDetector:
             return cv2.MORPH_ELLIPSE
 
     def erosion(self, image):
-
-        enable = self.params["erosion_enable"].get_value()
-        if enable != 1:
-            return image
-
-        erosion_size = self.morph_shape(self.params["erosion_size"].get_value())
-        erosion_shape = self.morph_shape(self.params["erosion_shape"].get_value())
-        element = cv2.getStructuringElement(erosion_shape, (2 * erosion_size + 1, 2 * erosion_size + 1),
+        enable = self.params["erode_enable"].get_value()
+        if enable:
+            erosion_size = self.params["erosion_size"].get_value()
+            erosion_shape = self.morph_shape(self.params["erosion_shape"].get_value())
+            element = cv2.getStructuringElement(erosion_shape, (2 * erosion_size + 1, 2 * erosion_size + 1),
                                        (erosion_size, erosion_size))
-        return cv2.erode(image, element)
+            image =  cv2.erode(image, element)
+        enable = self.params["dilate_enable"].get_value()
+        if enable:
+            image = self.dilate(image)
+
+        return image
+
+    def dilate(self,image):
+        dilatation_size = self.params["dilation_size"].get_value()
+        dilation_shape = self.morph_shape(self.params["dilation_shape"].get_value())
+        print dilatation_size, dilation_shape
+
+        element = cv2.getStructuringElement(dilation_shape, (2 * dilatation_size + 1, 2 * dilatation_size + 1),
+                                       (dilatation_size, dilatation_size))
+        return cv2.dilate(image, element, iterations=1)
 
 
     def process_img(self, msg):
