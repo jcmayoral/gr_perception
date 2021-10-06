@@ -296,7 +296,9 @@ class CropDetector:
         l_mean_slope = list()
 
         if detected_lines.shape[0] > 0:
-            parallel_threshold = self.params["parallel_threshold"].get_value()/10000.0
+            right_parallel_threshold = self.params["r_parallel_threshold"].get_value()/10000.0
+            left_parallel_threshold = self.params["L_parallel_threshold"].get_value()/10000.0
+
             coordinates = np.zeros((detected_lines.shape[0], 4))
 
             if detected_lines is not None:
@@ -307,24 +309,28 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
-                        print slope, parallel_threshold
+                        print "right ", slope, parallel_threshold,  0 < slope < parallel_threshold
+                        print "left" , slope, parallel_threshold,  0 > slope >-parallel_threshold
+
                         #0.01 ignore horizontal
                         if slope == float('inf'):
                             print ("horizontal line")
                             continue
-                        elif 1.5* parallel_threshold >slope >parallel_threshold:
+                        elif 0 < slope < right_parallel_threshold:
                             #print ("right index {} slope{}".format(index,slope))
                             print "right"
                             r_mean_slope += [slope]
                             right_slopes.append([x1,y1])
                             right_slopes.append([x2,y2])
 
-                        elif 1.5*-parallel_threshold < slope <-parallel_threshold:
+                        elif 0 > slope >-left_parallel_threshold:
                             #print ("left index {} slope{}".format(index,slope))
                             print "left"
                             l_mean_slope += [slope]
                             left_slopes.append([x1,y1])
                             left_slopes.append([x2,y2])
+                        else:
+                            continue
                         #cv2.line(mask,(0,y1),(img_gray.shape[0],y2),255,1)
                         #cv2.line(mask,(x1,0),(x2, img_gray.shape[0]),255,1)
                     coordinates[index] = np.asarray(line[0])

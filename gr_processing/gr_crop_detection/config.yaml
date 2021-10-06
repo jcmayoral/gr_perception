@@ -54,10 +54,14 @@ dilate_enable:
   minval: 0
   maxval: 1
   default: 1
-parallel_threshold:
+l_parallel_threshold:
   minval: 0
   maxval: 31416
-  default: 2000
+  default: 2500
+r_parallel_threshold:
+  minval: 0
+  maxval: 31416
+  default: 2500
 hue_min:
   minval: 0
   maxval: 255
