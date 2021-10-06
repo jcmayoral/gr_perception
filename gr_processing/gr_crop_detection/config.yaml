@@ -1,7 +1,7 @@
 min_points:
   minval: 0
   maxval: 20
-  default: 5
+  default: 4
 min_canny:
   minval: 0
   maxval: 255
@@ -26,6 +26,10 @@ hough_gap:
   minval: 1
   maxval: 100
   default: 5
+hough_degrees:
+    minval: 1
+    maxval: 180
+    default: 180
 dilation_shape:
   minval: 0
   maxval: 2
@@ -53,7 +57,7 @@ dilate_enable:
 parallel_threshold:
   minval: 0
   maxval: 31416
-  default: 1000
+  default: 2000
 hue_min:
   minval: 0
   maxval: 255

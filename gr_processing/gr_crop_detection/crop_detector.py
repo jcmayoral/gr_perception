@@ -220,21 +220,20 @@ class CropDetector:
         #print (np.unique(img_erode))
         #img_erode = cv2.GaussianBlur(img_erode, (7, 7), 3)
         #img_roi = self.roi(img_erode)
-        img_roi = img_blur
 
         from skimage.filters.rank import entropy
         from skimage.morphology import disk
-        entropy_img = entropy(img_roi, disk(7))
+        entropy_img = entropy(img_blur, disk(3))
         entropy_img =  np.asarray(entropy_img, dtype=np.uint8)
 
-        img_canny = cv2.Canny(img_roi, threshold1=min_canny, threshold2=max_canny)
+        img_canny = cv2.Canny(img_blur, threshold1=min_canny, threshold2=max_canny)
 
 
         bitwise_img = cv2.bitwise_or(img_canny, entropy_img, mask = entropy_img)
         bitwise_img = self.erosion(bitwise_img)
-        bitwise_img = cv2.GaussianBlur(bitwise_img, (7, 7), 5)
-        bitwise_img = cv2.GaussianBlur(bitwise_img, (5, 5), 5)
-        bitwise_img = cv2.GaussianBlur(bitwise_img, (3, 3), 5)
+        bitwise_img = cv2.GaussianBlur(bitwise_img, (7, 7), 3)
+        bitwise_img = cv2.GaussianBlur(bitwise_img, (5, 5), 3)
+        bitwise_img = cv2.GaussianBlur(bitwise_img, (3, 3), 3)
 
         v = np.median(bitwise_img)
         sigma = 0.33
@@ -255,10 +254,11 @@ class CropDetector:
         hough_threshold = self.params["hough_threshold"].get_value()
         hough_min_line_len = self.params["hough_min_len"].get_value()
         hough_gap = self.params["hough_gap"].get_value()
+        hough_degrees = np.pi/self.params["hough_degrees"].get_value()
 
         detected_lines = self.hough_lines_detection(img=bitwise_img,
                                                rho=rho,
-                                               theta=np.pi / 180,
+                                               theta=hough_degrees,
                                                threshold=hough_threshold,
                                                min_line_len=hough_min_line_len,
                                                max_line_gap=hough_gap)
@@ -296,7 +296,7 @@ class CropDetector:
         l_mean_slope = list()
 
         if detected_lines.shape[0] > 0:
-            parallel_threshold = self.params["parallel_threshold"].get_value()/10000
+            parallel_threshold = self.params["parallel_threshold"].get_value()/10000.0
             coordinates = np.zeros((detected_lines.shape[0], 4))
 
             if detected_lines is not None:
@@ -307,18 +307,21 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
+                        print slope, parallel_threshold
                         #0.01 ignore horizontal
                         if slope == float('inf'):
                             print ("horizontal line")
                             continue
-                        elif slope >parallel_threshold:
+                        elif 1.5* parallel_threshold >slope >parallel_threshold:
                             #print ("right index {} slope{}".format(index,slope))
+                            print "right"
                             r_mean_slope += [slope]
                             right_slopes.append([x1,y1])
                             right_slopes.append([x2,y2])
 
-                        elif slope <-parallel_threshold:
+                        elif 1.5*-parallel_threshold < slope <-parallel_threshold:
                             #print ("left index {} slope{}".format(index,slope))
+                            print "left"
                             l_mean_slope += [slope]
                             left_slopes.append([x1,y1])
                             left_slopes.append([x2,y2])
@@ -331,8 +334,8 @@ class CropDetector:
             l_avg_line = np.mean(left_slopes,axis=0, dtype=np.uint)
             r_avg_line = np.mean(right_slopes,axis=0, dtype=np.uint)
 
-            self.left_line = self.draw_line(output_image, np.asarray(left_slopes), (255,0,255))
-            self.right_line = self.draw_line(output_image, np.asarray(right_slopes),  (0,255,0), is_left = False)
+            self.left_line = self.draw_line(output_image, np.asarray(left_slopes), (255,255,255))
+            self.right_line = self.draw_line(output_image, np.asarray(right_slopes),  (0,0,0), is_left = False)
 
 
         #TEST
