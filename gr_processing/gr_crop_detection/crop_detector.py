@@ -297,7 +297,7 @@ class CropDetector:
 
         if detected_lines.shape[0] > 0:
             right_parallel_threshold = self.params["r_parallel_threshold"].get_value()/10000.0
-            left_parallel_threshold = self.params["L_parallel_threshold"].get_value()/10000.0
+            left_parallel_threshold = self.params["l_parallel_threshold"].get_value()/10000.0
 
             coordinates = np.zeros((detected_lines.shape[0], 4))
 
@@ -309,8 +309,6 @@ class CropDetector:
                         cv2.circle(output_image,(x2,y2), 10,255,10)
 
                         slope = float(x2-x1)/(y2-y1)
-                        print "right ", slope, parallel_threshold,  0 < slope < parallel_threshold
-                        print "left" , slope, parallel_threshold,  0 > slope >-parallel_threshold
 
                         #0.01 ignore horizontal
                         if slope == float('inf'):
