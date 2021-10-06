@@ -178,10 +178,9 @@ class CropDetector:
         h,w,c = original_img.shape
 
         color_image = original_img.copy()
+        #color_image[:,:,2] = 0
         #Set value to 0 in HSV
         hsv_image = cv2.cvtColor(color_image,cv2.COLOR_RGB2HSV)
-
-        """
         # Threshold of blue in HSV space
         lower_blue = np.array([self.params["hue_min"].get_value(), self.params["saturation_min"].get_value(), self.params["value_min"].get_value()])
         upper_blue = np.array([self.params["hue_max"].get_value(), self.params["saturation_max"].get_value(), self.params["value_max"].get_value()])
@@ -189,20 +188,21 @@ class CropDetector:
         mask = cv2.inRange(hsv_image, lower_blue, upper_blue)
         # The black region in the mask has the value of 0,
         # so when multiplied with original image removes all non-blue regions
-        result_image = cv2.bitwise_and(color_image, color_image, mask = mask)
-        """
-        result_image = hsv_image.copy()
+        #hsv_image[:,:, 2] = 0
+        result_image = cv2.bitwise_not(hsv_image, hsv_image, mask = mask)
         result_image[:,:,2] = 0
-        # convert to grayscale
-        img_gray = cv2.cvtColor(result_image, cv2.COLOR_BGR2GRAY)
-        #proc_img = self.erosion(img_gray)
+        #result_image = hsv_image.copy()
 
+        #result_image[:,:,2] = 255
+        # convert to grayscale
+        #result_image = cv2.cvtColor(result_image, cv2.COLOR_HSV2RGB)
+        img_gray = cv2.cvtColor(result_image, cv2.COLOR_RGB2GRAY)
+        #proc_img = self.erosion(img_gray)
 
         # perform gaussian blur
 
         gf = 3##self.params["gauss_filter"].get_value()
-        img_blur = cv2.GaussianBlur(img_gray, (gf, gf), 0)
-        img_erode = self.erosion(img_blur)
+        img_blur = cv2.GaussianBlur(img_gray, (gf, gf), 3)
 
         # perform edge detection
         min_canny = self.params["min_canny"].get_value()
@@ -218,8 +218,34 @@ class CropDetector:
         max_canny = int(min(255, (1.0 + sigma) * v))
         """
         #print (np.unique(img_erode))
-        img_edge = cv2.Canny(img_erode, threshold1=min_canny, threshold2=max_canny)
-        img_edge = self.roi(img_edge)
+        #img_erode = cv2.GaussianBlur(img_erode, (7, 7), 3)
+        #img_roi = self.roi(img_erode)
+        img_roi = img_blur
+
+        from skimage.filters.rank import entropy
+        from skimage.morphology import disk
+        entropy_img = entropy(img_roi, disk(7))
+        entropy_img =  np.asarray(entropy_img, dtype=np.uint8)
+
+        img_canny = cv2.Canny(img_roi, threshold1=min_canny, threshold2=max_canny)
+
+
+        bitwise_img = cv2.bitwise_or(img_canny, entropy_img, mask = entropy_img)
+        bitwise_img = self.erosion(bitwise_img)
+        bitwise_img = cv2.GaussianBlur(bitwise_img, (7, 7), 5)
+        bitwise_img = cv2.GaussianBlur(bitwise_img, (5, 5), 5)
+        bitwise_img = cv2.GaussianBlur(bitwise_img, (3, 3), 5)
+
+        v = np.median(bitwise_img)
+        sigma = 0.33
+        #---- apply optimal Canny edge detection using the computed median----
+        min_canny = int(max(0, (1.0 - sigma) * v))
+        max_canny = int(min(255, (1.0 + sigma) * v))
+        bitwise_img = cv2.Canny(bitwise_img, threshold1=min_canny, threshold2=max_canny)
+
+        bitwise_img =  self.roi(bitwise_img)
+        #return bitwise_img
+
 
         #return roi_img
 
@@ -230,7 +256,7 @@ class CropDetector:
         hough_min_line_len = self.params["hough_min_len"].get_value()
         hough_gap = self.params["hough_gap"].get_value()
 
-        detected_lines = self.hough_lines_detection(img=img_edge,
+        detected_lines = self.hough_lines_detection(img=bitwise_img,
                                                rho=rho,
                                                theta=np.pi / 180,
                                                threshold=hough_threshold,
@@ -238,8 +264,24 @@ class CropDetector:
                                                max_line_gap=hough_gap)
 
         #mask=np.zeros(img_edge.shape)#fimg_edge.copy()
-
+        #return bitwise_img
         output_image = self.transform_and_mark_poses(color_image.copy())
+
+        """
+        #This draws largest countour
+        _, contours,hierarchy = cv2.findContours(img_edge, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        # Find the index of the largest contour
+        areas = [cv2.contourArea(c) for c in contours]
+        max_index = np.argmax(areas)
+        cnt=contours[max_index]
+        x,y,w,h = cv2.boundingRect(cnt)
+        mask = np.zeros((color_image.shape[0], color_image.shape[1]), dtype = np.uint8)
+        cv2.rectangle(mask,(x,y),(x+w,y+h),255,100)
+        print mask.shape, np.unique(mask, return_counts = True)
+        output_image = cv2.bitwise_and(output_image, output_image, mask = mask)
+        return output_image
+        """
+
         #output_image = color_image.copy()
         #FOR # DEBUG:
         #return output_image
@@ -295,9 +337,10 @@ class CropDetector:
 
         #TEST
         # Find contours
-        im2, cnts, hierarchy = cv2.findContours(img_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        """
+        im2, cnts, hierarchy = cv2.findContours(bitwise_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(output_image, cnts,-1, 127,5)
-
+        """
         #self.process_bbs(output_image)
         return output_image
 

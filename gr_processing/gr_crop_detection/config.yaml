@@ -17,11 +17,11 @@ rho:
 hough_threshold:
   minval: 1
   maxval: 100
-  default: 10
+  default: 5
 hough_min_len:
   minval: 1
   maxval: 200
-  default: 25
+  default: 33
 hough_gap:
   minval: 1
   maxval: 100
@@ -29,11 +29,11 @@ hough_gap:
 dilation_shape:
   minval: 0
   maxval: 2
-  default: 2
+  default: 0
 dilation_size:
   minval: 1
   maxval: 10
-  default: 10
+  default: 7
 erosion_shape:
   minval: 0
   maxval: 2
@@ -41,11 +41,11 @@ erosion_shape:
 erosion_size:
   minval: 1
   maxval: 10
-  default: 5
+  default: 1
 erode_enable:
   minval: 0
   maxval: 1
-  default: 1
+  default: 0
 dilate_enable:
   minval: 0
   maxval: 1
@@ -65,11 +65,11 @@ hue_max:
 saturation_min:
   minval: 0
   maxval: 255
-  default: 100
+  default: 0
 saturation_max:
   minval: 0
   maxval: 255
-  default: 145
+  default: 255
 value_min:
   minval: 0
   maxval: 255
