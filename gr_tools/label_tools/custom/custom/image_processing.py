@@ -54,13 +54,12 @@ class ImageProcessing(object):
 
     def run(self, matches):
         for rgbindex, depthindex in tqdm.tqdm(matches):
+            print "matches " , depthindex, rgbindex
             #rgb_img = rotateImage(cv2.imread("image_{}.jpg".format(rgbindex)), 180)
-            print "image_{}.jpg".format(rgbindex)
-            print "AAAAAAAAA"
 
             rgb_cv = cv2.imread("image_{}.jpg".format(rgbindex))
             if rgb_cv is None:
-                print "ERROR ", "image_{}.jpg".format(rgbindex) , "/n"
+                print "ERROR reading image ", "image_{}.jpg".format(rgbindex) , "\n"
                 continue
             img_shape = rgb_cv.shape
             rgb_img= self.cv_bridge.cv2_to_imgmsg(rgb_cv,encoding="bgr8")

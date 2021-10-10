@@ -71,6 +71,7 @@ def execute(bagfile, storepath,matchfile="matches.txt", depth_info_topic="/camer
     print "DEPTH CAMERA INFO", depth_camera_info
     #matches = [[int(i), int(j)] for i,j in matches]
     os.chdir(storepath)
+    print "Change dir to {}".format(storepath)
     proc = ImageProcessing(matches, depth_camera_info)
     proc.run(matches)
 
@@ -84,25 +85,25 @@ if __name__ == '__main__':
     stamps_parser = sub_parsers.add_parser('stamps')
     stamps_parser.add_argument("-matchfile_path", action="store", help="path to dataset folder", required = True)
     stamps_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
-    stamps_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", required = True)
-    stamps_parser.add_argument("-depth_topic", action="store", help="depth_image topic", required = True)
+    stamps_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
+    stamps_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/camera/depth/image_rect_raw")
 
     match_parser = sub_parsers.add_parser('match')
     match_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
-    match_parser.add_argument("-rgb_matchfile", action="store", help="path to rgb match file", required = True)
-    match_parser.add_argument("-depth_matchfile", action="store", help="path to depth match", required = True)
+    #match_parser.add_argument("-rgb_matchfile", action="store", help="path to rgb match file", required = True)
+    #match_parser.add_argument("-depth_matchfile", action="store", help="path to depth match", required = True)
 
     store_parser = sub_parsers.add_parser('extract')
     store_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
     store_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
-    store_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", required = True)
-    store_parser.add_argument("-depth_topic", action="store", help="depth_image topic", required = True)
+    store_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
+    store_parser.add_argument("-depth_topic", action="store", help="depth image topic", default = "/camera/depth/image_rect_raw")
 
     execute_parser = sub_parsers.add_parser('execute')
     execute_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
-    execute_parser.add_argument("-matchfile", action="store", help="path to match file match", required = True)
+    #execute_parser.add_argument("-matchfile", action="store", help="path to match file match", required = False)
     execute_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
-    execute_parser.add_argument("-depth_info_topic", action="store", help="depth camera info topic", required = True)
+    execute_parser.add_argument("-depth_info_topic", action="store", help="depth camera info topic", default ="/camera/depth/camera_info")
 
     args = my_parser.parse_args()
     action = args.command
@@ -120,8 +121,8 @@ if __name__ == '__main__':
     if action == "match":
         #matches the two files created on stamp action
         storepath = args.storepath#"/home/jose/datasets/real_iros2021"
-        rgb_matchfile = args.rgb_matchfile
-        depth_matchfile = args.depth_matchfile
+        rgb_matchfile = os.path.join(storepath, "rgb_info.txt")
+        depth_matchfile = os.path.join(storepath, "depth_info.txt")
         match_stamps(storepath, rgb_matchfile, depth_matchfile)
     if action == "extract":
         #extact images from bagfile
@@ -136,7 +137,7 @@ if __name__ == '__main__':
         #macthes the timestamps of the match_file between depth and rgb
         storepath = args.storepath#"/home/jose/datasets/real_iros2021"
         bagfile = args.bagfile
-        match_file = args.matchfile
+        match_file = os.path.join(storepath, "matches.txt")
         depth_info_topic = args.depth_info_topic
         execute(bagfile, storepath, match_file, depth_info_topic)
     print "FINISH"
