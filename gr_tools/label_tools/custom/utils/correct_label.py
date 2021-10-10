@@ -33,6 +33,8 @@ if __name__ == "__main__":
 
         for img_index, img_filename in tqdm(enumerate(images)):
             label_filename = img_filename.replace(".png", ".txt").rstrip()
+            label_filename = label_filename.replace(".jpg", ".txt").rstrip()
+
             labels = []
 
             if not os.path.exists(label_filename):

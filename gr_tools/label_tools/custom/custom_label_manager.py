@@ -82,11 +82,18 @@ if __name__ == '__main__':
     #my_parser.add_argument('action', help='What do you want to do?')
     sub_parsers = my_parser.add_subparsers(dest='command')
 
+    all_parser = sub_parsers.add_parser('all')
+    all_parser.add_argument("-storepath", action="store", help="path to dataset folder", required = True)
+    all_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
+    all_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
+    all_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/camera/depth/image_rect_raw2")
+    all_parser.add_argument("-depth_info_topic", action="store", help="depth camera info topic", default ="/camera/depth/camera_info")
+
     stamps_parser = sub_parsers.add_parser('stamps')
-    stamps_parser.add_argument("-matchfile_path", action="store", help="path to dataset folder", required = True)
+    stamps_parser.add_argument("-storepath", action="store", help="path to dataset folder", required = True)
     stamps_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
     stamps_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
-    stamps_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/camera/depth/image_rect_raw")
+    stamps_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/camera/depth/image_rect_raw2")
 
     match_parser = sub_parsers.add_parser('match')
     match_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
@@ -97,7 +104,7 @@ if __name__ == '__main__':
     store_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
     store_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
     store_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
-    store_parser.add_argument("-depth_topic", action="store", help="depth image topic", default = "/camera/depth/image_rect_raw")
+    store_parser.add_argument("-depth_topic", action="store", help="depth image topic", default = "/camera/depth/image_rect_raw2")
 
     execute_parser = sub_parsers.add_parser('execute')
     execute_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
@@ -111,27 +118,27 @@ if __name__ == '__main__':
     #if len(sys.argv) == 1:
     #    print "use properly"
     #    sys.exit()
-    if action == "stamps":
+    if action == "stamps" or action == "all":
         #extract timestamps from topics in a bag and store them on a file
-        matchfile_path = args.matchfile_path#"/home/jose/datasets/real_iros2021/"
+        matchfile_path = args.storepath#"/home/jose/datasets/real_iros2021/"
         bagfile = args.bagfile
         rgb_topic = args.rgb_topic
         depth_topic = args.depth_topic
         create_stamps_files(matchfile_path, rgb_topic, depth_topic,  bagfile)
-    if action == "match":
+    if action == "match"  or action == "all":
         #matches the two files created on stamp action
         storepath = args.storepath#"/home/jose/datasets/real_iros2021"
         rgb_matchfile = os.path.join(storepath, "rgb_info.txt")
         depth_matchfile = os.path.join(storepath, "depth_info.txt")
         match_stamps(storepath, rgb_matchfile, depth_matchfile)
-    if action == "extract":
+    if action == "extract"  or action == "all":
         #extact images from bagfile
         storepath = args.storepath#"/home/jose/datasets/real_iros2021"
         bagfile = args.bagfile
         rgb_topic = args.rgb_topic
         depth_topic = args.depth_topic
         store_imgs(storepath, bagfile, rgb_topic, depth_topic)
-    if action == "execute":
+    if action == "execute"  or action == "all":
         rospy.init_node('image_custom_manager')
         print "preparing all"
         #macthes the timestamps of the match_file between depth and rgb
