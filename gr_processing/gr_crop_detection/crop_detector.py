@@ -188,9 +188,10 @@ class CropDetector:
         mask = cv2.inRange(hsv_image, lower_blue, upper_blue)
         # The black region in the mask has the value of 0,
         # so when multiplied with original image removes all non-blue regions
-        #hsv_image[:,:, 2] = 0
-        result_image = cv2.bitwise_not(hsv_image, hsv_image, mask = mask)
-        result_image[:,:,2] = 0
+        hsv_image[:,:, 2] = 0
+        result_image = cv2.bitwise_and(color_image, color_image, mask = mask)
+        #return result_image
+        #result_image[:,:,2] = 0
         #result_image = hsv_image.copy()
 
         #result_image[:,:,2] = 255
@@ -198,11 +199,13 @@ class CropDetector:
         #result_image = cv2.cvtColor(result_image, cv2.COLOR_HSV2RGB)
         img_gray = cv2.cvtColor(result_image, cv2.COLOR_RGB2GRAY)
         #proc_img = self.erosion(img_gray)
-
         # perform gaussian blur
+        erode_img = self.erosion(img_gray)
 
-        gf = 3##self.params["gauss_filter"].get_value()
-        img_blur = cv2.GaussianBlur(img_gray, (gf, gf), 3)
+
+        gf = 7##self.params["gauss_filter"].get_value()
+        img_blur = cv2.GaussianBlur(erode_img, (gf, gf), 3)
+        #return img_blur
 
         # perform edge detection
         min_canny = self.params["min_canny"].get_value()
@@ -223,32 +226,35 @@ class CropDetector:
 
         from skimage.filters.rank import entropy
         from skimage.morphology import disk
-        entropy_img = entropy(img_blur, disk(3))
+        entropy_disk = self.params["entropy_disk"].get_value()
+
+        entropy_img = entropy(img_blur, disk(entropy_disk))
         entropy_img =  np.asarray(entropy_img, dtype=np.uint8)
+        tmp_img = cv2.bitwise_and(img_blur, img_blur, mask=entropy_img)
+        #return cv2.cvtColor(entropy_img, cv2.COLOR_GRAY2RGB)
 
-        img_canny = cv2.Canny(img_blur, threshold1=min_canny, threshold2=max_canny)
+        img_canny = cv2.Canny(tmp_img, threshold1=min_canny, threshold2=max_canny)
 
+        #img_canny = cv2.bitwise_and(img_canny, entropy_img)
+        #return img_canny
+        #bitwise_img = cv2.GaussianBlur(bitwise_img, (7, 7), 3)
+        #bitwise_img = cv2.GaussianBlur(bitwise_img, (5, 5), 3)
+        #bitwise_img = cv2.GaussianBlur(bitwise_img, (3, 3), 3)
 
-        bitwise_img = cv2.bitwise_or(img_canny, entropy_img, mask = entropy_img)
-        bitwise_img = self.erosion(bitwise_img)
-        bitwise_img = cv2.GaussianBlur(bitwise_img, (7, 7), 3)
-        bitwise_img = cv2.GaussianBlur(bitwise_img, (5, 5), 3)
-        bitwise_img = cv2.GaussianBlur(bitwise_img, (3, 3), 3)
-
+        """
         v = np.median(bitwise_img)
         sigma = 0.33
         #---- apply optimal Canny edge detection using the computed median----
         min_canny = int(max(0, (1.0 - sigma) * v))
         max_canny = int(min(255, (1.0 + sigma) * v))
         bitwise_img = cv2.Canny(bitwise_img, threshold1=min_canny, threshold2=max_canny)
-
-        bitwise_img =  self.roi(bitwise_img)
+        """
+        #return bitwise_img
         #return bitwise_img
 
-
-        #return roi_img
-
+        bitwise_img =  self.roi(img_canny)
         # perform hough transform
+        #return bitwise_img
 
         rho = self.params["rho"].get_value()
         hough_threshold = self.params["hough_threshold"].get_value()
@@ -386,6 +392,10 @@ class CropDetector:
             return cv2.MORPH_ELLIPSE
 
     def erosion(self, image):
+        enable = self.params["dilate_enable"].get_value()
+        if enable:
+            image = self.dilate(image)
+
         enable = self.params["erode_enable"].get_value()
         if enable:
             erosion_size = self.params["erosion_size"].get_value()
@@ -393,9 +403,6 @@ class CropDetector:
             element = cv2.getStructuringElement(erosion_shape, (2 * erosion_size + 1, 2 * erosion_size + 1),
                                        (erosion_size, erosion_size))
             image =  cv2.erode(image, element)
-        enable = self.params["dilate_enable"].get_value()
-        if enable:
-            image = self.dilate(image)
 
         return image
 
