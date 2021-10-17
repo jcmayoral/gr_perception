@@ -9,7 +9,7 @@ import fileinput
 import time
 import copy
 
-DATABASE_PATH = "/home/jose/media/elsevier/devel_dataset"
+DATABASE_PATH = "/home/jose/media/elsevier/devel_dataset2"
 
 def wh2xyxy(labels,h,w):
     new_labels = copy.copy(labels)
@@ -27,10 +27,9 @@ if __name__ == "__main__":
     filepath = sys.argv[1] #"/home/jose/datasets/real_iros2021/files.txt"
     masterfile = open(os.path.join(DATABASE_PATH, "master.txt"), "w")
 
+    dataset_index = 0
     if os.path.exists(filepath):
         images = open(filepath,'r')
-
-        start_index = 0
 
         for img_index, img_filename in tqdm(enumerate(images),desc="image"):
             img_filename = img_filename.rstrip()
@@ -47,11 +46,10 @@ if __name__ == "__main__":
                 print " file {} does not exist".format(img_filename)
                 continue
 
-
             img = cv2.imread(img_filename)
             cv2.imshow("image", img)
             h,w,c = img.shape
-            cv2.waitKey(50)
+            #cv2.waitKey(50)
 
             labels = open(label_filename, "r").readlines()
             newtexts = []
@@ -61,20 +59,21 @@ if __name__ == "__main__":
                 label = [float(data) for data in i.strip().split(" ")]#)
                 new_labels = wh2xyxy(label, h,w)
                 cropped_image = img[new_labels[2]:new_labels[4], new_labels[1]:new_labels[3],:]
-                print (new_labels)
                 cv2.imshow("cropped_image", cropped_image)
-                new_imagefilename = os.path.join(DATABASE_PATH, image_rootname + "_" + str(d) +".jpg")
-                new_labelfilename = os.path.join(DATABASE_PATH, image_rootname + "_" + str(d) +".txt")
+
+                new_imagefilename = os.path.join(DATABASE_PATH, image_rootname + "_" + str(dataset_index) +".jpg")
+                new_labelfilename = os.path.join(DATABASE_PATH, image_rootname + "_" + str(dataset_index) +".txt")
+                dataset_index +=1
 
                 #this will create a single file by label
                 labelfile = open(new_labelfilename, "w")
                 labelfile.write(i)
                 labelfile.close()
 
-
                 cv2.imwrite(new_imagefilename, cropped_image)
+
                 #append to master fill (all images paths)
                 masterfile.write(new_imagefilename+"\n")
-                cv2.waitKey(50)
+                cv2.waitKey(20)
 
-    f.close()
+    masterfile.close()
