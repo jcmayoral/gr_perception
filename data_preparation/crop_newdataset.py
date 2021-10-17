@@ -15,13 +15,11 @@ def wh2xyxy(labels,h,w):
     new_labels = copy.copy(labels)
     cll, cx1, cy1, cwidth, cheight  = labels
     #x->width y->height
-    new_labels[1] = np.max(int(np.rint((cx1 - cwidth/2)*w)),0)
-    new_labels[2] = np.max(int(np.rint((cy1 - cheight/2)*h)),0)
-    new_labels[3] = int(np.rint((cx1 + cwidth/2)*w))
-    new_labels[4] = int(np.rint((cy1 + cheight/2)*h))
-
+    new_labels[1] = np.rint(max(cx1 - cwidth/2.0, 0)*w)
+    new_labels[2] = np.rint(max(cy1 - cheight/2.0,0)*h)
+    new_labels[3] = np.rint(min(cx1 + cwidth/2.0,w)*w)
+    new_labels[4] = np.rint(min(cy1 + cheight/2.0,h)*h)
     new_labels[1:] = [int(d) for d in new_labels[1:]]
-    #print (x1,y1)
 
     return new_labels
 
@@ -63,7 +61,7 @@ if __name__ == "__main__":
                 label = [float(data) for data in i.strip().split(" ")]#)
                 new_labels = wh2xyxy(label, h,w)
                 cropped_image = img[new_labels[2]:new_labels[4], new_labels[1]:new_labels[3],:]
-
+                print (new_labels)
                 cv2.imshow("cropped_image", cropped_image)
                 new_imagefilename = os.path.join(DATABASE_PATH, image_rootname + "_" + str(d) +".jpg")
                 new_labelfilename = os.path.join(DATABASE_PATH, image_rootname + "_" + str(d) +".txt")
@@ -76,7 +74,7 @@ if __name__ == "__main__":
 
                 cv2.imwrite(new_imagefilename, cropped_image)
                 #append to master fill (all images paths)
-                masterfile.write(new_imagefilename)
+                masterfile.write(new_imagefilename+"\n")
                 cv2.waitKey(50)
 
     f.close()
