@@ -8,7 +8,12 @@ import actionlib
 import random
 
 class PersonSimAnimation(object):
-    def __init__(self):
+    def __init__(self, class_id):
+        self.class_id = class_id
+        self.min_x = 0.5 + (class_id * 2.0)
+        self.max_x = 1.5 + (class_id * 2.0)
+        if class_id == 3:
+            self.max_x = 12.0
         self.pclient = actionlib.SimpleActionClient('/SimMotionPlanner/animated_human', SimMotionPlannerAction)
         self.pclient.wait_for_server()
         self.feedback = SimMotionPlannerActionFeedback()
@@ -18,10 +23,11 @@ class PersonSimAnimation(object):
         return random.uniform(minvalue, maxvalue)
 
     def person_call(self):
-        motion_types = ["walk", "stand_up", "sit_down", "stand_up", "talk_a", "talk_b"]
+        #motion_types = ["walk", "stand_up", "sit_down", "stand_up", "talk_a", "talk_b"]
+        motion_types = ["walk", "moonwalk", "talk_a", "talk_b"]
         #rospy.loginfo("calling SimMotionPlanner")
         goal = SimMotionPlannerActionGoal()
-        goal.goal.motion_type = motion_types[random.randint(0, 5)]
+        goal.goal.motion_type = motion_types[random.randint(0, 3)]
         goal.goal.setstart = True
         goal.goal.is_motion = True
         goal.goal.is_infinite_motion = False
@@ -29,14 +35,14 @@ class PersonSimAnimation(object):
         goal.goal.linearspeed = self.select_uniform_random(0.2,0.7)
         zoffset = self.select_uniform_random(-0.10,0.10)
         goal.goal.startpose.header.frame_id = "odom"
-        goal.goal.startpose.pose.position.x = self.select_uniform_random(0.5,2.8)
-        goal.goal.startpose.pose.position.y = self.select_uniform_random(-4,0)
+        goal.goal.startpose.pose.position.x = self.select_uniform_random(self.min_x,self.max_x)
+        goal.goal.startpose.pose.position.y = self.select_uniform_random(-2,0)
         goal.goal.startpose.pose.position.z = -zoffset
         goal.goal.startpose.pose.orientation.w = 1.0
 
         goal.goal.goalPose.header.frame_id = "odom"
-        goal.goal.goalPose.pose.position.x = self.select_uniform_random(3.0,9.5)
-        goal.goal.goalPose.pose.position.y = self.select_uniform_random(0,4)
+        goal.goal.goalPose.pose.position.x = self.select_uniform_random(self.min_x,self.max_x)
+        goal.goal.goalPose.pose.position.y = self.select_uniform_random(0,2)
         goal.goal.goalPose.pose.position.z = -zoffset
         goal.goal.goalPose.pose.orientation.w = 1.0
         self.pclient.send_goal(goal.goal,

@@ -11,13 +11,14 @@ import cv2
 import numpy as np
 from test_bb import plot_bbs
 import tqdm
+import sys
 
 class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
-    def __init__(self, dbpath, depth = False, version = 1000, start_count = 0):
+    def __init__(self, dbpath, depth = False, version = 1000, start_count = 0, class_id=0):
         #super(ImageSinAnimationLabeler, self).__init__()
         #super(PersonSimAnimation, self).__init__()
         self.count = start_count
-        PersonSimAnimation.__init__(self)
+        PersonSimAnimation.__init__(self, class_id = int(class_id))
         ImageSinAnimationLabeler.__init__(self, depth)
         self.backward_motion = False
         self.initialize = False
@@ -37,15 +38,17 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             sys.exit()
 
         try:
-            os.mkdir("v"+ str(version))
+            os.mkdir(os.path.join("v"+ str(version),class_id))
         except:
             pass
 
         try:
-            os.chdir("v"+str(version))
+            os.chdir(os.path.join("v"+ str(version),class_id))
         except:
             print("error in folder")
             sys.exit()
+
+        print "SIM ANIMATION MANAGER CREATEd"
 
     def create_folders(self, path):
         try:
@@ -153,14 +156,14 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
                 cv2.imwrite(depth_filename, cv_image_norm)
         self.seq = self.seq + 1
         self.is_processing = False
-        rospy.sleep(1.0)
+        rospy.sleep(0.50)
 
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
-    dbpath = "/home/jose/datasets/simanimation_white/"
-    startcount=0
-    manager = SimAnimationManager(dbpath, depth=False, version = 4, start_count = startcount)
-    endcount = 1200
+    dbpath = "/home/jose/datasets/simulation_white_october2021/"
+    startcount=1
+    manager = SimAnimationManager(dbpath, depth=False, version = 5, start_count = startcount, class_id = sys.argv[1])
+    endcount = 1000
     for i in tqdm.tqdm(range(startcount,endcount)):
         #rospy.logerr("image request " + str(i) )
         manager.run()

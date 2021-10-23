@@ -56,7 +56,7 @@ class DatasetAugmenter:
 
     def clean_image(self,oimage):
         gray_image = cv2.cvtColor(oimage, cv2.COLOR_BGR2GRAY)
-        bg_index = np.random.randint(1,12)
+        bg_index = np.random.randint(1,15)
         newImage =cv2.imread("/home/jose/Pictures/fields/field_test{}.jpg".format(bg_index))
         onewImage = newImage.copy()#cv2.imread("/home/jose/Pictures/field_test{}.jpg".format(bg_index))
         #background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
@@ -114,12 +114,12 @@ class DatasetAugmenter:
                 self.img =cv2.imread(file.rstrip())
                 self.img = self.clean_image(self.img)
 
-                store_file = file.replace("image", "augmented_image").rstrip()
+                store_file = file.replace("image", "augment").rstrip()
                 cv2.imwrite(store_file, self.img)#, cv2.COLOR_BGR2RGB) )
                 original_label_filename = file.replace(".jpg", ".txt").rstrip()
                 if not os.path.exists(original_label_filename):
                     continue
-                final_label_filename = original_label_filename.replace("image", "augmented_image").rstrip()
+                final_label_filename = original_label_filename.replace("image", "augment").rstrip()
                 shutil.copy2(original_label_filename, final_label_filename)
 
                 #if not os.path.exists(label_filename):
@@ -153,8 +153,8 @@ class DatasetAugmenter:
 
 
 if __name__ == '__main__':
-    dbpath = "/home/jose/datasets/simanimation_white/"
-    startcount=920
+    dbpath = "/home/jose/datasets/simulation_white_october2021/"
+    startcount=1000
     manager = DatasetAugmenter(dbpath, depth=False, version = 4, start_count = startcount)
     #rospy.logerr("image request " + str(i) )
     manager.run()
