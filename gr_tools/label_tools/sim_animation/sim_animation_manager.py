@@ -23,6 +23,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.backward_motion = False
         self.initialize = False
         self.target_frame = "camera_link"
+        self.class_id = int(class_id)
         self.odom_frame = "odom"
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0)) #tf buffer length
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
@@ -38,15 +39,31 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
             sys.exit()
 
         try:
-            os.mkdir(os.path.join("v"+ str(version),class_id))
+            os.mkdir(os.path.join("v"+ str(version)))
         except:
             pass
 
         try:
-            os.chdir(os.path.join("v"+ str(version),class_id))
+            os.chdir(os.path.join("v"+ str(version)))
         except:
-            print("error in folder")
+            pass
+
+        try:
+            os.mkdir(class_id)
+        except:
+            pass
+
+        try:
+            os.chdir(class_id)
+        except:
+            print("error in folder", os.path.join("v6", class_id))
             sys.exit()
+
+        #try:
+        #    os.chdir(os.path.join("v"+ str(version),class_id))
+        #except:
+        #    print("error in folder", os.path.join("v6", class_id))
+        #    sys.exit()
 
         print "SIM ANIMATION MANAGER CREATEd"
 
@@ -103,9 +120,17 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         bbsx = []
 
         for bb in bbs.bounding_boxes:
-            if bb.Class != "person":
-                #print "Skipping " +bb.Class
+            if self.class_id == 3:
+                if bb.Class != "person" and bb.Class !="bird":
+                    continue
+            if self.class_id!= 3 and bb.Class != "person":
+                print "class not 3"
                 continue
+            """
+            else:
+                print "OK ", bb.Class
+                pass
+            """
             flag = True
             ring = min(3,int(transform_pose.vector.x/self.distance))
             data = str(ring) + " "
@@ -161,9 +186,9 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
     dbpath = "/home/jose/datasets/simulation_white_october2021/"
-    startcount=1
-    manager = SimAnimationManager(dbpath, depth=False, version = 5, start_count = startcount, class_id = sys.argv[1])
-    endcount = 1000
+    startcount=600 # default1
+    manager = SimAnimationManager(dbpath, depth=False, version = 6, start_count = startcount, class_id = sys.argv[1])
+    endcount = 900 #150*(4-int(sys.argv[1]))
     for i in tqdm.tqdm(range(startcount,endcount)):
         #rospy.logerr("image request " + str(i) )
         manager.run()

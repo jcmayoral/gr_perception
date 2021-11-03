@@ -12,10 +12,9 @@ import tqdm
 import shutil
 
 class DatasetAugmenter:
-    def __init__(self, dbpath, depth = False, version = 1000, start_count = 0):
+    def __init__(self, dbpath, depth = False, version = 1000, class_id = '0'):
         #super(ImageSinAnimationLabeler, self).__init__()
         #super(PersonSimAnimation, self).__init__()
-        self.count = start_count
         self.backward_motion = False
         self.initialize = False
         self.target_frame = "camera_link"
@@ -34,9 +33,10 @@ class DatasetAugmenter:
             sys.exit()
 
         try:
-            os.chdir("v"+str(version))
+            os.chdir(os.path.join("v"+str(version), class_id))
         except:
-            print("error in folder")
+            print(class_id)
+            print("error in folder", os.path.join("v"+str(version), class_id))
             sys.exit()
         cv2.namedWindow('test')
         cv2.setMouseCallback('test',self.mouseRGB)
@@ -56,7 +56,7 @@ class DatasetAugmenter:
 
     def clean_image(self,oimage):
         gray_image = cv2.cvtColor(oimage, cv2.COLOR_BGR2GRAY)
-        bg_index = np.random.randint(1,15)
+        bg_index = np.random.randint(1,49)
         newImage =cv2.imread("/home/jose/Pictures/fields/field_test{}.jpg".format(bg_index))
         onewImage = newImage.copy()#cv2.imread("/home/jose/Pictures/field_test{}.jpg".format(bg_index))
         #background =cv2.imread("/home/jose/Pictures/reference_sim.jpg")
@@ -154,8 +154,7 @@ class DatasetAugmenter:
 
 if __name__ == '__main__':
     dbpath = "/home/jose/datasets/simulation_white_october2021/"
-    startcount=1000
-    manager = DatasetAugmenter(dbpath, depth=False, version = 4, start_count = startcount)
+    manager = DatasetAugmenter(dbpath, depth=False, version = 7, class_id = sys.argv[1])
     #rospy.logerr("image request " + str(i) )
     manager.run()
     #rospy.spin()

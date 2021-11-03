@@ -22,7 +22,7 @@ def plot_bbs(image, bbs, visualize=False, out=None):
 
     if visualize:
         cv2.imshow("TEST",image)
-        cv2.waitKey(20)
+        cv2.waitKey(1)
 
     if out is not None:
         out.write(image)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                     if detections[0] == "ERROR":
                      counter[-1] += 1
                      continue
-                    print float(detections[0])
+                    #print float(detections[0])
                     cl_ = int(float(detections[0]))
                     if cl_ < 0 or  cl_ > 3:
                         print "ERRROR.....",cl_, img_filename

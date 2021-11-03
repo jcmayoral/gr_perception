@@ -12,8 +12,9 @@ class PersonSimAnimation(object):
         self.class_id = class_id
         self.min_x = 0.5 + (class_id * 2.0)
         self.max_x = 1.5 + (class_id * 2.0)
+        self.y = 2.0 + (class_id *5.0)
         if class_id == 3:
-            self.max_x = 12.0
+            self.max_x = 30.0
         self.pclient = actionlib.SimpleActionClient('/SimMotionPlanner/animated_human', SimMotionPlannerAction)
         self.pclient.wait_for_server()
         self.feedback = SimMotionPlannerActionFeedback()
@@ -32,17 +33,17 @@ class PersonSimAnimation(object):
         goal.goal.is_motion = True
         goal.goal.is_infinite_motion = False
 
-        goal.goal.linearspeed = self.select_uniform_random(0.2,0.7)
+        goal.goal.linearspeed = self.select_uniform_random(0.2,1.5)
         zoffset = self.select_uniform_random(-0.10,0.10)
         goal.goal.startpose.header.frame_id = "odom"
         goal.goal.startpose.pose.position.x = self.select_uniform_random(self.min_x,self.max_x)
-        goal.goal.startpose.pose.position.y = self.select_uniform_random(-2,0)
+        goal.goal.startpose.pose.position.y = self.select_uniform_random(-self.y,0)
         goal.goal.startpose.pose.position.z = -zoffset
         goal.goal.startpose.pose.orientation.w = 1.0
 
         goal.goal.goalPose.header.frame_id = "odom"
         goal.goal.goalPose.pose.position.x = self.select_uniform_random(self.min_x,self.max_x)
-        goal.goal.goalPose.pose.position.y = self.select_uniform_random(0,2)
+        goal.goal.goalPose.pose.position.y = self.select_uniform_random(0,self.y)
         goal.goal.goalPose.pose.position.z = -zoffset
         goal.goal.goalPose.pose.orientation.w = 1.0
         self.pclient.send_goal(goal.goal,

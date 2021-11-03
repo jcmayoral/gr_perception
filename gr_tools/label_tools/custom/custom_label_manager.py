@@ -41,14 +41,15 @@ def match_stamps(storepath, file1="rgb_info.txt", file2="depth_info.txt"):
         val_minimum = 1000000000000000000
         for key2, value2 in depth_data.iteritems():
             time_diff = np.fabs(float(value)-float(value2))
+            print time_diff, "DIFF"
             if time_diff < val_minimum:
                 val_minimum = time_diff
                 min_index = key2
         #print val_minimum
-        if min_index >0 and val_minimum < 1.0:
+        if min_index >0: # and val_minimum < 1.0:
             matches.append([key, min_index])
-        else:
-            print time_diff
+        #else:
+        #    print time_diff
 
     matches = sorted(matches)
     save_matches(storepath,matches)
@@ -86,14 +87,14 @@ if __name__ == '__main__':
     all_parser.add_argument("-storepath", action="store", help="path to dataset folder", required = True)
     all_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
     all_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
-    all_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/camera/depth/image_rect_raw2")
+    all_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/depth_registered/image_rect")
     all_parser.add_argument("-depth_info_topic", action="store", help="depth camera info topic", default ="/camera/depth/camera_info")
 
     stamps_parser = sub_parsers.add_parser('stamps')
     stamps_parser.add_argument("-storepath", action="store", help="path to dataset folder", required = True)
     stamps_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
     stamps_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
-    stamps_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/camera/depth/image_rect_raw2")
+    stamps_parser.add_argument("-depth_topic", action="store", help="depth_image topic", default = "/depth_registered/image_rect")
 
     match_parser = sub_parsers.add_parser('match')
     match_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
@@ -104,13 +105,13 @@ if __name__ == '__main__':
     store_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
     store_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
     store_parser.add_argument("-rgb_topic", action="store", help="rgb image topic", default = "/camera/color/image_raw")
-    store_parser.add_argument("-depth_topic", action="store", help="depth image topic", default = "/camera/depth/image_rect_raw2")
+    store_parser.add_argument("-depth_topic", action="store", help="depth image topic", default = "/depth_registered/image_rect")
 
     execute_parser = sub_parsers.add_parser('execute')
     execute_parser.add_argument("-storepath", action="store", help="path to store dataset folder", required = True)
     #execute_parser.add_argument("-matchfile", action="store", help="path to match file match", required = False)
     execute_parser.add_argument("-bagfile", action="store", help="path to bagfile match", required = True)
-    execute_parser.add_argument("-depth_info_topic", action="store", help="depth camera info topic", default ="/camera/depth/camera_info")
+    execute_parser.add_argument("-depth_info_topic", action="store", help="depth camera info topic", default ="/depth_registered/camera_info")
 
     args = my_parser.parse_args()
     action = args.command
@@ -118,7 +119,10 @@ if __name__ == '__main__':
     #if len(sys.argv) == 1:
     #    print "use properly"
     #    sys.exit()
+    rospy.init_node('image_custom_manager')
+
     if action == "stamps" or action == "all":
+        print "stamps"
         #extract timestamps from topics in a bag and store them on a file
         matchfile_path = args.storepath#"/home/jose/datasets/real_iros2021/"
         bagfile = args.bagfile
@@ -139,7 +143,6 @@ if __name__ == '__main__':
         depth_topic = args.depth_topic
         store_imgs(storepath, bagfile, rgb_topic, depth_topic)
     if action == "execute"  or action == "all":
-        rospy.init_node('image_custom_manager')
         print "preparing all"
         #macthes the timestamps of the match_file between depth and rgb
         storepath = args.storepath#"/home/jose/datasets/real_iros2021"

@@ -32,9 +32,10 @@ def extract_timestamps_frombag(rbag, info_topic):
     rstart_time = None
     #with rosbag.Bag(bagfile, 'r') as rbag:
     msgs = rbag.read_messages(info_topic)
+    print "INFO TOPIC ", info_topic
     #print outbag.get_type_and_topic_info()
     for i, m in enumerate(msgs):
-        #print m[0], type(m[1])
+        print m[0], type(m[1])
         if start_time is None:
             start_time = m[1].header.stamp.to_sec()
             rstart_time = m[2]
@@ -68,7 +69,7 @@ def stamps_to_dict(data):
     mydict = dict()
     for i in data:
         seq, stamp, rt = i.rstrip().split(" ")
-        mydict[int(seq)] = stamp
+        mydict[int(seq)] = float(rt)
     return OrderedDict(sorted(mydict.items(), key=lambda t: t[0]))
 
 def save_images(rbag, info_topic, is_depth=False):

@@ -29,11 +29,11 @@ def plot_bbs(image, bbs, visualize=False, out=None):
 
 
 if __name__ == "__main__":
-    filepath =  "/media/datasets/simanimation/depth_testdataset_v3/files.txt"
+    filepath =  sys.argv[1] #"/media/datasets/simanimation/depth_testdataset_v3/files.txt"
     print(filepath)
     counter = [0,0,0,0]
     opencounter = 0
-    plot_fig = bool(int(sys.argv[1]))
+    plot_fig = bool(int(sys.argv[2]))
     if plot_fig:
         #cap = cv2.VideoCapture('chaplin.mp4')
         out = cv2.VideoWriter('dataset.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
@@ -57,7 +57,7 @@ if __name__ == "__main__":
             if plot_fig:
                 img = cv2.imread(img_filename.rstrip())#, cv2.IMREAD_GRAYSCALE)
                 # out.write(img)
-                plot_bbs(img, detections, visualize = False, out=out)
+                plot_bbs(img, detections, visualize = True, out=out)
             cl_ = int(detections[0])
             if cl_ < 0 or  cl_ > 3:
                 print (cl_, img_filename)
