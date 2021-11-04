@@ -9,7 +9,7 @@ import fileinput
 import time
 import copy
 
-DATABASE_PATH = "/home/jose/media/elsevier/devel_dataset2"
+DATABASE_PATH = "/home/jose/media/elsevier/devel_dataset4"
 
 def wh2xyxy(labels,h,w):
     new_labels = copy.copy(labels)

@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 files_path = sys.argv[1]
 
+print "fie " , files_path
 f = open(files_path)
 
 with open("files_" + sys.argv[2] + "_filtered.txt", "a") as f2:
