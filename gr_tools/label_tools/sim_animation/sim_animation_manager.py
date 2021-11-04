@@ -31,6 +31,7 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         self.bridge = CvBridge()
         self.distance = 2.0
         self.seq = 0
+        self.poses_filename = "poses.txt"
 
         try:
             os.chdir(dbpath)
@@ -115,7 +116,6 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
         height, width, channels = cv_image.shape
         #print (height, width)
         flag = False
-
         bbs = result.bounding_boxes
         bbsx = []
 
@@ -149,6 +149,9 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 
             with open(label_filename, "a+") as text_file:
                 text_file.write(data)
+
+            with open(self.poses_filename, "a+") as pose_file:
+                pose_file.write(label_filename + " " + str(transform_pose.vector.x) + " " + str(transform_pose.vector.y) + "\n") 
 
         if flag:
             #plot_bbs(cv_image, bbsx, visualize=True)
@@ -186,8 +189,8 @@ class SimAnimationManager(ImageSinAnimationLabeler, PersonSimAnimation):
 if __name__ == '__main__':
     rospy.init_node('image_sim_manager')
     dbpath = "/home/jose/datasets/simulation_white_october2021/"
-    startcount=600 # default1
-    manager = SimAnimationManager(dbpath, depth=False, version = 6, start_count = startcount, class_id = sys.argv[1])
+    startcount=0 # default1
+    manager = SimAnimationManager(dbpath, depth=False, version = 7, start_count = startcount, class_id = sys.argv[1])
     endcount = 900 #150*(4-int(sys.argv[1]))
     for i in tqdm.tqdm(range(startcount,endcount)):
         #rospy.logerr("image request " + str(i) )
