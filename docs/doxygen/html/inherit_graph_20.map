@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classffmpeg_1_1MediaDecoder.html" title="ffmpeg::MediaDecoder" alt="" coords="5,5,160,32"/>
+<area shape="rect" id="node2" href="$classffmpeg_1_1Decoder.html" title="ffmpeg::Decoder" alt="" coords="208,5,327,32"/>
+<area shape="rect" id="node3" href="$classffmpeg_1_1SyncDecoder.html" title="ffmpeg::SyncDecoder" alt="" coords="375,5,524,32"/>
+</map>

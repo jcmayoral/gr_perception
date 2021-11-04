@@ -1,0 +1,115 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder}{}\section{torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder}\index{torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder@{torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_afc43f91e5715c33f0a579cb6771e264e}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, weights, bbox\+\_\+xform\+\_\+clip=math.\+log(1000./16))
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_acacc7a9c412911049ccb9fa4086ebe83}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_acacc7a9c412911049ccb9fa4086ebe83}} 
+def {\bfseries encode} (self, reference\+\_\+boxes, proposals)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a99b12af811b1fe21fb43c7b14777a1c2}{encode\+\_\+single} (self, reference\+\_\+boxes, proposals)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a9c5ce4848954cf62ad493e7bc88e0e18}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a9c5ce4848954cf62ad493e7bc88e0e18}} 
+def {\bfseries decode} (self, rel\+\_\+codes, boxes)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a5f74461c2eba449973824f777a948aec}{decode\+\_\+single} (self, rel\+\_\+codes, boxes)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_ad3b45e2695c6ec89b720871fdb782b21}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_ad3b45e2695c6ec89b720871fdb782b21}} 
+{\bfseries weights}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a1a48ae67b94cb32a26cc55fc863ecd14}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a1a48ae67b94cb32a26cc55fc863ecd14}} 
+{\bfseries bbox\+\_\+xform\+\_\+clip}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}This class encodes and decodes a set of bounding boxes into
+the representation used for training the regressors.
+\end{DoxyVerb}
+ 
+
+Definition at line 126 of file \+\_\+utils.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_afc43f91e5715c33f0a579cb6771e264e}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_afc43f91e5715c33f0a579cb6771e264e}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{weights,  }\item[{}]{bbox\+\_\+xform\+\_\+clip = {\ttfamily math.log(1000.~/~16)} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Arguments:
+    weights (4-element tuple)
+    bbox_xform_clip (float)
+\end{DoxyVerb}
+ 
+
+Definition at line 132 of file \+\_\+utils.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a5f74461c2eba449973824f777a948aec}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a5f74461c2eba449973824f777a948aec}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder}!decode\+\_\+single@{decode\+\_\+single}}
+\index{decode\+\_\+single@{decode\+\_\+single}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder}}
+\subsubsection{\texorpdfstring{decode\+\_\+single()}{decode\_single()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder.\+decode\+\_\+single (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{rel\+\_\+codes,  }\item[{}]{boxes }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}From a set of original boxes and encoded relative box offsets,
+get the decoded boxes.
+
+Arguments:
+    rel_codes (Tensor): encoded boxes
+    boxes (Tensor): reference boxes.
+\end{DoxyVerb}
+ 
+
+Definition at line 180 of file \+\_\+utils.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a99b12af811b1fe21fb43c7b14777a1c2}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BoxCoder_a99b12af811b1fe21fb43c7b14777a1c2}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder}!encode\+\_\+single@{encode\+\_\+single}}
+\index{encode\+\_\+single@{encode\+\_\+single}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Box\+Coder}}
+\subsubsection{\texorpdfstring{encode\+\_\+single()}{encode\_single()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Box\+Coder.\+encode\+\_\+single (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{reference\+\_\+boxes,  }\item[{}]{proposals }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Encode a set of proposals with respect to some
+reference boxes
+
+Arguments:
+    reference_boxes (Tensor): reference boxes
+    proposals (Tensor): boxes to be encoded
+\end{DoxyVerb}
+ 
+
+Definition at line 150 of file \+\_\+utils.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/\+\_\+utils.\+py\end{DoxyCompactItemize}

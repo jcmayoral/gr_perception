@@ -1,0 +1,110 @@
+\hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions}{}\section{torchvision.\+datasets.\+coco.\+Coco\+Captions Class Reference}
+\label{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions}\index{torchvision.\+datasets.\+coco.\+Coco\+Captions@{torchvision.\+datasets.\+coco.\+Coco\+Captions}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+coco.\+Coco\+Captions\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+coco.\+Coco\+Captions\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a9e2ff4d271ccb1ef55cc4b495c3663eb}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a9e2ff4d271ccb1ef55cc4b495c3663eb}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, ann\+File, transform=None, target\+\_\+transform=None, transforms=None)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a801a9385cb606e4941cfcd4ebf5555db}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a7a9a9640f3b6c2978e24c681166c7ddb}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a7a9a9640f3b6c2978e24c681166c7ddb}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a973225a555b6034794abde6c1dfc3384}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a973225a555b6034794abde6c1dfc3384}} 
+{\bfseries coco}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a526285e996258d3aa0a29bb56cf1c617}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a526285e996258d3aa0a29bb56cf1c617}} 
+{\bfseries ids}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`MS Coco Captions <http://mscoco.org/dataset/#captions-challenge2015>`_ Dataset.
+
+Args:
+    root (string): Root directory where images are downloaded to.
+    annFile (string): Path to json annotation file.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.ToTensor``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    transforms (callable, optional): A function/transform that takes input sample and its target as entry
+        and returns a transformed version.
+
+Example:
+
+    .. code:: python
+
+        import torchvision.datasets as dset
+        import torchvision.transforms as transforms
+        cap = dset.CocoCaptions(root = 'dir where images are',
+                                annFile = 'json annotation file',
+                                transform=transforms.ToTensor())
+
+        print('Number of samples: ', len(cap))
+        img, target = cap[3] # load 4th sample
+
+        print("Image Size: ", img.size())
+        print(target)
+
+    Output: ::
+
+        Number of samples: 82783
+        Image Size: (3L, 427L, 640L)
+        [u'A plane emitting smoke stream flying over a mountain.',
+        u'A plane darts across a bright blue sky behind a mountain covered in snow',
+        u'A plane leaves a contrail above the snowy mountain top.',
+        u'A mountain that has a plane flying overheard in the distance.',
+        u'A mountain view with a plume of smoke in the background']\end{DoxyVerb}
+ 
+
+Definition at line 7 of file coco.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a801a9385cb606e4941cfcd4ebf5555db}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoCaptions_a801a9385cb606e4941cfcd4ebf5555db}} 
+\index{torchvision\+::datasets\+::coco\+::\+Coco\+Captions@{torchvision\+::datasets\+::coco\+::\+Coco\+Captions}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::coco\+::\+Coco\+Captions@{torchvision\+::datasets\+::coco\+::\+Coco\+Captions}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+coco.\+Coco\+Captions.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: Tuple (image, target). target is a list of captions for the image.
+\end{DoxyVerb}
+ 
+
+Definition at line 54 of file coco.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/coco.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,70 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor}{}\section{torchvision.\+transforms.\+transforms.\+To\+Tensor Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor}\index{torchvision.\+transforms.\+transforms.\+To\+Tensor@{torchvision.\+transforms.\+transforms.\+To\+Tensor}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+To\+Tensor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+To\+Tensor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor_aca829308e5c716e3599051f42b3030c1}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, pic)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor_ae968314ac712cc35fbdb62cfe320f0b5}\label{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor_ae968314ac712cc35fbdb62cfe320f0b5}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Convert a ``PIL Image`` or ``numpy.ndarray`` to tensor.
+
+Converts a PIL Image or numpy.ndarray (H x W x C) in the range
+[0, 255] to a torch.FloatTensor of shape (C x H x W) in the range [0.0, 1.0]
+if the PIL Image belongs to one of the modes (L, LA, P, I, F, RGB, YCbCr, RGBA, CMYK, 1)
+or if the numpy.ndarray has dtype = np.uint8
+
+In the other cases, tensors are returned without scaling.
+\end{DoxyVerb}
+ 
+
+Definition at line 67 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor_aca829308e5c716e3599051f42b3030c1}\label{classtorchvision_1_1transforms_1_1transforms_1_1ToTensor_aca829308e5c716e3599051f42b3030c1}} 
+\index{torchvision\+::transforms\+::transforms\+::\+To\+Tensor@{torchvision\+::transforms\+::transforms\+::\+To\+Tensor}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+To\+Tensor@{torchvision\+::transforms\+::transforms\+::\+To\+Tensor}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+To\+Tensor.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{pic }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    pic (PIL Image or numpy.ndarray): Image to be converted to tensor.
+
+Returns:
+    Tensor: Converted image.
+\end{DoxyVerb}
+ 
+
+Definition at line 78 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

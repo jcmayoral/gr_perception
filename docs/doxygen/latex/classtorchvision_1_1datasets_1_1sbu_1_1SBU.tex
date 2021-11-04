@@ -1,0 +1,121 @@
+\hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU}{}\section{torchvision.\+datasets.\+sbu.\+S\+BU Class Reference}
+\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU}\index{torchvision.\+datasets.\+sbu.\+S\+BU@{torchvision.\+datasets.\+sbu.\+S\+BU}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+sbu.\+S\+BU\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{classtorchvision_1_1datasets_1_1sbu_1_1SBU__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+sbu.\+S\+BU\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{classtorchvision_1_1datasets_1_1sbu_1_1SBU__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a51be13e32f7c874deacdcba95f066d90}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a51be13e32f7c874deacdcba95f066d90}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, transform=None, target\+\_\+transform=None, \hyperlink{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab9cb0b9c60d1b93477910b4263803e25}{download}=True)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab6f31fb52ca68fa57de0cd60c0f1a499}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a38bb2b1d57f2d97f386046d7525e108d}{\+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab9cb0b9c60d1b93477910b4263803e25}{download} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a5e67a414f9fbba9608b4d05dc8b37bf1}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a5e67a414f9fbba9608b4d05dc8b37bf1}} 
+{\bfseries photos}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a6c91625480ee0f1974b6790dcf3206b7}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a6c91625480ee0f1974b6790dcf3206b7}} 
+{\bfseries captions}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ac06c47333ef9037ccbfa27d520a99429}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ac06c47333ef9037ccbfa27d520a99429}} 
+{\bfseries url}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_aa3ef7f382dee5a40407bfc5f1d1ca4fa}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_aa3ef7f382dee5a40407bfc5f1d1ca4fa}} 
+{\bfseries filename}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a377423ce99a84fd9a01ae0878f6fdc64}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a377423ce99a84fd9a01ae0878f6fdc64}} 
+{\bfseries md5\+\_\+checksum}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`SBU Captioned Photo <http://www.cs.virginia.edu/~vicente/sbucaptions/>`_ Dataset.
+
+Args:
+    root (string): Root directory of dataset where tarball
+        ``SBUCaptionedPhotoDataset.tar.gz`` exists.
+    transform (callable, optional): A function/transform that takes in a PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    download (bool, optional): If True, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.
+\end{DoxyVerb}
+ 
+
+Definition at line 8 of file sbu.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab6f31fb52ca68fa57de0cd60c0f1a499}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab6f31fb52ca68fa57de0cd60c0f1a499}} 
+\index{torchvision\+::datasets\+::sbu\+::\+S\+BU@{torchvision\+::datasets\+::sbu\+::\+S\+BU}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::sbu\+::\+S\+BU@{torchvision\+::datasets\+::sbu\+::\+S\+BU}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+sbu.\+S\+B\+U.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is a caption for the photo.
+\end{DoxyVerb}
+ 
+
+Definition at line 53 of file sbu.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a38bb2b1d57f2d97f386046d7525e108d}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_a38bb2b1d57f2d97f386046d7525e108d}} 
+\index{torchvision\+::datasets\+::sbu\+::\+S\+BU@{torchvision\+::datasets\+::sbu\+::\+S\+BU}!\+\_\+\+\_\+len\+\_\+\+\_\+@{\+\_\+\+\_\+len\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+len\+\_\+\+\_\+@{\+\_\+\+\_\+len\+\_\+\+\_\+}!torchvision\+::datasets\+::sbu\+::\+S\+BU@{torchvision\+::datasets\+::sbu\+::\+S\+BU}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+len\+\_\+\+\_\+()}{\_\_len\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+sbu.\+S\+B\+U.\+\_\+\+\_\+len\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}The number of photos in the dataset.\end{DoxyVerb}
+ 
+
+Definition at line 72 of file sbu.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab9cb0b9c60d1b93477910b4263803e25}\label{classtorchvision_1_1datasets_1_1sbu_1_1SBU_ab9cb0b9c60d1b93477910b4263803e25}} 
+\index{torchvision\+::datasets\+::sbu\+::\+S\+BU@{torchvision\+::datasets\+::sbu\+::\+S\+BU}!download@{download}}
+\index{download@{download}!torchvision\+::datasets\+::sbu\+::\+S\+BU@{torchvision\+::datasets\+::sbu\+::\+S\+BU}}
+\subsubsection{\texorpdfstring{download()}{download()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+sbu.\+S\+B\+U.\+download (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Download and extract the tarball, and download each individual photo.\end{DoxyVerb}
+ 
+
+Definition at line 84 of file sbu.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/sbu.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,139 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher}{}\section{torchvision.\+models.\+detection.\+\_\+utils.\+Matcher Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher}\index{torchvision.\+models.\+detection.\+\_\+utils.\+Matcher@{torchvision.\+models.\+detection.\+\_\+utils.\+Matcher}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+\_\+utils.\+Matcher\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+\_\+utils.\+Matcher\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a6f253e10991f96bdb9dadcb0bdb9ff4d}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, high\+\_\+threshold, low\+\_\+threshold, allow\+\_\+low\+\_\+quality\+\_\+matches=False)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_ae4210fa2c8d4723d8749bf30ab5bb1b7}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, match\+\_\+quality\+\_\+matrix)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_aa99b84bf2c4673c06a5674f75cf8a2e7}{set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+} (self, matches, all\+\_\+matches, match\+\_\+quality\+\_\+matrix)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_abb1cefed6ff48f368a9d9aa3fa2c30cd}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_abb1cefed6ff48f368a9d9aa3fa2c30cd}} 
+{\bfseries high\+\_\+threshold}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_af5862e1fa42f3bae2058d45963f419f2}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_af5862e1fa42f3bae2058d45963f419f2}} 
+{\bfseries low\+\_\+threshold}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a4ab7edd71ffb82696e0f0be4e68bb95b}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a4ab7edd71ffb82696e0f0be4e68bb95b}} 
+{\bfseries allow\+\_\+low\+\_\+quality\+\_\+matches}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_ab2c51e364e671b445b9930c1bc09fdf7}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_ab2c51e364e671b445b9930c1bc09fdf7}} 
+{\bfseries B\+E\+L\+O\+W\+\_\+\+L\+O\+W\+\_\+\+T\+H\+R\+E\+S\+H\+O\+LD}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a76589322a38c91b6417a6392305ec69c}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a76589322a38c91b6417a6392305ec69c}} 
+{\bfseries B\+E\+T\+W\+E\+E\+N\+\_\+\+T\+H\+R\+E\+S\+H\+O\+L\+DS}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}This class assigns to each predicted "element" (e.g., a box) a ground-truth
+element. Each predicted element will have exactly zero or one matches; each
+ground-truth element may be assigned to zero or more predicted elements.
+
+Matching is based on the MxN match_quality_matrix, that characterizes how well
+each (ground-truth, predicted)-pair match. For example, if the elements are
+boxes, the matrix may contain box IoU overlap values.
+
+The matcher returns a tensor of size N containing the index of the ground-truth
+element m that matches to prediction n. If there is no match, a negative value
+is returned.
+\end{DoxyVerb}
+ 
+
+Definition at line 220 of file \+\_\+utils.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a6f253e10991f96bdb9dadcb0bdb9ff4d}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_a6f253e10991f96bdb9dadcb0bdb9ff4d}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Matcher.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{high\+\_\+threshold,  }\item[{}]{low\+\_\+threshold,  }\item[{}]{allow\+\_\+low\+\_\+quality\+\_\+matches = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    high_threshold (float): quality values greater than or equal to
+this value are candidate matches.
+    low_threshold (float): a lower quality threshold used to stratify
+matches into three levels:
+1) matches >= high_threshold
+2) BETWEEN_THRESHOLDS matches in [low_threshold, high_threshold)
+3) BELOW_LOW_THRESHOLD matches in [0, low_threshold)
+    allow_low_quality_matches (bool): if True, produce additional matches
+for predictions that have only low-quality match candidates. See
+set_low_quality_matches_ for more details.
+\end{DoxyVerb}
+ 
+
+Definition at line 243 of file \+\_\+utils.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_ae4210fa2c8d4723d8749bf30ab5bb1b7}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_ae4210fa2c8d4723d8749bf30ab5bb1b7}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Matcher.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+\_\+quality\+\_\+matrix }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    match_quality_matrix (Tensor[float]): an MxN tensor, containing the
+    pairwise quality between M ground-truth elements and N predicted elements.
+
+Returns:
+    matches (Tensor[int64]): an N tensor where N[i] is a matched gt in
+    [0, M - 1] or a negative value indicating that prediction i could not
+    be matched.
+\end{DoxyVerb}
+ 
+
+Definition at line 265 of file \+\_\+utils.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_aa99b84bf2c4673c06a5674f75cf8a2e7}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1Matcher_aa99b84bf2c4673c06a5674f75cf8a2e7}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher}!set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+@{set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+}}
+\index{set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+@{set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Matcher}}
+\subsubsection{\texorpdfstring{set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+()}{set\_low\_quality\_matches\_()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Matcher.\+set\+\_\+low\+\_\+quality\+\_\+matches\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{matches,  }\item[{}]{all\+\_\+matches,  }\item[{}]{match\+\_\+quality\+\_\+matrix }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Produce additional matches for predictions that have only low-quality matches.
+Specifically, for each ground-truth find the set of predictions that have
+maximum overlap with it (including ties); for each prediction in that set, if
+it is unmatched, then match it to the ground-truth with which it has the highest
+quality value.
+\end{DoxyVerb}
+ 
+
+Definition at line 309 of file \+\_\+utils.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/\+\_\+utils.\+py\end{DoxyCompactItemize}

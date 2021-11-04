@@ -1,0 +1,104 @@
+\hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation}{}\section{torchvision.\+datasets.\+voc.\+V\+O\+C\+Segmentation Class Reference}
+\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation}\index{torchvision.\+datasets.\+voc.\+V\+O\+C\+Segmentation@{torchvision.\+datasets.\+voc.\+V\+O\+C\+Segmentation}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+voc.\+V\+O\+C\+Segmentation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+voc.\+V\+O\+C\+Segmentation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a763fbc3bfc4d21d3101ab1b1fc0c89a3}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a763fbc3bfc4d21d3101ab1b1fc0c89a3}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, year=\textquotesingle{}2012\textquotesingle{}, image\+\_\+set=\textquotesingle{}train\textquotesingle{}, download=False, transform=None, target\+\_\+transform=None, transforms=None)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_ac703a73e9ba2fbf134fedee541f80f1d}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a6f40a5c3abbb3254166475fa6a51ce4a}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a6f40a5c3abbb3254166475fa6a51ce4a}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_abf63ce23bf4e5a93d64acdab2b57dc1e}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_abf63ce23bf4e5a93d64acdab2b57dc1e}} 
+{\bfseries year}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a51438862a4c2124e6b6e2c94e4ee2ad6}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a51438862a4c2124e6b6e2c94e4ee2ad6}} 
+{\bfseries url}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a5e180c297b41bea413e18ff7fce28491}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a5e180c297b41bea413e18ff7fce28491}} 
+{\bfseries filename}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_af44f6430cb5c354f7850be8bf1999754}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_af44f6430cb5c354f7850be8bf1999754}} 
+{\bfseries md5}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a661e3a1858727cd86a0ecf699a61cc96}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a661e3a1858727cd86a0ecf699a61cc96}} 
+{\bfseries image\+\_\+set}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a6f9c34c52ace9de9a0025a909d98a00d}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a6f9c34c52ace9de9a0025a909d98a00d}} 
+{\bfseries images}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a10cce53deb176f440247f3d597f28279}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_a10cce53deb176f440247f3d597f28279}} 
+{\bfseries masks}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Pascal VOC <http://host.robots.ox.ac.uk/pascal/VOC/>`_ Segmentation Dataset.
+
+Args:
+    root (string): Root directory of the VOC Dataset.
+    year (string, optional): The dataset year, supports years 2007 to 2012.
+    image_set (string, optional): Select the image_set to use, ``train``, ``trainval`` or ``val``
+    download (bool, optional): If true, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    transforms (callable, optional): A function/transform that takes input sample and its target as entry
+        and returns a transformed version.
+\end{DoxyVerb}
+ 
+
+Definition at line 55 of file voc.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_ac703a73e9ba2fbf134fedee541f80f1d}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCSegmentation_ac703a73e9ba2fbf134fedee541f80f1d}} 
+\index{torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Segmentation@{torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Segmentation}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Segmentation@{torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Segmentation}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+voc.\+V\+O\+C\+Segmentation.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is the image segmentation.
+\end{DoxyVerb}
+ 
+
+Definition at line 115 of file voc.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/voc.\+py\end{DoxyCompactItemize}

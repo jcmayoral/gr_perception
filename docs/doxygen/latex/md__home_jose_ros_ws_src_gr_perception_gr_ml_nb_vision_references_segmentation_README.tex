@@ -1,0 +1,33 @@
+This folder contains reference training scripts for semantic segmentation. They serve as a log of how to train specific models, as provide baseline training and evaluation scripts to quickly bootstrap research.
+
+All models have been trained on 8x V100 G\+P\+Us.
+
+\#\# fcn\+\_\+resnet50 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py --lr 0.02 --dataset coco -b 4
+       --model fcn\_resnet50 --aux-loss
+\end{DoxyCode}
+
+
+\#\# fcn\+\_\+resnet101 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py --lr 0.02 --dataset coco -b 4
+       --model fcn\_resnet101 --aux-loss
+\end{DoxyCode}
+
+
+\#\# deeplabv3\+\_\+resnet50 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py --lr 0.02 --dataset coco -b 4
+       --model deeplabv3\_resnet50 --aux-loss
+\end{DoxyCode}
+
+
+\subsection*{deeplabv3\+\_\+resnet101}
+
+
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py --lr 0.02 --dataset coco -b 4
+       --model deeplabv3\_resnet101 --aux-loss
+\end{DoxyCode}
+ 

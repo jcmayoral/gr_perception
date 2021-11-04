@@ -1,0 +1,89 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Resize}{}\section{torchvision.\+transforms.\+transforms.\+Resize Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1Resize}\index{torchvision.\+transforms.\+transforms.\+Resize@{torchvision.\+transforms.\+transforms.\+Resize}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Resize\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1Resize__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Resize\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1Resize__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Resize_aa5f2054583e641c8dba397087b74833a}\label{classtorchvision_1_1transforms_1_1transforms_1_1Resize_aa5f2054583e641c8dba397087b74833a}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, size, interpolation=Image.\+B\+I\+L\+I\+N\+E\+AR)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1Resize_ad5279678fd1ecb0279fda99391b93673}{forward} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Resize_a37710e67345508df38bd09f58d843e7c}\label{classtorchvision_1_1transforms_1_1transforms_1_1Resize_a37710e67345508df38bd09f58d843e7c}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Resize_add853490efa646b2a80356f91ef63475}\label{classtorchvision_1_1transforms_1_1transforms_1_1Resize_add853490efa646b2a80356f91ef63475}} 
+{\bfseries size}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Resize_ad365065471a22368ebb8523d53973c18}\label{classtorchvision_1_1transforms_1_1transforms_1_1Resize_ad365065471a22368ebb8523d53973c18}} 
+{\bfseries interpolation}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Resize the input image to the given size.
+The image can be a PIL Image or a torch Tensor, in which case it is expected
+to have [..., H, W] shape, where ... means an arbitrary number of leading dimensions
+
+Args:
+    size (sequence or int): Desired output size. If size is a sequence like
+        (h, w), output size will be matched to this. If size is an int,
+        smaller edge of the image will be matched to this number.
+        i.e, if height > width, then image will be rescaled to
+        (size * height / width, size).
+        In torchscript mode padding as single int is not supported, use a tuple or
+        list of length 1: ``[size, ]``.
+    interpolation (int, optional): Desired interpolation enum defined by `filters`_.
+        Default is ``PIL.Image.BILINEAR``. If input is Tensor, only ``PIL.Image.NEAREST``, ``PIL.Image.BILINEAR``
+        and ``PIL.Image.BICUBIC`` are supported.
+\end{DoxyVerb}
+ 
+
+Definition at line 212 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Resize_ad5279678fd1ecb0279fda99391b93673}\label{classtorchvision_1_1transforms_1_1transforms_1_1Resize_ad5279678fd1ecb0279fda99391b93673}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Resize@{torchvision\+::transforms\+::transforms\+::\+Resize}!forward@{forward}}
+\index{forward@{forward}!torchvision\+::transforms\+::transforms\+::\+Resize@{torchvision\+::transforms\+::transforms\+::\+Resize}}
+\subsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Resize.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image or Tensor): Image to be scaled.
+
+Returns:
+    PIL Image or Tensor: Rescaled image.
+\end{DoxyVerb}
+ 
+
+Definition at line 239 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,71 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN}{}\section{torchvision.\+models.\+detection.\+backbone\+\_\+utils.\+Backbone\+With\+F\+PN Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN}\index{torchvision.\+models.\+detection.\+backbone\+\_\+utils.\+Backbone\+With\+F\+PN@{torchvision.\+models.\+detection.\+backbone\+\_\+utils.\+Backbone\+With\+F\+PN}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+backbone\+\_\+utils.\+Backbone\+With\+F\+PN\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+backbone\+\_\+utils.\+Backbone\+With\+F\+PN\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_a15ed5d7a3170ea7bfdbc5f7331ae9a93}\label{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_a15ed5d7a3170ea7bfdbc5f7331ae9a93}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, backbone, return\+\_\+layers, in\+\_\+channels\+\_\+list, out\+\_\+channels)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_a61fa7604d615c28e3cca6d888feab3dd}\label{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_a61fa7604d615c28e3cca6d888feab3dd}} 
+def {\bfseries forward} (self, x)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_ab9ff2b0e9b23909d6220888fb78aced1}\label{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_ab9ff2b0e9b23909d6220888fb78aced1}} 
+{\bfseries body}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_ad8c27f9174a83bf374a352e5c986be65}\label{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_ad8c27f9174a83bf374a352e5c986be65}} 
+{\bfseries fpn}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_ab2a801040f4464c23f16aa1c2cf0ef7e}\label{classtorchvision_1_1models_1_1detection_1_1backbone__utils_1_1BackboneWithFPN_ab2a801040f4464c23f16aa1c2cf0ef7e}} 
+{\bfseries out\+\_\+channels}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Adds a FPN on top of a model.
+Internally, it uses torchvision.models._utils.IntermediateLayerGetter to
+extract a submodel that returns the feature maps specified in return_layers.
+The same limitations of IntermediatLayerGetter apply here.
+Arguments:
+    backbone (nn.Module)
+    return_layers (Dict[name, new_name]): a dict containing the names
+        of the modules for which the activations will be returned as
+        the key of the dict, and the value of the dict is the name
+        of the returned activation (which the user can specify).
+    in_channels_list (List[int]): number of channels for each feature map
+        that is returned, in the order they are present in the OrderedDict
+    out_channels (int): number of channels in the FPN.
+Attributes:
+    out_channels (int): the number of channels in the FPN
+\end{DoxyVerb}
+ 
+
+Definition at line 10 of file backbone\+\_\+utils.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/backbone\+\_\+utils.\+py\end{DoxyCompactItemize}

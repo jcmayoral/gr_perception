@@ -1,0 +1,95 @@
+\hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS}{}\section{torchvision.\+datasets.\+usps.\+U\+S\+PS Class Reference}
+\label{classtorchvision_1_1datasets_1_1usps_1_1USPS}\index{torchvision.\+datasets.\+usps.\+U\+S\+PS@{torchvision.\+datasets.\+usps.\+U\+S\+PS}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+usps.\+U\+S\+PS\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classtorchvision_1_1datasets_1_1usps_1_1USPS__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+usps.\+U\+S\+PS\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classtorchvision_1_1datasets_1_1usps_1_1USPS__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS_ab26f2be660f50fd30d8f14e0ded30d15}\label{classtorchvision_1_1datasets_1_1usps_1_1USPS_ab26f2be660f50fd30d8f14e0ded30d15}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, train=True, transform=None, target\+\_\+transform=None, download=False)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1usps_1_1USPS_acfed13e69964e378fe59421a91e9e5c2}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS_ae5af734d8d50bb4860f55ed85158e4e9}\label{classtorchvision_1_1datasets_1_1usps_1_1USPS_ae5af734d8d50bb4860f55ed85158e4e9}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS_ad446cf28f1924baec19f667038980392}\label{classtorchvision_1_1datasets_1_1usps_1_1USPS_ad446cf28f1924baec19f667038980392}} 
+{\bfseries data}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS_adb0c0589a64cf16eed284d10d1441503}\label{classtorchvision_1_1datasets_1_1usps_1_1USPS_adb0c0589a64cf16eed284d10d1441503}} 
+{\bfseries targets}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS_a9221d96eaec8806f8f4518a3913e1297}\label{classtorchvision_1_1datasets_1_1usps_1_1USPS_a9221d96eaec8806f8f4518a3913e1297}} 
+{\bfseries split\+\_\+list}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`USPS <https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/multiclass.html#usps>`_ Dataset.
+The data-format is : [label [index:value ]*256 \\n] * num_lines, where ``label`` lies in ``[1, 10]``.
+The value for each pixel lies in ``[-1, 1]``. Here we transform the ``label`` into ``[0, 9]``
+and make pixel values in ``[0, 255]``.
+
+Args:
+    root (string): Root directory of dataset to store``USPS`` data files.
+    train (bool, optional): If True, creates dataset from ``usps.bz2``,
+        otherwise from ``usps.t.bz2``.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    download (bool, optional): If true, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.\end{DoxyVerb}
+ 
+
+Definition at line 9 of file usps.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1usps_1_1USPS_acfed13e69964e378fe59421a91e9e5c2}\label{classtorchvision_1_1datasets_1_1usps_1_1USPS_acfed13e69964e378fe59421a91e9e5c2}} 
+\index{torchvision\+::datasets\+::usps\+::\+U\+S\+PS@{torchvision\+::datasets\+::usps\+::\+U\+S\+PS}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::usps\+::\+U\+S\+PS@{torchvision\+::datasets\+::usps\+::\+U\+S\+PS}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+usps.\+U\+S\+P\+S.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is index of the target class.
+\end{DoxyVerb}
+ 
+
+Definition at line 61 of file usps.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/usps.\+py\end{DoxyCompactItemize}

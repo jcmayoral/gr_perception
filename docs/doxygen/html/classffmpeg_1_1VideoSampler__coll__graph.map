@@ -1,0 +1,8 @@
+<map id="ffmpeg::VideoSampler" name="ffmpeg::VideoSampler">
+<area shape="rect" id="node2" href="$classffmpeg_1_1MediaSampler.html" title="ffmpeg::MediaSampler" alt="" coords="169,288,322,315"/>
+<area shape="rect" id="node3" href="$structffmpeg_1_1SamplerParameters.html" title="ffmpeg::SamplerParameters" alt="" coords="153,199,338,225"/>
+<area shape="rect" id="node4" href="$unionffmpeg_1_1FormatUnion.html" title="ffmpeg::FormatUnion" alt="" coords="173,95,318,121"/>
+<area shape="rect" id="node5" href="$structffmpeg_1_1AudioFormat.html" title="ffmpeg::AudioFormat" alt="" coords="5,5,149,32"/>
+<area shape="rect" id="node6" href="$structffmpeg_1_1VideoFormat.html" title="ffmpeg::VideoFormat" alt="" coords="173,5,317,32"/>
+<area shape="rect" id="node7" href="$structffmpeg_1_1SubtitleFormat.html" title="ffmpeg::SubtitleFormat" alt="" coords="341,5,496,32"/>
+</map>

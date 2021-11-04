@@ -1,0 +1,79 @@
+\hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo}{}\section{torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+Normalize\+Video Class Reference}
+\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo}\index{torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+Normalize\+Video@{torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+Normalize\+Video}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+Normalize\+Video\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+Normalize\+Video\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a3e38867f0c56035f9973f1c2eb9bd928}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a3e38867f0c56035f9973f1c2eb9bd928}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, mean, std, inplace=False)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a054f98d66be0e760e208fdd6c3aaaecf}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, clip)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a34db9f67ec9476433c09c5efd4ff14cb}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a34db9f67ec9476433c09c5efd4ff14cb}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a7e31d5855c4e6526b1819ceb11a150e3}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a7e31d5855c4e6526b1819ceb11a150e3}} 
+{\bfseries mean}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a5803785fe6436200b1fd216b53e6a4ce}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a5803785fe6436200b1fd216b53e6a4ce}} 
+{\bfseries std}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_ac64650dcde230a47f9f9c549104114ac}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_ac64650dcde230a47f9f9c549104114ac}} 
+{\bfseries inplace}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Normalize the video clip by mean subtraction and division by standard deviation
+Args:
+    mean (3-tuple): pixel RGB mean
+    std (3-tuple): pixel RGB standard deviation
+    inplace (boolean): whether do in-place normalization
+\end{DoxyVerb}
+ 
+
+Definition at line 103 of file \+\_\+transforms\+\_\+video.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a054f98d66be0e760e208fdd6c3aaaecf}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1NormalizeVideo_a054f98d66be0e760e208fdd6c3aaaecf}} 
+\index{torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+Normalize\+Video@{torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+Normalize\+Video}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+Normalize\+Video@{torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+Normalize\+Video}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+Normalize\+Video.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{clip }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    clip (torch.tensor): video clip to be normalized. Size is (C, T, H, W)
+\end{DoxyVerb}
+ 
+
+Definition at line 117 of file \+\_\+transforms\+\_\+video.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/\+\_\+transforms\+\_\+video.\+py\end{DoxyCompactItemize}

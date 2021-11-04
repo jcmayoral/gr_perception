@@ -1,0 +1,107 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad}{}\section{torchvision.\+transforms.\+transforms.\+Pad Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad}\index{torchvision.\+transforms.\+transforms.\+Pad@{torchvision.\+transforms.\+transforms.\+Pad}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Pad\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classtorchvision_1_1transforms_1_1transforms_1_1Pad__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Pad\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classtorchvision_1_1transforms_1_1transforms_1_1Pad__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a374f7d20dc33d68899516ce365a81273}\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a374f7d20dc33d68899516ce365a81273}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, padding, fill=0, padding\+\_\+mode=\char`\"{}constant\char`\"{})
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a4155192980ce1513c877c31f84482832}{forward} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a85b3d524bfb5374b704afb2c6286c5de}\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a85b3d524bfb5374b704afb2c6286c5de}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad_af6c3abcfe61d705c0fe09a0345ef5db2}\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad_af6c3abcfe61d705c0fe09a0345ef5db2}} 
+{\bfseries padding}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a4cf479e25f08eddc7a6c571dd6418567}\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a4cf479e25f08eddc7a6c571dd6418567}} 
+{\bfseries fill}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad_abbf2912fd7639cb7e87aa89541023524}\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad_abbf2912fd7639cb7e87aa89541023524}} 
+{\bfseries padding\+\_\+mode}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Pad the given image on all sides with the given "pad" value.
+The image can be a PIL Image or a torch Tensor, in which case it is expected
+to have [..., H, W] shape, where ... means an arbitrary number of leading dimensions
+
+Args:
+    padding (int or tuple or list): Padding on each border. If a single int is provided this
+        is used to pad all borders. If tuple of length 2 is provided this is the padding
+        on left/right and top/bottom respectively. If a tuple of length 4 is provided
+        this is the padding for the left, top, right and bottom borders respectively.
+        In torchscript mode padding as single int is not supported, use a tuple or
+        list of length 1: ``[padding, ]``.
+    fill (int or tuple): Pixel fill value for constant fill. Default is 0. If a tuple of
+        length 3, it is used to fill R, G, B channels respectively.
+        This value is only used when the padding_mode is constant
+    padding_mode (str): Type of padding. Should be: constant, edge, reflect or symmetric.
+        Default is constant. Mode symmetric is not yet supported for Tensor inputs.
+
+        - constant: pads with a constant value, this value is specified with fill
+
+        - edge: pads with the last value at the edge of the image
+
+        - reflect: pads with reflection of image without repeating the last value on the edge
+
+            For example, padding [1, 2, 3, 4] with 2 elements on both sides in reflect mode
+            will result in [3, 2, 1, 2, 3, 4, 3, 2]
+
+        - symmetric: pads with reflection of image repeating the last value on the edge
+
+            For example, padding [1, 2, 3, 4] with 2 elements on both sides in symmetric mode
+            will result in [2, 1, 1, 2, 3, 4, 4, 3]
+\end{DoxyVerb}
+ 
+
+Definition at line 301 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a4155192980ce1513c877c31f84482832}\label{classtorchvision_1_1transforms_1_1transforms_1_1Pad_a4155192980ce1513c877c31f84482832}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Pad@{torchvision\+::transforms\+::transforms\+::\+Pad}!forward@{forward}}
+\index{forward@{forward}!torchvision\+::transforms\+::transforms\+::\+Pad@{torchvision\+::transforms\+::transforms\+::\+Pad}}
+\subsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Pad.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image or Tensor): Image to be padded.
+
+Returns:
+    PIL Image or Tensor: Padded image.
+\end{DoxyVerb}
+ 
+
+Definition at line 353 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

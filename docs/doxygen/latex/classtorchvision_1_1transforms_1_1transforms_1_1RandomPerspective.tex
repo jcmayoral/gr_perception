@@ -1,0 +1,116 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective}{}\section{torchvision.\+transforms.\+transforms.\+Random\+Perspective Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective}\index{torchvision.\+transforms.\+transforms.\+Random\+Perspective@{torchvision.\+transforms.\+transforms.\+Random\+Perspective}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Random\+Perspective\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Random\+Perspective\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a698b5e559722415008ebea4416d55cf1}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a698b5e559722415008ebea4416d55cf1}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, distortion\+\_\+scale=0.\+5, p=0.\+5, interpolation=Image.\+B\+I\+C\+U\+B\+IC, fill=0)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_ab795687134e8cde452910c968763382a}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a115cf49be54f38afbc0d2ba4651d0244}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a115cf49be54f38afbc0d2ba4651d0244}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a3f5ee3ba51cbc4eb7b003f7b8172c09f}{get\+\_\+params} (width, height, distortion\+\_\+scale)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a0be5e7c91f527af62cd5add45553e936}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a0be5e7c91f527af62cd5add45553e936}} 
+{\bfseries p}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a5607c088d5fb0826a219df2c10f4808d}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a5607c088d5fb0826a219df2c10f4808d}} 
+{\bfseries interpolation}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a938993075eb32590f2bbe87cf5a8a887}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a938993075eb32590f2bbe87cf5a8a887}} 
+{\bfseries distortion\+\_\+scale}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_abf45828a978ec991cc11bc13b0e834b0}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_abf45828a978ec991cc11bc13b0e834b0}} 
+{\bfseries fill}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Performs Perspective transformation of the given PIL Image randomly with a given probability.
+
+Args:
+    interpolation : Default- Image.BICUBIC
+
+    p (float): probability of the image being perspectively transformed. Default value is 0.5
+
+    distortion_scale(float): it controls the degree of distortion and ranges from 0 to 1. Default value is 0.5.
+
+    fill (3-tuple or int): RGB pixel fill value for area outside the rotated image.
+        If int, it is used for all channels respectively. Default value is 0.
+\end{DoxyVerb}
+ 
+
+Definition at line 625 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_ab795687134e8cde452910c968763382a}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_ab795687134e8cde452910c968763382a}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Perspective@{torchvision\+::transforms\+::transforms\+::\+Random\+Perspective}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+Random\+Perspective@{torchvision\+::transforms\+::transforms\+::\+Random\+Perspective}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Perspective.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image): Image to be Perspectively transformed.
+
+Returns:
+    PIL Image: Random perspectivley transformed image.
+\end{DoxyVerb}
+ 
+
+Definition at line 645 of file transforms.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a3f5ee3ba51cbc4eb7b003f7b8172c09f}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomPerspective_a3f5ee3ba51cbc4eb7b003f7b8172c09f}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Perspective@{torchvision\+::transforms\+::transforms\+::\+Random\+Perspective}!get\+\_\+params@{get\+\_\+params}}
+\index{get\+\_\+params@{get\+\_\+params}!torchvision\+::transforms\+::transforms\+::\+Random\+Perspective@{torchvision\+::transforms\+::transforms\+::\+Random\+Perspective}}
+\subsubsection{\texorpdfstring{get\+\_\+params()}{get\_params()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Perspective.\+get\+\_\+params (\begin{DoxyParamCaption}\item[{}]{width,  }\item[{}]{height,  }\item[{}]{distortion\+\_\+scale }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get parameters for ``perspective`` for a random perspective transform.
+
+Args:
+    width : width of the image.
+    height : height of the image.
+
+Returns:
+    List containing [top-left, top-right, bottom-right, bottom-left] of the original image,
+    List containing [top-left, top-right, bottom-right, bottom-left] of the transformed image.
+\end{DoxyVerb}
+ 
+
+Definition at line 663 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

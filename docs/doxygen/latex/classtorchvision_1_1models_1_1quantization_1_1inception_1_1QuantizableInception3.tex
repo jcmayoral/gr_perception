@@ -1,0 +1,73 @@
+\hypertarget{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3}{}\section{torchvision.\+models.\+quantization.\+inception.\+Quantizable\+Inception3 Class Reference}
+\label{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3}\index{torchvision.\+models.\+quantization.\+inception.\+Quantizable\+Inception3@{torchvision.\+models.\+quantization.\+inception.\+Quantizable\+Inception3}}
+
+
+Inheritance diagram for torchvision.\+models.\+quantization.\+inception.\+Quantizable\+Inception3\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+quantization.\+inception.\+Quantizable\+Inception3\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a3021a40685c13187cc90aa89d45f06b9}\label{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a3021a40685c13187cc90aa89d45f06b9}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, num\+\_\+classes=1000, aux\+\_\+logits=True, transform\+\_\+input=False)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a7537fb6d277d0ace6c5495236dfca4f0}\label{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a7537fb6d277d0ace6c5495236dfca4f0}} 
+def {\bfseries forward} (self, x)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a37cfea450fb791cb71c7dacffd84851f}{fuse\+\_\+model} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_aad6b852e35a224bd335dcc0a79e1cfa2}\label{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_aad6b852e35a224bd335dcc0a79e1cfa2}} 
+{\bfseries quant}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a26d9f198a6b5f8e056e5f80742de77ea}\label{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a26d9f198a6b5f8e056e5f80742de77ea}} 
+{\bfseries dequant}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 180 of file inception.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a37cfea450fb791cb71c7dacffd84851f}\label{classtorchvision_1_1models_1_1quantization_1_1inception_1_1QuantizableInception3_a37cfea450fb791cb71c7dacffd84851f}} 
+\index{torchvision\+::models\+::quantization\+::inception\+::\+Quantizable\+Inception3@{torchvision\+::models\+::quantization\+::inception\+::\+Quantizable\+Inception3}!fuse\+\_\+model@{fuse\+\_\+model}}
+\index{fuse\+\_\+model@{fuse\+\_\+model}!torchvision\+::models\+::quantization\+::inception\+::\+Quantizable\+Inception3@{torchvision\+::models\+::quantization\+::inception\+::\+Quantizable\+Inception3}}
+\subsubsection{\texorpdfstring{fuse\+\_\+model()}{fuse\_model()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+quantization.\+inception.\+Quantizable\+Inception3.\+fuse\+\_\+model (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Fuse conv/bn/relu modules in inception model
+
+Fuse conv+bn+relu/ conv+relu/conv+bn modules to prepare for quantization.
+Model is modified in place.  Note that this operation does not change numerics
+and the model after modification is in floating point
+\end{DoxyVerb}
+ 
+
+Definition at line 212 of file inception.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/quantization/inception.\+py\end{DoxyCompactItemize}

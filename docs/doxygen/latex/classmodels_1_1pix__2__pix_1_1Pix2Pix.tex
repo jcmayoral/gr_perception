@@ -1,0 +1,102 @@
+\hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix}{}\section{models.\+pix\+\_\+2\+\_\+pix.\+Pix2\+Pix Class Reference}
+\label{classmodels_1_1pix__2__pix_1_1Pix2Pix}\index{models.\+pix\+\_\+2\+\_\+pix.\+Pix2\+Pix@{models.\+pix\+\_\+2\+\_\+pix.\+Pix2\+Pix}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a865c73fee64a2fc6edd73713e129e2c4}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a865c73fee64a2fc6edd73713e129e2c4}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, img\+\_\+rows=256, img\+\_\+cols=256, channels=3, thermal\+\_\+channels=3, dataset\+\_\+name=\char`\"{}flir\+\_\+rgbdas\char`\"{}, max\+\_\+batches=20, output\+\_\+folder=\char`\"{}.\char`\"{}, thermal\+\_\+extension=\char`\"{}.jpeg\char`\"{})
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a74507f8ee4b614519b001d82d4b56e8a}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a74507f8ee4b614519b001d82d4b56e8a}} 
+def {\bfseries custom\+\_\+initialize} (self, rgb\+\_\+dataset\+\_\+folder, thermal\+\_\+dataset\+\_\+folder, path\+\_\+timestamp\+\_\+matching, match\+\_\+by\+\_\+timestamps, factor=1, thermal\+\_\+threshold=127, data\+\_\+percentage=100)
+\item 
+def \hyperlink{classmodels_1_1pix__2__pix_1_1Pix2Pix_a12423923b4b88603514bd31c9a3eab6c}{build\+\_\+generator} (self)
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a9b29b3947199c18699e68ae3ccdfcee4}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a9b29b3947199c18699e68ae3ccdfcee4}} 
+def {\bfseries build\+\_\+discriminator} (self)
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_ad3faabaa9fc37f189e45acd0d58bd150}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_ad3faabaa9fc37f189e45acd0d58bd150}} 
+def {\bfseries train} (self, epochs, batch\+\_\+size=1, sample\+\_\+interval=1)
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_aad55a7c039520eca8ea393fd04a51968}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_aad55a7c039520eca8ea393fd04a51968}} 
+def {\bfseries sample\+\_\+images} (self, epoch, batch\+\_\+i, num\+\_\+images=5, thermal\+\_\+ext=\char`\"{}.jpeg\char`\"{})
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a842007fda948f63cad74b3a7aed022bd}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a842007fda948f63cad74b3a7aed022bd}} 
+{\bfseries output\+\_\+folder}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_af30c8322976a3f675f9098eaedad5ac7}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_af30c8322976a3f675f9098eaedad5ac7}} 
+{\bfseries dataset\+\_\+name}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a5d0b0a862eb07febe235cfd09c31df63}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a5d0b0a862eb07febe235cfd09c31df63}} 
+{\bfseries max\+\_\+batches}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_abbea5e2c8cca4ba1b246daadd0bb9d89}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_abbea5e2c8cca4ba1b246daadd0bb9d89}} 
+{\bfseries img\+\_\+rows}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a4f136c5d49e4490260752bfa6c91dac7}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a4f136c5d49e4490260752bfa6c91dac7}} 
+{\bfseries img\+\_\+cols}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a3f0132e3e3db0b0ccee792c733ee0a8d}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a3f0132e3e3db0b0ccee792c733ee0a8d}} 
+{\bfseries channels}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a4881ce26176c60d8f141327ef98682a6}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a4881ce26176c60d8f141327ef98682a6}} 
+{\bfseries thermal\+\_\+channels}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a4823cf15fe03f7d2f83120d1105fceb6}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a4823cf15fe03f7d2f83120d1105fceb6}} 
+{\bfseries img\+\_\+shape}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a41ca17d3cd9d34638be80c6e3dcf120f}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a41ca17d3cd9d34638be80c6e3dcf120f}} 
+{\bfseries thermal\+\_\+img\+\_\+shape}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a6330fc6a03239076fa438cbdbb9a0d0a}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a6330fc6a03239076fa438cbdbb9a0d0a}} 
+{\bfseries thermal\+\_\+extension}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_ae9d16fc1d385888ffc974eccb2996343}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_ae9d16fc1d385888ffc974eccb2996343}} 
+{\bfseries data\+\_\+loader}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a7890fb7ae807d2091dcf68e3f34719bd}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a7890fb7ae807d2091dcf68e3f34719bd}} 
+{\bfseries disc\+\_\+patch}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_ae7b3fc8cea157d7e3b297b9d3d1a81bc}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_ae7b3fc8cea157d7e3b297b9d3d1a81bc}} 
+{\bfseries gf}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a079f2d9df1500e7bd3e8d4b7db6cef89}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a079f2d9df1500e7bd3e8d4b7db6cef89}} 
+{\bfseries df}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a65b57a1d90592c1b412b49808e585d1b}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a65b57a1d90592c1b412b49808e585d1b}} 
+{\bfseries discriminator}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a7bb1c7c1613f3f060a84715169893b43}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a7bb1c7c1613f3f060a84715169893b43}} 
+{\bfseries generator}
+\item 
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_ac4ea51c6e25a2966b22b96923cd2a593}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_ac4ea51c6e25a2966b22b96923cd2a593}} 
+{\bfseries combined}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 22 of file pix\+\_\+2\+\_\+pix.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classmodels_1_1pix__2__pix_1_1Pix2Pix_a12423923b4b88603514bd31c9a3eab6c}\label{classmodels_1_1pix__2__pix_1_1Pix2Pix_a12423923b4b88603514bd31c9a3eab6c}} 
+\index{models\+::pix\+\_\+2\+\_\+pix\+::\+Pix2\+Pix@{models\+::pix\+\_\+2\+\_\+pix\+::\+Pix2\+Pix}!build\+\_\+generator@{build\+\_\+generator}}
+\index{build\+\_\+generator@{build\+\_\+generator}!models\+::pix\+\_\+2\+\_\+pix\+::\+Pix2\+Pix@{models\+::pix\+\_\+2\+\_\+pix\+::\+Pix2\+Pix}}
+\subsubsection{\texorpdfstring{build\+\_\+generator()}{build\_generator()}}
+{\footnotesize\ttfamily def models.\+pix\+\_\+2\+\_\+pix.\+Pix2\+Pix.\+build\+\_\+generator (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}U-Net Generator\end{DoxyVerb}
+ 
+
+Definition at line 103 of file pix\+\_\+2\+\_\+pix.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/feature\+\_\+generation/rgb\+\_\+2\+\_\+thermal/models/pix\+\_\+2\+\_\+pix.\+py\end{DoxyCompactItemize}

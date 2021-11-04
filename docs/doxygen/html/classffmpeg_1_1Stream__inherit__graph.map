@@ -1,0 +1,6 @@
+<map id="ffmpeg::Stream" name="ffmpeg::Stream">
+<area shape="rect" id="node2" href="$classffmpeg_1_1AudioStream.html" title="ffmpeg::AudioStream" alt="" coords="5,80,151,107"/>
+<area shape="rect" id="node3" href="$classffmpeg_1_1SubtitleStream.html" title="ffmpeg::SubtitleStream" alt="" coords="175,80,331,107"/>
+<area shape="rect" id="node5" href="$classffmpeg_1_1VideoStream.html" title="ffmpeg::VideoStream" alt="" coords="355,80,500,107"/>
+<area shape="rect" id="node4" href="$classffmpeg_1_1CCStream.html" title="ffmpeg::CCStream" alt="" coords="187,155,319,181"/>
+</map>

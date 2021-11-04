@@ -1,0 +1,137 @@
+\hypertarget{classsetup_1_1clean}{}\section{setup.\+clean Class Reference}
+\label{classsetup_1_1clean}\index{setup.\+clean@{setup.\+clean}}
+
+
+Inheritance diagram for setup.\+clean\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=179pt]{classsetup_1_1clean__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for setup.\+clean\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{classsetup_1_1clean__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_ac745dd6d3e16dafce2b7f1167b4f6974}\label{classsetup_1_1clean_ac745dd6d3e16dafce2b7f1167b4f6974}} 
+def {\bfseries run} (self)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_aeb31362a957edc39c6374808416c7edc}\label{classsetup_1_1clean_aeb31362a957edc39c6374808416c7edc}} 
+{\bfseries name} = package\+\_\+name,
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a0457831314845d5063cf4896f1a4dab0}\label{classsetup_1_1clean_a0457831314845d5063cf4896f1a4dab0}} 
+{\bfseries version} = version,
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a157a038d4962f1a0e566042ac2a6cc4a}\label{classsetup_1_1clean_a157a038d4962f1a0e566042ac2a6cc4a}} 
+string {\bfseries author} = \textquotesingle{}Py\+Torch Core Team\textquotesingle{},
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_aeea4353bb8c79a3ca697a4740c6f35b6}\label{classsetup_1_1clean_aeea4353bb8c79a3ca697a4740c6f35b6}} 
+string {\bfseries author\+\_\+email} = \textquotesingle{}soumith@pytorch.\+org\textquotesingle{},
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a2323a8593c70904962b35f90b1aba130}\label{classsetup_1_1clean_a2323a8593c70904962b35f90b1aba130}} 
+string {\bfseries url} = \textquotesingle{}https\+://github.\+com/pytorch/vision\textquotesingle{},
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a93800dfcfb87a62fc938e84488fbaa73}\label{classsetup_1_1clean_a93800dfcfb87a62fc938e84488fbaa73}} 
+string {\bfseries description} = \textquotesingle{}image and video datasets and models for torch deep learning\textquotesingle{},
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a6fe4ba47f23aa92d0df047bb2aa51594}\label{classsetup_1_1clean_a6fe4ba47f23aa92d0df047bb2aa51594}} 
+{\bfseries long\+\_\+description} = readme,
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_aa763cde93281d6e15b67b3b9d6742d6a}\label{classsetup_1_1clean_aa763cde93281d6e15b67b3b9d6742d6a}} 
+string {\bfseries license} = \textquotesingle{}B\+SD\textquotesingle{},
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a5e61a076a4320a3ae6a3eeaf347e97e7}\label{classsetup_1_1clean_a5e61a076a4320a3ae6a3eeaf347e97e7}} 
+{\bfseries packages} = find\+\_\+packages(exclude=(\textquotesingle{}test\textquotesingle{},)),
+\item 
+dictionary {\bfseries package\+\_\+data}
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a8bb5dcaefc8ec10ad2d5a20182fcb720}\label{classsetup_1_1clean_a8bb5dcaefc8ec10ad2d5a20182fcb720}} 
+bool {\bfseries zip\+\_\+safe} = False,
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_ab73024260f319e069b135def3314c719}\label{classsetup_1_1clean_ab73024260f319e069b135def3314c719}} 
+{\bfseries install\+\_\+requires} = requirements,
+\item 
+dictionary {\bfseries extras\+\_\+require}
+\item 
+\mbox{\Hypertarget{classsetup_1_1clean_a9f4239184eb03351d7c23df620f43d29}\label{classsetup_1_1clean_a9f4239184eb03351d7c23df620f43d29}} 
+{\bfseries ext\+\_\+modules} = get\+\_\+extensions(),
+\item 
+dictionary {\bfseries cmdclass}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 388 of file setup.\+py.
+
+
+
+\subsection{Field Documentation}
+\mbox{\Hypertarget{classsetup_1_1clean_a158422858fc2fab780a3fa2ef764c157}\label{classsetup_1_1clean_a158422858fc2fab780a3fa2ef764c157}} 
+\index{setup\+::clean@{setup\+::clean}!cmdclass@{cmdclass}}
+\index{cmdclass@{cmdclass}!setup\+::clean@{setup\+::clean}}
+\subsubsection{\texorpdfstring{cmdclass}{cmdclass}}
+{\footnotesize\ttfamily dictionary setup.\+clean.\+cmdclass\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+        \textcolor{stringliteral}{'build\_ext'}: BuildExtension.with\_options(no\_python\_abi\_suffix=\textcolor{keyword}{True}),
+        \textcolor{stringliteral}{'clean'}: clean,
+    \}
+\end{DoxyCode}
+
+
+Definition at line 425 of file setup.\+py.
+
+\mbox{\Hypertarget{classsetup_1_1clean_adbd43bca420849375c14287e4d0142de}\label{classsetup_1_1clean_adbd43bca420849375c14287e4d0142de}} 
+\index{setup\+::clean@{setup\+::clean}!extras\+\_\+require@{extras\+\_\+require}}
+\index{extras\+\_\+require@{extras\+\_\+require}!setup\+::clean@{setup\+::clean}}
+\subsubsection{\texorpdfstring{extras\+\_\+require}{extras\_require}}
+{\footnotesize\ttfamily dictionary setup.\+clean.\+extras\+\_\+require\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+        \textcolor{stringliteral}{"scipy"}: [\textcolor{stringliteral}{"scipy"}],
+    \},
+\end{DoxyCode}
+
+
+Definition at line 421 of file setup.\+py.
+
+\mbox{\Hypertarget{classsetup_1_1clean_a8dfea6073994070ab850f277315c7162}\label{classsetup_1_1clean_a8dfea6073994070ab850f277315c7162}} 
+\index{setup\+::clean@{setup\+::clean}!package\+\_\+data@{package\+\_\+data}}
+\index{package\+\_\+data@{package\+\_\+data}!setup\+::clean@{setup\+::clean}}
+\subsubsection{\texorpdfstring{package\+\_\+data}{package\_data}}
+{\footnotesize\ttfamily dictionary setup.\+clean.\+package\+\_\+data\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+        package\_name: [\textcolor{stringliteral}{'*.dll'}, \textcolor{stringliteral}{'*.dylib'}, \textcolor{stringliteral}{'*.so'}]
+    \},
+\end{DoxyCode}
+
+
+Definition at line 416 of file setup.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/setup.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,5 @@
+<map id="torchvision.datasets.imagenet.ImageNet" name="torchvision.datasets.imagenet.ImageNet">
+<area shape="rect" id="node2" href="$classtorchvision_1_1datasets_1_1folder_1_1ImageFolder.html" title="torchvision.datasets.folder.\lImageFolder" alt="" coords="16,259,195,300"/>
+<area shape="rect" id="node3" href="$classtorchvision_1_1datasets_1_1folder_1_1DatasetFolder.html" title="torchvision.datasets.folder.\lDatasetFolder" alt="" coords="16,169,195,211"/>
+<area shape="rect" id="node4" href="$classtorchvision_1_1datasets_1_1vision_1_1VisionDataset.html" title="torchvision.datasets.vision.\lVisionDataset" alt="" coords="15,80,196,121"/>
+</map>

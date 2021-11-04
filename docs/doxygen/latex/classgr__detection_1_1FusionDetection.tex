@@ -1,0 +1,91 @@
+\hypertarget{classgr__detection_1_1FusionDetection}{}\section{gr\+\_\+detection\+:\+:Fusion\+Detection Class Reference}
+\label{classgr__detection_1_1FusionDetection}\index{gr\+\_\+detection\+::\+Fusion\+Detection@{gr\+\_\+detection\+::\+Fusion\+Detection}}
+
+
+Inheritance diagram for gr\+\_\+detection\+:\+:Fusion\+Detection\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classgr__detection_1_1FusionDetection__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a49d48f59921295bba8171a0c5ee76143}\label{classgr__detection_1_1FusionDetection_a49d48f59921295bba8171a0c5ee76143}} 
+{\bfseries Fusion\+Detection} (const \hyperlink{classgr__detection_1_1FusionDetection}{Fusion\+Detection} \&other)
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_ae4589eebcfc79a7b89b5808f6080377a}\label{classgr__detection_1_1FusionDetection_ae4589eebcfc79a7b89b5808f6080377a}} 
+int {\bfseries get\+Detections\+Number} ()
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a7e5dbe4b538c14cb3fad7dda2f614f69}\label{classgr__detection_1_1FusionDetection_a7e5dbe4b538c14cb3fad7dda2f614f69}} 
+std\+::string {\bfseries random\+String} ()
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a9dfefff3649dc85cabec880a14583e41}\label{classgr__detection_1_1FusionDetection_a9dfefff3649dc85cabec880a14583e41}} 
+void {\bfseries Update\+Orientation} (std\+::string id, \hyperlink{structgr__detection_1_1Person}{Person} p)
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_addfc285bfc67f10b56797f3ac6841247}\label{classgr__detection_1_1FusionDetection_addfc285bfc67f10b56797f3ac6841247}} 
+void {\bfseries Update\+Object} (std\+::string id, \hyperlink{structgr__detection_1_1Person}{Person} p)
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a37cdad246edc93dd62d1bc897ae1126e}\label{classgr__detection_1_1FusionDetection_a37cdad246edc93dd62d1bc897ae1126e}} 
+void {\bfseries clean\+Up\+Cycle} ()
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_ada6fa1888ae7fae15054a4d59b6d2c82}\label{classgr__detection_1_1FusionDetection_ada6fa1888ae7fae15054a4d59b6d2c82}} 
+void {\bfseries show\+Current\+Detections} ()
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a857168583653344d33fe0ee41ffb6d65}\label{classgr__detection_1_1FusionDetection_a857168583653344d33fe0ee41ffb6d65}} 
+void {\bfseries insert\+New\+Object} (\hyperlink{structgr__detection_1_1Person}{Person} p)
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a281f36c6ce695149fd6989f311fa4310}\label{classgr__detection_1_1FusionDetection_a281f36c6ce695149fd6989f311fa4310}} 
+\hyperlink{structgr__detection_1_1Person}{Person} {\bfseries Get\+Object} (std\+::string id)
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a7df909766331d4c24fea079937583e9e}\label{classgr__detection_1_1FusionDetection_a7df909766331d4c24fea079937583e9e}} 
+std\+::string {\bfseries match\+Detection} (\hyperlink{structgr__detection_1_1Person}{Person} new\+\_\+cluster)
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a8a7da80a605aa5f088ee1a6b626079ad}\label{classgr__detection_1_1FusionDetection_a8a7da80a605aa5f088ee1a6b626079ad}} 
+geometry\+\_\+msgs\+::\+Pose\+Array {\bfseries create\+Pose\+Array} ()
+\item 
+geometry\+\_\+msgs\+::\+Quaternion \hyperlink{classgr__detection_1_1FusionDetection_adf2d2812d4191bcd819233dbc5cfd6f7}{get\+Difference\+Quaternion} (geometry\+\_\+msgs\+::\+Quaternion a, geometry\+\_\+msgs\+::\+Quaternion b)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a534d46a3505580fb180b9c884070da0e}\label{classgr__detection_1_1FusionDetection_a534d46a3505580fb180b9c884070da0e}} 
+float {\bfseries time\+\_\+break\+\_\+}
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a4595ad713cf983d2df3d6b059ebef35e}\label{classgr__detection_1_1FusionDetection_a4595ad713cf983d2df3d6b059ebef35e}} 
+float {\bfseries minmatch\+\_\+score\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_a85f715167a60aa219ddd3ad2b3220137}\label{classgr__detection_1_1FusionDetection_a85f715167a60aa219ddd3ad2b3220137}} 
+static boost\+::shared\+\_\+ptr$<$ \hyperlink{classgr__detection_1_1CustomArray}{Custom\+Array} $>$ {\bfseries d\+\_\+array\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 43 of file common\+\_\+detection\+\_\+utils.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classgr__detection_1_1FusionDetection_adf2d2812d4191bcd819233dbc5cfd6f7}\label{classgr__detection_1_1FusionDetection_adf2d2812d4191bcd819233dbc5cfd6f7}} 
+\index{gr\+\_\+detection\+::\+Fusion\+Detection@{gr\+\_\+detection\+::\+Fusion\+Detection}!get\+Difference\+Quaternion@{get\+Difference\+Quaternion}}
+\index{get\+Difference\+Quaternion@{get\+Difference\+Quaternion}!gr\+\_\+detection\+::\+Fusion\+Detection@{gr\+\_\+detection\+::\+Fusion\+Detection}}
+\subsubsection{\texorpdfstring{get\+Difference\+Quaternion()}{getDifferenceQuaternion()}}
+{\footnotesize\ttfamily geometry\+\_\+msgs\+::\+Quaternion Fusion\+Detection\+::get\+Difference\+Quaternion (\begin{DoxyParamCaption}\item[{geometry\+\_\+msgs\+::\+Quaternion}]{a,  }\item[{geometry\+\_\+msgs\+::\+Quaternion}]{b }\end{DoxyParamCaption})}
+
+\} 
+
+Definition at line 80 of file common\+\_\+detection\+\_\+utils.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/common\+\_\+detection\+\_\+utils/include/common\+\_\+detection\+\_\+utils/common\+\_\+detection\+\_\+utils.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/common\+\_\+detection\+\_\+utils/src/common\+\_\+detection\+\_\+utils.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,73 @@
+\hypertarget{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet}{}\section{torchvision.\+models.\+quantization.\+resnet.\+Quantizable\+Res\+Net Class Reference}
+\label{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet}\index{torchvision.\+models.\+quantization.\+resnet.\+Quantizable\+Res\+Net@{torchvision.\+models.\+quantization.\+resnet.\+Quantizable\+Res\+Net}}
+
+
+Inheritance diagram for torchvision.\+models.\+quantization.\+resnet.\+Quantizable\+Res\+Net\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+quantization.\+resnet.\+Quantizable\+Res\+Net\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_acedde4768f9d7f3555316fb5a89935ea}\label{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_acedde4768f9d7f3555316fb5a89935ea}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, args, kwargs)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_a72d88686cc1c47e0629f21ded13ecd3a}\label{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_a72d88686cc1c47e0629f21ded13ecd3a}} 
+def {\bfseries forward} (self, x)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_abca804378ddac17f0d8b980ea00c9faa}{fuse\+\_\+model} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_aa9717ab00dcc1b189f75a990adf4735d}\label{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_aa9717ab00dcc1b189f75a990adf4735d}} 
+{\bfseries quant}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_a7963ea21d289717ba219d560fc073d19}\label{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_a7963ea21d289717ba219d560fc073d19}} 
+{\bfseries dequant}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 85 of file resnet.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_abca804378ddac17f0d8b980ea00c9faa}\label{classtorchvision_1_1models_1_1quantization_1_1resnet_1_1QuantizableResNet_abca804378ddac17f0d8b980ea00c9faa}} 
+\index{torchvision\+::models\+::quantization\+::resnet\+::\+Quantizable\+Res\+Net@{torchvision\+::models\+::quantization\+::resnet\+::\+Quantizable\+Res\+Net}!fuse\+\_\+model@{fuse\+\_\+model}}
+\index{fuse\+\_\+model@{fuse\+\_\+model}!torchvision\+::models\+::quantization\+::resnet\+::\+Quantizable\+Res\+Net@{torchvision\+::models\+::quantization\+::resnet\+::\+Quantizable\+Res\+Net}}
+\subsubsection{\texorpdfstring{fuse\+\_\+model()}{fuse\_model()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+quantization.\+resnet.\+Quantizable\+Res\+Net.\+fuse\+\_\+model (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Fuse conv/bn/relu modules in resnet models
+
+Fuse conv+bn+relu/ Conv+relu/conv+Bn modules to prepare for quantization.
+Model is modified in place.  Note that this operation does not change numerics
+and the model after modification is in floating point
+\end{DoxyVerb}
+ 
+
+Definition at line 102 of file resnet.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/quantization/resnet.\+py\end{DoxyCompactItemize}

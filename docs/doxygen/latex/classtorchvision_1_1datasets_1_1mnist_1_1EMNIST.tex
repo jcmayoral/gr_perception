@@ -1,0 +1,104 @@
+\hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST}{}\section{torchvision.\+datasets.\+mnist.\+E\+M\+N\+I\+ST Class Reference}
+\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST}\index{torchvision.\+datasets.\+mnist.\+E\+M\+N\+I\+ST@{torchvision.\+datasets.\+mnist.\+E\+M\+N\+I\+ST}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+mnist.\+E\+M\+N\+I\+ST\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+mnist.\+E\+M\+N\+I\+ST\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a7ebf2f0e900e6bfdf32d83e5dbd44c2f}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a7ebf2f0e900e6bfdf32d83e5dbd44c2f}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, split, kwargs)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a310e4e3b50dff00290065d416060248c}{download} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a1b2674c6d33e90c7f2f9f3ba7f6e1636}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a1b2674c6d33e90c7f2f9f3ba7f6e1636}} 
+{\bfseries split}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a85401b164c3e5a48c722f73d0bb10abb}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a85401b164c3e5a48c722f73d0bb10abb}} 
+{\bfseries training\+\_\+file}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a79643b73b88da967f0968e0df9872d48}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a79643b73b88da967f0968e0df9872d48}} 
+{\bfseries test\+\_\+file}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_adffa8e72263c38474aad77cf9d33e454}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_adffa8e72263c38474aad77cf9d33e454}} 
+{\bfseries classes}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_aa5d7f086836dcdbcfce281930e37c9ce}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_aa5d7f086836dcdbcfce281930e37c9ce}} 
+{\bfseries url}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_aabf912b8ec2acf3d62d843d2e88bec7a}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_aabf912b8ec2acf3d62d843d2e88bec7a}} 
+{\bfseries md5}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a93e35ee64eebe41531f89a536d141395}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a93e35ee64eebe41531f89a536d141395}} 
+{\bfseries splits}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a998882b70c6109be4b317a00fd18f005}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a998882b70c6109be4b317a00fd18f005}} 
+{\bfseries classes\+\_\+split\+\_\+dict}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`EMNIST <https://www.westernsydney.edu.au/bens/home/reproducible_research/emnist>`_ Dataset.
+
+Args:
+    root (string): Root directory of dataset where ``EMNIST/processed/training.pt``
+        and  ``EMNIST/processed/test.pt`` exist.
+    split (string): The dataset has 6 different splits: ``byclass``, ``bymerge``,
+        ``balanced``, ``letters``, ``digits`` and ``mnist``. This argument specifies
+        which one to use.
+    train (bool, optional): If True, creates dataset from ``training.pt``,
+        otherwise from ``test.pt``.
+    download (bool, optional): If true, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+\end{DoxyVerb}
+ 
+
+Definition at line 216 of file mnist.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a310e4e3b50dff00290065d416060248c}\label{classtorchvision_1_1datasets_1_1mnist_1_1EMNIST_a310e4e3b50dff00290065d416060248c}} 
+\index{torchvision\+::datasets\+::mnist\+::\+E\+M\+N\+I\+ST@{torchvision\+::datasets\+::mnist\+::\+E\+M\+N\+I\+ST}!download@{download}}
+\index{download@{download}!torchvision\+::datasets\+::mnist\+::\+E\+M\+N\+I\+ST@{torchvision\+::datasets\+::mnist\+::\+E\+M\+N\+I\+ST}}
+\subsubsection{\texorpdfstring{download()}{download()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+mnist.\+E\+M\+N\+I\+S\+T.\+download (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Download the EMNIST data if it doesn't exist in processed_folder already.\end{DoxyVerb}
+ 
+
+Definition at line 269 of file mnist.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/mnist.\+py\end{DoxyCompactItemize}

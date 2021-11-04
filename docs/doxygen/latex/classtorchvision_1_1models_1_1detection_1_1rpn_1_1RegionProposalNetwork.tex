@@ -1,0 +1,152 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork}{}\section{torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork}\index{torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network@{torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ab751dd7e0875dd92b06c414d64f008bb}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ab751dd7e0875dd92b06c414d64f008bb}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, anchor\+\_\+generator, head, fg\+\_\+iou\+\_\+thresh, bg\+\_\+iou\+\_\+thresh, batch\+\_\+size\+\_\+per\+\_\+image, positive\+\_\+fraction, pre\+\_\+nms\+\_\+top\+\_\+n, post\+\_\+nms\+\_\+top\+\_\+n, nms\+\_\+thresh)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a100c769b28a98119060ca3c2220367f4}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a100c769b28a98119060ca3c2220367f4}} 
+def {\bfseries pre\+\_\+nms\+\_\+top\+\_\+n} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a6e0211bb42200aa656cc99d5474bed69}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a6e0211bb42200aa656cc99d5474bed69}} 
+def {\bfseries post\+\_\+nms\+\_\+top\+\_\+n} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a1367b1c0c203114637b6775824a60ce4}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a1367b1c0c203114637b6775824a60ce4}} 
+def {\bfseries assign\+\_\+targets\+\_\+to\+\_\+anchors} (self, anchors, targets)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_abb245ed6cf90b372d460ec7d6431004e}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_abb245ed6cf90b372d460ec7d6431004e}} 
+def {\bfseries filter\+\_\+proposals} (self, proposals, objectness, image\+\_\+shapes, num\+\_\+anchors\+\_\+per\+\_\+level)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a900fa618bdc5e343a019476e6302b071}{compute\+\_\+loss} (self, objectness, pred\+\_\+bbox\+\_\+deltas, labels, regression\+\_\+targets)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ae036b9541f9cc96bd617295b401c0cef}{forward} (self, images, features, targets=None \# type\+:\+Optional\mbox{[}List\mbox{[}Dict\mbox{[}str, Tensor)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a1213f085be212fd2af41b2626d6a738a}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a1213f085be212fd2af41b2626d6a738a}} 
+{\bfseries anchor\+\_\+generator}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a131e5c84c7e8647ed66c924e54ef4b7d}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a131e5c84c7e8647ed66c924e54ef4b7d}} 
+{\bfseries head}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a6bf55b7abfefb9af0a919b14363302e1}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a6bf55b7abfefb9af0a919b14363302e1}} 
+{\bfseries box\+\_\+coder}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a6e0565fea5c8d8dbc0da7261ce2f5fdd}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a6e0565fea5c8d8dbc0da7261ce2f5fdd}} 
+{\bfseries box\+\_\+similarity}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ae90669e0d788d063a4e81938f3752020}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ae90669e0d788d063a4e81938f3752020}} 
+{\bfseries proposal\+\_\+matcher}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a1cf33c8eb08d896ec91b3324800b38fc}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a1cf33c8eb08d896ec91b3324800b38fc}} 
+{\bfseries fg\+\_\+bg\+\_\+sampler}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a763c93e9573f7632dd05af82575a6cfa}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a763c93e9573f7632dd05af82575a6cfa}} 
+{\bfseries nms\+\_\+thresh}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ad6c33a6e6f8ff68d44f6d059babed2c2}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ad6c33a6e6f8ff68d44f6d059babed2c2}} 
+{\bfseries min\+\_\+size}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Implements Region Proposal Network (RPN).
+
+Arguments:
+    anchor_generator (AnchorGenerator): module that generates the anchors for a set of feature
+        maps.
+    head (nn.Module): module that computes the objectness and regression deltas
+    fg_iou_thresh (float): minimum IoU between the anchor and the GT box so that they can be
+        considered as positive during training of the RPN.
+    bg_iou_thresh (float): maximum IoU between the anchor and the GT box so that they can be
+        considered as negative during training of the RPN.
+    batch_size_per_image (int): number of anchors that are sampled during training of the RPN
+        for computing the loss
+    positive_fraction (float): proportion of positive anchors in a mini-batch during training
+        of the RPN
+    pre_nms_top_n (Dict[int]): number of proposals to keep before applying NMS. It should
+        contain two fields: training and testing, to allow for different values depending
+        on training or evaluation
+    post_nms_top_n (Dict[int]): number of proposals to keep after applying NMS. It should
+        contain two fields: training and testing, to allow for different values depending
+        on training or evaluation
+    nms_thresh (float): NMS threshold used for postprocessing the RPN proposals\end{DoxyVerb}
+ 
+
+Definition at line 253 of file rpn.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a900fa618bdc5e343a019476e6302b071}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_a900fa618bdc5e343a019476e6302b071}} 
+\index{torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network@{torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network}!compute\+\_\+loss@{compute\+\_\+loss}}
+\index{compute\+\_\+loss@{compute\+\_\+loss}!torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network@{torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network}}
+\subsubsection{\texorpdfstring{compute\+\_\+loss()}{compute\_loss()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network.\+compute\+\_\+loss (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{objectness,  }\item[{}]{pred\+\_\+bbox\+\_\+deltas,  }\item[{}]{labels,  }\item[{}]{regression\+\_\+targets }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Arguments:
+    objectness (Tensor)
+    pred_bbox_deltas (Tensor)
+    labels (List[Tensor])
+    regression_targets (List[Tensor])
+
+Returns:
+    objectness_loss (Tensor)
+    box_loss (Tensor)
+\end{DoxyVerb}
+ 
+
+Definition at line 418 of file rpn.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ae036b9541f9cc96bd617295b401c0cef}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1RegionProposalNetwork_ae036b9541f9cc96bd617295b401c0cef}} 
+\index{torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network@{torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network}!forward@{forward}}
+\index{forward@{forward}!torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network@{torchvision\+::models\+::detection\+::rpn\+::\+Region\+Proposal\+Network}}
+\subsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+rpn.\+Region\+Proposal\+Network.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{images,  }\item[{}]{features,  }\item[{}]{targets = {\ttfamily None~~\#~type\+:~Optional\mbox{[}List\mbox{[}Dict\mbox{[}str},  }\item[{}]{Tensor }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Arguments:
+    images (ImageList): images for which we want to compute the predictions
+    features (OrderedDict[Tensor]): features computed from the images that are
+used for computing the predictions. Each tensor in the list
+correspond to different feature levels
+    targets (List[Dict[Tensor]]): ground-truth boxes present in the image (optional).
+If provided, each element in the dict should contain a field `boxes`,
+with the locations of the ground-truth boxes.
+
+Returns:
+    boxes (List[Tensor]): the predicted boxes from the RPN, one Tensor per
+image.
+    losses (Dict[Tensor]): the losses for the model during training. During
+testing, it is an empty dict.
+\end{DoxyVerb}
+ 
+
+Definition at line 460 of file rpn.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/rpn.\+py\end{DoxyCompactItemize}

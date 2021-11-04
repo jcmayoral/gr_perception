@@ -1,0 +1,68 @@
+\hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl}{}\section{vision\+:\+:models\+:\+:Shuffle\+Net\+V2\+Impl Struct Reference}
+\label{structvision_1_1models_1_1ShuffleNetV2Impl}\index{vision\+::models\+::\+Shuffle\+Net\+V2\+Impl@{vision\+::models\+::\+Shuffle\+Net\+V2\+Impl}}
+
+
+Inheritance diagram for vision\+:\+:models\+:\+:Shuffle\+Net\+V2\+Impl\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structvision_1_1models_1_1ShuffleNetV2Impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for vision\+:\+:models\+:\+:Shuffle\+Net\+V2\+Impl\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{structvision_1_1models_1_1ShuffleNetV2Impl__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a1611baeee643035470400c025384c403}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a1611baeee643035470400c025384c403}} 
+{\bfseries Shuffle\+Net\+V2\+Impl} (const std\+::vector$<$ int64\+\_\+t $>$ \&stage\+\_\+repeats, const std\+::vector$<$ int64\+\_\+t $>$ \&stage\+\_\+out\+\_\+channels, int64\+\_\+t num\+\_\+classes=1000)
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a2168fb0a08bee9aa16ff291fc3f04b64}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a2168fb0a08bee9aa16ff291fc3f04b64}} 
+torch\+::\+Tensor {\bfseries forward} (torch\+::\+Tensor x)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a17eb6ef3be4bbe87432acc0403d17d24}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a17eb6ef3be4bbe87432acc0403d17d24}} 
+std\+::vector$<$ int64\+\_\+t $>$ {\bfseries \+\_\+stage\+\_\+out\+\_\+channels}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a6f4195f18621aedf134960c5458cb652}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a6f4195f18621aedf134960c5458cb652}} 
+torch\+::nn\+::\+Sequential {\bfseries conv1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a9b921bf43e300f86372e21c9f19ec5ce}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a9b921bf43e300f86372e21c9f19ec5ce}} 
+torch\+::nn\+::\+Sequential {\bfseries stage2}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a846ccea0ac5600b5c83fe33ea5e870ff}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a846ccea0ac5600b5c83fe33ea5e870ff}} 
+torch\+::nn\+::\+Sequential {\bfseries stage3}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_aec0fbd6ccdbee8ea7c16589c6f2d72b4}\label{structvision_1_1models_1_1ShuffleNetV2Impl_aec0fbd6ccdbee8ea7c16589c6f2d72b4}} 
+torch\+::nn\+::\+Sequential {\bfseries stage4}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_a27c9aa8c8147ec76827f486bfa46c32a}\label{structvision_1_1models_1_1ShuffleNetV2Impl_a27c9aa8c8147ec76827f486bfa46c32a}} 
+torch\+::nn\+::\+Sequential {\bfseries conv5} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ShuffleNetV2Impl_ab351b987162fc957522a4c3fc3528f41}\label{structvision_1_1models_1_1ShuffleNetV2Impl_ab351b987162fc957522a4c3fc3528f41}} 
+torch\+::nn\+::\+Linear {\bfseries fc} \{nullptr\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 10 of file shufflenetv2.\+h.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/shufflenetv2.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/shufflenetv2.\+cpp\end{DoxyCompactItemize}

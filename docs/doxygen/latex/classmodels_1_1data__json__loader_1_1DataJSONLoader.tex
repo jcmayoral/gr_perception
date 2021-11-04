@@ -1,0 +1,71 @@
+\hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader}{}\section{models.\+data\+\_\+json\+\_\+loader.\+Data\+J\+S\+O\+N\+Loader Class Reference}
+\label{classmodels_1_1data__json__loader_1_1DataJSONLoader}\index{models.\+data\+\_\+json\+\_\+loader.\+Data\+J\+S\+O\+N\+Loader@{models.\+data\+\_\+json\+\_\+loader.\+Data\+J\+S\+O\+N\+Loader}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_aaa8a939d0db2a1117c3620af08f2368f}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_aaa8a939d0db2a1117c3620af08f2368f}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, dataset\+\_\+name, img\+\_\+res=(128, 128), rgb\+\_\+dataset\+\_\+folder=\char`\"{}/floyd/input/flir\+\_\+adas/train/R\+GB\char`\"{}, json\+\_\+file=\char`\"{}/floyd/input/flir\+\_\+adas/train/thermal\+\_\+8\+\_\+bit\char`\"{}, data\+\_\+percentage=100)
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a0939f8e14d269227cb7e44a2d1a4acc1}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a0939f8e14d269227cb7e44a2d1a4acc1}} 
+def {\bfseries load\+\_\+samples} (self, num\+\_\+imgs=32, thermal\+\_\+ext=\char`\"{}.tiff\char`\"{})
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a491f215f6e503972ef415dd88270c324}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a491f215f6e503972ef415dd88270c324}} 
+def {\bfseries match\+\_\+by\+\_\+name} (self, rgb\+\_\+files)
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_adefc1aa06d66a0e3e6fddb1c75f007e7}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_adefc1aa06d66a0e3e6fddb1c75f007e7}} 
+def {\bfseries generator} (self, batch\+\_\+size=2, thermal\+\_\+ext=\char`\"{}.tiff\char`\"{})
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a0ffd7300d6c57d45dfc1e23681b8d264}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a0ffd7300d6c57d45dfc1e23681b8d264}} 
+def {\bfseries rotate\+\_\+image} (self, image)
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a6694201556c810977f8ed85a9b753fd7}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a6694201556c810977f8ed85a9b753fd7}} 
+def {\bfseries imread} (self, path)
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a44c3ca334604ba0d19893385d2f993ab}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a44c3ca334604ba0d19893385d2f993ab}} 
+def {\bfseries thermal\+\_\+imread} (self, img\+\_\+id, rgb\+\_\+shape)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a78bee3e0ef6028076607d225e7af1156}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a78bee3e0ef6028076607d225e7af1156}} 
+{\bfseries dataset\+\_\+name}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_ab584c2104eabfb1fd8803bacd457f717}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_ab584c2104eabfb1fd8803bacd457f717}} 
+{\bfseries data\+\_\+percentage}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a83f23d4b6b3b28fe5c42a017260d7f4b}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a83f23d4b6b3b28fe5c42a017260d7f4b}} 
+{\bfseries img\+\_\+res}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a0d5d0a903dc429e9376a1fb485ac7350}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a0d5d0a903dc429e9376a1fb485ac7350}} 
+{\bfseries thermal\+\_\+res}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a1c4fc8d614fc65bb414fef1d8cb5a119}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a1c4fc8d614fc65bb414fef1d8cb5a119}} 
+{\bfseries rgb\+\_\+dataset\+\_\+folder}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_acb18350537bd510a6f7b50141d9f352f}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_acb18350537bd510a6f7b50141d9f352f}} 
+{\bfseries json\+\_\+file}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_af0c3b403954a0bbd7caabf50d1845256}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_af0c3b403954a0bbd7caabf50d1845256}} 
+{\bfseries match\+\_\+thermalfunction}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_aae2da523da0e55d62130d55062304958}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_aae2da523da0e55d62130d55062304958}} 
+{\bfseries dyn\+\_\+threshold}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_af27eb77d7a7e443526a9698d50b3d66d}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_af27eb77d7a7e443526a9698d50b3d66d}} 
+{\bfseries rgb\+\_\+images\+\_\+list}
+\item 
+\mbox{\Hypertarget{classmodels_1_1data__json__loader_1_1DataJSONLoader_a262845f12dc53c73489cdfb2b2c1fede}\label{classmodels_1_1data__json__loader_1_1DataJSONLoader_a262845f12dc53c73489cdfb2b2c1fede}} 
+{\bfseries n\+\_\+batches}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 12 of file data\+\_\+json\+\_\+loader.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/feature\+\_\+generation/rgb\+\_\+2\+\_\+thermal/models/data\+\_\+json\+\_\+loader.\+py\end{DoxyCompactItemize}

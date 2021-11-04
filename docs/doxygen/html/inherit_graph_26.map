@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classffmpeg_1_1Stream.html" title="ffmpeg::Stream" alt="" coords="5,56,117,83"/>
+<area shape="rect" id="node2" href="$classffmpeg_1_1AudioStream.html" title="ffmpeg::AudioStream" alt="" coords="171,5,316,32"/>
+<area shape="rect" id="node3" href="$classffmpeg_1_1SubtitleStream.html" title="ffmpeg::SubtitleStream" alt="" coords="165,56,321,83"/>
+<area shape="rect" id="node5" href="$classffmpeg_1_1VideoStream.html" title="ffmpeg::VideoStream" alt="" coords="171,107,316,133"/>
+<area shape="rect" id="node4" href="$classffmpeg_1_1CCStream.html" title="ffmpeg::CCStream" alt="" coords="369,56,501,83"/>
+</map>

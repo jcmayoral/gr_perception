@@ -1,0 +1,83 @@
+\hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck}{}\section{vision\+:\+:models\+:\+:\+\_\+resnetimpl\+:\+:Bottleneck Struct Reference}
+\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck}\index{vision\+::models\+::\+\_\+resnetimpl\+::\+Bottleneck@{vision\+::models\+::\+\_\+resnetimpl\+::\+Bottleneck}}
+
+
+Inheritance diagram for vision\+:\+:models\+:\+:\+\_\+resnetimpl\+:\+:Bottleneck\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for vision\+:\+:models\+:\+:\+\_\+resnetimpl\+:\+:Bottleneck\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a3b00139cb34be325a5c78f44b82cf2b9}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a3b00139cb34be325a5c78f44b82cf2b9}} 
+{\bfseries Bottleneck} (int64\+\_\+t inplanes, int64\+\_\+t planes, int64\+\_\+t stride=1, torch\+::nn\+::\+Sequential downsample=nullptr, int64\+\_\+t groups=1, int64\+\_\+t base\+\_\+width=64)
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_ac3da1ce5c5518aa7f595b48d259e5c5e}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_ac3da1ce5c5518aa7f595b48d259e5c5e}} 
+torch\+::\+Tensor {\bfseries forward} (torch\+::\+Tensor X)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_abff2ab9e98783d929df569e4f25c9dbf}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_abff2ab9e98783d929df569e4f25c9dbf}} 
+int64\+\_\+t {\bfseries stride}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_afdd8246a9528a2e13d0919d3863fda09}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_afdd8246a9528a2e13d0919d3863fda09}} 
+torch\+::nn\+::\+Sequential {\bfseries downsample}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a2c88f1d055d9005086e112b4eb7b0981}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a2c88f1d055d9005086e112b4eb7b0981}} 
+torch\+::nn\+::\+Conv2d {\bfseries conv1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a3696170bc2bd4993a5162ae64f848930}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a3696170bc2bd4993a5162ae64f848930}} 
+torch\+::nn\+::\+Conv2d {\bfseries conv2} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a4355ff892aa6d8d803c4d0aff79ed80d}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a4355ff892aa6d8d803c4d0aff79ed80d}} 
+torch\+::nn\+::\+Conv2d {\bfseries conv3} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_aa5c3f0de29ffaeb86fdcc66bf50c50ca}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_aa5c3f0de29ffaeb86fdcc66bf50c50ca}} 
+torch\+::nn\+::\+Batch\+Norm2d {\bfseries bn1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_aaaf061ee67cc5dc5de976257b7b4e8bc}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_aaaf061ee67cc5dc5de976257b7b4e8bc}} 
+torch\+::nn\+::\+Batch\+Norm2d {\bfseries bn2} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_abfadb4b43b14a83c0f9830f1bf08f6a4}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_abfadb4b43b14a83c0f9830f1bf08f6a4}} 
+torch\+::nn\+::\+Batch\+Norm2d {\bfseries bn3} \{nullptr\}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_ae52f0ec8f0659232e31e333850fe5338}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_ae52f0ec8f0659232e31e333850fe5338}} 
+static int {\bfseries expansion} = 4
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a2d4c95d61d2126a085e162451df61b9d}\label{structvision_1_1models_1_1__resnetimpl_1_1Bottleneck_a2d4c95d61d2126a085e162451df61b9d}} 
+{\footnotesize template$<$typename Block $>$ }\\struct {\bfseries vision\+::models\+::\+Res\+Net\+Impl}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 46 of file resnet.\+h.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/resnet.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/resnet.\+cpp\end{DoxyCompactItemize}

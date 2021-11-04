@@ -1,0 +1,102 @@
+\hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot}{}\section{torchvision.\+datasets.\+omniglot.\+Omniglot Class Reference}
+\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot}\index{torchvision.\+datasets.\+omniglot.\+Omniglot@{torchvision.\+datasets.\+omniglot.\+Omniglot}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+omniglot.\+Omniglot\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+omniglot.\+Omniglot\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_aea0fd792b337813f8f5dc978644c1241}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_aea0fd792b337813f8f5dc978644c1241}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, background=True, transform=None, target\+\_\+transform=None, download=False)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a444ae6111cb76cb3a163b9537d086cd3}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a444ae6111cb76cb3a163b9537d086cd3}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a43c310d2f8c2ca1f31615da228b2ec24}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a898a01b580e231e923d42cecdbc160bd}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a898a01b580e231e923d42cecdbc160bd}} 
+def {\bfseries download} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a258f30de4f53668fc9e157629221186c}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a258f30de4f53668fc9e157629221186c}} 
+{\bfseries background}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_af49deda848d279a3429f671fb1b5471d}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_af49deda848d279a3429f671fb1b5471d}} 
+{\bfseries target\+\_\+folder}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a8194262f873a017e1a3656a7e9bdd048}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a8194262f873a017e1a3656a7e9bdd048}} 
+{\bfseries folder}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a0cecc7ea1ce26c4354a360cdc9192adb}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a0cecc7ea1ce26c4354a360cdc9192adb}} 
+{\bfseries download\+\_\+url\+\_\+prefix}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a970a8ce07d92aab527cd5866c851ae65}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a970a8ce07d92aab527cd5866c851ae65}} 
+{\bfseries zips\+\_\+md5}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Omniglot <https://github.com/brendenlake/omniglot>`_ Dataset.
+Args:
+    root (string): Root directory of dataset where directory
+        ``omniglot-py`` exists.
+    background (bool, optional): If True, creates dataset from the "background" set, otherwise
+        creates from the "evaluation" set. This terminology is defined by the authors.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    download (bool, optional): If true, downloads the dataset zip files from the internet and
+        puts it in root directory. If the zip files are already downloaded, they are not
+        downloaded again.
+\end{DoxyVerb}
+ 
+
+Definition at line 8 of file omniglot.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a43c310d2f8c2ca1f31615da228b2ec24}\label{classtorchvision_1_1datasets_1_1omniglot_1_1Omniglot_a43c310d2f8c2ca1f31615da228b2ec24}} 
+\index{torchvision\+::datasets\+::omniglot\+::\+Omniglot@{torchvision\+::datasets\+::omniglot\+::\+Omniglot}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::omniglot\+::\+Omniglot@{torchvision\+::datasets\+::omniglot\+::\+Omniglot}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+omniglot.\+Omniglot.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is index of the target character class.
+\end{DoxyVerb}
+ 
+
+Definition at line 54 of file omniglot.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/omniglot.\+py\end{DoxyCompactItemize}

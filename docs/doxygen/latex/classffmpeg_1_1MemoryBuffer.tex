@@ -1,0 +1,37 @@
+\hypertarget{classffmpeg_1_1MemoryBuffer}{}\section{ffmpeg\+:\+:Memory\+Buffer Class Reference}
+\label{classffmpeg_1_1MemoryBuffer}\index{ffmpeg\+::\+Memory\+Buffer@{ffmpeg\+::\+Memory\+Buffer}}
+
+
+{\ttfamily \#include $<$memory\+\_\+buffer.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1MemoryBuffer_a0b3773f4b0d97d3ffd1f37ca32ca0111}\label{classffmpeg_1_1MemoryBuffer_a0b3773f4b0d97d3ffd1f37ca32ca0111}} 
+{\bfseries Memory\+Buffer} (const uint8\+\_\+t $\ast$buffer, size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1MemoryBuffer_ad36b257873c64078b5beeb002aa908c1}\label{classffmpeg_1_1MemoryBuffer_ad36b257873c64078b5beeb002aa908c1}} 
+int64\+\_\+t {\bfseries seek} (int64\+\_\+t offset, int whence)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1MemoryBuffer_a47e714dd1f06fff3140d97c8be67f016}\label{classffmpeg_1_1MemoryBuffer_a47e714dd1f06fff3140d97c8be67f016}} 
+int {\bfseries read} (uint8\+\_\+t $\ast$buf, int size)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1MemoryBuffer_a4403d38644b643562da9e20438a4ff66}\label{classffmpeg_1_1MemoryBuffer_a4403d38644b643562da9e20438a4ff66}} 
+static Decoder\+In\+Callback {\bfseries get\+Callback} (const uint8\+\_\+t $\ast$buffer, size\+\_\+t size)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class uses external memory buffer and implements a seekable interface. 
+
+Definition at line 10 of file memory\+\_\+buffer.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/memory\+\_\+buffer.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/memory\+\_\+buffer.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,92 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN}{}\section{torchvision.\+models.\+detection.\+generalized\+\_\+rcnn.\+Generalized\+R\+C\+NN Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN}\index{torchvision.\+models.\+detection.\+generalized\+\_\+rcnn.\+Generalized\+R\+C\+NN@{torchvision.\+models.\+detection.\+generalized\+\_\+rcnn.\+Generalized\+R\+C\+NN}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+generalized\+\_\+rcnn.\+Generalized\+R\+C\+NN\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+generalized\+\_\+rcnn.\+Generalized\+R\+C\+NN\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a2ca3aebf69f68a2e0c639a1c7cdb8de5}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a2ca3aebf69f68a2e0c639a1c7cdb8de5}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, backbone, rpn, roi\+\_\+heads, transform)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a98edb0650d7ad9e5ee2c79c5eaf8cf51}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a98edb0650d7ad9e5ee2c79c5eaf8cf51}} 
+def {\bfseries eager\+\_\+outputs} (self, losses, detections)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a7d27936056f516d9a310f5b0746f7cda}{forward} (self, images, targets=None)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a6ecdabab343537afe9fd205816abb346}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a6ecdabab343537afe9fd205816abb346}} 
+{\bfseries transform}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_ae79f5e1302b602e27c572afd57b9bb87}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_ae79f5e1302b602e27c572afd57b9bb87}} 
+{\bfseries backbone}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_afc01b47bfa19754541f8add61b7dea42}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_afc01b47bfa19754541f8add61b7dea42}} 
+{\bfseries rpn}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a3e3a47a6548fcf617aa75faf2d0279db}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a3e3a47a6548fcf617aa75faf2d0279db}} 
+{\bfseries roi\+\_\+heads}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Main class for Generalized R-CNN.
+
+Arguments:
+    backbone (nn.Module):
+    rpn (nn.Module):
+    roi_heads (nn.Module): takes the features + the proposals from the RPN and computes
+        detections / masks from it.
+    transform (nn.Module): performs the data transformation from the inputs to feed into
+        the model
+\end{DoxyVerb}
+ 
+
+Definition at line 14 of file generalized\+\_\+rcnn.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a7d27936056f516d9a310f5b0746f7cda}\label{classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN_a7d27936056f516d9a310f5b0746f7cda}} 
+\index{torchvision\+::models\+::detection\+::generalized\+\_\+rcnn\+::\+Generalized\+R\+C\+NN@{torchvision\+::models\+::detection\+::generalized\+\_\+rcnn\+::\+Generalized\+R\+C\+NN}!forward@{forward}}
+\index{forward@{forward}!torchvision\+::models\+::detection\+::generalized\+\_\+rcnn\+::\+Generalized\+R\+C\+NN@{torchvision\+::models\+::detection\+::generalized\+\_\+rcnn\+::\+Generalized\+R\+C\+NN}}
+\subsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+generalized\+\_\+rcnn.\+Generalized\+R\+C\+N\+N.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{images,  }\item[{}]{targets = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Arguments:
+    images (list[Tensor]): images to be processed
+    targets (list[Dict[Tensor]]): ground-truth boxes present in the image (optional)
+
+Returns:
+    result (list[BoxList] or dict[Tensor]): the output from the model.
+During training, it returns a dict[Tensor] which contains the losses.
+During testing, it returns list[BoxList] contains additional fields
+like `scores`, `labels` and `mask` (for Mask R-CNN models).\end{DoxyVerb}
+ 
+
+Definition at line 44 of file generalized\+\_\+rcnn.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/generalized\+\_\+rcnn.\+py\end{DoxyCompactItemize}

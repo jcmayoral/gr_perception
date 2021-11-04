@@ -1,0 +1,89 @@
+\hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet}{}\section{torchvision.\+datasets.\+imagenet.\+Image\+Net Class Reference}
+\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet}\index{torchvision.\+datasets.\+imagenet.\+Image\+Net@{torchvision.\+datasets.\+imagenet.\+Image\+Net}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+imagenet.\+Image\+Net\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+imagenet.\+Image\+Net\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a08b71630383b7f7031ee13ce311a0966}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a08b71630383b7f7031ee13ce311a0966}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, split=\textquotesingle{}train\textquotesingle{}, download=None, kwargs)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a945ec1e0fdd6fbac5eeb8eb5e787c57e}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a945ec1e0fdd6fbac5eeb8eb5e787c57e}} 
+def {\bfseries parse\+\_\+archives} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a881a61219ae1bc809df32bbd9c5da8ca}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a881a61219ae1bc809df32bbd9c5da8ca}} 
+def {\bfseries split\+\_\+folder} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a20ccce453fd745342c5bca1b8b9a7003}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a20ccce453fd745342c5bca1b8b9a7003}} 
+def {\bfseries extra\+\_\+repr} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a0ab8e28fc2e0171cad4c8f81cae79ac2}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a0ab8e28fc2e0171cad4c8f81cae79ac2}} 
+{\bfseries root}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a7a7f7be9d44cea4780987fa0a4fa1659}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a7a7f7be9d44cea4780987fa0a4fa1659}} 
+{\bfseries split}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a08ed3c2bdc5c15d0e4b4b84f92bef7fc}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a08ed3c2bdc5c15d0e4b4b84f92bef7fc}} 
+{\bfseries wnids}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_adb5d5592a2ed54f521e3187c3bd2fcbf}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_adb5d5592a2ed54f521e3187c3bd2fcbf}} 
+{\bfseries wnid\+\_\+to\+\_\+idx}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a880dcc7c0768890e31d3eaedafb20642}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a880dcc7c0768890e31d3eaedafb20642}} 
+{\bfseries classes}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a48404c76d83d9107572518dd15fc5bea}\label{classtorchvision_1_1datasets_1_1imagenet_1_1ImageNet_a48404c76d83d9107572518dd15fc5bea}} 
+{\bfseries class\+\_\+to\+\_\+idx}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`ImageNet <http://image-net.org/>`_ 2012 Classification Dataset.
+
+Args:
+    root (string): Root directory of the ImageNet Dataset.
+    split (string, optional): The dataset split, supports ``train``, or ``val``.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    loader (callable, optional): A function to load an image given its path.
+
+ Attributes:
+    classes (list): List of the class name tuples.
+    class_to_idx (dict): Dict with items (class_name, class_index).
+    wnids (list): List of the WordNet IDs.
+    wnid_to_idx (dict): Dict with items (wordnet_id, class_index).
+    imgs (list): List of (image path, class_index) tuples
+    targets (list): The class_index value for each image in the dataset
+\end{DoxyVerb}
+ 
+
+Definition at line 19 of file imagenet.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/imagenet.\+py\end{DoxyCompactItemize}

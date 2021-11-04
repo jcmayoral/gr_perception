@@ -1,0 +1,68 @@
+\hypertarget{classgr__depth__processing_1_1MyNodeletClass}{}\section{gr\+\_\+depth\+\_\+processing\+:\+:My\+Nodelet\+Class Class Reference}
+\label{classgr__depth__processing_1_1MyNodeletClass}\index{gr\+\_\+depth\+\_\+processing\+::\+My\+Nodelet\+Class@{gr\+\_\+depth\+\_\+processing\+::\+My\+Nodelet\+Class}}
+
+
+Inheritance diagram for gr\+\_\+depth\+\_\+processing\+:\+:My\+Nodelet\+Class\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{classgr__depth__processing_1_1MyNodeletClass__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for gr\+\_\+depth\+\_\+processing\+:\+:My\+Nodelet\+Class\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{classgr__depth__processing_1_1MyNodeletClass__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_a95b4c054be9c6aa2ac8ab82fa3c21b02}\label{classgr__depth__processing_1_1MyNodeletClass_a95b4c054be9c6aa2ac8ab82fa3c21b02}} 
+virtual void {\bfseries on\+Init} ()
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_a8e66b79b9eb03f382cf808df0f4d8e69}\label{classgr__depth__processing_1_1MyNodeletClass_a8e66b79b9eb03f382cf808df0f4d8e69}} 
+void {\bfseries images\+\_\+\+CB} (const sensor\+\_\+msgs\+::\+Image\+Const\+Ptr color\+\_\+image, const sensor\+\_\+msgs\+::\+Image\+Const\+Ptr depth\+\_\+image)
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_a064aea8e677cd7ccbfa91cb0fda60424}\label{classgr__depth__processing_1_1MyNodeletClass_a064aea8e677cd7ccbfa91cb0fda60424}} 
+void {\bfseries register\+\_\+\+CB} (const sensor\+\_\+msgs\+::\+Image\+Const\+Ptr depth\+\_\+image, const darknet\+\_\+ros\+\_\+msgs\+::\+Bounding\+Boxes\+Const\+Ptr bounding\+\_\+boxes)
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_a0dc37fa50056e20e999ac98e25b8e3aa}\label{classgr__depth__processing_1_1MyNodeletClass_a0dc37fa50056e20e999ac98e25b8e3aa}} 
+void {\bfseries execute\+\_\+\+CB} (const gr\+\_\+action\+\_\+msgs\+::\+G\+R\+Depth\+Process\+Goal\+Const\+Ptr \&goal)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_af9adbba9c3b0b56f918af23a3b2c30c2}\label{classgr__depth__processing_1_1MyNodeletClass_af9adbba9c3b0b56f918af23a3b2c30c2}} 
+boost\+::function$<$ void(cv\+::\+Mat \&)$>$ {\bfseries filter\+Image}
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_a5af97f6534cc2e83a2f9f36f8a97a1a7}\label{classgr__depth__processing_1_1MyNodeletClass_a5af97f6534cc2e83a2f9f36f8a97a1a7}} 
+boost\+::function$<$ double(darknet\+\_\+ros\+\_\+msgs\+::\+Bounding\+Box, cv\+::\+Mat \&, sensor\+\_\+msgs\+::\+Camera\+Info)$>$ {\bfseries register\+Image}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_a006212f234798dc83d11d2083349e208}\label{classgr__depth__processing_1_1MyNodeletClass_a006212f234798dc83d11d2083349e208}} 
+bool {\bfseries convert\+R\+O\+S\+Image2\+Mat} (cv\+::\+Mat \&frame, const sensor\+\_\+msgs\+::\+Image\+Const\+Ptr \&ros\+\_\+image)
+\item 
+\mbox{\Hypertarget{classgr__depth__processing_1_1MyNodeletClass_ac4e58e420fec806922ad04cf7216a352}\label{classgr__depth__processing_1_1MyNodeletClass_ac4e58e420fec806922ad04cf7216a352}} 
+void {\bfseries publish\+Output} (cv\+::\+Mat frame, bool rotate=true)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 63 of file depth\+\_\+processing.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+depth\+\_\+processing/include/gr\+\_\+depth\+\_\+processing/depth\+\_\+processing.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+depth\+\_\+processing/src/depth\+\_\+proximity\+\_\+policy.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,157 @@
+This folder contains reference training scripts for image classification. They serve as a log of how to train specific models, as provide baseline training and evaluation scripts to quickly bootstrap research.
+
+Except otherwise noted, all models have been trained on 8x V100 G\+P\+Us with the following parameters\+:
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Parameter }&\textbf{ value  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Parameter }&\textbf{ value  }\\\cline{1-2}
+\endhead
+{\ttfamily -\/-\/batch\+\_\+size} &{\ttfamily 32} \\\cline{1-2}
+{\ttfamily -\/-\/epochs} &{\ttfamily 90} \\\cline{1-2}
+{\ttfamily -\/-\/lr} &{\ttfamily 0.\+1} \\\cline{1-2}
+{\ttfamily -\/-\/momentum} &{\ttfamily 0.\+9} \\\cline{1-2}
+{\ttfamily -\/-\/wd}, {\ttfamily -\/-\/weight-\/decay} &{\ttfamily 1e-\/4} \\\cline{1-2}
+{\ttfamily -\/-\/lr-\/step-\/size} &{\ttfamily 30} \\\cline{1-2}
+{\ttfamily -\/-\/lr-\/gamma} &{\ttfamily 0.\+1} \\\cline{1-2}
+\end{longtabu}
+\subsubsection*{Alex\+Net and V\+GG}
+
+Since {\ttfamily Alex\+Net} and the original {\ttfamily V\+GG} architectures do not include batch normalization, the default initial learning rate {\ttfamily -\/-\/lr 0.\+1} is to high.
+
+
+\begin{DoxyCode}
+python main.py --model $MODEL --lr 1e-2
+\end{DoxyCode}
+
+
+Here {\ttfamily \$\+M\+O\+D\+EL} is one of {\ttfamily alexnet}, {\ttfamily vgg11}, {\ttfamily vgg13}, {\ttfamily vgg16} or {\ttfamily vgg19}. Note that {\ttfamily vgg11\+\_\+bn}, {\ttfamily vgg13\+\_\+bn}, {\ttfamily vgg16\+\_\+bn}, and {\ttfamily vgg19\+\_\+bn} include batch normalization and thus are trained with the default parameters.
+
+\#\#\# Res\+Next-\/50 32x4d 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+    --model resnext50\_32x4d --epochs 100
+\end{DoxyCode}
+
+
+\subsubsection*{Res\+Next-\/101 32x8d}
+
+On 8 nodes, each with 8 G\+P\+Us (for a total of 64 G\+P\+US) 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+    --model resnext101\_32x8d --epochs 100
+\end{DoxyCode}
+
+
+\#\#\# Mobile\+Net\+V2 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+     --model mobilenet\_v2 --epochs 300 --lr 0.045 --wd 0.00004\(\backslash\)
+     --lr-step-size 1 --lr-gamma 0.98
+\end{DoxyCode}
+
+
+\subsection*{Mixed precision training}
+
+Automatic Mixed Precision (A\+MP) training on G\+PU for Pytorch can be enabled with the \href{https://github.com/NVIDIA/apex}{\tt N\+V\+I\+D\+IA Apex extension}.
+
+Mixed precision training makes use of both F\+P32 and F\+P16 precisions where appropriate. F\+P16 operations can leverage the Tensor cores on N\+V\+I\+D\+IA G\+P\+Us (Volta, Turing or newer architectures) for improved throughput, generally without loss in model accuracy. Mixed precision training also often allows larger batch sizes. G\+PU automatic mixed precision training for Pytorch Vision can be enabled via the flag value {\ttfamily -\/-\/apex=True}.
+
+
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+    --model resnext50\_32x4d --epochs 100 --apex
+\end{DoxyCode}
+
+
+\subsection*{Quantized}
+
+\subsubsection*{I\+N\+T8 models}
+
+We add I\+N\+T8 quantized models to follow the quantization support added in Py\+Torch 1.\+3.
+
+Obtaining a pre-\/trained quantized model can be obtained with a few lines of code\+: 
+\begin{DoxyCode}
+model = torchvision.models.quantization.mobilenet\_v2(pretrained=True, quantize=True)
+model.eval()
+# run the model with quantized inputs and weights
+out = model(torch.rand(1, 3, 224, 224))
+\end{DoxyCode}
+ We provide pre-\/trained quantized weights for the following models\+:
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ Model }&\PBS\centering \textbf{ Acc@1 }&\PBS\centering \textbf{ Acc@5  }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ Model }&\PBS\centering \textbf{ Acc@1 }&\PBS\centering \textbf{ Acc@5  }\\\cline{1-3}
+\endhead
+\PBS\centering Mobile\+Net V2 &\PBS\centering 71.\+658 &\PBS\centering 90.\+150 \\\cline{1-3}
+\PBS\centering Shuffle\+Net V2\+: &\PBS\centering 68.\+360 &\PBS\centering 87.\+582 \\\cline{1-3}
+\PBS\centering Res\+Net 18 &\PBS\centering 69.\+494 &\PBS\centering 88.\+882 \\\cline{1-3}
+\PBS\centering Res\+Net 50 &\PBS\centering 75.\+920 &\PBS\centering 92.\+814 \\\cline{1-3}
+\PBS\centering Res\+Next 101 32x8d &\PBS\centering 78.\+986 &\PBS\centering 94.\+480 \\\cline{1-3}
+\PBS\centering Inception V3 &\PBS\centering 77.\+176 &\PBS\centering 93.\+354 \\\cline{1-3}
+\PBS\centering Google\+Net &\PBS\centering 69.\+826 &\PBS\centering 89.\+404 \\\cline{1-3}
+\end{longtabu}
+\subsubsection*{Parameters used for generating quantized models\+:}
+
+For all post training quantized models (All quantized models except mobilenet-\/v2), the settings are\+:
+
+
+\begin{DoxyEnumerate}
+\item num\+\_\+calibration\+\_\+batches\+: 32
+\item num\+\_\+workers\+: 16
+\item batch\+\_\+size\+: 32
+\item eval\+\_\+batch\+\_\+size\+: 128
+\item backend\+: \textquotesingle{}fbgemm\textquotesingle{}
+\end{DoxyEnumerate}
+
+For Mobilenet-\/v2, the model was trained with quantization aware training, the settings used are\+:
+\begin{DoxyEnumerate}
+\item num\+\_\+workers\+: 16
+\item batch\+\_\+size\+: 32
+\item eval\+\_\+batch\+\_\+size\+: 128
+\item backend\+: \textquotesingle{}qnnpack\textquotesingle{}
+\item learning-\/rate\+: 0.\+0001
+\item num\+\_\+epochs\+: 90
+\item num\+\_\+observer\+\_\+update\+\_\+epochs\+:4
+\item num\+\_\+batch\+\_\+norm\+\_\+update\+\_\+epochs\+:3
+\item momentum\+: 0.\+9
+\item lr\+\_\+step\+\_\+size\+:30
+\item lr\+\_\+gamma\+: 0.\+1
+\end{DoxyEnumerate}
+
+Training converges at about 10 epochs.
+
+For post training quant, device is set to C\+PU. For training, the device is set to C\+U\+DA
+
+\subsubsection*{Command to evaluate quantized models using the pre-\/trained weights\+:}
+
+For all quantized models except inception\+\_\+v3\+: 
+\begin{DoxyCode}
+python references/classification/train\_quantization.py  --data-path='imagenet\_full\_size/' \(\backslash\)
+    --device='cpu' --test-only --backend='fbgemm' --model='<model\_name>'
+\end{DoxyCode}
+
+
+For inception\+\_\+v3, since it expects tensors with a size of N x 3 x 299 x 299, before running above command, need to change the input size of dataset\+\_\+test in train.\+py to\+: 
+\begin{DoxyCode}
+dataset\_test = torchvision.datasets.ImageFolder(
+    valdir,
+    transforms.Compose([
+        transforms.Resize(342),
+        transforms.CenterCrop(299),
+        transforms.ToTensor(),
+        normalize,
+    ]))
+\end{DoxyCode}
+ 

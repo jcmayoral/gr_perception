@@ -1,0 +1,46 @@
+\hypertarget{classtorchvision_1_1models_1_1segmentation_1_1fcn_1_1FCN}{}\section{torchvision.\+models.\+segmentation.\+fcn.\+F\+CN Class Reference}
+\label{classtorchvision_1_1models_1_1segmentation_1_1fcn_1_1FCN}\index{torchvision.\+models.\+segmentation.\+fcn.\+F\+CN@{torchvision.\+models.\+segmentation.\+fcn.\+F\+CN}}
+
+
+Inheritance diagram for torchvision.\+models.\+segmentation.\+fcn.\+F\+CN\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{classtorchvision_1_1models_1_1segmentation_1_1fcn_1_1FCN__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+segmentation.\+fcn.\+F\+CN\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{classtorchvision_1_1models_1_1segmentation_1_1fcn_1_1FCN__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Implements a Fully-Convolutional Network for semantic segmentation.
+
+Arguments:
+    backbone (nn.Module): the network used to compute the features for the model.
+        The backbone should return an OrderedDict[Tensor], with the key being
+        "out" for the last feature map used, and "aux" if an auxiliary classifier
+        is used.
+    classifier (nn.Module): module that takes the "out" element returned from
+        the backbone and returns a dense prediction.
+    aux_classifier (nn.Module, optional): auxiliary classifier used during training
+\end{DoxyVerb}
+ 
+
+Definition at line 9 of file fcn.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/segmentation/fcn.\+py\end{DoxyCompactItemize}

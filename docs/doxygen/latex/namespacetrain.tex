@@ -1,0 +1,290 @@
+\hypertarget{namespacetrain}{}\section{train Namespace Reference}
+\label{namespacetrain}\index{train@{train}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacetrain_a66be8c64105d41790967a10b9dc9bb32}\label{namespacetrain_a66be8c64105d41790967a10b9dc9bb32}} 
+def {\bfseries train\+\_\+one\+\_\+epoch} (model, criterion, optimizer, data\+\_\+loader, device, epoch, print\+\_\+freq, apex=False)
+\item 
+\mbox{\Hypertarget{namespacetrain_a596ce075ac4736d1add27ba0e7163e9b}\label{namespacetrain_a596ce075ac4736d1add27ba0e7163e9b}} 
+def {\bfseries evaluate} (model, criterion, data\+\_\+loader, device, print\+\_\+freq=100)
+\item 
+\mbox{\Hypertarget{namespacetrain_a1899e423d573033cf02a7e604e811f46}\label{namespacetrain_a1899e423d573033cf02a7e604e811f46}} 
+def {\bfseries load\+\_\+data} (traindir, valdir, cache\+\_\+dataset, distributed)
+\item 
+\mbox{\Hypertarget{namespacetrain_a1f9040032051eb50a0cb6c02708dc2ce}\label{namespacetrain_a1f9040032051eb50a0cb6c02708dc2ce}} 
+def {\bfseries main} (args)
+\item 
+\mbox{\Hypertarget{namespacetrain_a88e475dfe6a39b6baf39090544ca8cb9}\label{namespacetrain_a88e475dfe6a39b6baf39090544ca8cb9}} 
+def {\bfseries parse\+\_\+args} ()
+\item 
+\mbox{\Hypertarget{namespacetrain_ab6a3f5736c18ae4186379e626f16e4c2}\label{namespacetrain_ab6a3f5736c18ae4186379e626f16e4c2}} 
+def {\bfseries get\+\_\+dataset} (name, image\+\_\+set, transform, data\+\_\+path)
+\item 
+\mbox{\Hypertarget{namespacetrain_aaf663caf8886160dc2f3142f8c8b5076}\label{namespacetrain_aaf663caf8886160dc2f3142f8c8b5076}} 
+def {\bfseries get\+\_\+transform} (train)
+\item 
+\mbox{\Hypertarget{namespacetrain_a841c375775047f6d152336c37146b75d}\label{namespacetrain_a841c375775047f6d152336c37146b75d}} 
+def {\bfseries get\+\_\+dataset} (name, image\+\_\+set, transform)
+\item 
+\mbox{\Hypertarget{namespacetrain_a7a0eb86d44131e1c3cf16a1304f6e7f3}\label{namespacetrain_a7a0eb86d44131e1c3cf16a1304f6e7f3}} 
+def {\bfseries criterion} (inputs, target)
+\item 
+\mbox{\Hypertarget{namespacetrain_a5ecf3f0162592b9cb769e7142d013976}\label{namespacetrain_a5ecf3f0162592b9cb769e7142d013976}} 
+def {\bfseries evaluate} (model, data\+\_\+loader, device, num\+\_\+classes)
+\item 
+\mbox{\Hypertarget{namespacetrain_ab786ebc714be39657d63bc3f54a0d2cd}\label{namespacetrain_ab786ebc714be39657d63bc3f54a0d2cd}} 
+def {\bfseries train\+\_\+epoch} (model, optimizer, criterion, data\+\_\+loader, device, epoch, print\+\_\+freq)
+\item 
+\mbox{\Hypertarget{namespacetrain_a8a919d65d2ab11f8c62b2906aee12952}\label{namespacetrain_a8a919d65d2ab11f8c62b2906aee12952}} 
+def {\bfseries find\+\_\+best\+\_\+threshold} (dists, targets, device)
+\item 
+\mbox{\Hypertarget{namespacetrain_a2a88d7d76799389e9b432647996c6dc5}\label{namespacetrain_a2a88d7d76799389e9b432647996c6dc5}} 
+def {\bfseries evaluate} (model, loader, device)
+\item 
+\mbox{\Hypertarget{namespacetrain_ad8e24e09a3cd4b0b9ff48ea06185109b}\label{namespacetrain_ad8e24e09a3cd4b0b9ff48ea06185109b}} 
+def {\bfseries save} (model, epoch, save\+\_\+dir, file\+\_\+name)
+\item 
+\mbox{\Hypertarget{namespacetrain_a98a11c5f472ea2bcf38e74fdde280d16}\label{namespacetrain_a98a11c5f472ea2bcf38e74fdde280d16}} 
+def {\bfseries train\+\_\+one\+\_\+epoch} (model, criterion, optimizer, lr\+\_\+scheduler, data\+\_\+loader, device, epoch, print\+\_\+freq, apex=False)
+\item 
+\mbox{\Hypertarget{namespacetrain_a66ed234c9069226491244998adae0aac}\label{namespacetrain_a66ed234c9069226491244998adae0aac}} 
+def {\bfseries collate\+\_\+fn} (batch)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacetrain_aaea269c686ef4674a4eb8b85b2974275}\label{namespacetrain_aaea269c686ef4674a4eb8b85b2974275}} 
+{\bfseries amp} = None
+\item 
+\mbox{\Hypertarget{namespacetrain_a77f2627dc200ff93624ce266724f0935}\label{namespacetrain_a77f2627dc200ff93624ce266724f0935}} 
+def {\bfseries args} = parse\+\_\+args()
+\item 
+{\bfseries parser}
+\item 
+\mbox{\Hypertarget{namespacetrain_abfb9b8d0ebf72bafd04e084791275553}\label{namespacetrain_abfb9b8d0ebf72bafd04e084791275553}} 
+{\bfseries default}
+\item 
+\mbox{\Hypertarget{namespacetrain_ac16504ad52822423344025f791e0c4fd}\label{namespacetrain_ac16504ad52822423344025f791e0c4fd}} 
+{\bfseries help}
+\item 
+\mbox{\Hypertarget{namespacetrain_ad99775ad96e0996a8be4782b30a28c2e}\label{namespacetrain_ad99775ad96e0996a8be4782b30a28c2e}} 
+{\bfseries type}
+\item 
+\mbox{\Hypertarget{namespacetrain_af5de906790efe7cea370f1a69e020d52}\label{namespacetrain_af5de906790efe7cea370f1a69e020d52}} 
+{\bfseries int}
+\item 
+\mbox{\Hypertarget{namespacetrain_ad80c1c757d101bbbd87754a7148f0728}\label{namespacetrain_ad80c1c757d101bbbd87754a7148f0728}} 
+{\bfseries metavar}
+\item 
+\mbox{\Hypertarget{namespacetrain_af6ce307b1ddd4745a96b7834bc0232dc}\label{namespacetrain_af6ce307b1ddd4745a96b7834bc0232dc}} 
+{\bfseries float}
+\item 
+\mbox{\Hypertarget{namespacetrain_ad7378e7d9450d52e416fbc1f86cfe0b1}\label{namespacetrain_ad7378e7d9450d52e416fbc1f86cfe0b1}} 
+{\bfseries dest}
+\item 
+\mbox{\Hypertarget{namespacetrain_aa14681106dd0acfe6521d6ad074c434b}\label{namespacetrain_aa14681106dd0acfe6521d6ad074c434b}} 
+{\bfseries nargs}
+\item 
+\mbox{\Hypertarget{namespacetrain_ae65fafa56b338044344f2637be98e99a}\label{namespacetrain_ae65fafa56b338044344f2637be98e99a}} 
+{\bfseries action}
+\item 
+\mbox{\Hypertarget{namespacetrain_aaa59b213583fa39039d4c2a897f9009c}\label{namespacetrain_aaa59b213583fa39039d4c2a897f9009c}} 
+{\bfseries str}
+\item 
+\mbox{\Hypertarget{namespacetrain_afb4496a6f3eaeff656814fec3998a6f1}\label{namespacetrain_afb4496a6f3eaeff656814fec3998a6f1}} 
+{\bfseries False}
+\item 
+\mbox{\Hypertarget{namespacetrain_ab05c503109ea425e4f6a12524cd504db}\label{namespacetrain_ab05c503109ea425e4f6a12524cd504db}} 
+{\bfseries True}
+\item 
+\mbox{\Hypertarget{namespacetrain_a8ce47f3ce85e34ed945573b80e08aaf6}\label{namespacetrain_a8ce47f3ce85e34ed945573b80e08aaf6}} 
+{\bfseries opt}
+\item 
+\mbox{\Hypertarget{namespacetrain_a7eedb4e44e7c92f54d696fe03c7ee374}\label{namespacetrain_a7eedb4e44e7c92f54d696fe03c7ee374}} 
+{\bfseries logger}
+\item 
+\mbox{\Hypertarget{namespacetrain_a49381d986b6dea82b5dc740dcbbe2c52}\label{namespacetrain_a49381d986b6dea82b5dc740dcbbe2c52}} 
+{\bfseries device}
+\item 
+\mbox{\Hypertarget{namespacetrain_ac3ec1cd3c670ad646fec107fc9b06837}\label{namespacetrain_ac3ec1cd3c670ad646fec107fc9b06837}} 
+{\bfseries exist\+\_\+ok}
+\item 
+\mbox{\Hypertarget{namespacetrain_af45c66b8e076ba65ceeb8bdb7ad4e5e2}\label{namespacetrain_af45c66b8e076ba65ceeb8bdb7ad4e5e2}} 
+{\bfseries data\+\_\+config}
+\item 
+\mbox{\Hypertarget{namespacetrain_acd3a42d4c1923b56142cbaf559ccee39}\label{namespacetrain_acd3a42d4c1923b56142cbaf559ccee39}} 
+{\bfseries train\+\_\+path}
+\item 
+\mbox{\Hypertarget{namespacetrain_aa186de6fc0487e7304f645778002cb3e}\label{namespacetrain_aa186de6fc0487e7304f645778002cb3e}} 
+{\bfseries valid\+\_\+path}
+\item 
+\mbox{\Hypertarget{namespacetrain_a5f53191c6d7af328b778f1175e604023}\label{namespacetrain_a5f53191c6d7af328b778f1175e604023}} 
+{\bfseries class\+\_\+names}
+\item 
+\mbox{\Hypertarget{namespacetrain_a943b3c8a55b8e52ba14f9b59e14840d2}\label{namespacetrain_a943b3c8a55b8e52ba14f9b59e14840d2}} 
+{\bfseries model}
+\item 
+\mbox{\Hypertarget{namespacetrain_ae4afbcd12816091e4590b2a112c3e1d0}\label{namespacetrain_ae4afbcd12816091e4590b2a112c3e1d0}} 
+{\bfseries dataset}
+\item 
+\mbox{\Hypertarget{namespacetrain_a06a3e249b0fb930790628c48d4308c24}\label{namespacetrain_a06a3e249b0fb930790628c48d4308c24}} 
+{\bfseries multiscale}
+\item 
+\mbox{\Hypertarget{namespacetrain_a4273cb947d51a8df64e1070a77848845}\label{namespacetrain_a4273cb947d51a8df64e1070a77848845}} 
+{\bfseries multiscale\+\_\+training}
+\item 
+\mbox{\Hypertarget{namespacetrain_a20bfd042d186f995d23527293227286c}\label{namespacetrain_a20bfd042d186f995d23527293227286c}} 
+{\bfseries img\+\_\+size}
+\item 
+\mbox{\Hypertarget{namespacetrain_a90ec7f49935cdd851f804aa88788a18a}\label{namespacetrain_a90ec7f49935cdd851f804aa88788a18a}} 
+{\bfseries transform}
+\item 
+\mbox{\Hypertarget{namespacetrain_a62855888dbfb6d581086a22ed0b88507}\label{namespacetrain_a62855888dbfb6d581086a22ed0b88507}} 
+{\bfseries dataloader}
+\item 
+\mbox{\Hypertarget{namespacetrain_a29250cc648b07d6ddb0656189db310e4}\label{namespacetrain_a29250cc648b07d6ddb0656189db310e4}} 
+{\bfseries batch\+\_\+size}
+\item 
+\mbox{\Hypertarget{namespacetrain_a82154347a392586c405661c9410dda16}\label{namespacetrain_a82154347a392586c405661c9410dda16}} 
+{\bfseries shuffle}
+\item 
+\mbox{\Hypertarget{namespacetrain_aba22dc73a6c9478b93a9d796a864b985}\label{namespacetrain_aba22dc73a6c9478b93a9d796a864b985}} 
+{\bfseries num\+\_\+workers}
+\item 
+\mbox{\Hypertarget{namespacetrain_a220d8e13e6b385de54e9511e0de36b2d}\label{namespacetrain_a220d8e13e6b385de54e9511e0de36b2d}} 
+{\bfseries pin\+\_\+memory}
+\item 
+\mbox{\Hypertarget{namespacetrain_a82b75290f0416ba374cdbc6dffb424db}\label{namespacetrain_a82b75290f0416ba374cdbc6dffb424db}} 
+{\bfseries collate\+\_\+fn}
+\item 
+\mbox{\Hypertarget{namespacetrain_a776bc60eeb05cde09a691e2daf0da7bd}\label{namespacetrain_a776bc60eeb05cde09a691e2daf0da7bd}} 
+{\bfseries optimizer}
+\item 
+\mbox{\Hypertarget{namespacetrain_af1f1bc7524ee200454ffccac1c5968e9}\label{namespacetrain_af1f1bc7524ee200454ffccac1c5968e9}} 
+{\bfseries metrics}
+\item 
+\mbox{\Hypertarget{namespacetrain_ae49b53f438a208f1bfb27c7f72d09077}\label{namespacetrain_ae49b53f438a208f1bfb27c7f72d09077}} 
+{\bfseries start\+\_\+time}
+\item 
+\mbox{\Hypertarget{namespacetrain_a71807200f1ce8da487c63ad90fbdf9cf}\label{namespacetrain_a71807200f1ce8da487c63ad90fbdf9cf}} 
+{\bfseries desc}
+\item 
+\mbox{\Hypertarget{namespacetrain_aa92be1bfac330f2dc2df487539b28374}\label{namespacetrain_aa92be1bfac330f2dc2df487539b28374}} 
+{\bfseries batches\+\_\+done}
+\item 
+\mbox{\Hypertarget{namespacetrain_a909d156dcea7551360965d3832afd680}\label{namespacetrain_a909d156dcea7551360965d3832afd680}} 
+{\bfseries imgs}
+\item 
+\mbox{\Hypertarget{namespacetrain_a7880b184250b3ae88f68796aed26e6a9}\label{namespacetrain_a7880b184250b3ae88f68796aed26e6a9}} 
+{\bfseries targets}
+\item 
+\mbox{\Hypertarget{namespacetrain_a78343e8a32b07bc5b44b427a5e4a63a7}\label{namespacetrain_a78343e8a32b07bc5b44b427a5e4a63a7}} 
+{\bfseries requires\+\_\+grad}
+\item 
+\mbox{\Hypertarget{namespacetrain_ae3cdede0f60feb553df6925f827e3782}\label{namespacetrain_ae3cdede0f60feb553df6925f827e3782}} 
+{\bfseries loss}
+\item 
+\mbox{\Hypertarget{namespacetrain_a7c15f719647b9e6720187e9ba3af03ab}\label{namespacetrain_a7c15f719647b9e6720187e9ba3af03ab}} 
+{\bfseries outputs}
+\item 
+\mbox{\Hypertarget{namespacetrain_a88a4cad96618b6dba723ab3ed8af89c4}\label{namespacetrain_a88a4cad96618b6dba723ab3ed8af89c4}} 
+{\bfseries log\+\_\+str}
+\item 
+\mbox{\Hypertarget{namespacetrain_a9a3903de03ec67eae08d3a8826838531}\label{namespacetrain_a9a3903de03ec67eae08d3a8826838531}} 
+{\bfseries metric\+\_\+table}
+\item 
+\mbox{\Hypertarget{namespacetrain_a53c48865d9041b70d56475068b76cdff}\label{namespacetrain_a53c48865d9041b70d56475068b76cdff}} 
+{\bfseries formats}
+\item 
+\mbox{\Hypertarget{namespacetrain_a81cf3b366683c4d8251b333ea822618f}\label{namespacetrain_a81cf3b366683c4d8251b333ea822618f}} 
+{\bfseries row\+\_\+metrics}
+\item 
+\mbox{\Hypertarget{namespacetrain_a8a6a61b4e18e122559822719ac838813}\label{namespacetrain_a8a6a61b4e18e122559822719ac838813}} 
+{\bfseries tensorboard\+\_\+log}
+\item 
+\mbox{\Hypertarget{namespacetrain_af471008603985ac0b83ae8637a40711a}\label{namespacetrain_af471008603985ac0b83ae8637a40711a}} 
+{\bfseries epoch\+\_\+batches\+\_\+left}
+\item 
+\mbox{\Hypertarget{namespacetrain_ad8879317df20e87b9c838c6adac16ccb}\label{namespacetrain_ad8879317df20e87b9c838c6adac16ccb}} 
+{\bfseries time\+\_\+left}
+\item 
+\mbox{\Hypertarget{namespacetrain_a176a219bc26a6bf779d6b7e65afd9d4b}\label{namespacetrain_a176a219bc26a6bf779d6b7e65afd9d4b}} 
+{\bfseries seconds}
+\item 
+\mbox{\Hypertarget{namespacetrain_a964ea2738b333512e13d7a77e1d2cd2e}\label{namespacetrain_a964ea2738b333512e13d7a77e1d2cd2e}} 
+{\bfseries metrics\+\_\+output}
+\item 
+\mbox{\Hypertarget{namespacetrain_aa0614945008244b1420a43472599771d}\label{namespacetrain_aa0614945008244b1420a43472599771d}} 
+{\bfseries path}
+\item 
+\mbox{\Hypertarget{namespacetrain_a473597406fedf6bf88509388f7636cf9}\label{namespacetrain_a473597406fedf6bf88509388f7636cf9}} 
+{\bfseries iou\+\_\+thres}
+\item 
+\mbox{\Hypertarget{namespacetrain_af7e03d01fc54a733c5b5f84f75c1366d}\label{namespacetrain_af7e03d01fc54a733c5b5f84f75c1366d}} 
+{\bfseries conf\+\_\+thres}
+\item 
+\mbox{\Hypertarget{namespacetrain_ae3d8fc4a671e3f8c9f12616e04bbe469}\label{namespacetrain_ae3d8fc4a671e3f8c9f12616e04bbe469}} 
+{\bfseries nms\+\_\+thres}
+\item 
+\mbox{\Hypertarget{namespacetrain_a9ebd9efb0249faefd4282ccf64a1e411}\label{namespacetrain_a9ebd9efb0249faefd4282ccf64a1e411}} 
+{\bfseries precision}
+\item 
+\mbox{\Hypertarget{namespacetrain_aa66c4772c0997362a1cf4b88e79dc180}\label{namespacetrain_aa66c4772c0997362a1cf4b88e79dc180}} 
+{\bfseries recall}
+\item 
+\mbox{\Hypertarget{namespacetrain_aa0bdafa2a2fd50f8461aca9f0b459b3d}\label{namespacetrain_aa0bdafa2a2fd50f8461aca9f0b459b3d}} 
+{\bfseries AP}
+\item 
+\mbox{\Hypertarget{namespacetrain_a1ff19d1d8bafa7f42fc72e5347f6998e}\label{namespacetrain_a1ff19d1d8bafa7f42fc72e5347f6998e}} 
+{\bfseries f1}
+\item 
+\mbox{\Hypertarget{namespacetrain_a77b9f31a498fbbd119c22ac77eaade3c}\label{namespacetrain_a77b9f31a498fbbd119c22ac77eaade3c}} 
+{\bfseries ap\+\_\+class}
+\item 
+\mbox{\Hypertarget{namespacetrain_a5ca8d3534665a3b0b57d7d14f6383c7c}\label{namespacetrain_a5ca8d3534665a3b0b57d7d14f6383c7c}} 
+{\bfseries evaluation\+\_\+metrics}
+\item 
+\mbox{\Hypertarget{namespacetrain_a49d37a76a201f42a665dcd156024c655}\label{namespacetrain_a49d37a76a201f42a665dcd156024c655}} 
+{\bfseries ap\+\_\+table}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}PyTorch Detection Training.
+
+To run in a multi-gpu environment, use the distributed launcher::
+
+    python -m torch.distributed.launch --nproc_per_node=$NGPU --use_env \
+        train.py ... --world-size $NGPU
+
+The default hyperparameters are tuned for training on 8 gpus and 2 images per gpu.
+    --lr 0.02 --batch-size 2 --world-size 8
+If you use different number of gpus, the learning rate should be changed to 0.02/8*$NGPU.
+
+On top of that, for training Faster/Mask R-CNN, the default hyperparameters are
+    --epochs 26 --lr-steps 16 22 --aspect-ratio-group-factor 3
+
+Also, if you train Keypoint R-CNN, the default hyperparameters are
+    --epochs 46 --lr-steps 36 43 --aspect-ratio-group-factor 3
+Because the number of images is smaller in the person keypoint subset of COCO,
+the number of epochs should be adapted so that we have the same number of iterations.
+\end{DoxyVerb}
+ 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacetrain_a242e49c387b90838a9072c79886a10ec}\label{namespacetrain_a242e49c387b90838a9072c79886a10ec}} 
+\index{train@{train}!parser@{parser}}
+\index{parser@{parser}!train@{train}}
+\subsubsection{\texorpdfstring{parser}{parser}}
+{\footnotesize\ttfamily train.\+parser}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  argparse.ArgumentParser(
+2         description=\_\_doc\_\_)
+\end{DoxyCode}
+
+
+Definition at line 149 of file train.\+py.
+

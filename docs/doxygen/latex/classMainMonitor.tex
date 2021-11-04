@@ -1,0 +1,66 @@
+\hypertarget{classMainMonitor}{}\section{Main\+Monitor Class Reference}
+\label{classMainMonitor}\index{Main\+Monitor@{Main\+Monitor}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMainMonitor_a6a4d6f1cfcf64d7220a525e3c337ff8e}\label{classMainMonitor_a6a4d6f1cfcf64d7220a525e3c337ff8e}} 
+{\footnotesize template$<$typename Message\+Type $>$ }\\\+::ros\+::\+Subscriber {\bfseries Subscribe\+With\+Handler} (void(Main\+Monitor\+::$\ast$handler)(int, const std\+::string \&, const typename Message\+Type\+::\+Const\+Ptr \&), const int index, const std\+::string \&config\+\_\+file, const std\+::string \&topic, \+::ros\+::\+Node\+Handle $\ast$const node\+\_\+handle, \hyperlink{classMainMonitor}{Main\+Monitor} $\ast$const node)
+\item 
+\mbox{\Hypertarget{classMainMonitor_aa86ee65180f44ce5ad0c044433dd10ae}\label{classMainMonitor_aa86ee65180f44ce5ad0c044433dd10ae}} 
+{\bfseries Main\+Monitor} (std\+::string config\+\_\+file=\char`\"{}config/default\+\_\+config.\+yml\char`\"{})
+\item 
+\mbox{\Hypertarget{classMainMonitor_a260d8cb58670574f16374c8f08025e2c}\label{classMainMonitor_a260d8cb58670574f16374c8f08025e2c}} 
+{\bfseries Main\+Monitor} (const \hyperlink{classMainMonitor}{Main\+Monitor} \&orig)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a7b915b46f4d1ea5fd89f5e3f146281bf}\label{classMainMonitor_a7b915b46f4d1ea5fd89f5e3f146281bf}} 
+void {\bfseries main\+\_\+cb} ()
+\item 
+\mbox{\Hypertarget{classMainMonitor_aa294654bdfa997521057cebcb5f75670}\label{classMainMonitor_aa294654bdfa997521057cebcb5f75670}} 
+void {\bfseries in\+\_\+cb} (const topic\+\_\+tools\+::\+Shape\+Shifter\+::\+Const\+Ptr \&msg, int index, std\+::string topic\+\_\+name)
+\item 
+\mbox{\Hypertarget{classMainMonitor_ad0fe17196637bec51eff8b5b0aef1c4f}\label{classMainMonitor_ad0fe17196637bec51eff8b5b0aef1c4f}} 
+void {\bfseries empty\+\_\+cb} (const std\+\_\+msgs\+::\+Empty\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a23981ef5b2184964ee86b2ac41742de5}\label{classMainMonitor_a23981ef5b2184964ee86b2ac41742de5}} 
+void {\bfseries map\+\_\+cb} (const nav\+\_\+msgs\+::\+Occupancy\+Grid\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a3bcf3c5b43da2359c12a3cd3476ec169}\label{classMainMonitor_a3bcf3c5b43da2359c12a3cd3476ec169}} 
+void {\bfseries twist\+\_\+cb} (const geometry\+\_\+msgs\+::\+Twist\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a18c044470d5e73b2615f133231abd248}\label{classMainMonitor_a18c044470d5e73b2615f133231abd248}} 
+void {\bfseries odom\+\_\+cb} (const nav\+\_\+msgs\+::\+Odometry\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a3b6101bb1e2913cf28df098870ef6f5d}\label{classMainMonitor_a3b6101bb1e2913cf28df098870ef6f5d}} 
+void {\bfseries imu\+\_\+cb} (const sensor\+\_\+msgs\+::\+Imu\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_ac1e304dea179bfb64b38756bf42009d4}\label{classMainMonitor_ac1e304dea179bfb64b38756bf42009d4}} 
+void {\bfseries joints\+\_\+cb} (const sensor\+\_\+msgs\+::\+Joint\+State\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a7947b97434620e01fe8924106cafa9ad}\label{classMainMonitor_a7947b97434620e01fe8924106cafa9ad}} 
+void {\bfseries float\+\_\+cb} (const std\+\_\+msgs\+::\+Float64\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a905f5f6fbe4637526857d71c8db9d3fb}\label{classMainMonitor_a905f5f6fbe4637526857d71c8db9d3fb}} 
+void {\bfseries fix\+\_\+cb} (const sensor\+\_\+msgs\+::\+Nav\+Sat\+Fix\+Const\+Ptr msg, int index)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a4272b134e83aecdd22fc47585b7692f2}\label{classMainMonitor_a4272b134e83aecdd22fc47585b7692f2}} 
+void {\bfseries detect\+\_\+faults} (const ros\+::\+Timer\+Event \&)
+\item 
+\mbox{\Hypertarget{classMainMonitor_ac025ffed45202bb9214598caa344a02d}\label{classMainMonitor_ac025ffed45202bb9214598caa344a02d}} 
+std\+::string {\bfseries isolate\+\_\+components} (std\+::list$<$ std\+::string $>$ error\+\_\+topics)
+\item 
+\mbox{\Hypertarget{classMainMonitor_a432c2be28f379f2f6c3969c58031ca6f}\label{classMainMonitor_a432c2be28f379f2f6c3969c58031ca6f}} 
+double {\bfseries read\+Stats\+C\+PU} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 28 of file monitor.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+fdd/include/gr\+\_\+fdd/monitor.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+fdd/src/monitor.\+cpp\end{DoxyCompactItemize}

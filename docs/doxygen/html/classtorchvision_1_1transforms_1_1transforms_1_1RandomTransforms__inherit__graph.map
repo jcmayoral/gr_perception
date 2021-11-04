@@ -1,0 +1,5 @@
+<map id="torchvision.transforms.transforms.RandomTransforms" name="torchvision.transforms.transforms.RandomTransforms">
+<area shape="rect" id="node3" href="$classtorchvision_1_1transforms_1_1transforms_1_1RandomApply.html" title="torchvision.transforms.transforms.\lRandomApply" alt="" coords="380,5,601,47"/>
+<area shape="rect" id="node4" href="$classtorchvision_1_1transforms_1_1transforms_1_1RandomChoice.html" title="torchvision.transforms.transforms.\lRandomChoice" alt="" coords="380,71,601,112"/>
+<area shape="rect" id="node5" href="$classtorchvision_1_1transforms_1_1transforms_1_1RandomOrder.html" title="torchvision.transforms.transforms.\lRandomOrder" alt="" coords="380,136,601,177"/>
+</map>

@@ -1,0 +1,73 @@
+\hypertarget{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2}{}\section{torchvision.\+models.\+quantization.\+shufflenetv2.\+Quantizable\+Shuffle\+Net\+V2 Class Reference}
+\label{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2}\index{torchvision.\+models.\+quantization.\+shufflenetv2.\+Quantizable\+Shuffle\+Net\+V2@{torchvision.\+models.\+quantization.\+shufflenetv2.\+Quantizable\+Shuffle\+Net\+V2}}
+
+
+Inheritance diagram for torchvision.\+models.\+quantization.\+shufflenetv2.\+Quantizable\+Shuffle\+Net\+V2\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+quantization.\+shufflenetv2.\+Quantizable\+Shuffle\+Net\+V2\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_aaad67b2c2fded2e5acb3d48a3fbdd9c2}\label{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_aaad67b2c2fded2e5acb3d48a3fbdd9c2}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, args, kwargs)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a6f6d8eee27e2369ee438b7dc0e37d830}\label{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a6f6d8eee27e2369ee438b7dc0e37d830}} 
+def {\bfseries forward} (self, x)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a63bec221f4e8efd09d8910d1387fa58b}{fuse\+\_\+model} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a75e4d45c4af1461ae2d576b8e7f9467f}\label{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a75e4d45c4af1461ae2d576b8e7f9467f}} 
+{\bfseries quant}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a3da3afaa06ad6e9d983b3674d855eb4d}\label{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a3da3afaa06ad6e9d983b3674d855eb4d}} 
+{\bfseries dequant}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 41 of file shufflenetv2.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a63bec221f4e8efd09d8910d1387fa58b}\label{classtorchvision_1_1models_1_1quantization_1_1shufflenetv2_1_1QuantizableShuffleNetV2_a63bec221f4e8efd09d8910d1387fa58b}} 
+\index{torchvision\+::models\+::quantization\+::shufflenetv2\+::\+Quantizable\+Shuffle\+Net\+V2@{torchvision\+::models\+::quantization\+::shufflenetv2\+::\+Quantizable\+Shuffle\+Net\+V2}!fuse\+\_\+model@{fuse\+\_\+model}}
+\index{fuse\+\_\+model@{fuse\+\_\+model}!torchvision\+::models\+::quantization\+::shufflenetv2\+::\+Quantizable\+Shuffle\+Net\+V2@{torchvision\+::models\+::quantization\+::shufflenetv2\+::\+Quantizable\+Shuffle\+Net\+V2}}
+\subsubsection{\texorpdfstring{fuse\+\_\+model()}{fuse\_model()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+quantization.\+shufflenetv2.\+Quantizable\+Shuffle\+Net\+V2.\+fuse\+\_\+model (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Fuse conv/bn/relu modules in shufflenetv2 model
+
+Fuse conv+bn+relu/ conv+relu/conv+bn modules to prepare for quantization.
+Model is modified in place.  Note that this operation does not change numerics
+and the model after modification is in floating point
+\end{DoxyVerb}
+ 
+
+Definition at line 53 of file shufflenetv2.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/quantization/shufflenetv2.\+py\end{DoxyCompactItemize}

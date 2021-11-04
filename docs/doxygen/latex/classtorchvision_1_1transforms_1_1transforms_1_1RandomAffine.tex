@@ -1,0 +1,129 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine}{}\section{torchvision.\+transforms.\+transforms.\+Random\+Affine Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine}\index{torchvision.\+transforms.\+transforms.\+Random\+Affine@{torchvision.\+transforms.\+transforms.\+Random\+Affine}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Random\+Affine\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Random\+Affine\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a9cf9b3d839bc8015b6f2c270ce5fc668}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a9cf9b3d839bc8015b6f2c270ce5fc668}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, degrees, translate=None, scale=None, shear=None, resample=False, fillcolor=0)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a411a09e799bed93bc83213b41c87cdd4}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a9b24fb4815056105ff477415e1ef53a8}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a9b24fb4815056105ff477415e1ef53a8}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a3605d8f67e6ccd9d79086acb064992aa}{get\+\_\+params} (degrees, translate, scale\+\_\+ranges, shears, img\+\_\+size)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_aea8ecabc119effe0a6cdc0174463bcdd}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_aea8ecabc119effe0a6cdc0174463bcdd}} 
+{\bfseries degrees}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a851b31f3c2294eec53cecb368bd677c9}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a851b31f3c2294eec53cecb368bd677c9}} 
+{\bfseries translate}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a266c5e4a176cab8a36f9ea941df4b237}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a266c5e4a176cab8a36f9ea941df4b237}} 
+{\bfseries scale}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_ac9840d7ad6372518bf635707cd0b40a0}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_ac9840d7ad6372518bf635707cd0b40a0}} 
+{\bfseries shear}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_ad27f069e24daae1944ea31637f945e6b}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_ad27f069e24daae1944ea31637f945e6b}} 
+{\bfseries resample}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a9bfc2b436b769aaa79deb60f3cebcd48}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a9bfc2b436b769aaa79deb60f3cebcd48}} 
+{\bfseries fillcolor}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Random affine transformation of the image keeping center invariant
+
+Args:
+    degrees (sequence or float or int): Range of degrees to select from.
+        If degrees is a number instead of sequence like (min, max), the range of degrees
+        will be (-degrees, +degrees). Set to 0 to deactivate rotations.
+    translate (tuple, optional): tuple of maximum absolute fraction for horizontal
+        and vertical translations. For example translate=(a, b), then horizontal shift
+        is randomly sampled in the range -img_width * a < dx < img_width * a and vertical shift is
+        randomly sampled in the range -img_height * b < dy < img_height * b. Will not translate by default.
+    scale (tuple, optional): scaling factor interval, e.g (a, b), then scale is
+        randomly sampled from the range a <= scale <= b. Will keep original scale by default.
+    shear (sequence or float or int, optional): Range of degrees to select from.
+        If shear is a number, a shear parallel to the x axis in the range (-shear, +shear)
+        will be apllied. Else if shear is a tuple or list of 2 values a shear parallel to the x axis in the
+        range (shear[0], shear[1]) will be applied. Else if shear is a tuple or list of 4 values,
+        a x-axis shear in (shear[0], shear[1]) and y-axis shear in (shear[2], shear[3]) will be applied.
+        Will not apply shear by default
+    resample ({PIL.Image.NEAREST, PIL.Image.BILINEAR, PIL.Image.BICUBIC}, optional):
+        An optional resampling filter. See `filters`_ for more information.
+        If omitted, or if the image has mode "1" or "P", it is set to PIL.Image.NEAREST.
+    fillcolor (tuple or int): Optional fill color (Tuple for RGB Image And int for grayscale) for the area
+        outside the transform in the output image.(Pillow>=5.0.0)
+
+.. _filters: https://pillow.readthedocs.io/en/latest/handbook/concepts.html#filters\end{DoxyVerb}
+ 
+
+Definition at line 1176 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a411a09e799bed93bc83213b41c87cdd4}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a411a09e799bed93bc83213b41c87cdd4}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Affine@{torchvision\+::transforms\+::transforms\+::\+Random\+Affine}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+Random\+Affine@{torchvision\+::transforms\+::transforms\+::\+Random\+Affine}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Affine.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}    img (PIL Image): Image to be transformed.
+
+Returns:
+    PIL Image: Affine transformed image.
+\end{DoxyVerb}
+ 
+
+Definition at line 1283 of file transforms.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a3605d8f67e6ccd9d79086acb064992aa}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomAffine_a3605d8f67e6ccd9d79086acb064992aa}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Affine@{torchvision\+::transforms\+::transforms\+::\+Random\+Affine}!get\+\_\+params@{get\+\_\+params}}
+\index{get\+\_\+params@{get\+\_\+params}!torchvision\+::transforms\+::transforms\+::\+Random\+Affine@{torchvision\+::transforms\+::transforms\+::\+Random\+Affine}}
+\subsubsection{\texorpdfstring{get\+\_\+params()}{get\_params()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Affine.\+get\+\_\+params (\begin{DoxyParamCaption}\item[{}]{degrees,  }\item[{}]{translate,  }\item[{}]{scale\+\_\+ranges,  }\item[{}]{shears,  }\item[{}]{img\+\_\+size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get parameters for affine transformation
+
+Returns:
+    sequence: params to be passed to the affine transformation
+\end{DoxyVerb}
+ 
+
+Definition at line 1252 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

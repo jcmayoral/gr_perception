@@ -1,0 +1,108 @@
+\hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection}{}\section{torchvision.\+datasets.\+voc.\+V\+O\+C\+Detection Class Reference}
+\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection}\index{torchvision.\+datasets.\+voc.\+V\+O\+C\+Detection@{torchvision.\+datasets.\+voc.\+V\+O\+C\+Detection}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+voc.\+V\+O\+C\+Detection\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+voc.\+V\+O\+C\+Detection\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a2cd4ff0245632c72045fed682008a0b0}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a2cd4ff0245632c72045fed682008a0b0}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, year=\textquotesingle{}2012\textquotesingle{}, image\+\_\+set=\textquotesingle{}train\textquotesingle{}, download=False, transform=None, target\+\_\+transform=None, transforms=None)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ac4f9de50ff56feb893981db660d24e78}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ab3abebd70a76f0f23fba97d6f55e3f79}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ab3abebd70a76f0f23fba97d6f55e3f79}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a3c6e5e960058816dc5b6797ff450fb77}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a3c6e5e960058816dc5b6797ff450fb77}} 
+def {\bfseries parse\+\_\+voc\+\_\+xml} (self, node)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a27a1ec0c43242e1651858f86f726220d}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a27a1ec0c43242e1651858f86f726220d}} 
+{\bfseries year}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a1d03bb29d45eddb2c9ad2e36a49c0406}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a1d03bb29d45eddb2c9ad2e36a49c0406}} 
+{\bfseries url}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ac01c06ffd87722b3cc0aa6fbab4adfbc}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ac01c06ffd87722b3cc0aa6fbab4adfbc}} 
+{\bfseries filename}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_afb24ee2323127d13df279f6eb659d343}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_afb24ee2323127d13df279f6eb659d343}} 
+{\bfseries md5}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a93a8d1afb6c5d4301a8634880a679036}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a93a8d1afb6c5d4301a8634880a679036}} 
+{\bfseries image\+\_\+set}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a08228a54b02a98dd73edaa56b216ac5b}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a08228a54b02a98dd73edaa56b216ac5b}} 
+{\bfseries images}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a2489ef1e9c79a60d75b6d19530f9f8f9}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_a2489ef1e9c79a60d75b6d19530f9f8f9}} 
+{\bfseries annotations}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Pascal VOC <http://host.robots.ox.ac.uk/pascal/VOC/>`_ Detection Dataset.
+
+Args:
+    root (string): Root directory of the VOC Dataset.
+    year (string, optional): The dataset year, supports years 2007 to 2012.
+    image_set (string, optional): Select the image_set to use, ``train``, ``trainval`` or ``val``
+    download (bool, optional): If true, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.
+        (default: alphabetic indexing of VOC's 20 classes).
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, required): A function/transform that takes in the
+        target and transforms it.
+    transforms (callable, optional): A function/transform that takes input sample and its target as entry
+        and returns a transformed version.
+\end{DoxyVerb}
+ 
+
+Definition at line 135 of file voc.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ac4f9de50ff56feb893981db660d24e78}\label{classtorchvision_1_1datasets_1_1voc_1_1VOCDetection_ac4f9de50ff56feb893981db660d24e78}} 
+\index{torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Detection@{torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Detection}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Detection@{torchvision\+::datasets\+::voc\+::\+V\+O\+C\+Detection}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+voc.\+V\+O\+C\+Detection.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is a dictionary of the XML tree.
+\end{DoxyVerb}
+ 
+
+Definition at line 197 of file voc.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/voc.\+py\end{DoxyCompactItemize}

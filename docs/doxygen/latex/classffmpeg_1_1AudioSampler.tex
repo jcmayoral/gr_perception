@@ -1,0 +1,100 @@
+\hypertarget{classffmpeg_1_1AudioSampler}{}\section{ffmpeg\+:\+:Audio\+Sampler Class Reference}
+\label{classffmpeg_1_1AudioSampler}\index{ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}}
+
+
+{\ttfamily \#include $<$audio\+\_\+sampler.\+h$>$}
+
+
+
+Inheritance diagram for ffmpeg\+:\+:Audio\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classffmpeg_1_1AudioSampler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ffmpeg\+:\+:Audio\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classffmpeg_1_1AudioSampler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1AudioSampler_ae7fd59e065f7f827bdf164ccfa80dc56}\label{classffmpeg_1_1AudioSampler_ae7fd59e065f7f827bdf164ccfa80dc56}} 
+{\bfseries Audio\+Sampler} (void $\ast$log\+Ctx)
+\item 
+bool \hyperlink{classffmpeg_1_1AudioSampler_a90df92f5b3a265e0cfa9ee44d9e8871b}{init} (const \hyperlink{structffmpeg_1_1SamplerParameters}{Sampler\+Parameters} \&params) override
+\item 
+int \hyperlink{classffmpeg_1_1AudioSampler_a2188529ebad9ef4593a5ab11e8236989}{sample} (const \hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $\ast$in, \hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $\ast$out) override
+\item 
+void \hyperlink{classffmpeg_1_1AudioSampler_a703ec8da8cc9e6e9701bed75cbc40085}{shutdown} () override
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1AudioSampler_ab7ac3c8e9a0c6cc1984057ee0307b732}\label{classffmpeg_1_1AudioSampler_ab7ac3c8e9a0c6cc1984057ee0307b732}} 
+int {\bfseries sample} (A\+V\+Frame $\ast$frame, \hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $\ast$out)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class transcode audio frames from one format into another 
+
+Definition at line 11 of file audio\+\_\+sampler.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classffmpeg_1_1AudioSampler_a90df92f5b3a265e0cfa9ee44d9e8871b}\label{classffmpeg_1_1AudioSampler_a90df92f5b3a265e0cfa9ee44d9e8871b}} 
+\index{ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}!init@{init}}
+\index{init@{init}!ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}}
+\subsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily bool ffmpeg\+::\+Audio\+Sampler\+::init (\begin{DoxyParamCaption}\item[{const \hyperlink{structffmpeg_1_1SamplerParameters}{Sampler\+Parameters} \&}]{params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Initializes media sampler with parameters 
+
+Implements \hyperlink{classffmpeg_1_1MediaSampler_a049962d62fc930c67d6cf5aa89ae1948}{ffmpeg\+::\+Media\+Sampler}.
+
+
+
+Definition at line 43 of file audio\+\_\+sampler.\+cpp.
+
+\mbox{\Hypertarget{classffmpeg_1_1AudioSampler_a2188529ebad9ef4593a5ab11e8236989}\label{classffmpeg_1_1AudioSampler_a2188529ebad9ef4593a5ab11e8236989}} 
+\index{ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}!sample@{sample}}
+\index{sample@{sample}!ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}}
+\subsubsection{\texorpdfstring{sample()}{sample()}}
+{\footnotesize\ttfamily int ffmpeg\+::\+Audio\+Sampler\+::sample (\begin{DoxyParamCaption}\item[{const \hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $\ast$}]{in,  }\item[{\hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $\ast$}]{out }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Samples media bytes Returns error code $<$ 0, or $>$=0 -\/ for success, indicating number of bytes processed. set  to null for flushing data 
+
+Implements \hyperlink{classffmpeg_1_1MediaSampler_a1e13816018edada455769f027cf5e9dd}{ffmpeg\+::\+Media\+Sampler}.
+
+
+
+Definition at line 198 of file audio\+\_\+sampler.\+cpp.
+
+\mbox{\Hypertarget{classffmpeg_1_1AudioSampler_a703ec8da8cc9e6e9701bed75cbc40085}\label{classffmpeg_1_1AudioSampler_a703ec8da8cc9e6e9701bed75cbc40085}} 
+\index{ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!ffmpeg\+::\+Audio\+Sampler@{ffmpeg\+::\+Audio\+Sampler}}
+\subsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily void ffmpeg\+::\+Audio\+Sampler\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Releases resources 
+
+Implements \hyperlink{classffmpeg_1_1MediaSampler_ac8f2fee9cdf896871776a8202d70edd7}{ffmpeg\+::\+Media\+Sampler}.
+
+
+
+Definition at line 39 of file audio\+\_\+sampler.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/audio\+\_\+sampler.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/audio\+\_\+sampler.\+cpp\end{DoxyCompactItemize}

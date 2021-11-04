@@ -1,0 +1,102 @@
+\hypertarget{classffmpeg_1_1MediaDecoder}{}\section{ffmpeg\+:\+:Media\+Decoder Class Reference}
+\label{classffmpeg_1_1MediaDecoder}\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+
+
+{\ttfamily \#include $<$defs.\+h$>$}
+
+
+
+Inheritance diagram for ffmpeg\+:\+:Media\+Decoder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classffmpeg_1_1MediaDecoder__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \hyperlink{classffmpeg_1_1MediaDecoder_a1e65150d20d7540f8e35ce2d9f13017f}{init} (const \hyperlink{structffmpeg_1_1DecoderParameters}{Decoder\+Parameters} \&params, Decoder\+In\+Callback \&\&in, std\+::vector$<$ \hyperlink{structffmpeg_1_1DecoderMetadata}{Decoder\+Metadata} $>$ $\ast$metadata)=0
+\item 
+virtual int \hyperlink{classffmpeg_1_1MediaDecoder_a20109fcef8c1c83eece3f30094ae4deb}{decode} (\hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} $\ast$out, uint64\+\_\+t timeout\+Ms)=0
+\item 
+virtual int \hyperlink{classffmpeg_1_1MediaDecoder_acaf4668d2c876ede90eaa3a012b7146d}{decode\+\_\+all} (const Decoder\+Out\+Callback \&callback)=0
+\item 
+virtual void \hyperlink{classffmpeg_1_1MediaDecoder_a844a205a22a365e6c8945e0a54ca7b66}{shutdown} ()=0
+\item 
+virtual void \hyperlink{classffmpeg_1_1MediaDecoder_a165ba6847844ec6057ffcb6b7379f2af}{interrupt} ()=0
+\item 
+virtual std\+::unique\+\_\+ptr$<$ \hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $>$ \hyperlink{classffmpeg_1_1MediaDecoder_a7a5b9a79eafa82de87c53f6ad1a43071}{create\+Byte\+Storage} (size\+\_\+t n)=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract class for decoding media bytes It has two diffrent modes. Internal media bytes retrieval for given uri and external media bytes provider in case of memory streams 
+
+Definition at line 290 of file defs.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classffmpeg_1_1MediaDecoder_a7a5b9a79eafa82de87c53f6ad1a43071}\label{classffmpeg_1_1MediaDecoder_a7a5b9a79eafa82de87c53f6ad1a43071}} 
+\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}!create\+Byte\+Storage@{create\+Byte\+Storage}}
+\index{create\+Byte\+Storage@{create\+Byte\+Storage}!ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+\subsubsection{\texorpdfstring{create\+Byte\+Storage()}{createByteStorage()}}
+{\footnotesize\ttfamily virtual std\+::unique\+\_\+ptr$<$\hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage}$>$ ffmpeg\+::\+Media\+Decoder\+::create\+Byte\+Storage (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Factory to create \hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} class instances, particular implementation is left to the derived class. Caller provides the initially allocated size \mbox{\Hypertarget{classffmpeg_1_1MediaDecoder_a20109fcef8c1c83eece3f30094ae4deb}\label{classffmpeg_1_1MediaDecoder_a20109fcef8c1c83eece3f30094ae4deb}} 
+\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}!decode@{decode}}
+\index{decode@{decode}!ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+\subsubsection{\texorpdfstring{decode()}{decode()}}
+{\footnotesize\ttfamily virtual int ffmpeg\+::\+Media\+Decoder\+::decode (\begin{DoxyParamCaption}\item[{\hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} $\ast$}]{out,  }\item[{uint64\+\_\+t}]{timeout\+Ms }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Polls available decoded one frame from decoder Returns error code, 0 -\/ for success 
+
+Implemented in \hyperlink{classffmpeg_1_1SyncDecoder_a61f546538c125ba3951a0f572eca49d1}{ffmpeg\+::\+Sync\+Decoder}.
+
+\mbox{\Hypertarget{classffmpeg_1_1MediaDecoder_acaf4668d2c876ede90eaa3a012b7146d}\label{classffmpeg_1_1MediaDecoder_acaf4668d2c876ede90eaa3a012b7146d}} 
+\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}!decode\+\_\+all@{decode\+\_\+all}}
+\index{decode\+\_\+all@{decode\+\_\+all}!ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+\subsubsection{\texorpdfstring{decode\+\_\+all()}{decode\_all()}}
+{\footnotesize\ttfamily virtual int ffmpeg\+::\+Media\+Decoder\+::decode\+\_\+all (\begin{DoxyParamCaption}\item[{const Decoder\+Out\+Callback \&}]{callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Polls available decoded bytes from decoder, till E\+OF or error 
+
+Implemented in \hyperlink{classffmpeg_1_1Decoder_aceb0e1c21883ccd57c1692fccdd17745}{ffmpeg\+::\+Decoder}.
+
+\mbox{\Hypertarget{classffmpeg_1_1MediaDecoder_a1e65150d20d7540f8e35ce2d9f13017f}\label{classffmpeg_1_1MediaDecoder_a1e65150d20d7540f8e35ce2d9f13017f}} 
+\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}!init@{init}}
+\index{init@{init}!ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+\subsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual bool ffmpeg\+::\+Media\+Decoder\+::init (\begin{DoxyParamCaption}\item[{const \hyperlink{structffmpeg_1_1DecoderParameters}{Decoder\+Parameters} \&}]{params,  }\item[{Decoder\+In\+Callback \&\&}]{in,  }\item[{std\+::vector$<$ \hyperlink{structffmpeg_1_1DecoderMetadata}{Decoder\+Metadata} $>$ $\ast$}]{metadata }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Initializes media decoder with parameters, calls callback when media bytes are available. Media bytes get fetched internally from provided U\+RI or invokes provided input callback to get media bytes. Input callback must be empty for the internal media provider Caller can provide non-\/null pointer for the input container if headers to obtain the streams metadata (optional) 
+
+Implemented in \hyperlink{classffmpeg_1_1Decoder_a05d8eb1d33e6a1e19fe92da06fc7792e}{ffmpeg\+::\+Decoder}.
+
+\mbox{\Hypertarget{classffmpeg_1_1MediaDecoder_a165ba6847844ec6057ffcb6b7379f2af}\label{classffmpeg_1_1MediaDecoder_a165ba6847844ec6057ffcb6b7379f2af}} 
+\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}!interrupt@{interrupt}}
+\index{interrupt@{interrupt}!ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+\subsubsection{\texorpdfstring{interrupt()}{interrupt()}}
+{\footnotesize\ttfamily virtual void ffmpeg\+::\+Media\+Decoder\+::interrupt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Interrupts whatever decoder is doing at any time 
+
+Implemented in \hyperlink{classffmpeg_1_1Decoder_a4f0672cd7855e99dbdd7ceceb634d51b}{ffmpeg\+::\+Decoder}.
+
+\mbox{\Hypertarget{classffmpeg_1_1MediaDecoder_a844a205a22a365e6c8945e0a54ca7b66}\label{classffmpeg_1_1MediaDecoder_a844a205a22a365e6c8945e0a54ca7b66}} 
+\index{ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!ffmpeg\+::\+Media\+Decoder@{ffmpeg\+::\+Media\+Decoder}}
+\subsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily virtual void ffmpeg\+::\+Media\+Decoder\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Stops calling callback, releases resources 
+
+Implemented in \hyperlink{classffmpeg_1_1Decoder_a1838e1a5548671a7b19426bff8ff9b3c}{ffmpeg\+::\+Decoder}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/defs.\+h\end{DoxyCompactItemize}

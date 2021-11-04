@@ -1,0 +1,109 @@
+\hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101}{}\section{torchvision.\+datasets.\+caltech.\+Caltech101 Class Reference}
+\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101}\index{torchvision.\+datasets.\+caltech.\+Caltech101@{torchvision.\+datasets.\+caltech.\+Caltech101}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+caltech.\+Caltech101\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+caltech.\+Caltech101\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a1b2766bcf8e53860b824ab55a1278cf1}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a1b2766bcf8e53860b824ab55a1278cf1}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, target\+\_\+type=\char`\"{}category\char`\"{}, transform=None, target\+\_\+transform=None, download=False)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_aab20aea2638bfab3ce6b3af9fde34284}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a15bf3f3995881e7e565931946c8efccb}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a15bf3f3995881e7e565931946c8efccb}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a772290375df1e83f66d0131e03df982d}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a772290375df1e83f66d0131e03df982d}} 
+def {\bfseries download} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a9b36236da91f037a7867eca037271569}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a9b36236da91f037a7867eca037271569}} 
+def {\bfseries extra\+\_\+repr} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a5ccb1048ed503cdbc53147188e6e3045}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a5ccb1048ed503cdbc53147188e6e3045}} 
+{\bfseries target\+\_\+type}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_ae23953164bdde22965050d6ad9cdc35e}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_ae23953164bdde22965050d6ad9cdc35e}} 
+{\bfseries categories}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a515b1ba0b8bdc812e2945a78162f4ea7}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a515b1ba0b8bdc812e2945a78162f4ea7}} 
+{\bfseries annotation\+\_\+categories}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_adea73e93691ec954e9cf55cdb5bb6aae}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_adea73e93691ec954e9cf55cdb5bb6aae}} 
+{\bfseries index}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a0d49d9f8af3818da504f190e949c031e}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_a0d49d9f8af3818da504f190e949c031e}} 
+{\bfseries y}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Caltech 101 <http://www.vision.caltech.edu/Image_Datasets/Caltech101/>`_ Dataset.
+
+.. warning::
+
+    This class needs `scipy <https://docs.scipy.org/doc/>`_ to load target files from `.mat` format.
+
+Args:
+    root (string): Root directory of dataset where directory
+        ``caltech101`` exists or will be saved to if download is set to True.
+    target_type (string or list, optional): Type of target to use, ``category`` or
+    ``annotation``. Can also be a list to output a tuple with all specified target types.
+    ``category`` represents the target class, and ``annotation`` is a list of points
+    from a hand-generated outline. Defaults to ``category``.
+    transform (callable, optional): A function/transform that takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    download (bool, optional): If true, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.
+\end{DoxyVerb}
+ 
+
+Definition at line 9 of file caltech.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_aab20aea2638bfab3ce6b3af9fde34284}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech101_aab20aea2638bfab3ce6b3af9fde34284}} 
+\index{torchvision\+::datasets\+::caltech\+::\+Caltech101@{torchvision\+::datasets\+::caltech\+::\+Caltech101}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::caltech\+::\+Caltech101@{torchvision\+::datasets\+::caltech\+::\+Caltech101}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+caltech.\+Caltech101.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where the type of target specified by target_type.
+\end{DoxyVerb}
+ 
+
+Definition at line 69 of file caltech.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/caltech.\+py\end{DoxyCompactItemize}

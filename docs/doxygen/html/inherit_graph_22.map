@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classffmpeg_1_1MediaSampler.html" title="ffmpeg::MediaSampler" alt="" coords="5,56,159,83"/>
+<area shape="rect" id="node2" href="$classffmpeg_1_1AudioSampler.html" title="ffmpeg::AudioSampler" alt="" coords="213,5,363,32"/>
+<area shape="rect" id="node3" href="$classffmpeg_1_1SubtitleSampler.html" title="ffmpeg::SubtitleSampler" alt="" coords="207,56,369,83"/>
+<area shape="rect" id="node4" href="$classffmpeg_1_1VideoSampler.html" title="ffmpeg::VideoSampler" alt="" coords="213,107,363,133"/>
+</map>

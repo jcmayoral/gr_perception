@@ -1,0 +1,85 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage}{}\section{torchvision.\+transforms.\+transforms.\+To\+P\+I\+L\+Image Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage}\index{torchvision.\+transforms.\+transforms.\+To\+P\+I\+L\+Image@{torchvision.\+transforms.\+transforms.\+To\+P\+I\+L\+Image}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+To\+P\+I\+L\+Image\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+To\+P\+I\+L\+Image\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_aa805763fecb44db7714ec935df1f9f02}\label{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_aa805763fecb44db7714ec935df1f9f02}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, mode=None)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_a14627896935e3847a17bc058c8b8ed91}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, pic)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_a3ba601fed2ebb3f64840cb2914a3058a}\label{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_a3ba601fed2ebb3f64840cb2914a3058a}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_ab4a0e76883557af38d65110170e43786}\label{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_ab4a0e76883557af38d65110170e43786}} 
+{\bfseries mode}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Convert a tensor or an ndarray to PIL Image.
+
+Converts a torch.*Tensor of shape C x H x W or a numpy ndarray of shape
+H x W x C to a PIL Image while preserving the value range.
+
+Args:
+    mode (`PIL.Image mode`_): color space and pixel depth of input data (optional).
+        If ``mode`` is ``None`` (default) there are some assumptions made about the input data:
+         - If the input has 4 channels, the ``mode`` is assumed to be ``RGBA``.
+         - If the input has 3 channels, the ``mode`` is assumed to be ``RGB``.
+         - If the input has 2 channels, the ``mode`` is assumed to be ``LA``.
+         - If the input has 1 channel, the ``mode`` is determined by the data type (i.e ``int``, ``float``,
+           ``short``).
+
+.. _PIL.Image mode: https://pillow.readthedocs.io/en/latest/handbook/concepts.html#concept-modes
+\end{DoxyVerb}
+ 
+
+Definition at line 137 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_a14627896935e3847a17bc058c8b8ed91}\label{classtorchvision_1_1transforms_1_1transforms_1_1ToPILImage_a14627896935e3847a17bc058c8b8ed91}} 
+\index{torchvision\+::transforms\+::transforms\+::\+To\+P\+I\+L\+Image@{torchvision\+::transforms\+::transforms\+::\+To\+P\+I\+L\+Image}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+To\+P\+I\+L\+Image@{torchvision\+::transforms\+::transforms\+::\+To\+P\+I\+L\+Image}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+To\+P\+I\+L\+Image.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{pic }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    pic (Tensor or numpy.ndarray): Image to be converted to PIL Image.
+
+Returns:
+    PIL Image: Image converted to PIL Image.\end{DoxyVerb}
+ 
+
+Definition at line 157 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

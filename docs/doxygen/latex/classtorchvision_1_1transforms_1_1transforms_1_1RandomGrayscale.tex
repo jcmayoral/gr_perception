@@ -1,0 +1,80 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale}{}\section{torchvision.\+transforms.\+transforms.\+Random\+Grayscale Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale}\index{torchvision.\+transforms.\+transforms.\+Random\+Grayscale@{torchvision.\+transforms.\+transforms.\+Random\+Grayscale}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Random\+Grayscale\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Random\+Grayscale\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_a872f78dec80c8ba267a2f64c7dca58f5}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_a872f78dec80c8ba267a2f64c7dca58f5}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, p=0.\+1)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_aa02b86308d282e359f0cfb294fbb53ba}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_acbfd0a6b439bef3367925b1a9a15c03d}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_acbfd0a6b439bef3367925b1a9a15c03d}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_aaa06c8ad7d665c40d6d58f85fa3d0ea9}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_aaa06c8ad7d665c40d6d58f85fa3d0ea9}} 
+{\bfseries p}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Randomly convert image to grayscale with a probability of p (default 0.1).
+
+Args:
+    p (float): probability that image should be converted to grayscale.
+
+Returns:
+    PIL Image: Grayscale version of the input image with probability p and unchanged
+    with probability (1-p).
+    - If input image is 1 channel: grayscale version is 1 channel
+    - If input image is 3 channel: grayscale version is 3 channel with r == g == b\end{DoxyVerb}
+ 
+
+Definition at line 1341 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_aa02b86308d282e359f0cfb294fbb53ba}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomGrayscale_aa02b86308d282e359f0cfb294fbb53ba}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Grayscale@{torchvision\+::transforms\+::transforms\+::\+Random\+Grayscale}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+Random\+Grayscale@{torchvision\+::transforms\+::transforms\+::\+Random\+Grayscale}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Grayscale.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image): Image to be converted to grayscale.
+
+Returns:
+    PIL Image: Randomly grayscaled image.
+\end{DoxyVerb}
+ 
+
+Definition at line 1358 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,86 @@
+\hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k}{}\section{torchvision.\+datasets.\+flickr.\+Flickr30k Class Reference}
+\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k}\index{torchvision.\+datasets.\+flickr.\+Flickr30k@{torchvision.\+datasets.\+flickr.\+Flickr30k}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+flickr.\+Flickr30k\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+flickr.\+Flickr30k\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a1a4ff88de7b8fbe7518418d1bedd7584}\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a1a4ff88de7b8fbe7518418d1bedd7584}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, ann\+\_\+file, transform=None, target\+\_\+transform=None)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a869522ad69d0e5b5ba82a289d28f8477}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a5b9fc6178a45948da8b694d83322e950}\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a5b9fc6178a45948da8b694d83322e950}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a775ff9a872c26e9ce4dac85d45c1b3e2}\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a775ff9a872c26e9ce4dac85d45c1b3e2}} 
+{\bfseries ann\+\_\+file}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a51c965c5cd9b228a4cd2bc957dbe4764}\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a51c965c5cd9b228a4cd2bc957dbe4764}} 
+{\bfseries annotations}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_ac9324db4b3758d0b2438b8499bde828e}\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_ac9324db4b3758d0b2438b8499bde828e}} 
+{\bfseries ids}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Flickr30k Entities <http://web.engr.illinois.edu/~bplumme2/Flickr30kEntities/>`_ Dataset.
+
+Args:
+    root (string): Root directory where images are downloaded to.
+    ann_file (string): Path to annotation file.
+    transform (callable, optional): A function/transform that takes in a PIL image
+        and returns a transformed version. E.g, ``transforms.ToTensor``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+\end{DoxyVerb}
+ 
+
+Definition at line 104 of file flickr.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a869522ad69d0e5b5ba82a289d28f8477}\label{classtorchvision_1_1datasets_1_1flickr_1_1Flickr30k_a869522ad69d0e5b5ba82a289d28f8477}} 
+\index{torchvision\+::datasets\+::flickr\+::\+Flickr30k@{torchvision\+::datasets\+::flickr\+::\+Flickr30k}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::flickr\+::\+Flickr30k@{torchvision\+::datasets\+::flickr\+::\+Flickr30k}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+flickr.\+Flickr30k.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: Tuple (image, target). target is a list of captions for the image.
+\end{DoxyVerb}
+ 
+
+Definition at line 130 of file flickr.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/flickr.\+py\end{DoxyCompactItemize}

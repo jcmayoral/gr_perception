@@ -1,0 +1,96 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler}{}\section{torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler}\index{torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler@{torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a278a8a8ef3a6ca92eddbbeaafb82ee54}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, batch\+\_\+size\+\_\+per\+\_\+image, positive\+\_\+fraction)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a0c143b41388d87ce90a73e0e0c3f477c}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, matched\+\_\+idxs)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_aa83be68e7b1c540d13fa796c86429b66}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_aa83be68e7b1c540d13fa796c86429b66}} 
+{\bfseries batch\+\_\+size\+\_\+per\+\_\+image}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a143d4b7f14f96b223fedac1ad018273a}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a143d4b7f14f96b223fedac1ad018273a}} 
+{\bfseries positive\+\_\+fraction}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}This class samples batches, ensuring that they contain a fixed proportion of positives
+\end{DoxyVerb}
+ 
+
+Definition at line 9 of file \+\_\+utils.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a278a8a8ef3a6ca92eddbbeaafb82ee54}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a278a8a8ef3a6ca92eddbbeaafb82ee54}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{batch\+\_\+size\+\_\+per\+\_\+image,  }\item[{}]{positive\+\_\+fraction }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Arguments:
+    batch_size_per_image (int): number of elements to be selected per image
+    positive_fraction (float): percentace of positive elements per batch
+\end{DoxyVerb}
+ 
+
+Definition at line 14 of file \+\_\+utils.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a0c143b41388d87ce90a73e0e0c3f477c}\label{classtorchvision_1_1models_1_1detection_1_1__utils_1_1BalancedPositiveNegativeSampler_a0c143b41388d87ce90a73e0e0c3f477c}} 
+\index{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler@{torchvision\+::models\+::detection\+::\+\_\+utils\+::\+Balanced\+Positive\+Negative\+Sampler}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+detection.\+\_\+utils.\+Balanced\+Positive\+Negative\+Sampler.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{matched\+\_\+idxs }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Arguments:
+    matched idxs: list of tensors containing -1, 0 or positive values.
+Each tensor corresponds to a specific image.
+-1 values are ignored, 0 are considered as negatives and > 0 as
+positives.
+
+Returns:
+    pos_idx (list[tensor])
+    neg_idx (list[tensor])
+
+Returns two lists of binary masks for each image.
+The first list contains the positive elements that were selected,
+and the second list the negative example.
+\end{DoxyVerb}
+ 
+
+Definition at line 24 of file \+\_\+utils.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/\+\_\+utils.\+py\end{DoxyCompactItemize}

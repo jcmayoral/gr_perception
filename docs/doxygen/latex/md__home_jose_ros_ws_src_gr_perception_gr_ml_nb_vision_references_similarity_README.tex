@@ -1,0 +1,65 @@
+In this reference, we use triplet loss to learn embeddings which can be used to differentiate images. This learning technique was popularized by \href{https://arxiv.org/abs/1503.03832}{\tt Face\+Net\+: A Unified Embedding for Face Recognition and Clustering} and has been quite effective in learning embeddings to differentiate between faces.
+
+This reference can be directly applied to the following use cases\+:
+
+
+\begin{DoxyItemize}
+\item You have an unknown number of classes and would like to train a model to learn how to differentiate between them.
+\item You want to train a model to learn a distance-\/based metric between samples. For example, learning a distance-\/based similarity measure between faces.
+\end{DoxyItemize}
+
+\subsubsection*{Training}
+
+By default, the training script trains Res\+Net50 on the Fashion\+M\+N\+I\+ST Dataset to learn image embeddings which can be used to differentiate between images by measuring the euclidean distance between embeddings. This can be changed as per your requirements.
+
+Image embeddings of the same class should be \textquotesingle{}close\textquotesingle{} to each other, while image embeddings between different classes should be \textquotesingle{}far\textquotesingle{} away.
+
+To run the training script\+:
+
+
+\begin{DoxyCode}
+python train.py -h    # Lists all optional arguments
+python train.py             # Runs training script with default args
+\end{DoxyCode}
+
+
+Running the training script as is should yield 97\% accuracy on the F\+M\+N\+I\+ST test set within 10 epochs.
+
+\subsubsection*{Loss}
+
+{\ttfamily Triplet\+Margin\+Loss} is a loss function which takes in a triplet of samples. A valid triplet has an\+:
+
+
+\begin{DoxyEnumerate}
+\item Anchor\+: a sample from the dataset
+\item Positive\+: another sample with the same label/group as the anchor (Generally, positive != anchor)
+\item Negative\+: a sample with a different label/group from the anchor
+\end{DoxyEnumerate}
+
+{\ttfamily Triplet\+Margin\+Loss} (refer to {\ttfamily \hyperlink{loss_8py_source}{loss.\+py}}) does the following\+:
+
+
+\begin{DoxyCode}
+loss = max(dist(anchor, positive) - dist(anchor, negative) + margin, 0)
+\end{DoxyCode}
+ Where {\ttfamily dist} is a distance function. Minimizing this function effectively leads to minimizing {\ttfamily dist(anchor, positive)} and maximizing {\ttfamily dist(anchor, negative)}.
+
+The Face\+Net paper describe this loss in more detail.
+
+\subsubsection*{Sampler}
+
+In order to generate valid triplets from a batch of samples, we need to make sure that each batch has multiple samples with the same label. We do this using {\ttfamily P\+K\+Sampler} (refer to {\ttfamily \hyperlink{sampler_8py_source}{sampler.\+py}}), which ensures that each batch of size {\ttfamily p $\ast$ k} will have samples from exactly {\ttfamily p} classes and {\ttfamily k} samples per class.
+
+\subsubsection*{Triplet Mining}
+
+{\ttfamily Triplet\+Margin\+Loss} currently supports the following mining techniques\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily batch\+\_\+all}\+: Generates all possible triplets from a batch and excludes the triplets which are \textquotesingle{}easy\textquotesingle{} (which have {\ttfamily loss = 0}) before passing it through the loss function.
+\item {\ttfamily batch\+\_\+hard}\+: For every anchor, {\ttfamily batch\+\_\+hard} creates a triplet with the \textquotesingle{}hardest\textquotesingle{} positive (farthest positive) and negative (closest negative).
+\end{DoxyItemize}
+
+These mining strategies usually speed up training.
+
+This \href{https://omoindrot.github.io/triplet-loss}{\tt webpage} describes the sampling and mining strategies in more detail. 

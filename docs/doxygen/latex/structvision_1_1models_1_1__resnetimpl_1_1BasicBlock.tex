@@ -1,0 +1,77 @@
+\hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock}{}\section{vision\+:\+:models\+:\+:\+\_\+resnetimpl\+:\+:Basic\+Block Struct Reference}
+\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock}\index{vision\+::models\+::\+\_\+resnetimpl\+::\+Basic\+Block@{vision\+::models\+::\+\_\+resnetimpl\+::\+Basic\+Block}}
+
+
+Inheritance diagram for vision\+:\+:models\+:\+:\+\_\+resnetimpl\+:\+:Basic\+Block\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for vision\+:\+:models\+:\+:\+\_\+resnetimpl\+:\+:Basic\+Block\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ab7b6ea8f328046286a9d57421c4351a9}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ab7b6ea8f328046286a9d57421c4351a9}} 
+{\bfseries Basic\+Block} (int64\+\_\+t inplanes, int64\+\_\+t planes, int64\+\_\+t stride=1, torch\+::nn\+::\+Sequential downsample=nullptr, int64\+\_\+t groups=1, int64\+\_\+t base\+\_\+width=64)
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a59cb97675123a82bae2e9e837401c5a4}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a59cb97675123a82bae2e9e837401c5a4}} 
+torch\+::\+Tensor {\bfseries forward} (torch\+::\+Tensor x)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ac509762f431c11d17eceeacfbec74206}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ac509762f431c11d17eceeacfbec74206}} 
+int64\+\_\+t {\bfseries stride}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ad55164fd51eebe4bcb780aba5435f6e4}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ad55164fd51eebe4bcb780aba5435f6e4}} 
+torch\+::nn\+::\+Sequential {\bfseries downsample}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a66658f06b50efd9456f897a905461097}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a66658f06b50efd9456f897a905461097}} 
+torch\+::nn\+::\+Conv2d {\bfseries conv1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a82b1096c8c891bdfce41f06edb66e210}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a82b1096c8c891bdfce41f06edb66e210}} 
+torch\+::nn\+::\+Conv2d {\bfseries conv2} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ad6b514f723aa7d1bd769fd4955ad9e2d}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_ad6b514f723aa7d1bd769fd4955ad9e2d}} 
+torch\+::nn\+::\+Batch\+Norm2d {\bfseries bn1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a2c1ed5219ef603198a4096f7a6311f76}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a2c1ed5219ef603198a4096f7a6311f76}} 
+torch\+::nn\+::\+Batch\+Norm2d {\bfseries bn2} \{nullptr\}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a56b91d31ad5dc2923186f9fc01aa16b7}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a56b91d31ad5dc2923186f9fc01aa16b7}} 
+static int {\bfseries expansion} = 1
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a2d4c95d61d2126a085e162451df61b9d}\label{structvision_1_1models_1_1__resnetimpl_1_1BasicBlock_a2d4c95d61d2126a085e162451df61b9d}} 
+{\footnotesize template$<$typename Block $>$ }\\struct {\bfseries vision\+::models\+::\+Res\+Net\+Impl}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 23 of file resnet.\+h.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/resnet.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/resnet.\+cpp\end{DoxyCompactItemize}

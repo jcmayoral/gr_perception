@@ -1,0 +1,78 @@
+\hypertarget{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter}{}\section{torchvision.\+models.\+\_\+utils.\+Intermediate\+Layer\+Getter Class Reference}
+\label{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter}\index{torchvision.\+models.\+\_\+utils.\+Intermediate\+Layer\+Getter@{torchvision.\+models.\+\_\+utils.\+Intermediate\+Layer\+Getter}}
+
+
+Inheritance diagram for torchvision.\+models.\+\_\+utils.\+Intermediate\+Layer\+Getter\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+\_\+utils.\+Intermediate\+Layer\+Getter\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter_ac4031f4d205b805bd04df5ec19d2365f}\label{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter_ac4031f4d205b805bd04df5ec19d2365f}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, model, return\+\_\+layers)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter_af40e8ccf5f7daf76672236bd9f92dde9}\label{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter_af40e8ccf5f7daf76672236bd9f92dde9}} 
+def {\bfseries forward} (self, x)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter_a16498de600d50509b4bdaa9d6c357a1f}\label{classtorchvision_1_1models_1_1__utils_1_1IntermediateLayerGetter_a16498de600d50509b4bdaa9d6c357a1f}} 
+{\bfseries return\+\_\+layers}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Module wrapper that returns intermediate layers from a model
+
+It has a strong assumption that the modules have been registered
+into the model in the same order as they are used.
+This means that one should **not** reuse the same nn.Module
+twice in the forward if you want this to work.
+
+Additionally, it is only able to query submodules that are directly
+assigned to the model. So if `model` is passed, `model.feature1` can
+be returned, but not `model.feature1.layer2`.
+
+Arguments:
+    model (nn.Module): model on which we will extract the features
+    return_layers (Dict[name, new_name]): a dict containing the names
+        of the modules for which the activations will be returned as
+        the key of the dict, and the value of the dict is the name
+        of the returned activation (which the user can specify).
+
+Examples::
+
+    >>> m = torchvision.models.resnet18(pretrained=True)
+    >>> # extract layer1 and layer3, giving as names `feat1` and feat2`
+    >>> new_m = torchvision.models._utils.IntermediateLayerGetter(m,
+    >>>     {'layer1': 'feat1', 'layer3': 'feat2'})
+    >>> out = new_m(torch.rand(1, 3, 224, 224))
+    >>> print([(k, v.shape) for k, v in out.items()])
+    >>>     [('feat1', torch.Size([1, 64, 56, 56])),
+    >>>      ('feat2', torch.Size([1, 256, 14, 14]))]
+\end{DoxyVerb}
+ 
+
+Definition at line 8 of file \+\_\+utils.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/\+\_\+utils.\+py\end{DoxyCompactItemize}

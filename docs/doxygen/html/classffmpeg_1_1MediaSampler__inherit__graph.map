@@ -1,0 +1,5 @@
+<map id="ffmpeg::MediaSampler" name="ffmpeg::MediaSampler">
+<area shape="rect" id="node2" href="$classffmpeg_1_1AudioSampler.html" title="ffmpeg::AudioSampler" alt="" coords="5,80,156,107"/>
+<area shape="rect" id="node3" href="$classffmpeg_1_1SubtitleSampler.html" title="ffmpeg::SubtitleSampler" alt="" coords="181,80,343,107"/>
+<area shape="rect" id="node4" href="$classffmpeg_1_1VideoSampler.html" title="ffmpeg::VideoSampler" alt="" coords="368,80,519,107"/>
+</map>

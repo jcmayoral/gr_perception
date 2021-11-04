@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1DistributedSampler.html" title="torchvision.datasets.samplers.clip\l_sampler.DistributedSampler" alt="" coords="124,5,344,47"/>
+<area shape="rect" id="node3" href="$classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1RandomClipSampler.html" title="torchvision.datasets.samplers.clip\l_sampler.RandomClipSampler" alt="" coords="124,71,344,112"/>
+<area shape="rect" id="node4" href="$classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler.html" title="torchvision.datasets.samplers.clip\l_sampler.UniformClipSampler" alt="" coords="124,136,344,177"/>
+</map>

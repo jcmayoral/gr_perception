@@ -1,0 +1,148 @@
+\hypertarget{classffmpeg_1_1Decoder}{}\section{ffmpeg\+:\+:Decoder Class Reference}
+\label{classffmpeg_1_1Decoder}\index{ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}}
+
+
+{\ttfamily \#include $<$decoder.\+h$>$}
+
+
+
+Inheritance diagram for ffmpeg\+:\+:Decoder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classffmpeg_1_1Decoder__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ffmpeg\+:\+:Decoder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classffmpeg_1_1Decoder__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classffmpeg_1_1Decoder_a05d8eb1d33e6a1e19fe92da06fc7792e}{init} (const \hyperlink{structffmpeg_1_1DecoderParameters}{Decoder\+Parameters} \&params, Decoder\+In\+Callback \&\&in, std\+::vector$<$ \hyperlink{structffmpeg_1_1DecoderMetadata}{Decoder\+Metadata} $>$ $\ast$metadata) override
+\item 
+int \hyperlink{classffmpeg_1_1Decoder_aceb0e1c21883ccd57c1692fccdd17745}{decode\+\_\+all} (const Decoder\+Out\+Callback \&callback) override
+\item 
+void \hyperlink{classffmpeg_1_1Decoder_a1838e1a5548671a7b19426bff8ff9b3c}{shutdown} () override
+\item 
+void \hyperlink{classffmpeg_1_1Decoder_a4f0672cd7855e99dbdd7ceceb634d51b}{interrupt} () override
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_ade0d58a4ec3409697fd2cf4be0d22fa0}\label{classffmpeg_1_1Decoder_ade0d58a4ec3409697fd2cf4be0d22fa0}} 
+int $\ast$ {\bfseries get\+Print\+Prefix} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_ad152c1dd61dd75cf3ec7be278fb464ee}\label{classffmpeg_1_1Decoder_ad152c1dd61dd75cf3ec7be278fb464ee}} 
+static void {\bfseries log\+Function} (void $\ast$avcl, int level, const char $\ast$cfmt, va\+\_\+list vl)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_a7649c5b7fb01e4b1c0078253c9f3c065}\label{classffmpeg_1_1Decoder_a7649c5b7fb01e4b1c0078253c9f3c065}} 
+static int {\bfseries shutdown\+Function} (void $\ast$ctx)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_ae3322cd6808a03dbf9cff9310abc05b1}\label{classffmpeg_1_1Decoder_ae3322cd6808a03dbf9cff9310abc05b1}} 
+static int {\bfseries read\+Function} (void $\ast$opaque, uint8\+\_\+t $\ast$buf, int size)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_af86ba7157e7639e5734a3248b20684d8}\label{classffmpeg_1_1Decoder_af86ba7157e7639e5734a3248b20684d8}} 
+static int64\+\_\+t {\bfseries seek\+Function} (void $\ast$opaque, int64\+\_\+t offset, int whence)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_a50bef3c442754207737be048ea3a3728}\label{classffmpeg_1_1Decoder_a50bef3c442754207737be048ea3a3728}} 
+static void {\bfseries init\+Once} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_a5183a1bed3d86cc26f613b5771ccfd02}\label{classffmpeg_1_1Decoder_a5183a1bed3d86cc26f613b5771ccfd02}} 
+int {\bfseries get\+Frame} (size\+\_\+t working\+Time\+In\+Ms=100)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_aa100c64f1b3d4c17ef26a142b8d1bd53}\label{classffmpeg_1_1Decoder_aa100c64f1b3d4c17ef26a142b8d1bd53}} 
+virtual void {\bfseries push} (\hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} \&\&buffer)=0
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_ab44d1b232c21a5a3ba0a83a05560c10c}\label{classffmpeg_1_1Decoder_ab44d1b232c21a5a3ba0a83a05560c10c}} 
+virtual void {\bfseries on\+Init} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_ad53fb0e982cfd3f72be8a44fc6a0ad2c}\label{classffmpeg_1_1Decoder_ad53fb0e982cfd3f72be8a44fc6a0ad2c}} 
+\hyperlink{structffmpeg_1_1DecoderParameters}{Decoder\+Parameters} {\bfseries params\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class uses F\+F\+M\+P\+EG library to decode media streams. Media bytes can be explicitly provided through read-\/callback or fetched internally by F\+F\+M\+P\+EG library 
+
+Definition at line 15 of file decoder.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_aceb0e1c21883ccd57c1692fccdd17745}\label{classffmpeg_1_1Decoder_aceb0e1c21883ccd57c1692fccdd17745}} 
+\index{ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}!decode\+\_\+all@{decode\+\_\+all}}
+\index{decode\+\_\+all@{decode\+\_\+all}!ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}}
+\subsubsection{\texorpdfstring{decode\+\_\+all()}{decode\_all()}}
+{\footnotesize\ttfamily int ffmpeg\+::\+Decoder\+::decode\+\_\+all (\begin{DoxyParamCaption}\item[{const Decoder\+Out\+Callback \&}]{callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Polls available decoded bytes from decoder, till E\+OF or error 
+
+Implements \hyperlink{classffmpeg_1_1MediaDecoder_acaf4668d2c876ede90eaa3a012b7146d}{ffmpeg\+::\+Media\+Decoder}.
+
+
+
+Definition at line 633 of file decoder.\+cpp.
+
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_a05d8eb1d33e6a1e19fe92da06fc7792e}\label{classffmpeg_1_1Decoder_a05d8eb1d33e6a1e19fe92da06fc7792e}} 
+\index{ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}!init@{init}}
+\index{init@{init}!ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}}
+\subsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily bool ffmpeg\+::\+Decoder\+::init (\begin{DoxyParamCaption}\item[{const \hyperlink{structffmpeg_1_1DecoderParameters}{Decoder\+Parameters} \&}]{params,  }\item[{Decoder\+In\+Callback \&\&}]{in,  }\item[{std\+::vector$<$ \hyperlink{structffmpeg_1_1DecoderMetadata}{Decoder\+Metadata} $>$ $\ast$}]{metadata }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Initializes media decoder with parameters, calls callback when media bytes are available. Media bytes get fetched internally from provided U\+RI or invokes provided input callback to get media bytes. Input callback must be empty for the internal media provider Caller can provide non-\/null pointer for the input container if headers to obtain the streams metadata (optional) 
+
+Implements \hyperlink{classffmpeg_1_1MediaDecoder_a1e65150d20d7540f8e35ce2d9f13017f}{ffmpeg\+::\+Media\+Decoder}.
+
+
+
+Definition at line 217 of file decoder.\+cpp.
+
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_a4f0672cd7855e99dbdd7ceceb634d51b}\label{classffmpeg_1_1Decoder_a4f0672cd7855e99dbdd7ceceb634d51b}} 
+\index{ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}!interrupt@{interrupt}}
+\index{interrupt@{interrupt}!ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}}
+\subsubsection{\texorpdfstring{interrupt()}{interrupt()}}
+{\footnotesize\ttfamily void ffmpeg\+::\+Decoder\+::interrupt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Interrupts whatever decoder is doing at any time 
+
+Implements \hyperlink{classffmpeg_1_1MediaDecoder_a165ba6847844ec6057ffcb6b7379f2af}{ffmpeg\+::\+Media\+Decoder}.
+
+
+
+Definition at line 433 of file decoder.\+cpp.
+
+\mbox{\Hypertarget{classffmpeg_1_1Decoder_a1838e1a5548671a7b19426bff8ff9b3c}\label{classffmpeg_1_1Decoder_a1838e1a5548671a7b19426bff8ff9b3c}} 
+\index{ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!ffmpeg\+::\+Decoder@{ffmpeg\+::\+Decoder}}
+\subsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily void ffmpeg\+::\+Decoder\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Stops calling callback, releases resources 
+
+Implements \hyperlink{classffmpeg_1_1MediaDecoder_a844a205a22a365e6c8945e0a54ca7b66}{ffmpeg\+::\+Media\+Decoder}.
+
+
+
+Definition at line 429 of file decoder.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/decoder.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/decoder.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,84 @@
+\hypertarget{classpcl__gpu_1_1FilterPassThrough}{}\section{pcl\+\_\+gpu\+:\+:Filter\+Pass\+Through Class Reference}
+\label{classpcl__gpu_1_1FilterPassThrough}\index{pcl\+\_\+gpu\+::\+Filter\+Pass\+Through@{pcl\+\_\+gpu\+::\+Filter\+Pass\+Through}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a7118a1ac020df73303ac36d6a176593d}\label{classpcl__gpu_1_1FilterPassThrough_a7118a1ac020df73303ac36d6a176593d}} 
+typedef pcl\+::\+Point\+X\+Y\+ZI {\bfseries Point\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a1b26811a9d3ba81ddbb0f063b5b62251}\label{classpcl__gpu_1_1FilterPassThrough_a1b26811a9d3ba81ddbb0f063b5b62251}} 
+void {\bfseries set\+Scale\+Axis} (char axis)
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a717660b3b276b50fb04f0fb520337109}\label{classpcl__gpu_1_1FilterPassThrough_a717660b3b276b50fb04f0fb520337109}} 
+char {\bfseries get\+Scale\+Axis} ()
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a3fd18658d3f90f9926bf63ebeb2977ae}\label{classpcl__gpu_1_1FilterPassThrough_a3fd18658d3f90f9926bf63ebeb2977ae}} 
+int {\bfseries get\+X\+Y\+Scaler} ()
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a13e6abe145f7f9bf4fabaa08cd54ecba}\label{classpcl__gpu_1_1FilterPassThrough_a13e6abe145f7f9bf4fabaa08cd54ecba}} 
+void {\bfseries set\+X\+Y\+Scaler} (int scale)
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a9d07351f5596c8eb2e3213271a80c6cf}\label{classpcl__gpu_1_1FilterPassThrough_a9d07351f5596c8eb2e3213271a80c6cf}} 
+void {\bfseries set\+Minimum\+Value} (float min\+\_\+limit)
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a99f02fff797f878c339f26a8485d48d3}\label{classpcl__gpu_1_1FilterPassThrough_a99f02fff797f878c339f26a8485d48d3}} 
+float {\bfseries get\+Mimumum\+Value} ()
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a01ee0989ece713b2cd0e5a320869d1cd}\label{classpcl__gpu_1_1FilterPassThrough_a01ee0989ece713b2cd0e5a320869d1cd}} 
+void {\bfseries set\+Maximum\+Value} (float max\+\_\+limit)
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a2541b063e68c30bc59682b33ddf3935a}\label{classpcl__gpu_1_1FilterPassThrough_a2541b063e68c30bc59682b33ddf3935a}} 
+float {\bfseries get\+Max\+Cluster\+Size} ()
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_ab0e97a1607367e44d8d4256e0a046fae}\label{classpcl__gpu_1_1FilterPassThrough_ab0e97a1607367e44d8d4256e0a046fae}} 
+void {\bfseries set\+Host\+Cloud} (pcl\+::\+Point\+Cloud$<$ Point\+Type $>$\+::Ptr host\+\_\+cloud)
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a4dfd2dd4c4781b9073ccf50693fc5acc}\label{classpcl__gpu_1_1FilterPassThrough_a4dfd2dd4c4781b9073ccf50693fc5acc}} 
+double {\bfseries do\+\_\+stuff} (std\+::string channel, pcl\+::\+Point\+Cloud$<$ Point\+Type $>$ \&input\+\_\+cloud)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_ab0bdb9699482e82b224600dafb5db213}\label{classpcl__gpu_1_1FilterPassThrough_ab0bdb9699482e82b224600dafb5db213}} 
+virtual std\+::string {\bfseries get\+Class\+Name} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_ae97a0763019c72d7c374f620be683879}\label{classpcl__gpu_1_1FilterPassThrough_ae97a0763019c72d7c374f620be683879}} 
+pcl\+::\+Point\+Cloud$<$ Point\+Type $>$\+::Ptr {\bfseries host\+\_\+cloud\+\_\+}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a19c2da4a53d83f595fcc689b5cc6dde8}\label{classpcl__gpu_1_1FilterPassThrough_a19c2da4a53d83f595fcc689b5cc6dde8}} 
+double \hyperlink{classpcl__gpu_1_1FilterPassThrough_a19c2da4a53d83f595fcc689b5cc6dde8}{cluster\+\_\+tolerance\+\_\+}
+\begin{DoxyCompactList}\small\item\em The spatial cluster tolerance as a measure in the L2 Euclidean space. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a2f58b77770e7436abe4ed133b332b3fe}\label{classpcl__gpu_1_1FilterPassThrough_a2f58b77770e7436abe4ed133b332b3fe}} 
+float {\bfseries minimum\+\_\+value\+\_\+}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_ae17fd13dd9b980baf5996ecb40b580c9}\label{classpcl__gpu_1_1FilterPassThrough_ae17fd13dd9b980baf5996ecb40b580c9}} 
+float {\bfseries maximum\+\_\+value\+\_\+}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a0ab936425b9c8bc26aeb322f66424079}\label{classpcl__gpu_1_1FilterPassThrough_a0ab936425b9c8bc26aeb322f66424079}} 
+float {\bfseries filter\+\_\+value\+\_\+}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a06b3486b01c309c100fedae2c0ee96e2}\label{classpcl__gpu_1_1FilterPassThrough_a06b3486b01c309c100fedae2c0ee96e2}} 
+int {\bfseries xy\+\_\+scaler\+\_\+}
+\item 
+\mbox{\Hypertarget{classpcl__gpu_1_1FilterPassThrough_a664daefca49b3b3b930c63e945dbc64c}\label{classpcl__gpu_1_1FilterPassThrough_a664daefca49b3b3b930c63e945dbc64c}} 
+char {\bfseries scale\+\_\+axis\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 12 of file filter\+\_\+passthrough.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+tools/pcl\+\_\+cuda\+\_\+tools/include/pcl\+\_\+cuda\+\_\+tools/filters/filter\+\_\+passthrough.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+tools/pcl\+\_\+cuda\+\_\+tools/src/filter\+\_\+passthrough.\+cpp\end{DoxyCompactItemize}

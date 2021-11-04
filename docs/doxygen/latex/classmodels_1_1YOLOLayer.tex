@@ -1,0 +1,101 @@
+\hypertarget{classmodels_1_1YOLOLayer}{}\section{models.\+Y\+O\+L\+O\+Layer Class Reference}
+\label{classmodels_1_1YOLOLayer}\index{models.\+Y\+O\+L\+O\+Layer@{models.\+Y\+O\+L\+O\+Layer}}
+
+
+Inheritance diagram for models.\+Y\+O\+L\+O\+Layer\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=182pt]{classmodels_1_1YOLOLayer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for models.\+Y\+O\+L\+O\+Layer\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=182pt]{classmodels_1_1YOLOLayer__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a5d21b10069a1f37da79133f305208092}\label{classmodels_1_1YOLOLayer_a5d21b10069a1f37da79133f305208092}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, anchors, num\+\_\+classes, img\+\_\+dim=416)
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a8d8aa963f89720bd2c63bbf6b7e44041}\label{classmodels_1_1YOLOLayer_a8d8aa963f89720bd2c63bbf6b7e44041}} 
+def {\bfseries compute\+\_\+grid\+\_\+offsets} (self, grid\+\_\+size, cuda=True)
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a805a94787bcd42bc5bf385f398e5e40d}\label{classmodels_1_1YOLOLayer_a805a94787bcd42bc5bf385f398e5e40d}} 
+def {\bfseries forward} (self, x, targets=None, img\+\_\+dim=None)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_ae56271db70d940ef94bcda0959a168f5}\label{classmodels_1_1YOLOLayer_ae56271db70d940ef94bcda0959a168f5}} 
+{\bfseries anchors}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a142b137319ef10d5e30a9349e47376cb}\label{classmodels_1_1YOLOLayer_a142b137319ef10d5e30a9349e47376cb}} 
+{\bfseries num\+\_\+anchors}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a287b3c6543374303a10599c0d19ce281}\label{classmodels_1_1YOLOLayer_a287b3c6543374303a10599c0d19ce281}} 
+{\bfseries num\+\_\+classes}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a3f15dd713695ea2a705ce8bac59e9f8b}\label{classmodels_1_1YOLOLayer_a3f15dd713695ea2a705ce8bac59e9f8b}} 
+{\bfseries ignore\+\_\+thres}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_ac421a35cf69bc3c6dbc4803f878ba75d}\label{classmodels_1_1YOLOLayer_ac421a35cf69bc3c6dbc4803f878ba75d}} 
+{\bfseries mse\+\_\+loss}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_ae049a447db451d7ab27ce02fe9ecf2a6}\label{classmodels_1_1YOLOLayer_ae049a447db451d7ab27ce02fe9ecf2a6}} 
+{\bfseries bce\+\_\+loss}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a3ad5bede5ce638b2a9d5d0e14be962f6}\label{classmodels_1_1YOLOLayer_a3ad5bede5ce638b2a9d5d0e14be962f6}} 
+{\bfseries obj\+\_\+scale}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_aeef68b01c23fe1a92ac54fd5bc63d3cc}\label{classmodels_1_1YOLOLayer_aeef68b01c23fe1a92ac54fd5bc63d3cc}} 
+{\bfseries noobj\+\_\+scale}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a4316923b6263eb18ec27a750d449485b}\label{classmodels_1_1YOLOLayer_a4316923b6263eb18ec27a750d449485b}} 
+{\bfseries metrics}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a34d14ed5dc417f3b07b30fa9ebae3cd6}\label{classmodels_1_1YOLOLayer_a34d14ed5dc417f3b07b30fa9ebae3cd6}} 
+{\bfseries img\+\_\+dim}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a575cec48efb23b17e751e25221a35a48}\label{classmodels_1_1YOLOLayer_a575cec48efb23b17e751e25221a35a48}} 
+{\bfseries grid\+\_\+size}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a3a4be83473f450023acd7b21f7f96c77}\label{classmodels_1_1YOLOLayer_a3a4be83473f450023acd7b21f7f96c77}} 
+{\bfseries stride}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a692afdeee8119083c44263660b29d9fc}\label{classmodels_1_1YOLOLayer_a692afdeee8119083c44263660b29d9fc}} 
+{\bfseries grid\+\_\+x}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_af87d41a5a18fa42dde4e8f575868cb32}\label{classmodels_1_1YOLOLayer_af87d41a5a18fa42dde4e8f575868cb32}} 
+{\bfseries grid\+\_\+y}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_afcff365945aa8531c1187130277e5556}\label{classmodels_1_1YOLOLayer_afcff365945aa8531c1187130277e5556}} 
+{\bfseries scaled\+\_\+anchors}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_ab07e3103874ba719a899d77528ec2021}\label{classmodels_1_1YOLOLayer_ab07e3103874ba719a899d77528ec2021}} 
+{\bfseries anchor\+\_\+w}
+\item 
+\mbox{\Hypertarget{classmodels_1_1YOLOLayer_a3c96b7f66b589a616161599c8734896d}\label{classmodels_1_1YOLOLayer_a3c96b7f66b589a616161599c8734896d}} 
+{\bfseries anchor\+\_\+h}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Detection layer\end{DoxyVerb}
+ 
+
+Definition at line 106 of file models.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/yolov3/models.\+py\end{DoxyCompactItemize}

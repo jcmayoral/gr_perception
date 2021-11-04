@@ -1,0 +1,92 @@
+\hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256}{}\section{torchvision.\+datasets.\+caltech.\+Caltech256 Class Reference}
+\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256}\index{torchvision.\+datasets.\+caltech.\+Caltech256@{torchvision.\+datasets.\+caltech.\+Caltech256}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+caltech.\+Caltech256\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+caltech.\+Caltech256\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_aa99a081834592baa0134947ad21f8aaa}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_aa99a081834592baa0134947ad21f8aaa}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, transform=None, target\+\_\+transform=None, download=False)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_ae52450820a61e9056b9c8480c768c876}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a5c1670c640a26893a16fb2e8677d9b52}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a5c1670c640a26893a16fb2e8677d9b52}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a139dd3f83733dff936d9704b2c8c4383}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a139dd3f83733dff936d9704b2c8c4383}} 
+def {\bfseries download} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a8997988b9a7ab5cc0e3d29e7c88593c7}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a8997988b9a7ab5cc0e3d29e7c88593c7}} 
+{\bfseries categories}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a7cb21c3fa056d99bccf8f0d07057f6c3}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a7cb21c3fa056d99bccf8f0d07057f6c3}} 
+{\bfseries index}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a33e462c8a696776eb569a3e978baeb45}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_a33e462c8a696776eb569a3e978baeb45}} 
+{\bfseries y}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Caltech 256 <http://www.vision.caltech.edu/Image_Datasets/Caltech256/>`_ Dataset.
+
+Args:
+    root (string): Root directory of dataset where directory
+        ``caltech256`` exists or will be saved to if download is set to True.
+    transform (callable, optional): A function/transform that takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    download (bool, optional): If true, downloads the dataset from the internet and
+        puts it in root directory. If dataset is already downloaded, it is not
+        downloaded again.
+\end{DoxyVerb}
+ 
+
+Definition at line 131 of file caltech.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_ae52450820a61e9056b9c8480c768c876}\label{classtorchvision_1_1datasets_1_1caltech_1_1Caltech256_ae52450820a61e9056b9c8480c768c876}} 
+\index{torchvision\+::datasets\+::caltech\+::\+Caltech256@{torchvision\+::datasets\+::caltech\+::\+Caltech256}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::caltech\+::\+Caltech256@{torchvision\+::datasets\+::caltech\+::\+Caltech256}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+caltech.\+Caltech256.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is index of the target class.
+\end{DoxyVerb}
+ 
+
+Definition at line 167 of file caltech.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/caltech.\+py\end{DoxyCompactItemize}

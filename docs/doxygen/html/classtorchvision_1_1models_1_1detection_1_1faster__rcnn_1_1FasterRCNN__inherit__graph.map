@@ -1,0 +1,5 @@
+<map id="torchvision.models.detection.faster_rcnn.FasterRCNN" name="torchvision.models.detection.faster_rcnn.FasterRCNN">
+<area shape="rect" id="node4" href="$classtorchvision_1_1models_1_1detection_1_1keypoint__rcnn_1_1KeypointRCNN.html" title="torchvision.models.detection.keypoint\l_rcnn.KeypointRCNN" alt="" coords="697,5,939,47"/>
+<area shape="rect" id="node5" href="$classtorchvision_1_1models_1_1detection_1_1mask__rcnn_1_1MaskRCNN.html" title="torchvision.models.detection.mask\l_rcnn.MaskRCNN" alt="" coords="706,71,930,112"/>
+<area shape="rect" id="node2" href="$classtorchvision_1_1models_1_1detection_1_1generalized__rcnn_1_1GeneralizedRCNN.html" title="torchvision.models.detection.generalized\l_rcnn.GeneralizedRCNN" alt="" coords="117,39,376,80"/>
+</map>

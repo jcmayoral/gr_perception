@@ -1,0 +1,66 @@
+\hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo}{}\section{torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+To\+Tensor\+Video Class Reference}
+\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo}\index{torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+To\+Tensor\+Video@{torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+To\+Tensor\+Video}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+To\+Tensor\+Video\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+To\+Tensor\+Video\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_af5ca6683762e798c4ef224839983afcd}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_af5ca6683762e798c4ef224839983afcd}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_a031292cfe0f8203bdcc959a8529c3b1b}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, clip)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_a3e94e0aee856880a2d548d0a0308f7fb}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_a3e94e0aee856880a2d548d0a0308f7fb}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Convert tensor data type from uint8 to float, divide value by 255.0 and
+permute the dimenions of clip tensor
+\end{DoxyVerb}
+ 
+
+Definition at line 129 of file \+\_\+transforms\+\_\+video.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_a031292cfe0f8203bdcc959a8529c3b1b}\label{classtorchvision_1_1transforms_1_1__transforms__video_1_1ToTensorVideo_a031292cfe0f8203bdcc959a8529c3b1b}} 
+\index{torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+To\+Tensor\+Video@{torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+To\+Tensor\+Video}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+To\+Tensor\+Video@{torchvision\+::transforms\+::\+\_\+transforms\+\_\+video\+::\+To\+Tensor\+Video}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+\_\+transforms\+\_\+video.\+To\+Tensor\+Video.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{clip }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    clip (torch.tensor, dtype=torch.uint8): Size is (T, H, W, C)
+Return:
+    clip (torch.tensor, dtype=torch.float): Size is (C, T, H, W)
+\end{DoxyVerb}
+ 
+
+Definition at line 138 of file \+\_\+transforms\+\_\+video.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/\+\_\+transforms\+\_\+video.\+py\end{DoxyCompactItemize}

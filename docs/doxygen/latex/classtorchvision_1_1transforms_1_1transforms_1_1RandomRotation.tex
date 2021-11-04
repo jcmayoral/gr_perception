@@ -1,0 +1,123 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation}{}\section{torchvision.\+transforms.\+transforms.\+Random\+Rotation Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation}\index{torchvision.\+transforms.\+transforms.\+Random\+Rotation@{torchvision.\+transforms.\+transforms.\+Random\+Rotation}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Random\+Rotation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Random\+Rotation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_acf9a15757c0d2154171f35b713fd34b8}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_acf9a15757c0d2154171f35b713fd34b8}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, degrees, resample=False, expand=False, center=None, fill=None)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a92a652ef4404b753d4356108efc8c431}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a3d5b7f95eade6a2686a8dbb9e5bec6e8}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a3d5b7f95eade6a2686a8dbb9e5bec6e8}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a6932f969e642e146b9517b2df193b317}{get\+\_\+params} (degrees)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a49879d141951268497d135a9319d3c3a}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a49879d141951268497d135a9319d3c3a}} 
+{\bfseries degrees}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a546f3bb33553ca1e721ab24091c288f0}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a546f3bb33553ca1e721ab24091c288f0}} 
+{\bfseries resample}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a09d9ffc9db18ebc41d9a0cf10333066c}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a09d9ffc9db18ebc41d9a0cf10333066c}} 
+{\bfseries expand}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a38e6bc7ddbb21f16397757dda754c52a}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a38e6bc7ddbb21f16397757dda754c52a}} 
+{\bfseries center}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a287be5dcd011d1428c301c7e2eb87db8}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a287be5dcd011d1428c301c7e2eb87db8}} 
+{\bfseries fill}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Rotate the image by angle.
+
+Args:
+    degrees (sequence or float or int): Range of degrees to select from.
+        If degrees is a number instead of sequence like (min, max), the range of degrees
+        will be (-degrees, +degrees).
+    resample ({PIL.Image.NEAREST, PIL.Image.BILINEAR, PIL.Image.BICUBIC}, optional):
+        An optional resampling filter. See `filters`_ for more information.
+        If omitted, or if the image has mode "1" or "P", it is set to PIL.Image.NEAREST.
+    expand (bool, optional): Optional expansion flag.
+        If true, expands the output to make it large enough to hold the entire rotated image.
+        If false or omitted, make the output image the same size as the input image.
+        Note that the expand flag assumes rotation around the center and no translation.
+    center (2-tuple, optional): Optional center of rotation.
+        Origin is the upper left corner.
+        Default is the center of the image.
+    fill (n-tuple or int or float): Pixel fill value for area outside the rotated
+        image. If int or float, the value is used for all bands respectively.
+        Defaults to 0 for all bands. This option is only available for ``pillow>=5.2.0``.
+
+.. _filters: https://pillow.readthedocs.io/en/latest/handbook/concepts.html#filters\end{DoxyVerb}
+ 
+
+Definition at line 1100 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a92a652ef4404b753d4356108efc8c431}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a92a652ef4404b753d4356108efc8c431}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Rotation@{torchvision\+::transforms\+::transforms\+::\+Random\+Rotation}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+Random\+Rotation@{torchvision\+::transforms\+::transforms\+::\+Random\+Rotation}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Rotation.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image): Image to be rotated.
+
+Returns:
+    PIL Image: Rotated image.
+\end{DoxyVerb}
+ 
+
+Definition at line 1151 of file transforms.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a6932f969e642e146b9517b2df193b317}\label{classtorchvision_1_1transforms_1_1transforms_1_1RandomRotation_a6932f969e642e146b9517b2df193b317}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Random\+Rotation@{torchvision\+::transforms\+::transforms\+::\+Random\+Rotation}!get\+\_\+params@{get\+\_\+params}}
+\index{get\+\_\+params@{get\+\_\+params}!torchvision\+::transforms\+::transforms\+::\+Random\+Rotation@{torchvision\+::transforms\+::transforms\+::\+Random\+Rotation}}
+\subsubsection{\texorpdfstring{get\+\_\+params()}{get\_params()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Random\+Rotation.\+get\+\_\+params (\begin{DoxyParamCaption}\item[{}]{degrees }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyVerb}Get parameters for ``rotate`` for a random rotation.
+
+Returns:
+    sequence: params to be passed to ``rotate`` for random rotation.
+\end{DoxyVerb}
+ 
+
+Definition at line 1141 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

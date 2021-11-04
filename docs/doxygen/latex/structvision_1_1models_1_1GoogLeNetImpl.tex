@@ -1,0 +1,104 @@
+\hypertarget{structvision_1_1models_1_1GoogLeNetImpl}{}\section{vision\+:\+:models\+:\+:Goog\+Le\+Net\+Impl Struct Reference}
+\label{structvision_1_1models_1_1GoogLeNetImpl}\index{vision\+::models\+::\+Goog\+Le\+Net\+Impl@{vision\+::models\+::\+Goog\+Le\+Net\+Impl}}
+
+
+Inheritance diagram for vision\+:\+:models\+:\+:Goog\+Le\+Net\+Impl\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{structvision_1_1models_1_1GoogLeNetImpl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for vision\+:\+:models\+:\+:Goog\+Le\+Net\+Impl\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{structvision_1_1models_1_1GoogLeNetImpl__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a03d97ce69c821be2bd009f13fbed0aeb}\label{structvision_1_1models_1_1GoogLeNetImpl_a03d97ce69c821be2bd009f13fbed0aeb}} 
+{\bfseries Goog\+Le\+Net\+Impl} (int64\+\_\+t num\+\_\+classes=1000, bool aux\+\_\+logits=true, bool transform\+\_\+input=false, bool init\+\_\+weights=true)
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a3be8816bceb5455bdb38e21908bf98d8}\label{structvision_1_1models_1_1GoogLeNetImpl_a3be8816bceb5455bdb38e21908bf98d8}} 
+void {\bfseries \+\_\+initialize\+\_\+weights} ()
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a2925b70d537a78b21bfb1b6c630c78a1}\label{structvision_1_1models_1_1GoogLeNetImpl_a2925b70d537a78b21bfb1b6c630c78a1}} 
+\hyperlink{structvision_1_1models_1_1GoogLeNetOutput}{Goog\+Le\+Net\+Output} {\bfseries forward} (torch\+::\+Tensor x)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_acc35f936ed1f238d083084d386c96631}\label{structvision_1_1models_1_1GoogLeNetImpl_acc35f936ed1f238d083084d386c96631}} 
+bool {\bfseries aux\+\_\+logits}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a15421c3062204e6a0c38614d77517a08}\label{structvision_1_1models_1_1GoogLeNetImpl_a15421c3062204e6a0c38614d77517a08}} 
+bool {\bfseries transform\+\_\+input}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_ab8876aab570ace39086a7ebf29f6070b}\label{structvision_1_1models_1_1GoogLeNetImpl_ab8876aab570ace39086a7ebf29f6070b}} 
+\+\_\+googlenetimpl\+::\+Basic\+Conv2d {\bfseries conv1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a5cc2615aac281cc4f1595ab04891385f}\label{structvision_1_1models_1_1GoogLeNetImpl_a5cc2615aac281cc4f1595ab04891385f}} 
+\+\_\+googlenetimpl\+::\+Basic\+Conv2d {\bfseries conv2} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a9b1304d31c8028b7137bbdb6d91234bb}\label{structvision_1_1models_1_1GoogLeNetImpl_a9b1304d31c8028b7137bbdb6d91234bb}} 
+\+\_\+googlenetimpl\+::\+Basic\+Conv2d {\bfseries conv3} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a19b4342521b9dd57285f49296cfdc30a}\label{structvision_1_1models_1_1GoogLeNetImpl_a19b4342521b9dd57285f49296cfdc30a}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception3a} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a32ca17f0592a8622ce31ede852af1e45}\label{structvision_1_1models_1_1GoogLeNetImpl_a32ca17f0592a8622ce31ede852af1e45}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception3b} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_ae83f96bc721a2b5fe168b4b9c7792014}\label{structvision_1_1models_1_1GoogLeNetImpl_ae83f96bc721a2b5fe168b4b9c7792014}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception4a} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_abbcee3824a83774e8fdb7177b9c1a6e9}\label{structvision_1_1models_1_1GoogLeNetImpl_abbcee3824a83774e8fdb7177b9c1a6e9}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception4b} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_ac314214c2b60c3c8e61eee6675c6fc7a}\label{structvision_1_1models_1_1GoogLeNetImpl_ac314214c2b60c3c8e61eee6675c6fc7a}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception4c} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a6b7b2c0a9c9bac830a335b5da7732176}\label{structvision_1_1models_1_1GoogLeNetImpl_a6b7b2c0a9c9bac830a335b5da7732176}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception4d} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a7c236eea43ac34bd173c61e85a0239ec}\label{structvision_1_1models_1_1GoogLeNetImpl_a7c236eea43ac34bd173c61e85a0239ec}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception4e} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_aa82e1f5cade08c0bd1c31398bd1da9d1}\label{structvision_1_1models_1_1GoogLeNetImpl_aa82e1f5cade08c0bd1c31398bd1da9d1}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception5a} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_adf9887c0fc1db6b9df82e9bf821a5ebd}\label{structvision_1_1models_1_1GoogLeNetImpl_adf9887c0fc1db6b9df82e9bf821a5ebd}} 
+\+\_\+googlenetimpl\+::\+Inception {\bfseries inception5b} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_ad3f5fde428b0c529ff9580a209f078cb}\label{structvision_1_1models_1_1GoogLeNetImpl_ad3f5fde428b0c529ff9580a209f078cb}} 
+\+\_\+googlenetimpl\+::\+Inception\+Aux {\bfseries aux1} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a0d3836d2dfa01ecba46f7fcb7242e43d}\label{structvision_1_1models_1_1GoogLeNetImpl_a0d3836d2dfa01ecba46f7fcb7242e43d}} 
+\+\_\+googlenetimpl\+::\+Inception\+Aux {\bfseries aux2} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_ad0596a74649b0c4e8c5a2791d836f50f}\label{structvision_1_1models_1_1GoogLeNetImpl_ad0596a74649b0c4e8c5a2791d836f50f}} 
+torch\+::nn\+::\+Dropout {\bfseries dropout} \{nullptr\}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1GoogLeNetImpl_a391914066e438c72ba6892e4af57c424}\label{structvision_1_1models_1_1GoogLeNetImpl_a391914066e438c72ba6892e4af57c424}} 
+torch\+::nn\+::\+Linear {\bfseries fc} \{nullptr\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 59 of file googlenet.\+h.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/googlenet.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/googlenet.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,63 @@
+\hypertarget{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler}{}\section{torchvision.\+datasets.\+samplers.\+clip\+\_\+sampler.\+Uniform\+Clip\+Sampler Class Reference}
+\label{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler}\index{torchvision.\+datasets.\+samplers.\+clip\+\_\+sampler.\+Uniform\+Clip\+Sampler@{torchvision.\+datasets.\+samplers.\+clip\+\_\+sampler.\+Uniform\+Clip\+Sampler}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+samplers.\+clip\+\_\+sampler.\+Uniform\+Clip\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+samplers.\+clip\+\_\+sampler.\+Uniform\+Clip\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_ab515dec8f06a95aff1eb6c47e0ce59e9}\label{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_ab515dec8f06a95aff1eb6c47e0ce59e9}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, video\+\_\+clips, num\+\_\+clips\+\_\+per\+\_\+video)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_abc9ea7ed354f414b59b5b97d65be9c81}\label{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_abc9ea7ed354f414b59b5b97d65be9c81}} 
+def {\bfseries \+\_\+\+\_\+iter\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_a9ab94e95a5c8734b945497994f20be72}\label{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_a9ab94e95a5c8734b945497994f20be72}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_ae9b40038b11a25cfce820ca091712bde}\label{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_ae9b40038b11a25cfce820ca091712bde}} 
+{\bfseries video\+\_\+clips}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_aac597cbcc6371123d4ccd8fd45726c1f}\label{classtorchvision_1_1datasets_1_1samplers_1_1clip__sampler_1_1UniformClipSampler_aac597cbcc6371123d4ccd8fd45726c1f}} 
+{\bfseries num\+\_\+clips\+\_\+per\+\_\+video}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Sample `num_video_clips_per_video` clips for each video, equally spaced.
+When number of unique clips in the video is fewer than num_video_clips_per_video,
+repeat the clips until `num_video_clips_per_video` clips are collected
+
+Arguments:
+    video_clips (VideoClips): video clips to sample from
+    num_clips_per_video (int): number of clips to be sampled per video
+\end{DoxyVerb}
+ 
+
+Definition at line 99 of file clip\+\_\+sampler.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/samplers/clip\+\_\+sampler.\+py\end{DoxyCompactItemize}

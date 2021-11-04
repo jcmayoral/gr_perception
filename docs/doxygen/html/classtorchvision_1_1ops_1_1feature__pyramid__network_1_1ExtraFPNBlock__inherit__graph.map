@@ -1,0 +1,4 @@
+<map id="torchvision.ops.feature_pyramid_network.ExtraFPNBlock" name="torchvision.ops.feature_pyramid_network.ExtraFPNBlock">
+<area shape="rect" id="node3" href="$classtorchvision_1_1ops_1_1feature__pyramid__network_1_1LastLevelMaxPool.html" title="torchvision.ops.feature\l_pyramid_network.LastLevelMaxPool" alt="" coords="388,5,627,47"/>
+<area shape="rect" id="node4" href="$classtorchvision_1_1ops_1_1feature__pyramid__network_1_1LastLevelP6P7.html" title="torchvision.ops.feature\l_pyramid_network.LastLevelP6P7" alt="" coords="397,71,617,112"/>
+</map>

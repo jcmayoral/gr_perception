@@ -1,0 +1,121 @@
+\hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3}{}\section{torchvision.\+models.\+inception.\+Inception3 Class Reference}
+\label{classtorchvision_1_1models_1_1inception_1_1Inception3}\index{torchvision.\+models.\+inception.\+Inception3@{torchvision.\+models.\+inception.\+Inception3}}
+
+
+Inheritance diagram for torchvision.\+models.\+inception.\+Inception3\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classtorchvision_1_1models_1_1inception_1_1Inception3__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+inception.\+Inception3\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classtorchvision_1_1models_1_1inception_1_1Inception3__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_acfa066467c9d6ac286c7e65eb2e9207f}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_acfa066467c9d6ac286c7e65eb2e9207f}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, num\+\_\+classes=1000, aux\+\_\+logits=True, transform\+\_\+input=False, inception\+\_\+blocks=None, init\+\_\+weights=None)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_aa42c1e7a9cdbac118aa22c1786b00538}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_aa42c1e7a9cdbac118aa22c1786b00538}} 
+def {\bfseries eager\+\_\+outputs} (self, x, aux)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a8b514952b8e0bfaae60986ff7bc4eb8c}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a8b514952b8e0bfaae60986ff7bc4eb8c}} 
+def {\bfseries forward} (self, x)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a4d6928f048b98aa55ee4a58c1a9ef0c9}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a4d6928f048b98aa55ee4a58c1a9ef0c9}} 
+{\bfseries aux\+\_\+logits}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a31935d4fda5e725eae1b13941efb7cd0}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a31935d4fda5e725eae1b13941efb7cd0}} 
+{\bfseries transform\+\_\+input}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a3e684c2aaa86ee4cf17d76e2b0d16ad5}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a3e684c2aaa86ee4cf17d76e2b0d16ad5}} 
+{\bfseries Conv2d\+\_\+1a\+\_\+3x3}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a48c9f91373ba18938541b319468d918c}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a48c9f91373ba18938541b319468d918c}} 
+{\bfseries Conv2d\+\_\+2a\+\_\+3x3}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_acaf8bcddb3e702d3e9592ed804f895f7}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_acaf8bcddb3e702d3e9592ed804f895f7}} 
+{\bfseries Conv2d\+\_\+2b\+\_\+3x3}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a28e50c27ed3540da510a59fb5e657239}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a28e50c27ed3540da510a59fb5e657239}} 
+{\bfseries maxpool1}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a1e9d8a92a26c0bd7351fcb38f22755a1}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a1e9d8a92a26c0bd7351fcb38f22755a1}} 
+{\bfseries Conv2d\+\_\+3b\+\_\+1x1}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a8169359be79bec1ee90320483a41729a}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a8169359be79bec1ee90320483a41729a}} 
+{\bfseries Conv2d\+\_\+4a\+\_\+3x3}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_ac3efc546cc3e636c0cf8763592b8ade4}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_ac3efc546cc3e636c0cf8763592b8ade4}} 
+{\bfseries maxpool2}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a13d5b3a0d8a46338b10648d7a46ca4f6}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a13d5b3a0d8a46338b10648d7a46ca4f6}} 
+{\bfseries Mixed\+\_\+5b}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_adfd46824f91fe3f31184e8d640af51ec}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_adfd46824f91fe3f31184e8d640af51ec}} 
+{\bfseries Mixed\+\_\+5c}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_ab47e14ecf03940196562edb5a4661e4d}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_ab47e14ecf03940196562edb5a4661e4d}} 
+{\bfseries Mixed\+\_\+5d}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a3ec8bbd2a536ff6a70728c0bbadc71a4}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a3ec8bbd2a536ff6a70728c0bbadc71a4}} 
+{\bfseries Mixed\+\_\+6a}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a21e63637d9ad74d78c0ecd5d70d5d669}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a21e63637d9ad74d78c0ecd5d70d5d669}} 
+{\bfseries Mixed\+\_\+6b}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a8f006065a37f532660b55d770a5248e8}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a8f006065a37f532660b55d770a5248e8}} 
+{\bfseries Mixed\+\_\+6c}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_abb6c98df4351a175b5f91ff7a0b28c90}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_abb6c98df4351a175b5f91ff7a0b28c90}} 
+{\bfseries Mixed\+\_\+6d}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a0949b58fd139c19d8ba24dca389aa0b2}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a0949b58fd139c19d8ba24dca389aa0b2}} 
+{\bfseries Mixed\+\_\+6e}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_af2c4c29d2e44f230a41d350fc0f82eb1}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_af2c4c29d2e44f230a41d350fc0f82eb1}} 
+{\bfseries Aux\+Logits}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a4cbdfeac0852c80134ea23c49f46f191}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a4cbdfeac0852c80134ea23c49f46f191}} 
+{\bfseries Mixed\+\_\+7a}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a66ec4b70dcc11454d5cb4f56d89989c2}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a66ec4b70dcc11454d5cb4f56d89989c2}} 
+{\bfseries Mixed\+\_\+7b}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a96ef639fcd281799f81579d4a07079e4}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a96ef639fcd281799f81579d4a07079e4}} 
+{\bfseries Mixed\+\_\+7c}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a34950cca05f11dba57a1073b373e7eab}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a34950cca05f11dba57a1073b373e7eab}} 
+{\bfseries avgpool}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a4f2489b1bff1503e5bc5c922f96ab85e}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a4f2489b1bff1503e5bc5c922f96ab85e}} 
+{\bfseries dropout}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1inception_1_1Inception3_a3512df7229e3db72cca2500efdb94fc6}\label{classtorchvision_1_1models_1_1inception_1_1Inception3_a3512df7229e3db72cca2500efdb94fc6}} 
+{\bfseries fc}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 64 of file inception.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/inception.\+py\end{DoxyCompactItemize}

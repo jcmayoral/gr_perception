@@ -1,0 +1,189 @@
+\hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips}{}\section{torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips Class Reference}
+\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips}\index{torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips@{torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_ab748894947f4f921f808b369d1ead24d}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_ab748894947f4f921f808b369d1ead24d}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, video\+\_\+paths, clip\+\_\+length\+\_\+in\+\_\+frames=16, frames\+\_\+between\+\_\+clips=1, frame\+\_\+rate=None, \+\_\+precomputed\+\_\+metadata=None, num\+\_\+workers=0, \+\_\+video\+\_\+width=0, \+\_\+video\+\_\+height=0, \+\_\+video\+\_\+min\+\_\+dimension=0, \+\_\+video\+\_\+max\+\_\+dimension=0, \+\_\+audio\+\_\+samples=0, \+\_\+audio\+\_\+channels=0)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a3ad9919703d3fd7f06384f5a3fc309a1}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a3ad9919703d3fd7f06384f5a3fc309a1}} 
+def {\bfseries metadata} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_ac29555f7f844b9358a8eb165387a6ebd}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_ac29555f7f844b9358a8eb165387a6ebd}} 
+def {\bfseries subset} (self, indices)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_adf7704fec2eae8c21307af5ef65b56b4}{compute\+\_\+clips} (self, num\+\_\+frames, step, frame\+\_\+rate=None)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a01198b867e552d08f8e8a78668baaced}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a01198b867e552d08f8e8a78668baaced}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a38c038b23eab5eabcc9d89256fc62ade}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a38c038b23eab5eabcc9d89256fc62ade}} 
+def {\bfseries num\+\_\+videos} (self)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a278d29cc385ec49a301cb3c59026503b}{num\+\_\+clips} (self)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a52b367dc6680de516b0e1940c422d5db}{get\+\_\+clip\+\_\+location} (self, idx)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a1596126a829498b852406c593268568e}{get\+\_\+clip} (self, idx)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a0bb31c2c87570544a06deeb26d33b894}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a0bb31c2c87570544a06deeb26d33b894}} 
+def {\bfseries compute\+\_\+clips\+\_\+for\+\_\+video} (video\+\_\+pts, num\+\_\+frames, step, fps, frame\+\_\+rate)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_acafef76acf1c2e51906121262ec4fdfd}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_acafef76acf1c2e51906121262ec4fdfd}} 
+{\bfseries video\+\_\+paths}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a777f1da1c8d11f8858f9937d22ac9e9b}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a777f1da1c8d11f8858f9937d22ac9e9b}} 
+{\bfseries num\+\_\+workers}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_ae5631e469e9fdc282f51272257a112a3}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_ae5631e469e9fdc282f51272257a112a3}} 
+{\bfseries video\+\_\+pts}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a0dfa668acb50b482607d9f10f5c8caa6}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a0dfa668acb50b482607d9f10f5c8caa6}} 
+{\bfseries video\+\_\+fps}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a162f09e78cdeaa0a6a5374d3df47a229}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a162f09e78cdeaa0a6a5374d3df47a229}} 
+{\bfseries num\+\_\+frames}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_adb424553e5de65acfa6ab7b6b9d39b3e}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_adb424553e5de65acfa6ab7b6b9d39b3e}} 
+{\bfseries step}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_aeb6c007f11d026230b362200955df4b8}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_aeb6c007f11d026230b362200955df4b8}} 
+{\bfseries frame\+\_\+rate}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a7ede6d235b76c2873df59a55a87bea13}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a7ede6d235b76c2873df59a55a87bea13}} 
+{\bfseries clips}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a621662787878d6092dcd43c34d44679f}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a621662787878d6092dcd43c34d44679f}} 
+{\bfseries resampling\+\_\+idxs}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a17e3c014e1f6ad4a397b81a1ce82f8a9}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a17e3c014e1f6ad4a397b81a1ce82f8a9}} 
+{\bfseries cumulative\+\_\+sizes}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Given a list of video files, computes all consecutive subvideos of size
+`clip_length_in_frames`, where the distance between each subvideo in the
+same video is defined by `frames_between_clips`.
+If `frame_rate` is specified, it will also resample all the videos to have
+the same frame rate, and the clips will refer to this frame rate.
+
+Creating this instance the first time is time-consuming, as it needs to
+decode all the videos in `video_paths`. It is recommended that you
+cache the results after instantiation of the class.
+
+Recreating the clips for different clip lengths is fast, and can be done
+with the `compute_clips` method.
+
+Arguments:
+    video_paths (List[str]): paths to the video files
+    clip_length_in_frames (int): size of a clip in number of frames
+    frames_between_clips (int): step (in frames) between each clip
+    frame_rate (int, optional): if specified, it will resample the video
+        so that it has `frame_rate`, and then the clips will be defined
+        on the resampled video
+    num_workers (int): how many subprocesses to use for data loading.
+        0 means that the data will be loaded in the main process. (default: 0)
+\end{DoxyVerb}
+ 
+
+Definition at line 68 of file video\+\_\+utils.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_adf7704fec2eae8c21307af5ef65b56b4}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_adf7704fec2eae8c21307af5ef65b56b4}} 
+\index{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}!compute\+\_\+clips@{compute\+\_\+clips}}
+\index{compute\+\_\+clips@{compute\+\_\+clips}!torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}}
+\subsubsection{\texorpdfstring{compute\+\_\+clips()}{compute\_clips()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips.\+compute\+\_\+clips (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{num\+\_\+frames,  }\item[{}]{step,  }\item[{}]{frame\+\_\+rate = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Compute all consecutive sequences of clips from video_pts.
+Always returns clips of size `num_frames`, meaning that the
+last few frames in a video can potentially be dropped.
+
+Arguments:
+    num_frames (int): number of frames for the clip
+    step (int): distance between two clips
+\end{DoxyVerb}
+ 
+
+Definition at line 213 of file video\+\_\+utils.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a1596126a829498b852406c593268568e}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a1596126a829498b852406c593268568e}} 
+\index{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}!get\+\_\+clip@{get\+\_\+clip}}
+\index{get\+\_\+clip@{get\+\_\+clip}!torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}}
+\subsubsection{\texorpdfstring{get\+\_\+clip()}{get\_clip()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips.\+get\+\_\+clip (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{idx }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Gets a subclip from a list of videos.
+
+Arguments:
+    idx (int): index of the subclip. Must be between 0 and num_clips().
+
+Returns:
+    video (Tensor)
+    audio (Tensor)
+    info (Dict)
+    video_idx (int): index of the video in `video_paths`
+\end{DoxyVerb}
+ 
+
+Definition at line 273 of file video\+\_\+utils.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a52b367dc6680de516b0e1940c422d5db}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a52b367dc6680de516b0e1940c422d5db}} 
+\index{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}!get\+\_\+clip\+\_\+location@{get\+\_\+clip\+\_\+location}}
+\index{get\+\_\+clip\+\_\+location@{get\+\_\+clip\+\_\+location}!torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}}
+\subsubsection{\texorpdfstring{get\+\_\+clip\+\_\+location()}{get\_clip\_location()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips.\+get\+\_\+clip\+\_\+location (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{idx }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Converts a flattened representation of the indices into a video_idx, clip_idx
+representation.
+\end{DoxyVerb}
+ 
+
+Definition at line 249 of file video\+\_\+utils.\+py.
+
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a278d29cc385ec49a301cb3c59026503b}\label{classtorchvision_1_1datasets_1_1video__utils_1_1VideoClips_a278d29cc385ec49a301cb3c59026503b}} 
+\index{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}!num\+\_\+clips@{num\+\_\+clips}}
+\index{num\+\_\+clips@{num\+\_\+clips}!torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips@{torchvision\+::datasets\+::video\+\_\+utils\+::\+Video\+Clips}}
+\subsubsection{\texorpdfstring{num\+\_\+clips()}{num\_clips()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+video\+\_\+utils.\+Video\+Clips.\+num\+\_\+clips (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Number of subclips that are available in the video list.
+\end{DoxyVerb}
+ 
+
+Definition at line 243 of file video\+\_\+utils.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/video\+\_\+utils.\+py\end{DoxyCompactItemize}

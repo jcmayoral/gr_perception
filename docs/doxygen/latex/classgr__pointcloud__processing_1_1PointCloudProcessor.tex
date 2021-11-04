@@ -1,0 +1,71 @@
+\hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor}{}\section{gr\+\_\+pointcloud\+\_\+processing\+:\+:Point\+Cloud\+Processor Class Reference}
+\label{classgr__pointcloud__processing_1_1PointCloudProcessor}\index{gr\+\_\+pointcloud\+\_\+processing\+::\+Point\+Cloud\+Processor@{gr\+\_\+pointcloud\+\_\+processing\+::\+Point\+Cloud\+Processor}}
+
+
+Inheritance diagram for gr\+\_\+pointcloud\+\_\+processing\+:\+:Point\+Cloud\+Processor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{classgr__pointcloud__processing_1_1PointCloudProcessor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for gr\+\_\+pointcloud\+\_\+processing\+:\+:Point\+Cloud\+Processor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{classgr__pointcloud__processing_1_1PointCloudProcessor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_ab92eac129a63a13a2d3574e73b01cad5}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_ab92eac129a63a13a2d3574e73b01cad5}} 
+void {\bfseries execute\+CB} (const gr\+\_\+action\+\_\+msgs\+::\+G\+R\+P\+C\+Process\+Goal\+Const\+Ptr \&goal)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a0c565c3cba29275d169d556e15f4d331}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a0c565c3cba29275d169d556e15f4d331}} 
+virtual void {\bfseries on\+Init} ()
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a40aeaa141d4f15473b8d454fb80a5bcd}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a40aeaa141d4f15473b8d454fb80a5bcd}} 
+void {\bfseries pointcloud\+\_\+cb} (const sensor\+\_\+msgs\+::\+Point\+Cloud2\+Const\+Ptr msg)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a6c7eb1093f59f46c861f469ac31a785b}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a6c7eb1093f59f46c861f469ac31a785b}} 
+int {\bfseries run\+\_\+filter} (const boost\+::shared\+\_\+ptr$<$ pcl\+::\+Point\+Cloud$<$ pcl\+::\+Point\+X\+Y\+ZI $>$$>$ cloud\+\_\+filtered)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_adcc7018e45c3a90cd3ef31185aec5de4}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_adcc7018e45c3a90cd3ef31185aec5de4}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries publish\+Point\+Cloud} (T)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a3def9c8065e4cf61108f837facc45d84}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a3def9c8065e4cf61108f837facc45d84}} 
+void {\bfseries timer\+\_\+cb} (const ros\+::\+Timer\+Event \&)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_aa83e45f368a262b042ff70d2fc5166e8}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_aa83e45f368a262b042ff70d2fc5166e8}} 
+void {\bfseries cluster} ()
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_ad3300f9ce4afe7f426977d8eb4932cdd}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_ad3300f9ce4afe7f426977d8eb4932cdd}} 
+void {\bfseries publish\+Bounding\+Boxes} ()
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a1f74183ff87551d84a5328795dc2f28c}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a1f74183ff87551d84a5328795dc2f28c}} 
+void {\bfseries add\+Bounding\+Box} (const geometry\+\_\+msgs\+::\+Pose center, double v\+\_\+x, double v\+\_\+y, double v\+\_\+z, double var\+\_\+i, int label)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a87e7d1d810845f30e32f1a87e14e149b}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a87e7d1d810845f30e32f1a87e14e149b}} 
+void {\bfseries dyn\+\_\+reconfigure\+CB} (gr\+\_\+pointcloud\+\_\+processing\+::\+Point\+Cloud\+Config \&config, uint32\+\_\+t level)
+\item 
+\mbox{\Hypertarget{classgr__pointcloud__processing_1_1PointCloudProcessor_a3645ed961fecfeedd174fe26bbfcf6dc}\label{classgr__pointcloud__processing_1_1PointCloudProcessor_a3645ed961fecfeedd174fe26bbfcf6dc}} 
+void {\bfseries remove\+Ground} (boost\+::shared\+\_\+ptr$<$ pcl\+::\+Point\+Cloud$<$ pcl\+::\+Point\+X\+Y\+ZI $>$$>$ pc)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 72 of file pointcloud\+\_\+processing.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+pointcloud\+\_\+processing/include/gr\+\_\+pointcloud\+\_\+processing/pointcloud\+\_\+processing.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+pointcloud\+\_\+processing/src/pointcloud\+\_\+processing.\+cpp\end{DoxyCompactItemize}

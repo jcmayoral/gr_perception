@@ -1,0 +1,65 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype}{}\section{torchvision.\+transforms.\+transforms.\+Convert\+Image\+Dtype Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype}\index{torchvision.\+transforms.\+transforms.\+Convert\+Image\+Dtype@{torchvision.\+transforms.\+transforms.\+Convert\+Image\+Dtype}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Convert\+Image\+Dtype\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Convert\+Image\+Dtype\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype_abb27865012489d9dd98e28552dfa2418}\label{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype_abb27865012489d9dd98e28552dfa2418}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype_a6da91368bc1a4230765c0b469ee4a989}\label{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype_a6da91368bc1a4230765c0b469ee4a989}} 
+def {\bfseries \+\_\+\+\_\+call\+\_\+\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype_a1da6b6514fb4037f5ea9f418a7cd3a7e}\label{classtorchvision_1_1transforms_1_1transforms_1_1ConvertImageDtype_a1da6b6514fb4037f5ea9f418a7cd3a7e}} 
+{\bfseries dtype}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Convert a tensor image to the given ``dtype`` and scale the values accordingly
+
+Args:
+    dtype (torch.dtype): Desired data type of the output
+
+.. note::
+
+    When converting from a smaller to a larger integer ``dtype`` the maximum values are **not** mapped exactly.
+    If converted back and forth, this mismatch has no effect.
+
+Raises:
+    RuntimeError: When trying to cast :class:`torch.float32` to :class:`torch.int32` or :class:`torch.int64` as
+        well as for trying to cast :class:`torch.float64` to :class:`torch.int64`. These conversions might lead to
+        overflow errors since the floating point ``dtype`` cannot store consecutive integers over the whole range
+        of the integer ``dtype``.
+\end{DoxyVerb}
+ 
+
+Definition at line 112 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

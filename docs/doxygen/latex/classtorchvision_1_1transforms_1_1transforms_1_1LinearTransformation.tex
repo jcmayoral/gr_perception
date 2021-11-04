@@ -1,0 +1,89 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation}{}\section{torchvision.\+transforms.\+transforms.\+Linear\+Transformation Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation}\index{torchvision.\+transforms.\+transforms.\+Linear\+Transformation@{torchvision.\+transforms.\+transforms.\+Linear\+Transformation}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Linear\+Transformation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Linear\+Transformation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a31e03a2799b3e0b934ee2fb382e2622b}\label{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a31e03a2799b3e0b934ee2fb382e2622b}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, transformation\+\_\+matrix, mean\+\_\+vector)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a9a29e7502fee078fcefed71fa7128657}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, tensor)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a8e0afb1c88966200a846983bcdd7126b}\label{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a8e0afb1c88966200a846983bcdd7126b}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a6186de2600c7afe87f6c87e2ce21f3da}\label{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a6186de2600c7afe87f6c87e2ce21f3da}} 
+{\bfseries transformation\+\_\+matrix}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a8fee3cc6c34500e261a1bbb6567d6bb6}\label{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a8fee3cc6c34500e261a1bbb6567d6bb6}} 
+{\bfseries mean\+\_\+vector}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Transform a tensor image with a square transformation matrix and a mean_vector computed
+offline.
+Given transformation_matrix and mean_vector, will flatten the torch.*Tensor and
+subtract mean_vector from it which is then followed by computing the dot
+product with the transformation matrix and then reshaping the tensor to its
+original shape.
+
+Applications:
+    whitening transformation: Suppose X is a column vector zero-centered data.
+    Then compute the data covariance matrix [D x D] with torch.mm(X.t(), X),
+    perform SVD on this matrix and pass it as transformation_matrix.
+
+Args:
+    transformation_matrix (Tensor): tensor [D x D], D = C x H x W
+    mean_vector (Tensor): tensor [D], D = C x H x W
+\end{DoxyVerb}
+ 
+
+Definition at line 924 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a9a29e7502fee078fcefed71fa7128657}\label{classtorchvision_1_1transforms_1_1transforms_1_1LinearTransformation_a9a29e7502fee078fcefed71fa7128657}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Linear\+Transformation@{torchvision\+::transforms\+::transforms\+::\+Linear\+Transformation}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+Linear\+Transformation@{torchvision\+::transforms\+::transforms\+::\+Linear\+Transformation}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Linear\+Transformation.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{tensor }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    tensor (Tensor): Tensor image of size (C, H, W) to be whitened.
+
+Returns:
+    Tensor: Transformed image.
+\end{DoxyVerb}
+ 
+
+Definition at line 955 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

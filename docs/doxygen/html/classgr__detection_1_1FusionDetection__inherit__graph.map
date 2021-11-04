@@ -1,0 +1,5 @@
+<map id="gr_detection::FusionDetection" name="gr_detection::FusionDetection">
+<area shape="rect" id="node2" href="$classgr__depth__processing_1_1MyNodeletClass.html" title="gr_depth_processing\l::MyNodeletClass" alt="" coords="273,5,416,47"/>
+<area shape="rect" id="node3" href="$classgr__detection_1_1DetectorsFuser.html" title="gr_detection::DetectorsFuser" alt="" coords="249,71,440,98"/>
+<area shape="rect" id="node4" href="$classgr__pointcloud__processing_1_1PointCloudProcessor.html" title="gr_pointcloud_processing\l::PointCloudProcessor" alt="" coords="260,123,429,164"/>
+</map>

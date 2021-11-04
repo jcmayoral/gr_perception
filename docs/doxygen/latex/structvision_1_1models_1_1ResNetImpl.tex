@@ -1,0 +1,82 @@
+\hypertarget{structvision_1_1models_1_1ResNetImpl}{}\section{vision\+:\+:models\+:\+:Res\+Net\+Impl$<$ Block $>$ Struct Template Reference}
+\label{structvision_1_1models_1_1ResNetImpl}\index{vision\+::models\+::\+Res\+Net\+Impl$<$ Block $>$@{vision\+::models\+::\+Res\+Net\+Impl$<$ Block $>$}}
+
+
+Inheritance diagram for vision\+:\+:models\+:\+:Res\+Net\+Impl$<$ Block $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{structvision_1_1models_1_1ResNetImpl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for vision\+:\+:models\+:\+:Res\+Net\+Impl$<$ Block $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{structvision_1_1models_1_1ResNetImpl__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_aa0cf3ab5d797e39520fe660430897cf7}\label{structvision_1_1models_1_1ResNetImpl_aa0cf3ab5d797e39520fe660430897cf7}} 
+torch\+::nn\+::\+Sequential {\bfseries \+\_\+make\+\_\+layer} (int64\+\_\+t planes, int64\+\_\+t blocks, int64\+\_\+t stride=1)
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a840a14a82e325fdb543ffca7eea9e28e}\label{structvision_1_1models_1_1ResNetImpl_a840a14a82e325fdb543ffca7eea9e28e}} 
+{\bfseries Res\+Net\+Impl} (const std\+::vector$<$ int $>$ \&layers, int64\+\_\+t num\+\_\+classes=1000, bool zero\+\_\+init\+\_\+residual=false, int64\+\_\+t groups=1, int64\+\_\+t width\+\_\+per\+\_\+group=64)
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_ab43bc2f2883ff0b6593f11488d683ffa}\label{structvision_1_1models_1_1ResNetImpl_ab43bc2f2883ff0b6593f11488d683ffa}} 
+torch\+::\+Tensor {\bfseries forward} (torch\+::\+Tensor X)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a76ac84df47d59bb8f5e73f91da9843c2}\label{structvision_1_1models_1_1ResNetImpl_a76ac84df47d59bb8f5e73f91da9843c2}} 
+int64\+\_\+t {\bfseries groups}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a4fab26757cf232945e63868f00941b6d}\label{structvision_1_1models_1_1ResNetImpl_a4fab26757cf232945e63868f00941b6d}} 
+int64\+\_\+t {\bfseries base\+\_\+width}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_ad54cc77f7f3a4c39b8c9a4109ab9581b}\label{structvision_1_1models_1_1ResNetImpl_ad54cc77f7f3a4c39b8c9a4109ab9581b}} 
+int64\+\_\+t {\bfseries inplanes}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a34d23e0bc857583023f5b25c7cfc2dd7}\label{structvision_1_1models_1_1ResNetImpl_a34d23e0bc857583023f5b25c7cfc2dd7}} 
+torch\+::nn\+::\+Conv2d {\bfseries conv1}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a5be5c959a0ad736323ad5b552a20590c}\label{structvision_1_1models_1_1ResNetImpl_a5be5c959a0ad736323ad5b552a20590c}} 
+torch\+::nn\+::\+Batch\+Norm2d {\bfseries bn1}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a0bc83d3256aa58ce71760616812b7db3}\label{structvision_1_1models_1_1ResNetImpl_a0bc83d3256aa58ce71760616812b7db3}} 
+torch\+::nn\+::\+Sequential {\bfseries layer1}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a954ddd5e5b980e777f17a3472b8379f4}\label{structvision_1_1models_1_1ResNetImpl_a954ddd5e5b980e777f17a3472b8379f4}} 
+torch\+::nn\+::\+Sequential {\bfseries layer2}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_a80959d44d5e796498525834eba1ff381}\label{structvision_1_1models_1_1ResNetImpl_a80959d44d5e796498525834eba1ff381}} 
+torch\+::nn\+::\+Sequential {\bfseries layer3}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_aad9646d60078d4b02827a8b7f79537f6}\label{structvision_1_1models_1_1ResNetImpl_aad9646d60078d4b02827a8b7f79537f6}} 
+torch\+::nn\+::\+Sequential {\bfseries layer4}
+\item 
+\mbox{\Hypertarget{structvision_1_1models_1_1ResNetImpl_addc773a59bfe8e64f33a3375d0cd5da2}\label{structvision_1_1models_1_1ResNetImpl_addc773a59bfe8e64f33a3375d0cd5da2}} 
+torch\+::nn\+::\+Linear {\bfseries fc}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Block$>$\newline
+struct vision\+::models\+::\+Res\+Net\+Impl$<$ Block $>$}
+
+
+
+Definition at line 10 of file resnet.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/models/resnet.\+h\end{DoxyCompactItemize}

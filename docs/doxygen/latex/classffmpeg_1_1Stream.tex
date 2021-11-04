@@ -1,0 +1,114 @@
+\hypertarget{classffmpeg_1_1Stream}{}\section{ffmpeg\+:\+:Stream Class Reference}
+\label{classffmpeg_1_1Stream}\index{ffmpeg\+::\+Stream@{ffmpeg\+::\+Stream}}
+
+
+{\ttfamily \#include $<$stream.\+h$>$}
+
+
+
+Inheritance diagram for ffmpeg\+:\+:Stream\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classffmpeg_1_1Stream__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ffmpeg\+:\+:Stream\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classffmpeg_1_1Stream__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a09af2f092037daeef7fa1d95ca8cda20}\label{classffmpeg_1_1Stream_a09af2f092037daeef7fa1d95ca8cda20}} 
+{\bfseries Stream} (A\+V\+Format\+Context $\ast$input\+Ctx, \hyperlink{structffmpeg_1_1MediaFormat}{Media\+Format} format, bool convert\+Pts\+To\+Wall\+Time, int64\+\_\+t logging\+Uuid)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_af06d3cb14886c7043912644bc45b4239}\label{classffmpeg_1_1Stream_af06d3cb14886c7043912644bc45b4239}} 
+int {\bfseries open\+Codec} (std\+::vector$<$ \hyperlink{structffmpeg_1_1DecoderMetadata}{Decoder\+Metadata} $>$ $\ast$metadata)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_afce3ade2918317c6f08447e57f9a02a0}\label{classffmpeg_1_1Stream_afce3ade2918317c6f08447e57f9a02a0}} 
+int {\bfseries decode\+Packet} (const A\+V\+Packet $\ast$packet, \hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} $\ast$out, bool header\+Only, bool $\ast$has\+Msg)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a148ac1d4ae8c7ad1926391d76142d9a4}\label{classffmpeg_1_1Stream_a148ac1d4ae8c7ad1926391d76142d9a4}} 
+int {\bfseries get\+Index} () const
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_adb704df8dc09512bfb8bd5e684be086f}\label{classffmpeg_1_1Stream_adb704df8dc09512bfb8bd5e684be086f}} 
+int {\bfseries flush} (\hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} $\ast$out, bool header\+Only)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_abc0b3d2bb0e979c8318fccb28c2abdbc}\label{classffmpeg_1_1Stream_abc0b3d2bb0e979c8318fccb28c2abdbc}} 
+\hyperlink{structffmpeg_1_1MediaFormat}{Media\+Format} {\bfseries get\+Media\+Format} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_ab1480f3cc5bd0f73f2a767a91a539ea3}\label{classffmpeg_1_1Stream_ab1480f3cc5bd0f73f2a767a91a539ea3}} 
+virtual int {\bfseries init\+Format} ()=0
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a4574b3af1a1a4a99048c2e148ca013ef}\label{classffmpeg_1_1Stream_a4574b3af1a1a4a99048c2e148ca013ef}} 
+virtual int {\bfseries analyze\+Packet} (const A\+V\+Packet $\ast$packet, bool $\ast$got\+Frame)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a9828a5dfa3a934a0b4c583031a8c7d5d}\label{classffmpeg_1_1Stream_a9828a5dfa3a934a0b4c583031a8c7d5d}} 
+virtual int {\bfseries copy\+Frame\+Bytes} (\hyperlink{classffmpeg_1_1ByteStorage}{Byte\+Storage} $\ast$out, bool flush)=0
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a4868d8724d5cb6806ed5135433f2e0d3}\label{classffmpeg_1_1Stream_a4868d8724d5cb6806ed5135433f2e0d3}} 
+virtual void {\bfseries set\+Header} (\hyperlink{structffmpeg_1_1DecoderHeader}{Decoder\+Header} $\ast$header, bool flush)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a5934c2f7b3c3e17973a0b26121953bb5}\label{classffmpeg_1_1Stream_a5934c2f7b3c3e17973a0b26121953bb5}} 
+virtual void {\bfseries set\+Frame\+Pts} (\hyperlink{structffmpeg_1_1DecoderHeader}{Decoder\+Header} $\ast$header, bool flush)
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a0eb97aee0aeb0c056ecfa9a891a999f8}\label{classffmpeg_1_1Stream_a0eb97aee0aeb0c056ecfa9a891a999f8}} 
+virtual A\+V\+Codec $\ast$ {\bfseries find\+Codec} (A\+V\+Codec\+Parameters $\ast$params)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a11fecbb1b5ace36dfc3240ba5fca1a15}\label{classffmpeg_1_1Stream_a11fecbb1b5ace36dfc3240ba5fca1a15}} 
+A\+V\+Format\+Context $\ast$const {\bfseries input\+Ctx\+\_\+}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_aabe918fedef14f18abd745dfd810ca3a}\label{classffmpeg_1_1Stream_aabe918fedef14f18abd745dfd810ca3a}} 
+\hyperlink{structffmpeg_1_1MediaFormat}{Media\+Format} {\bfseries format\+\_\+}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a16e7ff95ecfe7c9f59c9e1761704b5cb}\label{classffmpeg_1_1Stream_a16e7ff95ecfe7c9f59c9e1761704b5cb}} 
+const bool {\bfseries convert\+Pts\+To\+Wall\+Time\+\_\+}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_aceb3865ff7bb185f0462a6f47e7431a0}\label{classffmpeg_1_1Stream_aceb3865ff7bb185f0462a6f47e7431a0}} 
+int64\+\_\+t {\bfseries logging\+Uuid\+\_\+}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_aae62027059eaf5fe34a19d5dc97eb6bb}\label{classffmpeg_1_1Stream_aae62027059eaf5fe34a19d5dc97eb6bb}} 
+A\+V\+Codec\+Context $\ast$ {\bfseries codec\+Ctx\+\_\+} \{nullptr\}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a150f150edc4ddab30d562e5bd36194c8}\label{classffmpeg_1_1Stream_a150f150edc4ddab30d562e5bd36194c8}} 
+A\+V\+Frame $\ast$ {\bfseries frame\+\_\+} \{nullptr\}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a4e2f34cee1e6990bf218a473df291b14}\label{classffmpeg_1_1Stream_a4e2f34cee1e6990bf218a473df291b14}} 
+std\+::atomic$<$ size\+\_\+t $>$ {\bfseries num\+Generator\+\_\+} \{0\}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a331715344d5590587af60ee8d57dbc66}\label{classffmpeg_1_1Stream_a331715344d5590587af60ee8d57dbc66}} 
+\hyperlink{classffmpeg_1_1TimeKeeper}{Time\+Keeper} {\bfseries keeper\+\_\+}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a425ed39dcd100e11ef4246bc4e3b5bff}\label{classffmpeg_1_1Stream_a425ed39dcd100e11ef4246bc4e3b5bff}} 
+int64\+\_\+t {\bfseries next\+Pts\+\_\+} \{0\}
+\item 
+\mbox{\Hypertarget{classffmpeg_1_1Stream_a4416d3596de58216fdccced5317e19ed}\label{classffmpeg_1_1Stream_a4416d3596de58216fdccced5317e19ed}} 
+double {\bfseries fps\+\_\+} \{30.\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class uses F\+F\+M\+P\+EG library to decode one media stream (audio or video). 
+
+Definition at line 13 of file stream.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/stream.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/stream.\+cpp\end{DoxyCompactItemize}

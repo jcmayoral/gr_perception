@@ -1,0 +1,440 @@
+\hypertarget{namespacepypcd__hack_1_1pypcd}{}\section{pypcd\+\_\+hack.\+pypcd Namespace Reference}
+\label{namespacepypcd__hack_1_1pypcd}\index{pypcd\+\_\+hack.\+pypcd@{pypcd\+\_\+hack.\+pypcd}}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classpypcd__hack_1_1pypcd_1_1PointCloud}{Point\+Cloud}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_ad763a73fac8704a3ac3d501258bbfc2f}{parse\+\_\+header} (lines)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_adad732652b44e6880384410d0ef282ae}{write\+\_\+header} (metadata, rename\+\_\+padding=False)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a6aa9a1eb4d943a7ea0cbd73bc7945ddf}{build\+\_\+ascii\+\_\+fmtstr} (pc)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_ab15f51bb43e0e29195936a5caf25bff7}{parse\+\_\+ascii\+\_\+pc\+\_\+data} (f, dtype, metadata)
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a7880813d7fc51625fe6ba19b18289789}\label{namespacepypcd__hack_1_1pypcd_a7880813d7fc51625fe6ba19b18289789}} 
+def {\bfseries parse\+\_\+binary\+\_\+pc\+\_\+data} (f, dtype, metadata)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_ae85e9dff84e32b410172653a14205f1e}{parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data} (f, dtype, metadata)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a082d05e46895d47fe7ce148f0b388ab5}{point\+\_\+cloud\+\_\+from\+\_\+fileobj} (f)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_af5959f034a9db1fd00fef3701280d699}{point\+\_\+cloud\+\_\+from\+\_\+path} (fname)
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a28a0218e89be867e1b38b5344a3d63e6}\label{namespacepypcd__hack_1_1pypcd_a28a0218e89be867e1b38b5344a3d63e6}} 
+def {\bfseries point\+\_\+cloud\+\_\+from\+\_\+buffer} (buf)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a795df6c9f99ef82898730a9894b59283}{point\+\_\+cloud\+\_\+to\+\_\+fileobj} (pc, fileobj, data\+\_\+compression=None)
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_aa7349265891cf775b4f0fe4b83ca6a10}\label{namespacepypcd__hack_1_1pypcd_aa7349265891cf775b4f0fe4b83ca6a10}} 
+def {\bfseries point\+\_\+cloud\+\_\+to\+\_\+path} (pc, fname)
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_aeadcf902e2c1191dbfffa0b856f5f359}\label{namespacepypcd__hack_1_1pypcd_aeadcf902e2c1191dbfffa0b856f5f359}} 
+def {\bfseries point\+\_\+cloud\+\_\+to\+\_\+buffer} (pc, data\+\_\+compression=None)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a8535ec59422d4edc82f22f6ce269b22b}{save\+\_\+point\+\_\+cloud} (pc, fname)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a8d901a6917508e63e158fbae069d1628}{save\+\_\+point\+\_\+cloud\+\_\+bin} (pc, fname)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_abd2032038eac8692ef731459ebbdca97}{save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed} (pc, fname)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a83a5e64283fc67becc4380ae964a269d}{save\+\_\+xyz\+\_\+label} (pc, fname, use\+\_\+default\+\_\+lbl=False)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a7bd8687c8696e464c057ac6e94fed02c}{save\+\_\+xyz\+\_\+intensity\+\_\+label} (pc, fname, use\+\_\+default\+\_\+lbl=False)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_aeac370634949adb389fb6221ce09a663}{save\+\_\+txt} (pc, fname, header=True)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a4b83dab7c0e2a8c67bbddd45e2fe2ff2}{update\+\_\+field} (pc, field, pc\+\_\+data)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a82ac240d16f3519a9a4984a0e0b44c9a}{add\+\_\+fields} (pc, metadata, pc\+\_\+data)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a8fb9fd1977dac6b877b2d3f8f43388f9}{cat\+\_\+point\+\_\+clouds} (pc1, pc2)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a577a54423f71a8d86e80d7b15ded09aa}{make\+\_\+xyz\+\_\+point\+\_\+cloud} (xyz, metadata=None)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a03097a8bbe76827f519fe2f960f37e19}{make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud} (xyz\+\_\+rgb, metadata=None)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_aeb5d9633c49c1c7c6d456301fbb75a43}{encode\+\_\+rgb\+\_\+for\+\_\+pcl} (rgb)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_a71f4e506eeb77e5514c7d1ce1d8130b8}{decode\+\_\+rgb\+\_\+from\+\_\+pcl} (rgb)
+\item 
+def \hyperlink{namespacepypcd__hack_1_1pypcd_ac1b992c24065b93d4330e8b22478579e}{make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud} (xyzl, label\+\_\+type=\textquotesingle{}f\textquotesingle{})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ae069cc239c58be6f0f703d99943d671c}\label{namespacepypcd__hack_1_1pypcd_ae069cc239c58be6f0f703d99943d671c}} 
+bool {\bfseries H\+A\+S\+\_\+\+S\+E\+N\+S\+O\+R\+\_\+\+M\+S\+GS} = True
+\item 
+list {\bfseries pc2\+\_\+pcd\+\_\+type\+\_\+mappings}
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a06b5f045a34857f1dab674bd7ca3b203}\label{namespacepypcd__hack_1_1pypcd_a06b5f045a34857f1dab674bd7ca3b203}} 
+{\bfseries pc2\+\_\+type\+\_\+to\+\_\+pcd\+\_\+type} = dict(pc2\+\_\+pcd\+\_\+type\+\_\+mappings)
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a0d48404b714644ede55bf1307c6c2517}\label{namespacepypcd__hack_1_1pypcd_a0d48404b714644ede55bf1307c6c2517}} 
+{\bfseries pcd\+\_\+type\+\_\+to\+\_\+pc2\+\_\+type} = dict((q, p) for (p, q) in pc2\+\_\+pcd\+\_\+type\+\_\+mappings)
+\item 
+list {\bfseries numpy\+\_\+pcd\+\_\+type\+\_\+mappings}
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ab5a911a045b7b4a350809b919cf68651}\label{namespacepypcd__hack_1_1pypcd_ab5a911a045b7b4a350809b919cf68651}} 
+{\bfseries numpy\+\_\+type\+\_\+to\+\_\+pcd\+\_\+type} = dict(numpy\+\_\+pcd\+\_\+type\+\_\+mappings)
+\item 
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a8b4e0e06abed851603a2061e1927e93b}\label{namespacepypcd__hack_1_1pypcd_a8b4e0e06abed851603a2061e1927e93b}} 
+{\bfseries pcd\+\_\+type\+\_\+to\+\_\+numpy\+\_\+type} = dict((q, p) for (p, q) in numpy\+\_\+pcd\+\_\+type\+\_\+mappings)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Read and write PCL .pcd files in python.
+dimatura@cmu.edu, 2013-2018
+
+- TODO better API for wacky operations.
+- TODO add a cli for common operations.
+- TODO deal properly with padding
+- TODO deal properly with multicount fields
+- TODO better support for rgb nonsense
+\end{DoxyVerb}
+ 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a82ac240d16f3519a9a4984a0e0b44c9a}\label{namespacepypcd__hack_1_1pypcd_a82ac240d16f3519a9a4984a0e0b44c9a}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!add\+\_\+fields@{add\+\_\+fields}}
+\index{add\+\_\+fields@{add\+\_\+fields}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{add\+\_\+fields()}{add\_fields()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+add\+\_\+fields (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{metadata,  }\item[{}]{pc\+\_\+data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Builds copy of pointcloud with extra fields.
+
+Multi-count fields are sketchy, yet again.
+\end{DoxyVerb}
+ 
+
+Definition at line 457 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a6aa9a1eb4d943a7ea0cbd73bc7945ddf}\label{namespacepypcd__hack_1_1pypcd_a6aa9a1eb4d943a7ea0cbd73bc7945ddf}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!build\+\_\+ascii\+\_\+fmtstr@{build\+\_\+ascii\+\_\+fmtstr}}
+\index{build\+\_\+ascii\+\_\+fmtstr@{build\+\_\+ascii\+\_\+fmtstr}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{build\+\_\+ascii\+\_\+fmtstr()}{build\_ascii\_fmtstr()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+build\+\_\+ascii\+\_\+fmtstr (\begin{DoxyParamCaption}\item[{}]{pc }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make a format string for printing to ascii.
+
+Note %.8f is minimum for rgb.
+\end{DoxyVerb}
+ 
+
+Definition at line 217 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a8fb9fd1977dac6b877b2d3f8f43388f9}\label{namespacepypcd__hack_1_1pypcd_a8fb9fd1977dac6b877b2d3f8f43388f9}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!cat\+\_\+point\+\_\+clouds@{cat\+\_\+point\+\_\+clouds}}
+\index{cat\+\_\+point\+\_\+clouds@{cat\+\_\+point\+\_\+clouds}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{cat\+\_\+point\+\_\+clouds()}{cat\_point\_clouds()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+cat\+\_\+point\+\_\+clouds (\begin{DoxyParamCaption}\item[{}]{pc1,  }\item[{}]{pc2 }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Concatenate two point clouds into bigger point cloud.
+Point clouds must have same metadata.
+\end{DoxyVerb}
+ 
+
+Definition at line 505 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a71f4e506eeb77e5514c7d1ce1d8130b8}\label{namespacepypcd__hack_1_1pypcd_a71f4e506eeb77e5514c7d1ce1d8130b8}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!decode\+\_\+rgb\+\_\+from\+\_\+pcl@{decode\+\_\+rgb\+\_\+from\+\_\+pcl}}
+\index{decode\+\_\+rgb\+\_\+from\+\_\+pcl@{decode\+\_\+rgb\+\_\+from\+\_\+pcl}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{decode\+\_\+rgb\+\_\+from\+\_\+pcl()}{decode\_rgb\_from\_pcl()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+decode\+\_\+rgb\+\_\+from\+\_\+pcl (\begin{DoxyParamCaption}\item[{}]{rgb }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Decode the bit-packed RGBs used by PCL.
+
+:param rgb: An Nx1 array.
+:rtype: Nx3 uint8 array with one column per color.
+\end{DoxyVerb}
+ 
+
+Definition at line 591 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_aeb5d9633c49c1c7c6d456301fbb75a43}\label{namespacepypcd__hack_1_1pypcd_aeb5d9633c49c1c7c6d456301fbb75a43}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!encode\+\_\+rgb\+\_\+for\+\_\+pcl@{encode\+\_\+rgb\+\_\+for\+\_\+pcl}}
+\index{encode\+\_\+rgb\+\_\+for\+\_\+pcl@{encode\+\_\+rgb\+\_\+for\+\_\+pcl}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{encode\+\_\+rgb\+\_\+for\+\_\+pcl()}{encode\_rgb\_for\_pcl()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+encode\+\_\+rgb\+\_\+for\+\_\+pcl (\begin{DoxyParamCaption}\item[{}]{rgb }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Encode bit-packed RGB for use with PCL.
+
+:param rgb: Nx3 uint8 array with RGB values.
+:rtype: Nx1 float32 array with bit-packed RGB, for PCL.
+\end{DoxyVerb}
+ 
+
+Definition at line 575 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ac1b992c24065b93d4330e8b22478579e}\label{namespacepypcd__hack_1_1pypcd_ac1b992c24065b93d4330e8b22478579e}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud@{make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud}}
+\index{make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud@{make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud()}{make\_xyz\_label\_point\_cloud()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+make\+\_\+xyz\+\_\+label\+\_\+point\+\_\+cloud (\begin{DoxyParamCaption}\item[{}]{xyzl,  }\item[{}]{label\+\_\+type = {\ttfamily \textquotesingle{}f\textquotesingle{}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make XYZL point cloud from numpy array.
+
+TODO i labels?
+\end{DoxyVerb}
+ 
+
+Definition at line 610 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a577a54423f71a8d86e80d7b15ded09aa}\label{namespacepypcd__hack_1_1pypcd_a577a54423f71a8d86e80d7b15ded09aa}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!make\+\_\+xyz\+\_\+point\+\_\+cloud@{make\+\_\+xyz\+\_\+point\+\_\+cloud}}
+\index{make\+\_\+xyz\+\_\+point\+\_\+cloud@{make\+\_\+xyz\+\_\+point\+\_\+cloud}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{make\+\_\+xyz\+\_\+point\+\_\+cloud()}{make\_xyz\_point\_cloud()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+make\+\_\+xyz\+\_\+point\+\_\+cloud (\begin{DoxyParamCaption}\item[{}]{xyz,  }\item[{}]{metadata = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make a pointcloud object from xyz array.
+xyz array is cast to float32.
+\end{DoxyVerb}
+ 
+
+Definition at line 520 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a03097a8bbe76827f519fe2f960f37e19}\label{namespacepypcd__hack_1_1pypcd_a03097a8bbe76827f519fe2f960f37e19}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud@{make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud}}
+\index{make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud@{make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud()}{make\_xyz\_rgb\_point\_cloud()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+make\+\_\+xyz\+\_\+rgb\+\_\+point\+\_\+cloud (\begin{DoxyParamCaption}\item[{}]{xyz\+\_\+rgb,  }\item[{}]{metadata = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make a pointcloud object from xyz array.
+xyz array is assumed to be float32.
+rgb is assumed to be encoded as float32 according to pcl conventions.
+\end{DoxyVerb}
+ 
+
+Definition at line 546 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ab15f51bb43e0e29195936a5caf25bff7}\label{namespacepypcd__hack_1_1pypcd_ab15f51bb43e0e29195936a5caf25bff7}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!parse\+\_\+ascii\+\_\+pc\+\_\+data@{parse\+\_\+ascii\+\_\+pc\+\_\+data}}
+\index{parse\+\_\+ascii\+\_\+pc\+\_\+data@{parse\+\_\+ascii\+\_\+pc\+\_\+data}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{parse\+\_\+ascii\+\_\+pc\+\_\+data()}{parse\_ascii\_pc\_data()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+parse\+\_\+ascii\+\_\+pc\+\_\+data (\begin{DoxyParamCaption}\item[{}]{f,  }\item[{}]{dtype,  }\item[{}]{metadata }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Use numpy to parse ascii pointcloud data.
+\end{DoxyVerb}
+ 
+
+Definition at line 235 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ae85e9dff84e32b410172653a14205f1e}\label{namespacepypcd__hack_1_1pypcd_ae85e9dff84e32b410172653a14205f1e}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data@{parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data}}
+\index{parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data@{parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data()}{parse\_binary\_compressed\_pc\_data()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+parse\+\_\+binary\+\_\+compressed\+\_\+pc\+\_\+data (\begin{DoxyParamCaption}\item[{}]{f,  }\item[{}]{dtype,  }\item[{}]{metadata }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parse lzf-compressed data.
+Format is undocumented but seems to be:
+- compressed size of data (uint32)
+- uncompressed size of data (uint32)
+- compressed data
+- junk
+\end{DoxyVerb}
+ 
+
+Definition at line 248 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ad763a73fac8704a3ac3d501258bbfc2f}\label{namespacepypcd__hack_1_1pypcd_ad763a73fac8704a3ac3d501258bbfc2f}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!parse\+\_\+header@{parse\+\_\+header}}
+\index{parse\+\_\+header@{parse\+\_\+header}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{parse\+\_\+header()}{parse\_header()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+parse\+\_\+header (\begin{DoxyParamCaption}\item[{}]{lines }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parse header of PCD files.
+\end{DoxyVerb}
+ 
+
+Definition at line 77 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a082d05e46895d47fe7ce148f0b388ab5}\label{namespacepypcd__hack_1_1pypcd_a082d05e46895d47fe7ce148f0b388ab5}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!point\+\_\+cloud\+\_\+from\+\_\+fileobj@{point\+\_\+cloud\+\_\+from\+\_\+fileobj}}
+\index{point\+\_\+cloud\+\_\+from\+\_\+fileobj@{point\+\_\+cloud\+\_\+from\+\_\+fileobj}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{point\+\_\+cloud\+\_\+from\+\_\+fileobj()}{point\_cloud\_from\_fileobj()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+point\+\_\+cloud\+\_\+from\+\_\+fileobj (\begin{DoxyParamCaption}\item[{}]{f }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parse pointcloud coming from file object f
+\end{DoxyVerb}
+ 
+
+Definition at line 278 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_af5959f034a9db1fd00fef3701280d699}\label{namespacepypcd__hack_1_1pypcd_af5959f034a9db1fd00fef3701280d699}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!point\+\_\+cloud\+\_\+from\+\_\+path@{point\+\_\+cloud\+\_\+from\+\_\+path}}
+\index{point\+\_\+cloud\+\_\+from\+\_\+path@{point\+\_\+cloud\+\_\+from\+\_\+path}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{point\+\_\+cloud\+\_\+from\+\_\+path()}{point\_cloud\_from\_path()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+point\+\_\+cloud\+\_\+from\+\_\+path (\begin{DoxyParamCaption}\item[{}]{fname }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}load point cloud in binary format
+\end{DoxyVerb}
+ 
+
+Definition at line 302 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a795df6c9f99ef82898730a9894b59283}\label{namespacepypcd__hack_1_1pypcd_a795df6c9f99ef82898730a9894b59283}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!point\+\_\+cloud\+\_\+to\+\_\+fileobj@{point\+\_\+cloud\+\_\+to\+\_\+fileobj}}
+\index{point\+\_\+cloud\+\_\+to\+\_\+fileobj@{point\+\_\+cloud\+\_\+to\+\_\+fileobj}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{point\+\_\+cloud\+\_\+to\+\_\+fileobj()}{point\_cloud\_to\_fileobj()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+point\+\_\+cloud\+\_\+to\+\_\+fileobj (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fileobj,  }\item[{}]{data\+\_\+compression = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Write pointcloud as .pcd to fileobj.
+If data_compression is not None it overrides pc.data.
+\end{DoxyVerb}
+ 
+
+Definition at line 317 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a8535ec59422d4edc82f22f6ce269b22b}\label{namespacepypcd__hack_1_1pypcd_a8535ec59422d4edc82f22f6ce269b22b}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!save\+\_\+point\+\_\+cloud@{save\+\_\+point\+\_\+cloud}}
+\index{save\+\_\+point\+\_\+cloud@{save\+\_\+point\+\_\+cloud}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{save\+\_\+point\+\_\+cloud()}{save\_point\_cloud()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+save\+\_\+point\+\_\+cloud (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fname }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save pointcloud to fname in ascii format.
+\end{DoxyVerb}
+ 
+
+Definition at line 374 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a8d901a6917508e63e158fbae069d1628}\label{namespacepypcd__hack_1_1pypcd_a8d901a6917508e63e158fbae069d1628}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!save\+\_\+point\+\_\+cloud\+\_\+bin@{save\+\_\+point\+\_\+cloud\+\_\+bin}}
+\index{save\+\_\+point\+\_\+cloud\+\_\+bin@{save\+\_\+point\+\_\+cloud\+\_\+bin}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{save\+\_\+point\+\_\+cloud\+\_\+bin()}{save\_point\_cloud\_bin()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+save\+\_\+point\+\_\+cloud\+\_\+bin (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fname }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save pointcloud to fname in binary format.
+\end{DoxyVerb}
+ 
+
+Definition at line 381 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_abd2032038eac8692ef731459ebbdca97}\label{namespacepypcd__hack_1_1pypcd_abd2032038eac8692ef731459ebbdca97}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed@{save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed}}
+\index{save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed@{save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed()}{save\_point\_cloud\_bin\_compressed()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+save\+\_\+point\+\_\+cloud\+\_\+bin\+\_\+compressed (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fname }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save pointcloud to fname in binary compressed format.
+\end{DoxyVerb}
+ 
+
+Definition at line 388 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_aeac370634949adb389fb6221ce09a663}\label{namespacepypcd__hack_1_1pypcd_aeac370634949adb389fb6221ce09a663}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!save\+\_\+txt@{save\+\_\+txt}}
+\index{save\+\_\+txt@{save\+\_\+txt}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{save\+\_\+txt()}{save\_txt()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+save\+\_\+txt (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fname,  }\item[{}]{header = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save to csv-style text file, separated by spaces.
+
+TODO:
+- support multi-count fields.
+- other delimiters.
+\end{DoxyVerb}
+ 
+
+Definition at line 429 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a7bd8687c8696e464c057ac6e94fed02c}\label{namespacepypcd__hack_1_1pypcd_a7bd8687c8696e464c057ac6e94fed02c}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!save\+\_\+xyz\+\_\+intensity\+\_\+label@{save\+\_\+xyz\+\_\+intensity\+\_\+label}}
+\index{save\+\_\+xyz\+\_\+intensity\+\_\+label@{save\+\_\+xyz\+\_\+intensity\+\_\+label}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{save\+\_\+xyz\+\_\+intensity\+\_\+label()}{save\_xyz\_intensity\_label()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+save\+\_\+xyz\+\_\+intensity\+\_\+label (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fname,  }\item[{}]{use\+\_\+default\+\_\+lbl = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save XYZI point cloud.
+\end{DoxyVerb}
+ 
+
+Definition at line 411 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a83a5e64283fc67becc4380ae964a269d}\label{namespacepypcd__hack_1_1pypcd_a83a5e64283fc67becc4380ae964a269d}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!save\+\_\+xyz\+\_\+label@{save\+\_\+xyz\+\_\+label}}
+\index{save\+\_\+xyz\+\_\+label@{save\+\_\+xyz\+\_\+label}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{save\+\_\+xyz\+\_\+label()}{save\_xyz\_label()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+save\+\_\+xyz\+\_\+label (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{fname,  }\item[{}]{use\+\_\+default\+\_\+lbl = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save a simple (x y z label) pointcloud, ignoring all other features.
+Label is initialized to 1000, for an obscure program I use.
+\end{DoxyVerb}
+ 
+
+Definition at line 395 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a4b83dab7c0e2a8c67bbddd45e2fe2ff2}\label{namespacepypcd__hack_1_1pypcd_a4b83dab7c0e2a8c67bbddd45e2fe2ff2}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!update\+\_\+field@{update\+\_\+field}}
+\index{update\+\_\+field@{update\+\_\+field}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{update\+\_\+field()}{update\_field()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+update\+\_\+field (\begin{DoxyParamCaption}\item[{}]{pc,  }\item[{}]{field,  }\item[{}]{pc\+\_\+data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Updates field in-place.
+\end{DoxyVerb}
+ 
+
+Definition at line 450 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_adad732652b44e6880384410d0ef282ae}\label{namespacepypcd__hack_1_1pypcd_adad732652b44e6880384410d0ef282ae}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!write\+\_\+header@{write\+\_\+header}}
+\index{write\+\_\+header@{write\+\_\+header}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{write\+\_\+header()}{write\_header()}}
+{\footnotesize\ttfamily def pypcd\+\_\+hack.\+pypcd.\+write\+\_\+header (\begin{DoxyParamCaption}\item[{}]{metadata,  }\item[{}]{rename\+\_\+padding = {\ttfamily False} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Given metadata as dictionary, return a string header.
+\end{DoxyVerb}
+ 
+
+Definition at line 114 of file pypcd.\+py.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_ab54a3cdde97e8eebd16c78c8c0e7be95}\label{namespacepypcd__hack_1_1pypcd_ab54a3cdde97e8eebd16c78c8c0e7be95}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!numpy\+\_\+pcd\+\_\+type\+\_\+mappings@{numpy\+\_\+pcd\+\_\+type\+\_\+mappings}}
+\index{numpy\+\_\+pcd\+\_\+type\+\_\+mappings@{numpy\+\_\+pcd\+\_\+type\+\_\+mappings}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{numpy\+\_\+pcd\+\_\+type\+\_\+mappings}{numpy\_pcd\_type\_mappings}}
+{\footnotesize\ttfamily list pypcd\+\_\+hack.\+pypcd.\+numpy\+\_\+pcd\+\_\+type\+\_\+mappings}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  [(np.dtype(\textcolor{stringliteral}{'float32'}), (\textcolor{stringliteral}{'F'}, 4)),
+2                            (np.dtype(\textcolor{stringliteral}{'float64'}), (\textcolor{stringliteral}{'F'}, 8)),
+3                            (np.dtype(\textcolor{stringliteral}{'uint8'}), (\textcolor{stringliteral}{'U', 1)),}
+4 \textcolor{stringliteral}{                           (np.dtype('uint16'}), (\textcolor{stringliteral}{'U', 2)),}
+5 \textcolor{stringliteral}{                           (np.dtype('uint32'}), (\textcolor{stringliteral}{'U', 4)),}
+6 \textcolor{stringliteral}{                           (np.dtype('uint64'}), (\textcolor{stringliteral}{'U', 8)),}
+7 \textcolor{stringliteral}{                           (np.dtype('int16'}), (\textcolor{stringliteral}{'I'}, 2)),
+8                            (np.dtype(\textcolor{stringliteral}{'int32'}), (\textcolor{stringliteral}{'I'}, 4)),
+9                            (np.dtype(\textcolor{stringliteral}{'int64'}), (\textcolor{stringliteral}{'I'}, 8))]
+\end{DoxyCode}
+
+
+Definition at line 64 of file pypcd.\+py.
+
+\mbox{\Hypertarget{namespacepypcd__hack_1_1pypcd_a4319d5aca601de59a3bbb4d3d53010b6}\label{namespacepypcd__hack_1_1pypcd_a4319d5aca601de59a3bbb4d3d53010b6}} 
+\index{pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}!pc2\+\_\+pcd\+\_\+type\+\_\+mappings@{pc2\+\_\+pcd\+\_\+type\+\_\+mappings}}
+\index{pc2\+\_\+pcd\+\_\+type\+\_\+mappings@{pc2\+\_\+pcd\+\_\+type\+\_\+mappings}!pypcd\+\_\+hack\+::pypcd@{pypcd\+\_\+hack\+::pypcd}}
+\subsubsection{\texorpdfstring{pc2\+\_\+pcd\+\_\+type\+\_\+mappings}{pc2\_pcd\_type\_mappings}}
+{\footnotesize\ttfamily list pypcd\+\_\+hack.\+pypcd.\+pc2\+\_\+pcd\+\_\+type\+\_\+mappings}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  [(PointField.INT8, (\textcolor{stringliteral}{'I'}, 1)),
+2                              (PointField.UINT8, (\textcolor{stringliteral}{'U', 1)),}
+3 \textcolor{stringliteral}{                             (PointField.INT16, ('I'}, 2)),
+4                              (PointField.UINT16, (\textcolor{stringliteral}{'U', 2)),}
+5 \textcolor{stringliteral}{                             (PointField.INT32, ('I'}, 4)),
+6                              (PointField.UINT32, (\textcolor{stringliteral}{'U', 4)),}
+7 \textcolor{stringliteral}{                             (PointField.FLOAT32, ('F'}, 4)),
+8                              (PointField.FLOAT64, (\textcolor{stringliteral}{'F'}, 8))]
+\end{DoxyCode}
+
+
+Definition at line 52 of file pypcd.\+py.
+

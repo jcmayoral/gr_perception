@@ -1,0 +1,7 @@
+<map id="torchvision.datasets.mnist.MNIST" name="torchvision.datasets.mnist.MNIST">
+<area shape="rect" id="node4" href="$classtorchvision_1_1datasets_1_1mnist_1_1EMNIST.html" title="torchvision.datasets.mnist.\lEMNIST" alt="" coords="611,5,789,47"/>
+<area shape="rect" id="node5" href="$classtorchvision_1_1datasets_1_1mnist_1_1FashionMNIST.html" title="torchvision.datasets.mnist.\lFashionMNIST" alt="" coords="611,71,789,112"/>
+<area shape="rect" id="node6" href="$classtorchvision_1_1datasets_1_1mnist_1_1KMNIST.html" title="torchvision.datasets.mnist.\lKMNIST" alt="" coords="611,136,789,177"/>
+<area shape="rect" id="node7" href="$classtorchvision_1_1datasets_1_1mnist_1_1QMNIST.html" title="torchvision.datasets.mnist.\lQMNIST" alt="" coords="611,201,789,243"/>
+<area shape="rect" id="node2" href="$classtorchvision_1_1datasets_1_1vision_1_1VisionDataset.html" title="torchvision.datasets.vision.\lVisionDataset" alt="" coords="155,104,336,145"/>
+</map>

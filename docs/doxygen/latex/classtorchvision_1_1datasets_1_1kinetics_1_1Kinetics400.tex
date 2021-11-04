@@ -1,0 +1,93 @@
+\hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400}{}\section{torchvision.\+datasets.\+kinetics.\+Kinetics400 Class Reference}
+\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400}\index{torchvision.\+datasets.\+kinetics.\+Kinetics400@{torchvision.\+datasets.\+kinetics.\+Kinetics400}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+kinetics.\+Kinetics400\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+kinetics.\+Kinetics400\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a7c7955c8a0f7fe8932305a7916d9ca08}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a7c7955c8a0f7fe8932305a7916d9ca08}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, frames\+\_\+per\+\_\+clip, step\+\_\+between\+\_\+clips=1, frame\+\_\+rate=None, extensions=(\textquotesingle{}avi\textquotesingle{},), transform=None, \+\_\+precomputed\+\_\+metadata=None, num\+\_\+workers=1, \+\_\+video\+\_\+width=0, \+\_\+video\+\_\+height=0, \+\_\+video\+\_\+min\+\_\+dimension=0, \+\_\+audio\+\_\+samples=0, \+\_\+audio\+\_\+channels=0)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_acea1d298f6dc8393bbe3ec55a7d6b4bf}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_acea1d298f6dc8393bbe3ec55a7d6b4bf}} 
+def {\bfseries metadata} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a2d28fc93b3e79778847247b2188e4c7f}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a2d28fc93b3e79778847247b2188e4c7f}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a1ff04f001e56fb7e27c98b928c0bb768}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a1ff04f001e56fb7e27c98b928c0bb768}} 
+def {\bfseries \+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, idx)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a73a9781ac6c64d891ea6ad6bcbdf168c}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a73a9781ac6c64d891ea6ad6bcbdf168c}} 
+{\bfseries samples}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a829eb6d6f69ce1811510d7f58e240168}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_a829eb6d6f69ce1811510d7f58e240168}} 
+{\bfseries classes}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_ad17b7a4ea9ecd998daa15a48673ba226}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_ad17b7a4ea9ecd998daa15a48673ba226}} 
+{\bfseries video\+\_\+clips}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_ac1b5546bb5850ae013c901bb481ec642}\label{classtorchvision_1_1datasets_1_1kinetics_1_1Kinetics400_ac1b5546bb5850ae013c901bb481ec642}} 
+{\bfseries transform}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`Kinetics-400 <https://deepmind.com/research/open-source/open-source-datasets/kinetics/>`_
+dataset.
+
+Kinetics-400 is an action recognition video dataset.
+This dataset consider every video as a collection of video clips of fixed size, specified
+by ``frames_per_clip``, where the step in frames between each clip is given by
+``step_between_clips``.
+
+To give an example, for 2 videos with 10 and 15 frames respectively, if ``frames_per_clip=5``
+and ``step_between_clips=5``, the dataset size will be (2 + 3) = 5, where the first two
+elements will come from video 1, and the next three elements from video 2.
+Note that we drop clips which do not have exactly ``frames_per_clip`` elements, so not all
+frames in a video might be present.
+
+Internally, it uses a VideoClips object to handle clip creation.
+
+Args:
+    root (string): Root directory of the Kinetics-400 Dataset.
+    frames_per_clip (int): number of frames in a clip
+    step_between_clips (int): number of frames between each clip
+    transform (callable, optional): A function/transform that  takes in a TxHxWxC video
+        and returns a transformed version.
+
+Returns:
+    video (Tensor[T, H, W, C]): the `T` video frames
+    audio(Tensor[K, L]): the audio frames, where `K` is the number of channels
+        and `L` is the number of points
+    label (int): class of the video clip
+\end{DoxyVerb}
+ 
+
+Definition at line 7 of file kinetics.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/kinetics.\+py\end{DoxyCompactItemize}

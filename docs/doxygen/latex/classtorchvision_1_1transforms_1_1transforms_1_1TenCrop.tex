@@ -1,0 +1,101 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop}{}\section{torchvision.\+transforms.\+transforms.\+Ten\+Crop Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop}\index{torchvision.\+transforms.\+transforms.\+Ten\+Crop@{torchvision.\+transforms.\+transforms.\+Ten\+Crop}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Ten\+Crop\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Ten\+Crop\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_af90f7d70a7def72afe72acbf4317a844}\label{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_af90f7d70a7def72afe72acbf4317a844}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, size, vertical\+\_\+flip=False)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a53284b367d24a1bf0e407e30eebec2f4}{forward} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a7d475516f6fcf64b9a80ef7182f9b17d}\label{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a7d475516f6fcf64b9a80ef7182f9b17d}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_afc5a04d3db7a45cb18567d5dad264cc5}\label{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_afc5a04d3db7a45cb18567d5dad264cc5}} 
+{\bfseries size}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a8c6cb71846c131185d1b6367fcf619f4}\label{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a8c6cb71846c131185d1b6367fcf619f4}} 
+{\bfseries vertical\+\_\+flip}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Crop the given image into four corners and the central crop plus the flipped version of
+these (horizontal flipping is used by default).
+The image can be a PIL Image or a Tensor, in which case it is expected
+to have [..., H, W] shape, where ... means an arbitrary number of leading
+dimensions
+
+.. Note::
+     This transform returns a tuple of images and there may be a mismatch in the number of
+     inputs and targets your Dataset returns. See below for an example of how to deal with
+     this.
+
+Args:
+    size (sequence or int): Desired output size of the crop. If size is an
+        int instead of sequence like (h, w), a square crop (size, size) is
+        made. If provided a tuple or list of length 1, it will be interpreted as (size[0], size[0]).
+    vertical_flip (bool): Use vertical flipping instead of horizontal
+
+Example:
+     >>> transform = Compose([
+     >>>    TenCrop(size), # this is a list of PIL Images
+     >>>    Lambda(lambda crops: torch.stack([ToTensor()(crop) for crop in crops])) # returns a 4D tensor
+     >>> ])
+     >>> #In your test loop you can do the following:
+     >>> input, target = batch # input is a 5d tensor, target is 2d
+     >>> bs, ncrops, c, h, w = input.size()
+     >>> result = model(input.view(-1, c, h, w)) # fuse batch size and ncrops
+     >>> result_avg = result.view(bs, ncrops, -1).mean(1) # avg over crops
+\end{DoxyVerb}
+ 
+
+Definition at line 867 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a53284b367d24a1bf0e407e30eebec2f4}\label{classtorchvision_1_1transforms_1_1transforms_1_1TenCrop_a53284b367d24a1bf0e407e30eebec2f4}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Ten\+Crop@{torchvision\+::transforms\+::transforms\+::\+Ten\+Crop}!forward@{forward}}
+\index{forward@{forward}!torchvision\+::transforms\+::transforms\+::\+Ten\+Crop@{torchvision\+::transforms\+::transforms\+::\+Ten\+Crop}}
+\subsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Ten\+Crop.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image or Tensor): Image to be cropped.
+
+Returns:
+    tuple of 10 images. Image can be PIL Image or Tensor
+\end{DoxyVerb}
+ 
+
+Definition at line 910 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

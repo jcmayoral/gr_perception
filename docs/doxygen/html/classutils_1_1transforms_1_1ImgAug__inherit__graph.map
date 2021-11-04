@@ -1,0 +1,4 @@
+<map id="utils.transforms.ImgAug" name="utils.transforms.ImgAug">
+<area shape="rect" id="node3" href="$classutils_1_1augmentations_1_1DefaultAug.html" title="utils.augmentations.DefaultAug" alt="" coords="5,155,209,181"/>
+<area shape="rect" id="node4" href="$classutils_1_1transforms_1_1PadSquare.html" title="utils.transforms.PadSquare" alt="" coords="233,155,413,181"/>
+</map>

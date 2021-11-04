@@ -1,0 +1,67 @@
+\hypertarget{classffmpeg_1_1SyncDecoder}{}\section{ffmpeg\+:\+:Sync\+Decoder Class Reference}
+\label{classffmpeg_1_1SyncDecoder}\index{ffmpeg\+::\+Sync\+Decoder@{ffmpeg\+::\+Sync\+Decoder}}
+
+
+{\ttfamily \#include $<$sync\+\_\+decoder.\+h$>$}
+
+
+
+Inheritance diagram for ffmpeg\+:\+:Sync\+Decoder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classffmpeg_1_1SyncDecoder__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ffmpeg\+:\+:Sync\+Decoder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classffmpeg_1_1SyncDecoder__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classffmpeg_1_1SyncDecoder_1_1AVByteStorage}{A\+V\+Byte\+Storage}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classffmpeg_1_1SyncDecoder_a61f546538c125ba3951a0f572eca49d1}{decode} (\hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} $\ast$out, uint64\+\_\+t timeout\+Ms) override
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class uses F\+F\+M\+P\+EG library to decode media streams. Media bytes can be explicitly provided through read-\/callback or fetched internally by F\+F\+M\+P\+EG library 
+
+Definition at line 13 of file sync\+\_\+decoder.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classffmpeg_1_1SyncDecoder_a61f546538c125ba3951a0f572eca49d1}\label{classffmpeg_1_1SyncDecoder_a61f546538c125ba3951a0f572eca49d1}} 
+\index{ffmpeg\+::\+Sync\+Decoder@{ffmpeg\+::\+Sync\+Decoder}!decode@{decode}}
+\index{decode@{decode}!ffmpeg\+::\+Sync\+Decoder@{ffmpeg\+::\+Sync\+Decoder}}
+\subsubsection{\texorpdfstring{decode()}{decode()}}
+{\footnotesize\ttfamily int ffmpeg\+::\+Sync\+Decoder\+::decode (\begin{DoxyParamCaption}\item[{\hyperlink{structffmpeg_1_1DecoderOutputMessage}{Decoder\+Output\+Message} $\ast$}]{out,  }\item[{uint64\+\_\+t}]{timeout\+Ms }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Polls available decoded one frame from decoder Returns error code, 0 -\/ for success 
+
+Implements \hyperlink{classffmpeg_1_1MediaDecoder_a20109fcef8c1c83eece3f30094ae4deb}{ffmpeg\+::\+Media\+Decoder}.
+
+
+
+Definition at line 64 of file sync\+\_\+decoder.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/sync\+\_\+decoder.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/csrc/cpu/decoder/sync\+\_\+decoder.\+cpp\end{DoxyCompactItemize}

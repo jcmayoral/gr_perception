@@ -1,0 +1,96 @@
+\hypertarget{classmodels_1_1Darknet}{}\section{models.\+Darknet Class Reference}
+\label{classmodels_1_1Darknet}\index{models.\+Darknet@{models.\+Darknet}}
+
+
+Inheritance diagram for models.\+Darknet\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classmodels_1_1Darknet__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for models.\+Darknet\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classmodels_1_1Darknet__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_ae26880b84aa1148ff3946431b59c7672}\label{classmodels_1_1Darknet_ae26880b84aa1148ff3946431b59c7672}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, config\+\_\+path, img\+\_\+size=416)
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_aa92eddf47d950bd4503b7b680809b486}\label{classmodels_1_1Darknet_aa92eddf47d950bd4503b7b680809b486}} 
+def {\bfseries forward} (self, x, targets=None)
+\item 
+def \hyperlink{classmodels_1_1Darknet_a04eb7191a6449fa1971d2fc48f6fa2c2}{load\+\_\+darknet\+\_\+weights} (self, weights\+\_\+path)
+\item 
+def \hyperlink{classmodels_1_1Darknet_a791dbab6aec1d5d4991c0f387f3f0336}{save\+\_\+darknet\+\_\+weights} (self, path, cutoff=-\/1)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_a13c766eedd8eff4515a70c047f53eaa3}\label{classmodels_1_1Darknet_a13c766eedd8eff4515a70c047f53eaa3}} 
+{\bfseries module\+\_\+defs}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_a30799d777df35171bc5330e1f472c7c1}\label{classmodels_1_1Darknet_a30799d777df35171bc5330e1f472c7c1}} 
+{\bfseries module\+\_\+list}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_acce7eb472bec217bbcee9803ca8d0118}\label{classmodels_1_1Darknet_acce7eb472bec217bbcee9803ca8d0118}} 
+{\bfseries yolo\+\_\+layers}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_a106eebb35c2eb761ea01b78e8247718a}\label{classmodels_1_1Darknet_a106eebb35c2eb761ea01b78e8247718a}} 
+{\bfseries img\+\_\+size}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_a4aa890f56acc55a849c93ae90182e693}\label{classmodels_1_1Darknet_a4aa890f56acc55a849c93ae90182e693}} 
+{\bfseries seen}
+\item 
+\mbox{\Hypertarget{classmodels_1_1Darknet_a7807c05863eb1bbd7c752ee9cc753dd7}\label{classmodels_1_1Darknet_a7807c05863eb1bbd7c752ee9cc753dd7}} 
+{\bfseries header\+\_\+info}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}YOLOv3 object detection model\end{DoxyVerb}
+ 
+
+Definition at line 233 of file models.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classmodels_1_1Darknet_a04eb7191a6449fa1971d2fc48f6fa2c2}\label{classmodels_1_1Darknet_a04eb7191a6449fa1971d2fc48f6fa2c2}} 
+\index{models\+::\+Darknet@{models\+::\+Darknet}!load\+\_\+darknet\+\_\+weights@{load\+\_\+darknet\+\_\+weights}}
+\index{load\+\_\+darknet\+\_\+weights@{load\+\_\+darknet\+\_\+weights}!models\+::\+Darknet@{models\+::\+Darknet}}
+\subsubsection{\texorpdfstring{load\+\_\+darknet\+\_\+weights()}{load\_darknet\_weights()}}
+{\footnotesize\ttfamily def models.\+Darknet.\+load\+\_\+darknet\+\_\+weights (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{weights\+\_\+path }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parses and loads the weights stored in 'weights_path'\end{DoxyVerb}
+ 
+
+Definition at line 265 of file models.\+py.
+
+\mbox{\Hypertarget{classmodels_1_1Darknet_a791dbab6aec1d5d4991c0f387f3f0336}\label{classmodels_1_1Darknet_a791dbab6aec1d5d4991c0f387f3f0336}} 
+\index{models\+::\+Darknet@{models\+::\+Darknet}!save\+\_\+darknet\+\_\+weights@{save\+\_\+darknet\+\_\+weights}}
+\index{save\+\_\+darknet\+\_\+weights@{save\+\_\+darknet\+\_\+weights}!models\+::\+Darknet@{models\+::\+Darknet}}
+\subsubsection{\texorpdfstring{save\+\_\+darknet\+\_\+weights()}{save\_darknet\_weights()}}
+{\footnotesize\ttfamily def models.\+Darknet.\+save\+\_\+darknet\+\_\+weights (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{path,  }\item[{}]{cutoff = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}    @:param path    - path of the new weights file
+    @:param cutoff  - save layers between 0 and cutoff (cutoff = -1 -> all are saved)
+\end{DoxyVerb}
+ 
+
+Definition at line 318 of file models.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/yolov3/models.\+py\end{DoxyCompactItemize}

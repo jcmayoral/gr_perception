@@ -1,0 +1,89 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize}{}\section{torchvision.\+transforms.\+transforms.\+Normalize Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize}\index{torchvision.\+transforms.\+transforms.\+Normalize@{torchvision.\+transforms.\+transforms.\+Normalize}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Normalize\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1Normalize__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Normalize\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1Normalize__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a278ad260f1f75514b2dc6be9cc7b2114}\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a278ad260f1f75514b2dc6be9cc7b2114}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, mean, std, inplace=False)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a476404e1bf4cd9e7ce9cba23bea2c3ee}{\+\_\+\+\_\+call\+\_\+\+\_\+} (self, tensor)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a8636b3e3269e6e00b18b85688530b310}\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a8636b3e3269e6e00b18b85688530b310}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a5db8375125bf7caec23126d789214c22}\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a5db8375125bf7caec23126d789214c22}} 
+{\bfseries mean}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a0edc77eefdd0b47d414210e94d331ecc}\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a0edc77eefdd0b47d414210e94d331ecc}} 
+{\bfseries std}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_aca1d4f49cf280ca032364bfcd3663f42}\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_aca1d4f49cf280ca032364bfcd3663f42}} 
+{\bfseries inplace}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Normalize a tensor image with mean and standard deviation.
+Given mean: ``(mean[1],...,mean[n])`` and std: ``(std[1],..,std[n])`` for ``n``
+channels, this transform will normalize each channel of the input
+``torch.*Tensor`` i.e.,
+``output[channel] = (input[channel] - mean[channel]) / std[channel]``
+
+.. note::
+    This transform acts out of place, i.e., it does not mutate the input tensor.
+
+Args:
+    mean (sequence): Sequence of means for each channel.
+    std (sequence): Sequence of standard deviations for each channel.
+    inplace(bool,optional): Bool to make this operation in-place.\end{DoxyVerb}
+ 
+
+Definition at line 176 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a476404e1bf4cd9e7ce9cba23bea2c3ee}\label{classtorchvision_1_1transforms_1_1transforms_1_1Normalize_a476404e1bf4cd9e7ce9cba23bea2c3ee}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Normalize@{torchvision\+::transforms\+::transforms\+::\+Normalize}!\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+call\+\_\+\+\_\+@{\+\_\+\+\_\+call\+\_\+\+\_\+}!torchvision\+::transforms\+::transforms\+::\+Normalize@{torchvision\+::transforms\+::transforms\+::\+Normalize}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+call\+\_\+\+\_\+()}{\_\_call\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Normalize.\+\_\+\+\_\+call\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{tensor }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    tensor (Tensor): Tensor image of size (C, H, W) to be normalized.
+
+Returns:
+    Tensor: Normalized Tensor image.
+\end{DoxyVerb}
+ 
+
+Definition at line 198 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}

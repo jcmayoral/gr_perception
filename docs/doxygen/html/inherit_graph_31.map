@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classgr__detection_1_1FusionDetection.html" title="gr_detection::FusionDetection" alt="" coords="5,143,201,170"/>
+<area shape="rect" id="node2" href="$classgr__depth__processing_1_1MyNodeletClass.html" title="gr_depth_processing\l::MyNodeletClass" alt="" coords="273,71,416,112"/>
+<area shape="rect" id="node3" href="$classgr__detection_1_1DetectorsFuser.html" title="gr_detection::DetectorsFuser" alt="" coords="249,202,440,229"/>
+<area shape="rect" id="node4" href="$classgr__pointcloud__processing_1_1PointCloudProcessor.html" title="gr_pointcloud_processing\l::PointCloudProcessor" alt="" coords="260,136,429,177"/>
+<area shape="rect" id="node6" href="$classgr__pointcloud__filter_1_1MyNodeletClass.html" title="gr_pointcloud_filter\l::MyNodeletClass" alt="" coords="279,5,410,47"/>
+</map>

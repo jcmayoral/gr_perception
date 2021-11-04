@@ -1,0 +1,45 @@
+This folder contains reference training scripts for object detection. They serve as a log of how to train specific models, to provide baseline training and evaluation scripts to quickly bootstrap research.
+
+To execute the example commands below you must install the following\+:
+
+
+\begin{DoxyCode}
+cython
+pycocotools
+matplotlib
+\end{DoxyCode}
+
+
+You must modify the following flags\+:
+
+{\ttfamily -\/-\/data-\/path=/path/to/coco/dataset}
+
+{\ttfamily -\/-\/nproc\+\_\+per\+\_\+node=$<$number\+\_\+of\+\_\+gpus\+\_\+available$>$}
+
+Except otherwise noted, all models have been trained on 8x V100 G\+P\+Us.
+
+\#\#\# Faster R-\/\+C\+NN 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+    --dataset coco --model fasterrcnn\_resnet50\_fpn --epochs 26\(\backslash\)
+    --lr-steps 16 22 --aspect-ratio-group-factor 3
+\end{DoxyCode}
+
+
+\#\#\# Mask R-\/\+C\+NN 
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+    --dataset coco --model maskrcnn\_resnet50\_fpn --epochs 26\(\backslash\)
+    --lr-steps 16 22 --aspect-ratio-group-factor 3
+\end{DoxyCode}
+
+
+\subsubsection*{Keypoint R-\/\+C\+NN}
+
+
+\begin{DoxyCode}
+python -m torch.distributed.launch --nproc\_per\_node=8 --use\_env train.py\(\backslash\)
+    --dataset coco\_kp --model keypointrcnn\_resnet50\_fpn --epochs 46\(\backslash\)
+    --lr-steps 36 43 --aspect-ratio-group-factor 3
+\end{DoxyCode}
+ 

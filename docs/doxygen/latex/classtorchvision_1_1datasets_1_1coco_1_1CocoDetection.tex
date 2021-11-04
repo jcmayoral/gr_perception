@@ -1,0 +1,85 @@
+\hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection}{}\section{torchvision.\+datasets.\+coco.\+Coco\+Detection Class Reference}
+\label{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection}\index{torchvision.\+datasets.\+coco.\+Coco\+Detection@{torchvision.\+datasets.\+coco.\+Coco\+Detection}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+coco.\+Coco\+Detection\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+coco.\+Coco\+Detection\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_a303c9fcd3394aa054b5dead9a943fbe9}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_a303c9fcd3394aa054b5dead9a943fbe9}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, root, ann\+File, transform=None, target\+\_\+transform=None, transforms=None)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_ad857435693ecdbbaf58935b4786f1d4c}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_acc8a6c523c9ed8077040cc7866a910cf}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_acc8a6c523c9ed8077040cc7866a910cf}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_a830f568cb4c448c8275968caf40146cd}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_a830f568cb4c448c8275968caf40146cd}} 
+{\bfseries coco}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_a37d9a3ec74881590262abf6fe183448f}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_a37d9a3ec74881590262abf6fe183448f}} 
+{\bfseries ids}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}`MS Coco Detection <http://mscoco.org/dataset/#detections-challenge2016>`_ Dataset.
+
+Args:
+    root (string): Root directory where images are downloaded to.
+    annFile (string): Path to json annotation file.
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.ToTensor``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    transforms (callable, optional): A function/transform that takes input sample and its target as entry
+        and returns a transformed version.
+\end{DoxyVerb}
+ 
+
+Definition at line 81 of file coco.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_ad857435693ecdbbaf58935b4786f1d4c}\label{classtorchvision_1_1datasets_1_1coco_1_1CocoDetection_ad857435693ecdbbaf58935b4786f1d4c}} 
+\index{torchvision\+::datasets\+::coco\+::\+Coco\+Detection@{torchvision\+::datasets\+::coco\+::\+Coco\+Detection}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::coco\+::\+Coco\+Detection@{torchvision\+::datasets\+::coco\+::\+Coco\+Detection}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+coco.\+Coco\+Detection.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
+\end{DoxyVerb}
+ 
+
+Definition at line 101 of file coco.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/coco.\+py\end{DoxyCompactItemize}

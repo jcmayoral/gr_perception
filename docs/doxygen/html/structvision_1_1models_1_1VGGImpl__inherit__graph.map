@@ -1,0 +1,10 @@
+<map id="vision::models::VGGImpl" name="vision::models::VGGImpl">
+<area shape="rect" id="node3" href="$structvision_1_1models_1_1VGG11BNImpl.html" title="vision::models::VGG11BNImpl" alt="" coords="333,5,535,32"/>
+<area shape="rect" id="node4" href="$structvision_1_1models_1_1VGG11Impl.html" title="vision::models::VGG11Impl" alt="" coords="343,56,525,83"/>
+<area shape="rect" id="node5" href="$structvision_1_1models_1_1VGG13BNImpl.html" title="vision::models::VGG13BNImpl" alt="" coords="333,107,535,133"/>
+<area shape="rect" id="node6" href="$structvision_1_1models_1_1VGG13Impl.html" title="vision::models::VGG13Impl" alt="" coords="343,157,525,184"/>
+<area shape="rect" id="node7" href="$structvision_1_1models_1_1VGG16BNImpl.html" title="vision::models::VGG16BNImpl" alt="" coords="333,208,535,235"/>
+<area shape="rect" id="node8" href="$structvision_1_1models_1_1VGG16Impl.html" title="vision::models::VGG16Impl" alt="" coords="343,259,525,285"/>
+<area shape="rect" id="node9" href="$structvision_1_1models_1_1VGG19BNImpl.html" title="vision::models::VGG19BNImpl" alt="" coords="333,309,535,336"/>
+<area shape="rect" id="node10" href="$structvision_1_1models_1_1VGG19Impl.html" title="vision::models::VGG19Impl" alt="" coords="343,360,525,387"/>
+</map>

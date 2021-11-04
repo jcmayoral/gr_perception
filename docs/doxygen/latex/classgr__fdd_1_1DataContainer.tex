@@ -1,0 +1,57 @@
+\hypertarget{classgr__fdd_1_1DataContainer}{}\section{gr\+\_\+fdd\+:\+:Data\+Container Class Reference}
+\label{classgr__fdd_1_1DataContainer}\index{gr\+\_\+fdd\+::\+Data\+Container@{gr\+\_\+fdd\+::\+Data\+Container}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a20bea53b0bdedc59015d9446b0896909}\label{classgr__fdd_1_1DataContainer_a20bea53b0bdedc59015d9446b0896909}} 
+{\bfseries Data\+Container} (const std\+::string id, bool required\+\_\+statistics=true, int samples\+\_\+number=2, int window\+\_\+size=10, double max\+\_\+delay=0.\+1, double max\+\_\+diff=0.\+1, double min\+\_\+diff=0.\+0)
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a816a850d24550593e16ce593766e5ba2}\label{classgr__fdd_1_1DataContainer_a816a850d24550593e16ce593766e5ba2}} 
+{\bfseries Data\+Container} (const \hyperlink{classgr__fdd_1_1DataContainer}{Data\+Container} \&other)
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a302168dd9cefea8a73f17238d9f1913b}\label{classgr__fdd_1_1DataContainer_a302168dd9cefea8a73f17238d9f1913b}} 
+bool {\bfseries default\+\_\+check} ()
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_adab5705d67f19bdb358404376662b13f}\label{classgr__fdd_1_1DataContainer_adab5705d67f19bdb358404376662b13f}} 
+bool {\bfseries statistics\+\_\+check} ()
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a7f2f951f77c20fbf76dced47d43295b1}\label{classgr__fdd_1_1DataContainer_a7f2f951f77c20fbf76dced47d43295b1}} 
+void {\bfseries update\+Time} ()
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a2d14a2b9eacfe1bc3a37813b6e79854e}\label{classgr__fdd_1_1DataContainer_a2d14a2b9eacfe1bc3a37813b6e79854e}} 
+std\+::string {\bfseries get\+Id} ()
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a1c55eba2a4ca1691a70906ecb5d30c7f}\label{classgr__fdd_1_1DataContainer_a1c55eba2a4ca1691a70906ecb5d30c7f}} 
+void {\bfseries update\+Data} (double new\+\_\+data, int index=0)
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a24e54262b661120a615f63284d2d6ca1}\label{classgr__fdd_1_1DataContainer_a24e54262b661120a615f63284d2d6ca1}} 
+int {\bfseries get\+Samples\+Number} ()
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a23fed7dbe2fcd3e66ed4f71bdeda0087}\label{classgr__fdd_1_1DataContainer_a23fed7dbe2fcd3e66ed4f71bdeda0087}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_a9a4296634f2da8a0740b726e9b7d8077}\label{classgr__fdd_1_1DataContainer_a9a4296634f2da8a0740b726e9b7d8077}} 
+std\+::string {\bfseries get\+Current\+Status} ()
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_ad2de665c232f396ba5269f3554bef3da}\label{classgr__fdd_1_1DataContainer_ad2de665c232f396ba5269f3554bef3da}} 
+std\+::function$<$ bool(void)$>$ {\bfseries check}
+\item 
+\mbox{\Hypertarget{classgr__fdd_1_1DataContainer_ae439d1e6ea81cca49bb4d7c5ff197729}\label{classgr__fdd_1_1DataContainer_ae439d1e6ea81cca49bb4d7c5ff197729}} 
+std\+::mutex {\bfseries mtx\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 26 of file data\+\_\+container.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+fdd/include/gr\+\_\+fdd/data\+\_\+container.\+h\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+processing/gr\+\_\+fdd/src/data\+\_\+container.\+cpp\end{DoxyCompactItemize}

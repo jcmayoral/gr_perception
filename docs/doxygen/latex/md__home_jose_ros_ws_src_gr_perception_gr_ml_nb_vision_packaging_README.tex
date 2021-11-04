@@ -1,0 +1,94 @@
+\subsection*{Anaconda packages}
+
+\subsubsection*{Linux}
+
+
+\begin{DoxyCode}
+nvidia-docker run -it --ipc=host --rm -v $(pwd):/remote soumith/conda-cuda bash
+pushd remote/conda
+
+./build\_vision.sh 9.0
+./build\_vision.sh 10.0
+./build\_vision.sh cpu
+
+# copy packages over to /remote
+# exit docker
+# anaconda upload -u pytorch torchvision*.bz2
+\end{DoxyCode}
+
+
+\subsubsection*{O\+SX}
+
+
+\begin{DoxyCode}
+# create a fresh anaconda environment / install and activate it
+conda install -y conda-build anaconda-client
+./build\_vision.sh cpu
+
+# copy packages over to /remote
+# exit docker
+# anaconda upload -u pytorch torchvision*.bz2
+\end{DoxyCode}
+
+
+\subsubsection*{Windows}
+
+``{\ttfamily bash $<$h1$>$Open}Git Bash{\ttfamily and change dir to}conda` ./build\+\_\+vision.sh 9.\+0 ./build\+\_\+vision.sh 10.\+0 ./build\+\_\+vision.sh cpu
+
+\section*{copy packages to a output directory}
+
+\# anaconda upload -\/u pytorch torchvision$\ast$.bz2 
+\begin{DoxyCode}
+## Wheels
+
+### Linux
+
+pushd wheel
+
+```bash
+nvidia-docker run -it --ipc=host --rm -v $(pwd):/remote soumith/manylinux-cuda90:latest bash
+cd remote
+./linux\_manywheel.sh cu90
+
+rm -rf /usr/local/cuda*
+./linux\_manywheel.sh cpu
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}
+nvidia-docker run -it --ipc=host --rm -v $(pwd):/remote soumith/manylinux-cuda100:latest bash
+cd remote
+./linux\_manywheel.sh cu100
+\end{DoxyCode}
+
+
+wheels are in the folders {\ttfamily cpu}, {\ttfamily cu90}, {\ttfamily cu100}.
+
+You can upload the {\ttfamily cu90} wheels to twine with {\ttfamily twine upload $\ast$.whl}. Which wheels we upload depends on which wheels Py\+Torch uploads as default, and right now, it\textquotesingle{}s {\ttfamily cu90}.
+
+\subsubsection*{O\+SX}
+
+
+\begin{DoxyCode}
+pushd wheel
+./osx\_wheel.sh
+\end{DoxyCode}
+
+
+\subsubsection*{Windows}
+
+
+\begin{DoxyCode}
+set PYTORCH\_REPO=pytorch
+
+pushd windows
+call build\_vision.bat 90 0.3.0 1
+call build\_vision.bat 100 0.3.0 1
+call build\_vision.bat cpu 0.3.0 1
+\end{DoxyCode}
+
+
+wheels are in the current folder.
+
+You can upload them to twine with {\ttfamily twine upload $\ast$.whl} 

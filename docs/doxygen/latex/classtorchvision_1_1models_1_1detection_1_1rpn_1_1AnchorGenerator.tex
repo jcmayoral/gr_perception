@@ -1,0 +1,70 @@
+\hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator}{}\section{torchvision.\+models.\+detection.\+rpn.\+Anchor\+Generator Class Reference}
+\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator}\index{torchvision.\+models.\+detection.\+rpn.\+Anchor\+Generator@{torchvision.\+models.\+detection.\+rpn.\+Anchor\+Generator}}
+
+
+Inheritance diagram for torchvision.\+models.\+detection.\+rpn.\+Anchor\+Generator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+detection.\+rpn.\+Anchor\+Generator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a4edc8d7050587f1b47e7e9a0bb9d7129}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a4edc8d7050587f1b47e7e9a0bb9d7129}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, sizes=(128, 256, 512), aspect\+\_\+ratios=(0.\+5, 1.\+0, 2.\+0))
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a0d018ec8e2576e282a915cdee14aa3db}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a0d018ec8e2576e282a915cdee14aa3db}} 
+def {\bfseries generate\+\_\+anchors} (self, scales, aspect\+\_\+ratios, dtype=torch.\+float32, device=\char`\"{}cpu\char`\"{})
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_aea54ce6f6d80e2615d6a98e2d27771a7}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_aea54ce6f6d80e2615d6a98e2d27771a7}} 
+def {\bfseries set\+\_\+cell\+\_\+anchors} (self, dtype, device)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a9b1c33a3e35015cd653c31f4db62c697}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a9b1c33a3e35015cd653c31f4db62c697}} 
+def {\bfseries num\+\_\+anchors\+\_\+per\+\_\+location} (self)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a12b4dba4ceb199ad95af5eee939a0251}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a12b4dba4ceb199ad95af5eee939a0251}} 
+def {\bfseries grid\+\_\+anchors} (self, grid\+\_\+sizes, strides)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a8b50db7adcf16fd4b05c90358d6aeaa7}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a8b50db7adcf16fd4b05c90358d6aeaa7}} 
+def {\bfseries cached\+\_\+grid\+\_\+anchors} (self, grid\+\_\+sizes, strides)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_ab5b24936f575ccfa5175663def4e3e86}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_ab5b24936f575ccfa5175663def4e3e86}} 
+def {\bfseries forward} (self, image\+\_\+list, feature\+\_\+maps)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_afd8b8d1bb3aaae5fa592df4dc5178451}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_afd8b8d1bb3aaae5fa592df4dc5178451}} 
+{\bfseries sizes}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_ac02bffc42b572cc938d3fcff0d9bde7e}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_ac02bffc42b572cc938d3fcff0d9bde7e}} 
+{\bfseries aspect\+\_\+ratios}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a10f0af36916c276ae4c1ddac2b499548}\label{classtorchvision_1_1models_1_1detection_1_1rpn_1_1AnchorGenerator_a10f0af36916c276ae4c1ddac2b499548}} 
+{\bfseries cell\+\_\+anchors}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 27 of file rpn.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/detection/rpn.\+py\end{DoxyCompactItemize}

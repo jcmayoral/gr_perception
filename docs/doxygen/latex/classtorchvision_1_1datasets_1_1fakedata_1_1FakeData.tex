@@ -1,0 +1,91 @@
+\hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData}{}\section{torchvision.\+datasets.\+fakedata.\+Fake\+Data Class Reference}
+\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData}\index{torchvision.\+datasets.\+fakedata.\+Fake\+Data@{torchvision.\+datasets.\+fakedata.\+Fake\+Data}}
+
+
+Inheritance diagram for torchvision.\+datasets.\+fakedata.\+Fake\+Data\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+datasets.\+fakedata.\+Fake\+Data\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_aaabf177187e3cb5a277d5f484518614b}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_aaabf177187e3cb5a277d5f484518614b}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, size=1000, image\+\_\+size=(3, 224, 224), num\+\_\+classes=10, transform=None, target\+\_\+transform=None, random\+\_\+offset=0)
+\item 
+def \hyperlink{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_aeb080af0a0bff5c62e2308cabda27ee1}{\+\_\+\+\_\+getitem\+\_\+\+\_\+} (self, index)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a914e021e246002011aac94a46679e72e}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a914e021e246002011aac94a46679e72e}} 
+def {\bfseries \+\_\+\+\_\+len\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a11eef750f764f34a357201656e275f79}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a11eef750f764f34a357201656e275f79}} 
+{\bfseries size}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a9d33be75f5624f32de86aba7916af931}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a9d33be75f5624f32de86aba7916af931}} 
+{\bfseries num\+\_\+classes}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a61e2887f72a822881f6af59343e1f2af}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a61e2887f72a822881f6af59343e1f2af}} 
+{\bfseries image\+\_\+size}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a4e301cb99ae4ae0a0c5cf11c45afd520}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_a4e301cb99ae4ae0a0c5cf11c45afd520}} 
+{\bfseries random\+\_\+offset}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}A fake dataset that returns randomly generated images and returns them as PIL images
+
+Args:
+    size (int, optional): Size of the dataset. Default: 1000 images
+    image_size(tuple, optional): Size if the returned images. Default: (3, 224, 224)
+    num_classes(int, optional): Number of classes in the datset. Default: 10
+    transform (callable, optional): A function/transform that  takes in an PIL image
+        and returns a transformed version. E.g, ``transforms.RandomCrop``
+    target_transform (callable, optional): A function/transform that takes in the
+        target and transforms it.
+    random_offset (int): Offsets the index-based random seed used to
+        generate each image. Default: 0\end{DoxyVerb}
+ 
+
+Definition at line 6 of file fakedata.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_aeb080af0a0bff5c62e2308cabda27ee1}\label{classtorchvision_1_1datasets_1_1fakedata_1_1FakeData_aeb080af0a0bff5c62e2308cabda27ee1}} 
+\index{torchvision\+::datasets\+::fakedata\+::\+Fake\+Data@{torchvision\+::datasets\+::fakedata\+::\+Fake\+Data}!\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+getitem\+\_\+\+\_\+@{\+\_\+\+\_\+getitem\+\_\+\+\_\+}!torchvision\+::datasets\+::fakedata\+::\+Fake\+Data@{torchvision\+::datasets\+::fakedata\+::\+Fake\+Data}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getitem\+\_\+\+\_\+()}{\_\_getitem\_\_()}}
+{\footnotesize\ttfamily def torchvision.\+datasets.\+fakedata.\+Fake\+Data.\+\_\+\+\_\+getitem\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{index }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    index (int): Index
+
+Returns:
+    tuple: (image, target) where target is class_index of the target class.
+\end{DoxyVerb}
+ 
+
+Definition at line 31 of file fakedata.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/datasets/fakedata.\+py\end{DoxyCompactItemize}

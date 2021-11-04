@@ -1,0 +1,73 @@
+\hypertarget{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet}{}\section{torchvision.\+models.\+quantization.\+googlenet.\+Quantizable\+Goog\+Le\+Net Class Reference}
+\label{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet}\index{torchvision.\+models.\+quantization.\+googlenet.\+Quantizable\+Goog\+Le\+Net@{torchvision.\+models.\+quantization.\+googlenet.\+Quantizable\+Goog\+Le\+Net}}
+
+
+Inheritance diagram for torchvision.\+models.\+quantization.\+googlenet.\+Quantizable\+Goog\+Le\+Net\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+models.\+quantization.\+googlenet.\+Quantizable\+Goog\+Le\+Net\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_a90e230bd2b7c01e8b8c4c2a6d03df8ca}\label{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_a90e230bd2b7c01e8b8c4c2a6d03df8ca}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, args, kwargs)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_afff1b349f3610b20cbd734845810971e}\label{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_afff1b349f3610b20cbd734845810971e}} 
+def {\bfseries forward} (self, x)
+\item 
+def \hyperlink{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_aecb41b91188928894b629273591b103c}{fuse\+\_\+model} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_ab740b32b8b40358777fde281530ebe70}\label{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_ab740b32b8b40358777fde281530ebe70}} 
+{\bfseries quant}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_a7eb48227cc36aebbbfec518389317492}\label{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_a7eb48227cc36aebbbfec518389317492}} 
+{\bfseries dequant}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 132 of file googlenet.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_aecb41b91188928894b629273591b103c}\label{classtorchvision_1_1models_1_1quantization_1_1googlenet_1_1QuantizableGoogLeNet_aecb41b91188928894b629273591b103c}} 
+\index{torchvision\+::models\+::quantization\+::googlenet\+::\+Quantizable\+Goog\+Le\+Net@{torchvision\+::models\+::quantization\+::googlenet\+::\+Quantizable\+Goog\+Le\+Net}!fuse\+\_\+model@{fuse\+\_\+model}}
+\index{fuse\+\_\+model@{fuse\+\_\+model}!torchvision\+::models\+::quantization\+::googlenet\+::\+Quantizable\+Goog\+Le\+Net@{torchvision\+::models\+::quantization\+::googlenet\+::\+Quantizable\+Goog\+Le\+Net}}
+\subsubsection{\texorpdfstring{fuse\+\_\+model()}{fuse\_model()}}
+{\footnotesize\ttfamily def torchvision.\+models.\+quantization.\+googlenet.\+Quantizable\+Goog\+Le\+Net.\+fuse\+\_\+model (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Fuse conv/bn/relu modules in googlenet model
+
+Fuse conv+bn+relu/ conv+relu/conv+bn modules to prepare for quantization.
+Model is modified in place.  Note that this operation does not change numerics
+and the model after modification is in floating point
+\end{DoxyVerb}
+ 
+
+Definition at line 156 of file googlenet.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/models/quantization/googlenet.\+py\end{DoxyCompactItemize}

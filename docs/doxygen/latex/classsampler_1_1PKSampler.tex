@@ -1,0 +1,63 @@
+\hypertarget{classsampler_1_1PKSampler}{}\section{sampler.\+P\+K\+Sampler Class Reference}
+\label{classsampler_1_1PKSampler}\index{sampler.\+P\+K\+Sampler@{sampler.\+P\+K\+Sampler}}
+
+
+Inheritance diagram for sampler.\+P\+K\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classsampler_1_1PKSampler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for sampler.\+P\+K\+Sampler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classsampler_1_1PKSampler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsampler_1_1PKSampler_ae82efb9af36eb4f457de911035c14040}\label{classsampler_1_1PKSampler_ae82efb9af36eb4f457de911035c14040}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, groups, p, k)
+\item 
+\mbox{\Hypertarget{classsampler_1_1PKSampler_a5656bdf41a3dd5e003faee073292a39e}\label{classsampler_1_1PKSampler_a5656bdf41a3dd5e003faee073292a39e}} 
+def {\bfseries \+\_\+\+\_\+iter\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsampler_1_1PKSampler_aea34f943bd1a00a0877437192b575d2a}\label{classsampler_1_1PKSampler_aea34f943bd1a00a0877437192b575d2a}} 
+{\bfseries p}
+\item 
+\mbox{\Hypertarget{classsampler_1_1PKSampler_a3128e8961582ebfcafadbdf006106ebb}\label{classsampler_1_1PKSampler_a3128e8961582ebfcafadbdf006106ebb}} 
+{\bfseries k}
+\item 
+\mbox{\Hypertarget{classsampler_1_1PKSampler_a2606657cd5c66dc81c4a677c9ba27707}\label{classsampler_1_1PKSampler_a2606657cd5c66dc81c4a677c9ba27707}} 
+{\bfseries groups}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Randomly samples from a dataset  while ensuring that each batch (of size p * k)
+includes samples from exactly p labels, with k samples for each label.
+
+Args:
+    groups (list[int]): List where the ith entry is the group_id/label of the ith sample in the dataset.
+    p (int): Number of labels/groups to be sampled from in a batch
+    k (int): Number of samples for each label/group in a batch
+\end{DoxyVerb}
+ 
+
+Definition at line 32 of file sampler.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/references/similarity/sampler.\+py\end{DoxyCompactItemize}

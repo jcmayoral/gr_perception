@@ -1,0 +1,79 @@
+\hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop}{}\section{torchvision.\+transforms.\+transforms.\+Center\+Crop Class Reference}
+\label{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop}\index{torchvision.\+transforms.\+transforms.\+Center\+Crop@{torchvision.\+transforms.\+transforms.\+Center\+Crop}}
+
+
+Inheritance diagram for torchvision.\+transforms.\+transforms.\+Center\+Crop\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for torchvision.\+transforms.\+transforms.\+Center\+Crop\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_abdce15890f9dddef06252e2a9f9c6ed8}\label{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_abdce15890f9dddef06252e2a9f9c6ed8}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, size)
+\item 
+def \hyperlink{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_a58fccd376624bfd3852a9da8db7c84e6}{forward} (self, img)
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_aff322bb5e55c472cbee019254b0c30d4}\label{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_aff322bb5e55c472cbee019254b0c30d4}} 
+def {\bfseries \+\_\+\+\_\+repr\+\_\+\+\_\+} (self)
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_a80869e18c8b95ce7855701f9a4d8e86f}\label{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_a80869e18c8b95ce7855701f9a4d8e86f}} 
+{\bfseries size}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Crops the given image at the center.
+The image can be a PIL Image or a torch Tensor, in which case it is expected
+to have [..., H, W] shape, where ... means an arbitrary number of leading dimensions
+
+Args:
+    size (sequence or int): Desired output size of the crop. If size is an
+        int instead of sequence like (h, w), a square crop (size, size) is
+        made. If provided a tuple or list of length 1, it will be interpreted as (size[0], size[0]).
+\end{DoxyVerb}
+ 
+
+Definition at line 264 of file transforms.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_a58fccd376624bfd3852a9da8db7c84e6}\label{classtorchvision_1_1transforms_1_1transforms_1_1CenterCrop_a58fccd376624bfd3852a9da8db7c84e6}} 
+\index{torchvision\+::transforms\+::transforms\+::\+Center\+Crop@{torchvision\+::transforms\+::transforms\+::\+Center\+Crop}!forward@{forward}}
+\index{forward@{forward}!torchvision\+::transforms\+::transforms\+::\+Center\+Crop@{torchvision\+::transforms\+::transforms\+::\+Center\+Crop}}
+\subsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torchvision.\+transforms.\+transforms.\+Center\+Crop.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{img }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Args:
+    img (PIL Image or Tensor): Image to be cropped.
+
+Returns:
+    PIL Image or Tensor: Cropped image.
+\end{DoxyVerb}
+ 
+
+Definition at line 287 of file transforms.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/jose/ros\+\_\+ws/src/gr\+\_\+perception/gr\+\_\+ml/nb/vision/torchvision/transforms/transforms.\+py\end{DoxyCompactItemize}
