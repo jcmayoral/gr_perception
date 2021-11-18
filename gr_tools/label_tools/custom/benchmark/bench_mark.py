@@ -10,13 +10,24 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, mean_absolute_error
 from sklearn.naive_bayes import GaussianNB
 
-def parse_file(filepath):
+def parse_file_old(filepath):
     lines = open(filepath,'r').readlines()
     ddict = dict()
     for l in lines:
         key, value = l.split("=")
         ddict[key] = value.rstrip()
     return ddict
+
+def parse_file(filepath):
+    lines = open(filepath,'r').readlines()
+    ddict = dict()
+    for l in lines:
+        if l[0] == "#" or len(l) == 1:
+            continue
+        key, value = l.strip().split(":")
+        ddict[key] = value.strip()
+    return ddict
+
 
 def read_docs(filepath):
     if os.path.exists(filepath):
@@ -32,6 +43,7 @@ def read_docs(filepath):
 
                 labels = open(label_filename, "r").readlines()
                 for single_label in labels:
+                    print(single_label)
                     single_label_arr = single_label.split(" ")
                     f_label = [float(f) for f in single_label_arr]
                     f_label[0] = int(f_label[0])
@@ -48,16 +60,19 @@ def special_metric(y_valid, y_pred):
     for a,b in zip(y_valid, y_pred):
         if np.fabs(a-b)>1:
             counter +=1.0
-    print "special metric ", counter/len(y_valid)
+    print ("special metric to be Updated ", counter/len(y_valid))
 
 if __name__ == "__main__":
-    rootpath = sys.argv[1]
+    filepath = sys.argv[1]
+    rootpath = "/".join(filepath.split("/")[:-2])
     #train_filepath = os.path.join(rootpath, "files_train.txt")
     #valid_filepath = os.path.join(rootpath, "files_valid.txt")
+    ddict =  parse_file(filepath)
 
-    ddict =  parse_file(rootpath)
-    train_filepath = ddict["train"]
-    valid_filepath = ddict["valid"]
+
+    train_filepath = os.path.join(rootpath, ddict["train"])
+    valid_filepath = os.path.join(rootpath, ddict["val"])
+    test_filepaht = os.path.join(rootpath, ddict["test"])
 
     X_train, y_train = read_docs(train_filepath)
     X_valid, y_valid = read_docs(valid_filepath)
@@ -71,11 +86,10 @@ if __name__ == "__main__":
     #savename = sys.argv[3]
 
     model.fit(X_train,y_train)
-    print "train score ", model.score(X_train, y_train)
-    print "valid score ", model.score(X_valid, y_valid)
+    print ("train score ", model.score(X_train, y_train))
+    print ("valid score ", model.score(X_valid, y_valid))
     y_pred = model.predict(X_valid)
-    print len(y_pred)
-    print "mean absolute_error: ", mean_absolute_error(y_valid, y_pred)
+    print ("mean absolute_error: ", mean_absolute_error(y_valid, y_pred))
     special_metric(y_valid, y_pred)
 
     sys.exit()
