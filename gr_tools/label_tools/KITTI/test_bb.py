@@ -21,11 +21,11 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
     x = list()
 
     for root,dirs,files in os.walk("."):
-        print "LABEL ", root
-        print "DIRS", dirs
+        print ("LABEL ", root)
+        print ("DIRS", dirs)
         #print "FILES", files
         for file in files:
-            print labels_filepath, root, file
+            print (labels_filepath, root, file)
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
             if not os.path.exists(labelfile):
                 continue
@@ -63,9 +63,9 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
     plt.hist(x, bins=40, cumulative=False)
     #plt.plot(np.arange(10), np.arange(10))
     plt.show()
-    print "classes summary"
+    print ("classes summary")
     for i, j in classes.iteritems():
-        print "class {}  count {}".format(i,j)
+        print ("class {}  count {}".format(i,j))
 
 
 def create_labels(img_filepath, labels_filepath, classification_distance = 15.0, v2=False):
@@ -114,7 +114,7 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0,
                     if v2 and data[2] in offsets_.keys():
                         dclass = dclass + offsets_[data[2]]*4
                     if v2 and dclass>7:
-                        print dclass, data[2]
+                        print (dclass, data[2])
                         sys.exit()
 
                     if data[2] in classes.keys():
@@ -141,10 +141,9 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0,
     plt.hist(x, bins=40, cumulative=False)
     #plt.plot(np.arange(10), np.arange(10))
     plt.show()
-    print "classes summary"
-    for i, j in classes.iteritems():
-        print "class {}  count {}".format(i,j)
-
+    print ("classes summary")
+    for i, j in classes.items():
+        print ("class {}  count {}".format(i,j))
 
 def create_label(nlf, dclass,img_shape, x1,y1,x2,y2):
     height, width, channels = img_shape
@@ -167,25 +166,25 @@ def split_labels(store_path, labels_filepath):
     os.chdir(store_path)
 
     for root,dirs,files in os.walk(labels_filepath):
-        print "LABEL ", root
-        print "DIRS", dirs
+        print ("LABEL ", root)
+        print ("DIRS", dirs)
 
         for file in files:
             label_filepath = os.path.join(root,file)
-            print "LABELFILE ", label_filepath
+            print ("LABELFILE ", label_filepath)
             newfolder = file.split(".")[0]
-            print newfolder
+            print (newfolder)
             try:
                 os.mkdir(newfolder)
             except:
-                print "Some abels exists delete or check them"
+                print ("Some labels exists delete or check them")
                 sys.exit()
 
             with open(label_filepath, "r") as f:
                 for line in f:
-                    print line
+                    print (line)
                     img_id = line.rstrip().split()[0]
-                    print img_id
+                    print (img_id)
                     #print data
                     #data = [float(d) for d in data
                     lfile = os.path.join(newfolder, img_id+".txt")
@@ -193,12 +192,12 @@ def split_labels(store_path, labels_filepath):
                         lf.write("".join(line))
 
 if __name__ == "__main__":
-    img_filepath =  "/home/jose/media/datasets/KITTI/data_tracking_image_2/training/image_02"
-    labels_filepath = "/home/jose/media/datasets/KITTI/data_tracking_label_2/training/label_02"
-    store_path = "/home/jose/media/datasets/new_kitti_labels"
+    img_filepath =  "/home/jose/datasets/KITTI/training/image_02"
+    labels_filepath = "/home/jose/datasets/KITTI/training/label_02"
+    store_path = "/home/jose/datasets/new_kitti_labels"
 
     if len(sys.argv) == 1:
-        print "missing instruction"
+        print ("missing instruction")
         sys.exit(0)
 
     if sys.argv[1] == "split":
