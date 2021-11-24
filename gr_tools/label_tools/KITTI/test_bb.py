@@ -9,11 +9,10 @@ import matplotlib.pyplot as plt
 
 def plot_bbs(image,cll,dclass,x1,y1,x2,y2):
     cv2.rectangle(image, (x1, y1), (x2, y2), (255,0,0), 2)
-    cv2.putText(image,"{}_{}".format(cll, dclass), (x1,y1), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),2)
-
+    cv2.putText(image,"{}_{}".format(cll, dclass), (x1,y1), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),1)
     #if visualize:
     #    cv2.imshow("TEST",image)
-    #    cv2.waitKey()
+    cv2.waitKey(100)
 
 def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
     os.chdir(img_filepath)
@@ -25,7 +24,8 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
         print ("DIRS", dirs)
         #print "FILES", files
         for file in files:
-            print (labels_filepath, root, file)
+            if "png" not in file:
+                continue
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
             if not os.path.exists(labelfile):
                 continue
@@ -64,7 +64,7 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
     #plt.plot(np.arange(10), np.arange(10))
     plt.show()
     print ("classes summary")
-    for i, j in classes.iteritems():
+    for i, j in classes.items():
         print ("class {}  count {}".format(i,j))
 
 
@@ -84,10 +84,12 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0,
     for root,dirs,files in tqdm(os.walk(".")):
         #print "LABEL ", root
         #print "DIRS", dirs
-        #print "FILES", files
+        print ("FILES", files)
         for file in tqdm(files):
             if not "png" in file:
+                print ("ignore ", file)
                 continue
+            print ("process" , file)
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
             #print labelfile
             if not os.path.exists(labelfile):
