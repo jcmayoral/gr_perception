@@ -22,12 +22,17 @@ def read_files():
                 for line in file:
                     cl, x1, y1, w,h = line.rstrip().split(" ")
                     d[dclass][int(cl)]+=1
+
+
+    for key, value in d.items():
+        print ("Key {} Value{}".format(key,value))
     return d
 
 def run_try(d):
     totals = [0, 0, 0, 0]
     runs_ids = list()
-    for fsample in range(random.randint(2, len(d.values()))):
+    nruns = random.randint(5, len(d.values()))
+    for fsample in range(nruns):
         b = [i for i in d.values()]
         maxindex = len(b)
         index = random.randint(0, maxindex - 1)
@@ -37,18 +42,18 @@ def run_try(d):
         totals[2] += b[index][2]
         totals[3] += b[index][3]
 
-    stats = statistics.stdev(totals)
+    stats = statistics.stdev(totals) / nruns
     return runs_ids, totals, stats
 
 
 nclass_runs = read_files()
 
 ids = list()
-minstd = 100000
+minstd = 1000000
 best_soln = []
 best_totals = []
 
-for i in range(5):
+for i in range(500):
     sample, totals, stats = run_try(nclass_runs)
     if stats < minstd:
         best_soln = sample
