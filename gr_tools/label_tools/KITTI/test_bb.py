@@ -12,9 +12,9 @@ def plot_bbs(image,cll,dclass,x1,y1,x2,y2):
     cv2.putText(image,"{}_{}".format(cll, dclass), (x1,y1), cv2.FONT_HERSHEY_SIMPLEX,1, (0,0,255),1)
     #if visualize:
     #    cv2.imshow("TEST",image)
-    cv2.waitKey(100)
+    #cv2.waitKey(10)
 
-def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
+def visualize(img_filepath, labels_filepath, classification_distance = 10.0):
     os.chdir(img_filepath)
     classes = dict()
     x = list()
@@ -38,10 +38,12 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
                     #print line
                     data = line.rstrip().split(" ")
                     #print data, data[0]
-                    dclass = min(3, int(float(data[15])/ classification_distance))
+                    dclass = int(float(data[15])/ classification_distance)
+                    if dclass > 3:
+                        continue
                     #dclass = data[15]
                     if float(data[15]) < 0:
-                        continue
+                            continue
 
                     if data[2] in classes.keys():
                         classes[data[2]][dclass] = classes[data[2]][dclass]+ 1
@@ -68,7 +70,7 @@ def visualize(img_filepath, labels_filepath, classification_distance = 15.0):
         print ("class {}  count {}".format(i,j))
 
 
-def create_labels(img_filepath, labels_filepath, classification_distance = 15.0, v2=False):
+def create_labels(img_filepath, labels_filepath, classification_distance = 10.0, v2=False):
     masterfile_name = "v2_images_collection.txt"
     if not v2:
         masterfile_name = "images_collection.txt"
@@ -84,12 +86,11 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 15.0,
     for root,dirs,files in tqdm(os.walk(".")):
         #print "LABEL ", root
         #print "DIRS", dirs
-        print ("FILES", files)
+        #print ("FILES", files)
         for file in tqdm(files):
             if not "png" in file:
                 print ("ignore ", file)
                 continue
-            print ("process" , file)
             labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
             #print labelfile
             if not os.path.exists(labelfile):
@@ -175,7 +176,7 @@ def split_labels(store_path, labels_filepath):
             label_filepath = os.path.join(root,file)
             print ("LABELFILE ", label_filepath)
             newfolder = file.split(".")[0]
-            print (newfolder)
+            print ("folder", newfolder)
             try:
                 os.mkdir(newfolder)
             except:
@@ -184,9 +185,11 @@ def split_labels(store_path, labels_filepath):
 
             with open(label_filepath, "r") as f:
                 for line in f:
-                    print (line)
+                    idclass = line.rstrip().split()[2]
+                    if idclass != "Pedestrian":
+                        print("skip ", idclass)
+                        continue
                     img_id = line.rstrip().split()[0]
-                    print (img_id)
                     #print data
                     #data = [float(d) for d in data
                     lfile = os.path.join(newfolder, img_id+".txt")
@@ -206,10 +209,10 @@ if __name__ == "__main__":
         split_labels(store_path, labels_filepath)
 
     if sys.argv[1] == "visualize":
-        visualize(img_filepath, store_path)
+        visualize(img_filepath, store_path, classification_distance=float(sys.argv[2]))
 
     if sys.argv[1] == "create":
-        create_labels(img_filepath, store_path)
+        create_labels(img_filepath, store_path, classification_distance=float(sys.argv[2]))
 
     if sys.argv[1] == "new_labels":
         create_labels(img_filepath, store_path, v2=True)
