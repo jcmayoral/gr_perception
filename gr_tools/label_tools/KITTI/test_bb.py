@@ -85,6 +85,7 @@ def visualize(img_filepath, labels_filepath, classification_distance = 10.0):
     ax.grid(which='both')
     ax.grid(which='minor', alpha=1.0, linestyle='-.')
     (n, bins, patches) = plt.hist(x, bins=100, cumulative=True, weights=np.ones(len(x)) / len(x))
+    plt.savefig("/home/jose/fig1.png")
     print("total", sum(n))
     print(n,bins,patches)
     """
@@ -105,24 +106,22 @@ def visualize(img_filepath, labels_filepath, classification_distance = 10.0):
     """
 
     #plt.plot(np.arange(10), np.arange(10))
+    fig2 = plt.figure()
+    (n2, bins2, patches2) = plt.hist(x, bins=100, cumulative=False)
+    plt.savefig("/home/jose/fig2.png")
     plt.show()
     print ("classes summary")
     for i, j in classes.items():
         print ("class {}  count {}".format(i,j))
 
 
-def create_labels(img_filepath, labels_filepath, classification_distance = 10.0, v2=False):
-    masterfile_name = "v2_images_collection.txt"
-    if not v2:
-        masterfile_name = "images_collection.txt"
+def create_labels(img_filepath, labels_filepath, classification_distance = 10.0):
+    masterfile_name = "images_collection.txt"
 
     main_file = os.path.join(img_filepath,masterfile_name)
     os.chdir(img_filepath)
     classes = dict()
     x = list()
-
-    if v2:
-        offsets_ = {"Person":0, "Pedestrian": 0, "Cyclist":2, "Van": 1, "Tram":1, "Car": 1, "Truck":1}
 
     for root,dirs,files in tqdm(os.walk(".")):
         #print "LABEL ", root
@@ -139,8 +138,7 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 10.0,
 
             img_file = os.path.join(root,file)
             newlabel_file = img_file.replace("png", "txt")
-            #if v2:
-            #    newlabel_file+="v2"
+
             cv_img = cv2.imread(img_file)
             flag = False
 
@@ -155,11 +153,6 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 10.0,
                         continue
 
                     flag = True
-                    if v2 and data[2] in offsets_.keys():
-                        dclass = dclass + offsets_[data[2]]*4
-                    if v2 and dclass>7:
-                        print (dclass, data[2])
-                        sys.exit()
 
                     if data[2] in classes.keys():
                         classes[data[2]][dclass] = classes[data[2]][dclass]+ 1
@@ -256,5 +249,5 @@ if __name__ == "__main__":
     if sys.argv[1] == "create":
         create_labels(img_filepath, store_path, classification_distance=float(sys.argv[2]))
 
-    if sys.argv[1] == "new_labels":
-        create_labels(img_filepath, store_path, v2=True)
+    if sys.argv[1] == "raw_labels":
+        create_raw_labels(img_filepath, store_path)
