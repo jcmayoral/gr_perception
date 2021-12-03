@@ -183,6 +183,67 @@ def create_labels(img_filepath, labels_filepath, classification_distance = 10.0)
     for i, j in classes.items():
         print ("class {}  count {}".format(i,j))
 
+
+def create_rawlabels(img_filepath, labels_filepath):
+    masterfile_name = "images_collection.raw"
+
+    main_file = os.path.join(img_filepath,masterfile_name)
+    os.chdir(img_filepath)
+    classes = dict()
+    x = list()
+
+    for root,dirs,files in tqdm(os.walk(".")):
+        for file in tqdm(files):
+            if not "png" in file:
+                print ("ignore ", file)
+                continue
+            labelfile = os.path.join(labels_filepath, root.split("/")[1],str(int(file.split(".png")[0]))+".txt")
+            #print labelfile
+            if not os.path.exists(labelfile):
+                continue
+
+            img_file = os.path.join(root,file)
+            newlabel_file = img_file.replace("png", "raw")
+
+            cv_img = cv2.imread(img_file)
+            flag = False
+            print ("open ", labelfile)
+
+            with open(labelfile, "r") as fl:
+                for line in fl:
+                    #print line
+                    data = line.rstrip().split(" ")
+                    #print data, data[0]
+                    dclass = float(data[15])#min(3, int(float(data[15])/ classification_distance))
+                    #dclass = data[15]
+                    #if float(data[15]) < 0:
+                    #    continue
+
+                    flag = True
+                    x.append(float(data[15]))
+                    bbs = [int(float(bb)) for bb in data[6:10]]
+                    #plot_bbs(cv_img, data[2],dclass, *bbs)
+                    print("APPEND To", newlabel_file)
+                    create_label(newlabel_file, str(dclass), cv_img.shape, *bbs)
+
+                    #if dclass == 0:
+                    #    print data[2], dclass, float(data[15])
+                    #    cv2.waitKey(0)
+            if flag:
+                with open(main_file, "a+") as mfile:
+                    mfile.write( os.path.join(img_filepath,root[2:], file)+"\n")
+
+            #cv2.imshow("visualize", cv_img)
+            #cv2.waitKey(25)
+    plt.figure()
+    plt.hist(x, bins=40, cumulative=False)
+    #plt.plot(np.arange(10), np.arange(10))
+    plt.show()
+    print ("classes summary")
+    for i, j in classes.items():
+        print ("class {}  count {}".format(i,j))
+
+
 def create_label(nlf, dclass,img_shape, x1,y1,x2,y2):
     height, width, channels = img_shape
     ring = dclass
@@ -195,7 +256,6 @@ def create_label(nlf, dclass,img_shape, x1,y1,x2,y2):
     data += str(cy) + " "
     data += str(float(rx)/width) + " "
     data += str(float(ry)/height) + "\n"
-    bbsx =[1,cx,cy,float(rx)/width,float(ry)/height]
 
     with open(nlf, "a+") as text_file:
         text_file.write(data)
@@ -250,4 +310,4 @@ if __name__ == "__main__":
         create_labels(img_filepath, store_path, classification_distance=float(sys.argv[2]))
 
     if sys.argv[1] == "raw_labels":
-        create_raw_labels(img_filepath, store_path)
+        create_rawlabels(img_filepath, store_path)
