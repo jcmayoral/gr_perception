@@ -31,17 +31,16 @@ def parse_file(filepath):
     return ddict
 
 
-def read_docs(filepath):
+def read_docs(filepath, thresh = -1.0):
     if os.path.exists(filepath):
         X = []
         y = []
-        types = [0,0,0,0]
 
         with open(filepath,'r') as files:
             for file in tqdm(files):
                 img_filename_r = file.rstrip()
-                label_filename = file.replace(".jpg", ".txt").rstrip()
-                label_filename = label_filename.replace(".png", ".txt").rstrip()
+                label_filename = file.replace(".jpg", ".raw").rstrip()
+                label_filename = label_filename.replace(".png", ".raw").rstrip()
                 if len(file)> 1:
                     label_filename = label_filename.split(" ")[0]
                     #print("update" , label_filename)
@@ -53,15 +52,16 @@ def read_docs(filepath):
                 for single_label in labels:
                     single_label_arr = single_label.split(" ")
                     f_label = [float(f) for f in single_label_arr]
-                    cl = int(f_label[0])
-                    f_label[0] = (f_label[0]) / 3.0
-                    types[cl] += 1
+                    cl = float(f_label[0])
+                    if cl > thresh:
+                        print("skip ", cl)
+                        continue
+                    #f_label[0] = (f_label[0]) / 3.0
                     y.append(f_label[0])
                     X.append(f_label[1:])
 
         X = np.asarray(X)
         y = np.asarray(y)
-        print ("CLASSES NUMBES {}".format(types))
         return X,y
 
 def special_metric(y_valid, y_pred):
@@ -100,6 +100,7 @@ if __name__ == "__main__":
     #valid_filepath = os.path.join(rootpath, "files_valid.txt")
     ddict =  parse_file(filepath)
     print(ddict)
+    thresh = float(sys.argv[4])
 
 
     train_filepath = os.path.join(rootpath, ddict["train"])
@@ -107,8 +108,8 @@ if __name__ == "__main__":
     valid_filepath = os.path.join(rootpath, ddict["val"])
     test_filepaht = os.path.join(rootpath, ddict["test"])
 
-    X_train, y_train = read_docs(train_filepath)
-    X_valid, y_valid = read_docs(valid_filepath)
+    X_train, y_train = read_docs(train_filepath, thresh=thresh)
+    X_valid, y_valid = read_docs(valid_filepath, thresh=thresh)
     print ("Train size {} ".format(X_train.shape))
 
     if sys.argv[2] == "linear":
@@ -128,18 +129,7 @@ if __name__ == "__main__":
     plt.scatter(y_valid, y_pred)
     plt.grid()
     #strict boundes
-    plt.plot([0, 0.0], [0.0, 1.0], 'k-', lw=2)
-    plt.plot([0, 1.0], [0.0, 0.0], 'k-', lw=2)
-
-    plt.plot([0.33, 0.330], [0.0, 1.0], 'r-', lw=2)
-    plt.plot([0.0, 1.0], [0.33, 0.33], 'r-', lw=2)
-
-    plt.plot([0.66, 0.66], [0.0, 1.0], 'b-', lw=2)
-    plt.plot([0.0, 1.0], [0.66, 0.66], 'b-', lw=2)
-
-    plt.plot([1.00, 1.0], [0.0, 1.0], 'g-', lw=2)
-    plt.plot([0.00, 1.0], [1.0, 1.0], 'g-', lw=2)
-
+    plt.plot([0.0, thresh], [0.0, thresh], 'k-', lw=2)
 
     plt.xlabel("Ground truth")
     plt.ylabel("Predictions")
