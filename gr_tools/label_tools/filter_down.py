@@ -37,18 +37,28 @@ with open (sys.argv[1], 'r') as imgs:
         if key1 in labels_dict.keys():
             if key2 in labels_dict[key1].keys():
                 lfile = labels_dict[key1][key2]
-
                 #If true store
-                flag = True
+                flag = False
+                new_labels = []
                 with open(lfile, 'r') as file:
                     for label_raw in file:
                         cl, xc,yc,xw,yh = label_raw.rstrip().split(" ")
-                        print(cl, i, "AAA")
-                        if float(cl)> filter_threshold:
-                            flag=False
+                        #check filtered labels
+                        if float(cl)<= filter_threshold:
+                            flag=True
+                            new_labels.append(label_raw)
+                #if filterd labesl available
                 if (flag):
-                    print("store", lfile, i)
-                    outputfile.write(i)
-        continue
-        img = cvw.imread(i)
+                    try:
+                        os.mkdir(os.path.join("output", key1))
+                    except:
+                        pass
+
+                    with open(os.path.join("output", key1, key2+'.raw'), "a+") as nfile:
+                        for nl in new_labels:
+                            print(nl)
+                            nfile.write(nl)
+                    #todo pwd
+                    outputfile.write(os.path.join("output", key1, "image_"+key2+".png"))
+                    cv2.imwrite(os.path.join("output", key1, "image_"+key2+".png"), cv2.imread(i.rstrip()))
 outputfile.close()
