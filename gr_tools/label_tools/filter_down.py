@@ -24,8 +24,10 @@ def load_labels(labels_folder='labels'):
 labels_folder='/home/jose/datasets/KITTI/training/image_02/'
 #Load labels on validation data
 labels_dict=load_labels(labels_folder)
+print(labels_dict.keys())
 
-filter_threshold = 15.0
+filter_threshold = 16.0
+classification_threshold = 8.0
 
 outputfilename = os.path.join("output", "filtered_valid.txt")
 outputfile = open(outputfilename, "a")
@@ -40,14 +42,14 @@ with open (sys.argv[1], 'r') as imgs:
                 lfile = labels_dict[key1][key2]
                 #If true store
                 flag = False
-                new_labels = []
+                new_labels_raw = []
                 with open(lfile, 'r') as file:
                     for label_raw in file:
                         cl, xc,yc,xw,yh = label_raw.rstrip().split(" ")
                         #check filtered labels
                         if float(cl)<= filter_threshold:
                             flag=True
-                            new_labels.append(label_raw)
+                            new_labels_raw.append(label_raw)
                 #if filterd labesl available
                 if (flag):
                     try:
@@ -56,9 +58,22 @@ with open (sys.argv[1], 'r') as imgs:
                         pass
 
                     with open(os.path.join("output", key1, 'image_' + key2+'.raw'), "a+") as nfile:
-                        for nl in new_labels:
+                        for nl in new_labels_raw:
+                            cl, xc, yc, xw, yh = nl.rstrip().split(" ")
+                            if float(cl) > filter_threshold:
+                                continue
                             #print(nl)
                             nfile.write(nl)
+                    with open(os.path.join("output", key1, 'image_' + key2+'.txt'), "a+") as nfile:
+                        for nl in new_labels_raw:
+                            #print(nl)
+                            cl, xc, yc, xw, yh = nl.rstrip().split(" ")
+                            if float(cl)>filter_threshold:
+                                continue
+                            cl = int(float(cl) / classification_threshold)
+                            n = " ".join([str(cl), xc,yc,xw,yh])
+                            nfile.write(n+"\n")
+
                     #todo pwd
                     outputfile.write(os.path.join(os.getcwd(),"output", key1, "image_"+key2+".png\n"))
                     cv2.imwrite(os.path.join("output", key1, "image_"+key2+".png"), cv2.imread(i.rstrip()))
