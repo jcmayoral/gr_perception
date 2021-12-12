@@ -1,6 +1,7 @@
 import cv2
 import sys
 import os
+from tqdm import tqdm
 
 try:
     os.mkdir("output")
@@ -30,7 +31,7 @@ outputfilename = os.path.join("output", "filtered_valid.txt")
 outputfile = open(outputfilename, "a")
 #print(labels_dict, labels_folder)
 with open (sys.argv[1], 'r') as imgs:
-    for i in imgs:
+    for i in tqdm(imgs):
         index = i.rstrip().split("/")
         key1 = index[-2]
         key2 = index[-1].split(".")[0]
@@ -54,11 +55,11 @@ with open (sys.argv[1], 'r') as imgs:
                     except:
                         pass
 
-                    with open(os.path.join("output", key1, key2+'.raw'), "a+") as nfile:
+                    with open(os.path.join("output", key1, 'image_' + key2+'.raw'), "a+") as nfile:
                         for nl in new_labels:
-                            print(nl)
+                            #print(nl)
                             nfile.write(nl)
                     #todo pwd
-                    outputfile.write(os.path.join("output", key1, "image_"+key2+".png"))
+                    outputfile.write(os.path.join(os.getcwd(),"output", key1, "image_"+key2+".png\n"))
                     cv2.imwrite(os.path.join("output", key1, "image_"+key2+".png"), cv2.imread(i.rstrip()))
 outputfile.close()
