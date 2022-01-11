@@ -1,16 +1,45 @@
 #!/usr/bin/python3
-import cv2
+#import cv2
 import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-import fileinput
-import time
+#import time
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, mean_absolute_error
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from tqdm import tqdm
+
+import logging
+
+def get_logger(    
+        LOG_FORMAT     = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        LOG_NAME       = '',
+        LOG_FILE_INFO  = 'file.log',
+        LOG_FILE_ERROR = 'file.err'):
+
+    log           = logging.getLogger(LOG_NAME)
+    log_formatter = logging.Formatter(LOG_FORMAT)
+
+    # comment this to suppress console output
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(log_formatter)
+    log.addHandler(stream_handler)
+
+    file_handler_info = logging.FileHandler(LOG_FILE_INFO, mode='w')
+    file_handler_info.setFormatter(log_formatter)
+    file_handler_info.setLevel(logging.INFO)
+    log.addHandler(file_handler_info)
+
+    file_handler_error = logging.FileHandler(LOG_FILE_ERROR, mode='w')
+    file_handler_error.setFormatter(log_formatter)
+    file_handler_error.setLevel(logging.ERROR)
+    log.addHandler(file_handler_error)
+
+    log.setLevel(logging.INFO)
+
+    return log
 
 def parse_file_old(filepath):
     lines = open(filepath,'r').readlines()
@@ -31,18 +60,22 @@ def parse_file(filepath):
     return ddict
 
 
-def read_docs(filepath):
+def read_docs(filepath, padding):
     if os.path.exists(filepath):
         X = []
         y = []
         types = [0,0,0,0]
+        pad = -16
 
         with open(filepath,'r') as files:
             for file in tqdm(files):
+                pad += 1
+                if pad%padding != 0:
+                    continue
                 img_filename_r = file.rstrip()
                 label_filename = file.replace(".jpg", ".txt").rstrip()
-                if len(file)> 1:
-                    label_filename = label_filename.split(" ")[0]
+                #if len(file)> 1:
+                 #   label_filename = label_filename.split(" ")[0]
                     #print("update" , label_filename)
                     #sys.exit()
                 if not os.path.exists(label_filename) or not os.path.exists(img_filename_r):
@@ -59,6 +92,7 @@ def read_docs(filepath):
 
         X = np.asarray(X)
         y = np.asarray(y)
+
         print ("CLASSES NUMBES {}".format(types))
         return X,y
 
@@ -104,44 +138,43 @@ if __name__ == "__main__":
     valid_filepath = os.path.join(rootpath, ddict["val"])
     test_filepaht = os.path.join(rootpath, ddict["test"])
 
-    X_train, y_train = read_docs(train_filepath)
-    X_valid, y_valid = read_docs(valid_filepath)
+    X_train, y_train = read_docs(train_filepath,20)
+    X_valid, y_valid = read_docs(valid_filepath,20)
     print ("Train size {} ".format(X_train.shape))
+    savename = sys.argv[2]
+    my_logger = get_logger()
 
-    if sys.argv[2] == "logistics":
-        model = LogisticRegression(solver='liblinear', random_state=0)
 
-    if sys.argv[2] == "bayes":
-        model = GaussianNB()
+    for mode in ["logistics", "bayes", "svc"]:
+        my_logger.info("MODE " + mode)
+        if mode == "logistics":
+            model = LogisticRegression(solver='liblinear', random_state=0)
+        if mode == "bayes":
+            model = GaussianNB()
+        if mode == "svc":
+            model = SVC(class_weight="balanced")
+        model.fit(X_train,y_train)
+        print ("train score ", model.score(X_train, y_train))
+        print ("valid score ", model.score(X_valid, y_valid))
+        y_pred = model.predict(X_valid)
+        print ("mean absolute_error: ", mean_absolute_error(y_valid, y_pred))
+        special_metric(y_valid, y_pred)
+        special_metric_v2(y_valid, y_pred)
 
-    if sys.argv[2] == "svc":
-        model = SVC(class_weight="balanced")
+        cm = confusion_matrix(y_valid, model.predict(X_valid))
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.imshow(cm, cmap = plt.cm.Blues)
+        ax.grid(False)
+        ax.set_xlabel("Predicted Values")
+        ax.set_ylabel("Actual Values")
+        ax.xaxis.set(ticks=(0,1,2,3), ticklabels=('Lethal', 'Danger', 'Warning', 'Safe'))
+        ax.yaxis.set(ticks=(0,1,2,3), ticklabels=('Lethal', 'Danger', 'Warning', 'Safe'))
+        #ax.set_ylim(1.5, -0.5)
+        thresh = 1500
+        for i in range(4):
+            for j in range(4):
+                ax.text(j, i, cm[i, j], ha='center', va='center', size=20, color="white" if  cm[i, j] > thresh else "black")
+        plt.savefig("cm_{}_{}.jpg".format(mode,savename))
+        plt.show()
 
-    model_name = sys.argv[2]
-    savename = sys.argv[3]
-
-    model.fit(X_train,y_train)
-    print ("train score ", model.score(X_train, y_train))
-    print ("valid score ", model.score(X_valid, y_valid))
-    y_pred = model.predict(X_valid)
-    print ("mean absolute_error: ", mean_absolute_error(y_valid, y_pred))
-    special_metric(y_valid, y_pred)
-    special_metric_v2(y_valid, y_pred)
-
-    cm = confusion_matrix(y_valid, model.predict(X_valid))
-    fig, ax = plt.subplots(figsize=(8, 8))
-    ax.imshow(cm, cmap = plt.cm.Blues)
-    ax.grid(False)
-    ax.set_xlabel("Predicted Values")
-    ax.set_ylabel("Actual Values")
-    ax.xaxis.set(ticks=(0,1,2,3), ticklabels=('Lethal', 'Danger', 'Warning', 'Safe'))
-    ax.yaxis.set(ticks=(0,1,2,3), ticklabels=('Lethal', 'Danger', 'Warning', 'Safe'))
-    #ax.set_ylim(1.5, -0.5)
-    thresh = 1500
-    for i in range(4):
-        for j in range(4):
-            ax.text(j, i, cm[i, j], ha='center', va='center', size=20, color="white" if  cm[i, j] > thresh else "black")
-    plt.savefig("confussion_matrix_benchmark_{}.jpg".format(savename))
-    plt.show()
-
-    print(classification_report(y_valid, model.predict(X_valid)))
+        print(classification_report(y_valid, model.predict(X_valid)))
