@@ -7,8 +7,8 @@ add_definitions(-Wno-dev)
 
 find_package(catkin REQUIRED
         COMPONENTS
-	gr_action_msgs
-	actionlib
+        gr_action_msgs
+        actionlib
         roscpp
         pcl_conversions
         geometry_msgs
@@ -21,7 +21,7 @@ find_package(catkin REQUIRED
         nodelet
 )
 
-find_package(PCL 1.9 REQUIRED)
+find_package(PCL 1.12 REQUIRED) #REQUIRED PATHS /home/jose/local)# REQUIRED PATHS /home/jose/local)
 
 
 find_package(Boost REQUIRED COMPONENTS
@@ -56,8 +56,8 @@ catkin_package(
     dynamic_reconfigure
     common_detection_utils
     nodelet
-  DEPENDS
-    PCL
+    DEPENDS
+     PCL
 )
 
 add_definitions(${PCL_DEFINITIONS})

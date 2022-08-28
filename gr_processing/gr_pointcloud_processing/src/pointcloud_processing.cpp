@@ -174,7 +174,7 @@ namespace gr_pointcloud_processing{
   };
 
 
-  void PointCloudProcessor::removeGround(boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> pc){
+  void PointCloudProcessor::removeGround(pcl::PointCloud<pcl::PointXYZI>::Ptr pc){
     //ROS_ERROR("Remove ground");
     int original_size = (int) pc->points.size ();
     pcl::ModelCoefficients::Ptr filter_coefficients(new pcl::ModelCoefficients);
@@ -205,7 +205,7 @@ namespace gr_pointcloud_processing{
     //ROS_INFO_STREAM("Surface remove " << number_of_surfaces);
   }
 
-  int PointCloudProcessor::run_filter(const boost::shared_ptr <pcl::PointCloud<pcl::PointXYZI>> cloud_filtered){
+  int PointCloudProcessor:: run_filter(const pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_filtered){
       //boost::mutex::scoped_lock lock(mutex_);
       bb.boxes.clear();
 
@@ -266,7 +266,9 @@ namespace gr_pointcloud_processing{
   void PointCloudProcessor::cluster(){
     boost::mutex::scoped_lock lock(mutex_);
     //Cluster implementation requires XYZ ... If you have a lot of time maybe worth it to modifyied it
-    boost::shared_ptr <pcl::PointCloud<pcl::PointXYZ>> pointcloud_xyz = boost::make_shared<pcl::PointCloud<pcl::PointXYZ>>();
+    //boost::shared_ptr <pcl::PointCloud<pcl::PointXYZ>> pointcloud_xyz = boost::make_shared<pcl::PointCloud<pcl::PointXYZ>>();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud_xyz (new pcl::PointCloud<pcl::PointXYZ>);
+
     pcl::copyPointCloud(main_cloud_,*pointcloud_xyz.get());
 
 
