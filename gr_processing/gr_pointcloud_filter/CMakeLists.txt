@@ -16,7 +16,7 @@ find_package(catkin REQUIRED
 )
 
 #find_package(cmake_modules REQUIRED)
-find_package(PCL REQUIRED)
+find_package(PCL 1.12.1.99 EXACT REQUIRED)
 
 generate_dynamic_reconfigure_options(
   cfg/Filters.cfg
