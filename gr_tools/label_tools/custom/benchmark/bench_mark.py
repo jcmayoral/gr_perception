@@ -13,7 +13,7 @@ from tqdm import tqdm
 
 import logging
 
-def get_logger(    
+def get_logger(
         LOG_FORMAT     = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
         LOG_NAME       = '',
         LOG_FILE_INFO  = 'file.log',
@@ -74,6 +74,8 @@ def read_docs(filepath, padding):
                     continue
                 img_filename_r = file.rstrip()
                 label_filename = file.replace(".jpg", ".txt").rstrip()
+                label_filename = file.replace(".png", ".txt").rstrip()
+
                 #if len(file)> 1:
                  #   label_filename = label_filename.split(" ")[0]
                     #print("update" , label_filename)
@@ -138,8 +140,8 @@ if __name__ == "__main__":
     valid_filepath = os.path.join(rootpath, ddict["val"])
     test_filepaht = os.path.join(rootpath, ddict["test"])
 
-    X_train, y_train = read_docs(train_filepath,20)
-    X_valid, y_valid = read_docs(valid_filepath,20)
+    X_train, y_train = read_docs(train_filepath,1)
+    X_valid, y_valid = read_docs(valid_filepath,1)
     print ("Train size {} ".format(X_train.shape))
     savename = sys.argv[2]
     my_logger = get_logger()
