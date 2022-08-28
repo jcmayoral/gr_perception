@@ -8,7 +8,7 @@
 #include <safety_msgs/RiskIndexes.h>
 #include <safety_msgs/FoundObjectsArray.h>
 
-namespace fs = ::boost::filesystem;
+namespace fs = std::experimental::filesystem;
 
 namespace persons_stuff{
     template<typename T>
@@ -38,9 +38,9 @@ namespace persons_stuff{
     };
 
     std::ostream& operator<<(std::ostream& os, const PersonInfo& pi){
-        return os<<pi.original_id << "," << pi.stamp << "," << pi.labeled_id << "," << pi.mean_x << "," <<pi.mean_y << ","<< 
-        pi.mean_z << "," << pi.mean_i << "," << pi.var_x << "," <<pi.var_y << "," << 
-        pi.var_z << ", " << pi.var_i << ", " << pi.rangex << "," <<pi.rangey << "," << 
+        return os<<pi.original_id << "," << pi.stamp << "," << pi.labeled_id << "," << pi.mean_x << "," <<pi.mean_y << ","<<
+        pi.mean_z << "," << pi.mean_i << "," << pi.var_x << "," <<pi.var_y << "," <<
+        pi.var_z << ", " << pi.var_i << ", " << pi.rangex << "," <<pi.rangey << "," <<
         pi.rangez << ", " << pi.rangei << ", " << pi.safety_index  << '\n';
     }
 
