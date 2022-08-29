@@ -39,7 +39,7 @@ add_library(${PROJECT_NAME} src/common_detection_utils.cpp)
 add_executable(${PROJECT_NAME}_node src/fusion_detection_utils_node.cpp)
 #add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} kalman-cpp)
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME})
 
 

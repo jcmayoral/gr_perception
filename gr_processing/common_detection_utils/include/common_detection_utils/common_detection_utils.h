@@ -9,7 +9,7 @@
 #include <boost/thread/mutex.hpp>
 #include <geometry_msgs/PoseArray.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-
+#include <kalman-cpp/kalman.hpp>
 
 namespace gr_detection{
     const std::string NOPREVIOUSDETECTION="ND";
