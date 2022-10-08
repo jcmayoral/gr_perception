@@ -73,7 +73,6 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         plot()
     #rospy.spin()
-    print "out"
     #plt.show()
     plt.rc('font', size=20)
     plt.rc('axes', titlesize=40)
@@ -99,6 +98,5 @@ if __name__ == '__main__':
     plt.title("Person/Robot Speed Map")
     #  plt.legend()
     plt.savefig("speed_map.png")
-    print "END"
     #rospy.sleep(10)
     #ax.show()

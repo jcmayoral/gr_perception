@@ -96,7 +96,6 @@ if __name__ == '__main__':
         if not plot():
             time.sleep(0.1)
     rospy.spin()
-    print "out"
     """
     plt.rc('font', size=20)
     plt.rc('axes', titlesize=40)
@@ -154,7 +153,6 @@ if __name__ == '__main__':
     #axs[0].set_yticks(np.linspace(0,1,0.1))
     axs[0].grid(True)
     axs[1].grid(True)
-    print type(axs[0])
 
     #for i in range(2):
     #    axs[i].grid()#linestyle='-', linewidth=2)
@@ -164,7 +162,6 @@ if __name__ == '__main__':
     #    axs[i].legend(loc='center left', bbox_to_anchor=(1, 0.5))
     #plt.legend()
     plt.savefig("speed_profile_sample.png")
-    print "END"
 
     #rospy.sleep(10)
     #ax.show()

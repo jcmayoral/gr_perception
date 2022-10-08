@@ -97,7 +97,6 @@ def plot():
         #angle = euler_from_quaternion([p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w])[2]
         ncount1 = ncount1 + 1
 
-    print "a"
     fig.canvas.draw()
 
     #ax.set_ylim(0,15)
@@ -116,7 +115,6 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         plot()
     #rospy.spin()
-    print "out"
     #plt.show()
     plt.rc('font', size=20) 
     plt.rc('axes', titlesize=40) 
@@ -142,6 +140,5 @@ if __name__ == '__main__':
     plt.title("Risk Evaluation Map")
     #  plt.legend()
     plt.savefig("new_range_of_data_risk_zones_safetyindex.png")
-    print "END"
     #rospy.sleep(10)
     #ax.show()

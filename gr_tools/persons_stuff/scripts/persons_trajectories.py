@@ -93,7 +93,6 @@ if __name__ == '__main__':
         if not plot():
             time.sleep(0.1)
     rospy.spin()
-    print "out"
     plt.rc('font', size=20)
     plt.rc('axes', titlesize=40)
     plt.rc('axes', labelsize=20)
@@ -125,7 +124,6 @@ if __name__ == '__main__':
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     #plt.legend()
     plt.savefig("trajectories_map.png")
-    print "END"
 
     #rospy.sleep(10)
     #ax.show()
