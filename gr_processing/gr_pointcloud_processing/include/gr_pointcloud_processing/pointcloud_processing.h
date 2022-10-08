@@ -135,5 +135,7 @@ namespace gr_pointcloud_processing{
     void addBoundingBox(const geometry_msgs::Pose center, double v_x, double v_y, double v_z, double var_i, int label);
     void dyn_reconfigureCB(gr_pointcloud_processing::PointCloudConfig &config, uint32_t level);
     void removeGround(pcl::PointCloud<pcl::PointXYZI>::Ptr pc);
+    double test;
+    int counter;
   };
 };

@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 #find_package(YAML-CPP 0.3.0 REQUIRED)
-find_package(YAML-CPP 0.5.2 EXACT REQUIRED)
+find_package(YAML-CPP REQUIRED)
 
 catkin_python_setup()
 

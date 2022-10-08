@@ -7,6 +7,8 @@ using namespace gr_detection;
 
 namespace gr_pointcloud_processing{
   void PointCloudProcessor::onInit(){
+    test = 0;
+    counter = 0;
     dynamic_std_ = 0.1;
     output_publish_ = false;
     remove_ground_ = true;
@@ -150,7 +152,6 @@ namespace gr_pointcloud_processing{
     main_cloud_.points.clear();
   }
 
-
   template <class T> void PointCloudProcessor::publishPointCloud(T t){
     if(t.points.size() ==0 ){
       return;
@@ -172,7 +173,6 @@ namespace gr_pointcloud_processing{
     //ROS_INFO("PointCloud conversion succeded");
     auto result = run_filter(output);
   };
-
 
   void PointCloudProcessor::removeGround(pcl::PointCloud<pcl::PointXYZI>::Ptr pc){
     //ROS_ERROR("Remove ground");
@@ -238,6 +238,7 @@ namespace gr_pointcloud_processing{
     jsk_recognition_msgs::BoundingBox cluster_bb;
     //cluster_bb.header.stamp = ros::Time::now();
     geometry_msgs::Pose out;
+    to_odom_transform = tf_buffer_.lookupTransform(global_frame_, sensor_frame_, last_detection_, ros::Duration(0.5) );
     tf2::doTransform(center, out, to_odom_transform);
 
     cluster_bb.header.frame_id = global_frame_; //this should be a param
@@ -270,9 +271,6 @@ namespace gr_pointcloud_processing{
     pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud_xyz (new pcl::PointCloud<pcl::PointXYZ>);
 
     pcl::copyPointCloud(main_cloud_,*pointcloud_xyz.get());
-
-
-    to_odom_transform = tf_buffer_.lookupTransform(global_frame_, sensor_frame_, last_detection_, ros::Duration(0.5) );
 
     if (pointcloud_xyz->points.size() == 0 ){
       ROS_ERROR("Cluster empty");
@@ -397,17 +395,26 @@ namespace gr_pointcloud_processing{
               auto nyaw =  calculateYaw<double>(nx,ny,nz);
               auto oldyaw =  tf2::getYaw(matched_object.pose.orientation);
               //person is new reading
-              //std::cout << "dt " << dt << std::endl;
+              std::cout << "dt " << oldyaw << std::endl;
 
               object.speed.x =  (nx*dt);
               object.speed.y =  (ny*dt);
               expected_change = std::abs(sqrt(object.speed.x*object.speed.x + object.speed.y*object.speed.y));
               //ROS_ERROR_STREAM(" new  expected "<< expected_change << " sx "<< object.speed.x << " sy " << object.speed.y << "dt "<< dt << " nxdt "<< nx*dt);
 
+              person.pose.orientation = tf2::toMsg(tf2_quat);
+              cluster_center.orientation = person.pose.orientation;
+              object.pose.orientation = cluster_center.orientation;
 
-              auto m_vyaw = (oldyaw-nyaw)*dt;
-              object.speed.z =  matched_object.speed.z + m_vyaw/10;
-              tf2_quat.setRPY(0,0,nyaw);
+              auto mv_yaw = (nyaw-oldyaw)*dt;
+
+              test+=mv_yaw;
+              double std = pow(nyaw - test/counter,2)/(counter-1);
+              std::cout << "NEW "<< nyaw << " OLD "<< oldyaw <<std::endl;
+              
+              tf2_quat.setRPY(0,0, nyaw);
+
+              object.speed.z =  matched_object.speed.z + (mv_yaw);
 
               person.pose.orientation = tf2::toMsg(tf2_quat);
               cluster_center.orientation = person.pose.orientation;
